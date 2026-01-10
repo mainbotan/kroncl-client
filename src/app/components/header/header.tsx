@@ -125,17 +125,7 @@ export function Header() {
                     <div className={styles.buttons}>
                         <Button 
                             className={styles.button} 
-                            variant='accent'
-                            as="a"
-                            href={authLinks.registration}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Создать аккаунт
-                        </Button>
-                        <Button 
-                            className={styles.button} 
-                            variant='default'
+                            variant='contrast'
                             as="a"
                             href={authLinks.login}
                             target="_blank"

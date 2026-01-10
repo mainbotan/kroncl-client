@@ -2,7 +2,6 @@
 
 // footer parent container
 .container {
-    min-height: 20rem;
     border-top: 1px solid var(--color-stroke-secondary);
     display: flex;
     padding: 1rem .8rem;
@@ -35,34 +34,35 @@
             // padding-left: .7em;
         }
     }
-    .sections {
+    .peoples {
         display: flex;
         flex: 1;
         flex-flow: row wrap;
-        gap: 2rem 1.5rem;
-        padding: .5rem 0 3rem 0;
-        font-size: .6em;
+        justify-content: center;
+        align-items: center;
 
-        .group {
-            display: flex;
-            flex-flow: column nowrap;
-            gap: 1.2em;
-            min-width: 9rem;
-            max-width: 9rem;
+        .item {
+            width: 2em;
+            height: 2em;
+            background-size: cover;
+            background-image: center;
+            border-radius: 50%;
+            border: 3px solid var(--color-leader);
+            @include cursor(pointer);
+            margin-left: -.5em;
+            transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1;
+            background-color: var(--color-surface-primary);
 
-            .name {
-                margin-bottom: .4em;
-                color: var(--color-text-description);
+            &:first-child {
+                margin-left: 0;
             }
-            .section {
-                font-size: .95em;
-                @include cursor(pointer);
-                transition: color var(--transition);
-                line-height: 1.3;
 
-                &:hover {
-                    color: var(--color-brand);
-                }
+            &:hover {
+                transform: translateY(-4px) scale(1.08);
+                z-index: 10;
+                border-width: 4px;
+                border-color: var(--color-leader);
             }
         }
     }
@@ -74,9 +74,16 @@
         .brand {
             max-width: 100%;
         }
-        .sections .group {
-            min-width: 100%;
-            max-width: 100%;
+        .peoples {
+            font-size: .8em;
+            justify-content: start;
+            padding: 0 .35em;
+
+            .item {
+                &:first-child {
+                    margin-left: -.5em;
+                }
+            }
         }
     }
 }
