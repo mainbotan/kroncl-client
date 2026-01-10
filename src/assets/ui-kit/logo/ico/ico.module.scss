@@ -1,0 +1,54 @@
+.area {
+    font-size: 1em;
+    display: grid;
+    font-weight: 800;
+    position: relative;
+    overflow: visible;
+    width: 1em;
+    height: 1em;
+    
+    /* Создаем сетку 2x2 с отступами */
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: .1em;
+    transform: rotate(-45deg);
+    margin-left: .15em;
+    margin-right: .15em;
+}
+
+.petal {
+    background-color: var(--color-brand);
+    border-radius: .1em;
+}
+@keyframes petal-animation {
+    0% {
+
+    }
+    100% {
+
+    }
+}
+@keyframes spiral-in {
+    0% {
+        opacity: 0;
+        transform: rotate(180deg) scale(0);
+    }
+    70% {
+        opacity: 1;
+        transform: rotate(-20deg) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+.area[data-animate="true"] .petal {
+    transform-origin: center;
+    animation: spiral-in .5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.area[data-animate="true"] .petal:nth-child(1) { animation-delay: 0.1s; }
+.area[data-animate="true"] .petal:nth-child(2) { animation-delay: 0.2s; }
+.area[data-animate="true"] .petal:nth-child(3) { animation-delay: 0.3s; }
+.area[data-animate="true"] .petal:nth-child(4) { animation-delay: 0.4s; }

@@ -1,1 +1,0 @@
-// shared slides animations

@@ -2,16 +2,14 @@ import clsx from 'clsx';
 import styles from './footer.module.scss';
 import { LogoText } from '@/assets/ui-kit/logo/text/text';
 import Link from 'next/link';
+import { LogoFull } from '@/assets/ui-kit/logo/full/full';
 
 export function Footer() {
     return (
         <footer className={styles.container}>
             <div className={styles.focus}>
                 <div className={styles.brand}>
-                    <div className={styles.logo}><LogoText /></div>
-                    <div className={styles.slogan}>
-                        Учёт и планирование малого бизнеса.
-                    </div>
+                    <div className={styles.logo}><LogoFull /></div>
                 </div>
                 <div className={styles.sections}>
                     <div className={styles.group}>

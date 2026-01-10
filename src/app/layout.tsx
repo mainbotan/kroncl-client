@@ -5,11 +5,10 @@ import Providers from "./providers";
 import ScrollToTop from "./ScrollToTop";
 import { Header } from "./components/header/header";
 import { Footer } from "./components/footer/footer";
-import { New } from "./components/new/new";
 import ThemeScript from "@/assets/utils/theme";
 
 export const metadata: Metadata = {
-  title: "Yieldaa! | ERP-lite для вашего предприятия любого масштаба. | Учёт и планирование в облаке.",
+  title: "Kroncl",
   description: "",
   appleWebApp: {
     capable: true,
@@ -41,7 +40,6 @@ export default function RootLayout({
       <body className={styles.container} suppressHydrationWarning>
         <ThemeScript />
         <Providers>
-            <New />
             <Header />
             <div className={styles.content}>{children}</div>
             <Footer />

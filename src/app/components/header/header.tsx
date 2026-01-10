@@ -15,6 +15,7 @@ import { authLinks } from '@/config/links.config';
 import { LogoText } from '@/assets/ui-kit/logo/text/text';
 import Sun from '@/assets/ui-kit/icons/sun';
 import Moon from '@/assets/ui-kit/icons/moon';
+import { LogoFull } from '@/assets/ui-kit/logo/full/full';
 
 export function Header() {
     const pathname = usePathname();
@@ -91,7 +92,7 @@ export function Header() {
             <header className={clsx(styles.container, isMenuOpen && styles.active)}>
                 <Link href='/' onClick={closeMenu} className={styles.icon}>
                     <span className={styles.area}>
-                        <LogoText animate />
+                        <LogoFull animate />
                         <span className={styles.shadow} />
                     </span>
                 </Link>
