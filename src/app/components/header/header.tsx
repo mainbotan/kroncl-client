@@ -180,18 +180,7 @@ export function Header() {
                     <div className={styles.actions}>
                         <Button 
                             className={styles.button} 
-                            variant='accent'
-                            as="a"
-                            href={authLinks.registration}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={closeMenu}
-                        >
-                            Создать аккаунт
-                        </Button>
-                        <Button 
-                            className={styles.button} 
-                            variant='default'
+                            variant='contrast'
                             as="a"
                             href={authLinks.login}
                             target="_blank"

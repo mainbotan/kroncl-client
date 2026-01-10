@@ -152,20 +152,22 @@
             align-items: center;
 
             .switcher {
-                height: 1.5rem;
+                height: 1.4rem;
                 display: inline-flex;
                 flex-flow: row nowrap;
-                border-radius: 1rem;
+                border-radius: .3rem;
                 background-color: var(--color-surface-glass);
+                border: 1px solid var(--color-stroke-primary);
+                overflow: hidden;
 
                 .box {
                     display: inline-flex;
-                    width: 1.5rem;
-                    height: 1.5rem;
+                    width: 1.3rem;
+                    height: 1.3rem;
                     align-items: center;
                     justify-content: center;
                     transition: background-color var(--transition), border-color var(--transition);
-                    border-radius: 50%;
+                    border-radius: .3rem;
                     border: 1px solid transparent;
                     @include cursor(pointer);
 
@@ -286,8 +288,6 @@
         gap: .5em;
 
         .button {
-            font-weight: 600;
-            letter-spacing: .05em;
             border-radius: .6em;
             transition: transform var(--transition);
             height: 3em;
