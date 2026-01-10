@@ -1,0 +1,11 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+
+    &.start {
+        // background: linear-gradient(180deg, transparent, #564eef);
+    }
+}

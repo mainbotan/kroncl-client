@@ -1,0 +1,215 @@
+// main.scss
+@use 'base/reset';
+@use 'base/typography' as *;
+@use 'base/themes/dark' as dark;
+@use 'base/themes/light' as light;
+@use 'base/themes/satanic-dark.scss' as satanic-dark;
+@use 'base/themes/cherry.scss' as cherry;
+@use 'base/themes/green-dope.scss' as green-dope;
+
+// Важно: :root без темы - только общие переменные
+:root {
+  @include font-styles;
+
+  --transition: 0.3s ease;
+  --focus-width: 53rem;
+  --header-height: 2.3rem;
+  --side-offset: 2rem;
+  
+  // Транзиции для темы - добавляем только для данных атрибутов
+  transition: background-color var(--transition), 
+              color var(--transition);
+
+  @media (max-width: 720px) {
+    --side-offset: .8rem;
+  }
+}
+
+html {
+  font-size: 62.5%;
+  
+  // Изначально скрываем контент до установки темы
+  &:not([data-theme]) {
+    visibility: hidden;
+  }
+  
+  &[data-theme] {
+    visibility: visible;
+  }
+}
+
+html, body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  line-height: 1;
+  font-size: 1.6rem;
+  position: relative;
+  
+  // Убираем переходы для основных свойств, оставляем только для темы
+  transition-property: background-color, color;
+  transition-duration: var(--transition);
+  transition-timing-function: ease;
+
+  @media (max-width: 720px) {
+    font-size: 1.6rem;
+  }
+}
+
+// Темная тема по умолчанию (на время загрузки)
+// Это временное состояние, пока скрипт не выполнится
+html:not([data-theme]) {
+  @include dark.theme;
+}
+
+// После выполнения скрипта применяется правильная тема
+html[data-theme="light"] {
+  @include light.theme;
+}
+html[data-theme="dark"] {
+  @include dark.theme;
+}
+html[data-theme="satanic-dark"] {
+  @include satanic-dark.theme;
+}
+html[data-theme="cherry"] {
+  @include cherry.theme;
+}
+html[data-theme="green-dope"] {
+  @include green-dope.theme;
+}
+
+// Убираем переходы во время загрузки, чтобы избежать мерцания
+html:not([data-theme]) * {
+  transition: none !important;
+}
+html, body {
+  background-color: var(--color-leader);
+  color: var(--color-text-primary);
+}
+@media (max-width: 720px) {
+  html, body {
+    -ms-overflow-style: none;  /* IE и Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.focus {
+  display: inline-block;
+  max-width: 120rem;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin: 0 0 0.5em;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 0.9;
+}
+
+h2, h3 {
+  line-height: 1;
+}
+
+p {
+  max-width: 65ch;
+  margin-bottom: 1em;
+}
+
+
+// Кастомный скроллбар для всего сайта
+* {
+  // Для Firefox
+  scrollbar-width: thin;
+  scrollbar-color: rgb(26, 26, 26) transparent;
+  
+  // Для Webkit (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgb(26, 26, 26);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    
+    &:hover {
+      background: #323232;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+    
+    &:active {
+      background: rgb(104, 135, 236);
+    }
+  }
+  
+  // Уголок скроллбара (если нужно)
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+// Для определенных контейнеров (более толстый)
+.thick-scrollbar {
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      rgb(26, 26, 26) 0%,
+      #222222 100%
+    );
+  }
+}
+
+// Невидимый пока не наведен
+.hover-scrollbar {
+  &::-webkit-scrollbar-thumb {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      opacity: 1;
+    }
+  }
+}
+
+// Гладкий скроллбар (только горизонтальный)
+.smooth-horizontal {
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgb(26, 26, 26);
+    min-width: 40px;
+  }
+}

@@ -1,0 +1,166 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.slide {
+    @include slide();
+    display: block;
+    text-align: center;
+    height: fit-content;
+    position: relative;
+    overflow: hidden;
+
+    .focus {
+        @include focus();
+        display: inline-flex;
+        flex-flow: column nowrap;
+        gap: 1rem;
+        z-index: 10;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        pointer-events: none;
+        min-height: 30rem;
+
+        @media (max-width: 720px) {
+            font-size: .75em;
+            min-height: 25rem;
+        }
+    }
+
+    .gradient {
+        position: absolute;
+        z-index: 5;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--color-leader), transparent, var(--color-leader));
+        pointer-events: none;
+    }
+}
+
+.col {
+    display: flex;
+    z-index: 20;
+
+    &:nth-child(1) {
+        flex: 1;
+        flex-flow: column nowrap;
+        gap: 1em;
+        align-items: center;
+        justify-content: center;
+
+        .capture {
+            font-size: 1.6em;
+            font-weight: 600;
+            line-height: 1.1;
+
+            .brand {
+                color: var(--color-brand);
+            }
+        }
+        .slogan {
+            font-size: .65em;
+        }
+        .actions {
+            display: flex;
+            flex-flow: row nowrap;
+            font-size: .45em;
+            gap: 2em;
+
+            .action {
+                border-radius: 2em;
+                height: 3em;
+                padding: 0 1.5em;
+                pointer-events: all;
+                transition: transform var(--transition);
+                will-change: transform;
+
+                .svg {
+                    width: .6em;
+                    height: .6em;
+                    margin-left: 1em;
+                }
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
+
+            @media (max-width: 720px) {
+                font-size: .7em;
+            }
+        }
+    }
+}
+
+// Icons
+.icons {
+    position: absolute;
+    display: flex;
+    width: fit-content;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    flex-flow: column nowrap;
+    justify-content: end;
+    gap: .7em;
+    padding: .2em 0;
+
+    .line {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: .7em;
+        white-space: nowrap;
+        width: fit-content;
+
+
+        @keyframes show-icon {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        .icon {
+            display: flex;
+            width: 2.8em;
+            height: 2.8em;
+            background-color: var(--color-surface-primary);
+            border-radius: .5em;
+            box-shadow: 0 0 .3em var(--color-surface-tertiary);
+            @include cursor(pointer);
+            transition: box-shadow var(--transition);
+            will-change: box-shadow;
+            border: 1px solid var(--color-stroke-secondary);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            
+
+            .svg {
+                width: 1em;
+                height: 1em;
+                fill: var(--color-surface-tertiary);
+            }
+
+            &:hover {
+                box-shadow: 0 0 .4em var(--color-brand);
+            }
+
+            @media (max-width: 720px) {
+                box-shadow: 0 0 .3 var(--color-surface-tertiary);
+                animation: show-icon .3s forwards;
+                animation-delay: 2s;
+            }
+        }
+        &:nth-child(odd) {
+            padding-left: 1em;
+        }
+    }
+
+    @media (max-width: 720px) {
+        font-size: .7em;
+        justify-content: center;
+    }
+}

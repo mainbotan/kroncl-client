@@ -1,0 +1,297 @@
+// cube.module.scss
+@use '@/assets/styles/_mixins.scss' as *;
+
+.cubeContainer {
+  width: 5em;
+  height: 5em;
+  perspective: 20em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+  animation: float 8s infinite ease-in-out;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: 140%;
+    height: 140%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(158, 55, 214, 0.15) 0%,
+      rgba(158, 55, 214, 0.05) 40%,
+      transparent 70%
+    );
+    z-index: -1;
+    animation: pulseGlow 8s infinite ease-in-out;
+  }
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: gentleRotation 24s infinite linear;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+// Общий стиль для всех граней
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+  // Убираем все стандартные скругления и рамки
+  border-radius: 0;
+  
+  // Используем clip-path для создания скругленных углов БЕЗ видимых стыков
+  clip-path: polygon(
+    15% 15%,     // Левый верх
+    85% 15%,     // Правый верх  
+    85% 85%,     // Правый низ
+    15% 85%      // Левый низ
+  );
+  
+  // Свечение для грани
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(158, 55, 214, 0.1) 0%,
+      rgba(71, 147, 253, 0.05) 100%
+    );
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    
+    // Скругление для внутреннего свечения
+    clip-path: polygon(
+      15% 15%,
+      85% 15%,  
+      85% 85%,
+      15% 85%
+    );
+  }
+  
+  // Граница с эффектом свечения
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    
+    // Градиентная рамка
+    background: linear-gradient(
+      135deg,
+      rgba(158, 55, 214, 0.3) 0%,
+      rgba(71, 147, 253, 0.2) 50%,
+      rgba(158, 55, 214, 0.3) 100%
+    );
+    
+    // Маска для создания только рамки
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 0.08em; // Толщина рамки
+    
+    clip-path: polygon(
+      15% 15%,
+      85% 15%,  
+      85% 85%,
+      15% 85%
+    );
+  }
+}
+
+// Позиционирование граней с небольшим перекрытием
+.front {
+  transform: translateZ(2.51em);
+  
+  &::before {
+    background: linear-gradient(
+      135deg,
+      rgba(158, 55, 214, 0.25) 0%,
+      rgba(71, 147, 253, 0.15) 100%
+    );
+  }
+}
+
+.back {
+  transform: rotateY(180deg) translateZ(2.51em);
+  
+  &::before {
+    background: linear-gradient(
+      135deg,
+      rgba(71, 147, 253, 0.25) 0%,
+      rgba(158, 55, 214, 0.15) 100%
+    );
+  }
+}
+
+.top {
+  transform: rotateX(90deg) translateZ(2.51em);
+  
+  &::before {
+    background: linear-gradient(
+      135deg,
+      rgba(158, 55, 214, 0.3) 0%,
+      rgba(104, 135, 236, 0.2) 100%
+    );
+  }
+}
+
+.bottom {
+  transform: rotateX(-90deg) translateZ(2.51em);
+  
+  &::before {
+    background: linear-gradient(
+      135deg,
+      rgba(104, 135, 236, 0.3) 0%,
+      rgba(158, 55, 214, 0.2) 100%
+    );
+  }
+}
+
+.left {
+  transform: rotateY(-90deg) translateZ(2.51em);
+  
+  &::before {
+    background: linear-gradient(
+      90deg,
+      rgba(158, 55, 214, 0.25) 0%,
+      rgba(71, 147, 253, 0.15) 100%
+    );
+  }
+}
+
+.right {
+  transform: rotateY(90deg) translateZ(2.51em);
+  
+  &::before {
+    background: linear-gradient(
+      90deg,
+      rgba(71, 147, 253, 0.25) 0%,
+      rgba(158, 55, 214, 0.15) 100%
+    );
+  }
+}
+
+// Альтернативный подход: псевдо-3D с помощью box-shadow
+// Это создает эффект объема без видимых стыков
+.cube.withShadow {
+  .face {
+    // Убираем clip-path для этого варианта
+    clip-path: none;
+    border-radius: 0.5em;
+    
+    &::before {
+      clip-path: none;
+      border-radius: 0.5em;
+    }
+    
+    &::after {
+      clip-path: none;
+      border-radius: 0.5em;
+    }
+    
+    // Добавляем объем с помощью теней
+    box-shadow: 
+      inset 0 0 30px rgba(158, 55, 214, 0.2),
+      0 0 20px rgba(71, 147, 253, 0.1),
+      0 0 0 1px rgba(158, 55, 214, 0.3);
+  }
+}
+
+// Третий вариант: Используем маску для создания бесшовного куба
+.cube.withMask {
+  // Маска для всего куба - создает скругленные углы на всем объеме
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border-radius: 0.5em;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow: 
+      0 0 0 100em rgba(0, 0, 0, 0.95); // Создаем маску
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    padding: 1px;
+  }
+  
+  .face {
+    // Грани без скругления, маска сделает это на уровне всего куба
+    border-radius: 0;
+    
+    &::before {
+      border-radius: 0;
+    }
+  }
+}
+
+// ==================== АНИМАЦИИ ====================
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0em);
+  }
+  25% {
+    transform: translateY(-0.2em);
+  }
+  50% {
+    transform: translateY(0.1em);
+  }
+  75% {
+    transform: translateY(-0.1em);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes gentleRotation {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  16.6% {
+    transform: rotateX(15deg) rotateY(60deg);
+  }
+  33.3% {
+    transform: rotateX(30deg) rotateY(120deg);
+  }
+  50% {
+    transform: rotateX(45deg) rotateY(180deg);
+  }
+  66.6% {
+    transform: rotateX(30deg) rotateY(240deg);
+  }
+  83.3% {
+    transform: rotateX(15deg) rotateY(300deg);
+  }
+  100% {
+    transform: rotateX(0deg) rotateY(360deg);
+  }
+}
+
+// Для тестирования разных вариантов можно добавить классы:
+// .cube.withShadow - вариант с тенями
+// .cube.withMask - вариант с маской

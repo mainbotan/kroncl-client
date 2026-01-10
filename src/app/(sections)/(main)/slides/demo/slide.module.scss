@@ -1,0 +1,24 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.slide {
+    @include slide();
+    height: fit-content;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+
+    @media (max-width: 720px) {
+        display: none;
+    }
+}
+
+.window {
+    @include focus();
+    display: flex;
+    max-width: 50rem;
+    height: 27rem;
+    border-radius: .5rem;
+    border: 1px solid var(--color-stroke-secondary);
+    box-shadow: 0 0 1em var(--color-stroke-secondary);
+    background-color: var(--color-leader);
+    overflow: hidden;
+}

@@ -1,0 +1,72 @@
+@mixin theme {
+    // ==================== CORE IDENTITY ====================
+    --color-brand: rgb(104, 135, 236);
+    --color-brand-light: var(--color-brand);
+    --color-brand-pale: var(--color-brand);
+    --color-leader: #0e0e0f;
+    --color-contrast: #ebebeb;
+    --color-header: #1e1e1e;
+    --color-accent: #0075de;
+    --color-accent-text-primary: #ffffff;
+    
+    // ==================== AIRY SURFACES ====================
+    --color-surface-primary: #141414;
+    --color-surface-secondary: #111111;
+    --color-surface-tertiary: rgb(26, 26, 26);
+    --color-surface-elevated: #1c1b1b;
+    --color-surface-overlay: rgba(18, 17, 17, 0.95);
+    --color-surface-glass: rgba(15, 15, 15, 0.801);
+    --color-surface-glass-secondary: rgba(23, 23, 23, 0.775);
+
+    // ==================== CALM TEXT ====================
+    --color-text-primary: #ededed;
+    --color-text-secondary: #c2c2c2;
+    --color-text-hint: #4793fd;
+    --color-text-description: #575757;
+    --color-text-ghost: #c1c1c1;
+    --color-contrast-text-primary: #0c0c0c;
+    --color-contrast-text-secondary: #202020;
+    --color-contrast-text-hint: #4d93f6;
+    --color-contrast-text-description: #868585;
+    --color-contrast-text-ghost: #cbd5e1;
+
+    // ==================== SUBTLE STROKES ====================
+    --color-stroke-primary: #323232;
+    --color-stroke-secondary: #222222;
+    --color-stroke-tertiary: #696969;
+    --color-stroke-focus: var(--color-brand-light);
+
+    // ==================== GENTLE INDICATORS ====================
+    --color-error: #f87171;
+    --color-error-light: #fecaca;
+    --color-warning: #fbbf24;
+    --color-warning-light: #fef3c7;
+    --color-normal: #60a5fa;
+    --color-normal-light: #dbeafe;
+    --color-critical: #ef4444;
+    --color-success: #34d399;
+    --color-success-light: #d1fae5;
+
+    // ==================== ICONS ====================
+    --color-icon-primary: #adadad;
+    --color-icon-active: var(--color-accent);
+    
+    // ==================== EXTENDED PALETTE ====================
+    --color-red: #f63939;
+    --color-blue: #4793fd;
+    --color-orange: #fb923c;
+    --color-yellow: #facc15;
+    --color-green: #34d399;
+    --color-purple: #4e20c3;
+    --color-cyan: #22d3ee;
+    --color-magenta: #f472b6;
+
+    // ==================== EFFECTS & GRADIENTS ====================
+    --gradient-brand: linear-gradient(135deg, var(--color-brand) 0%, var(--color-blue) 100%);
+    --gradient-surface: linear-gradient(135deg, var(--color-surface-primary) 0%, var(--color-surface-secondary) 100%);
+    --gradient-subtle: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    
+    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-gentle: 0 4px 6px rgba(0, 0, 0, 0.03);
+    --shadow-floating: 0 10px 25px rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,40 @@
+.spinner {
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  border: 0.1em solid transparent;
+  border-top: 0.1em solid var(--color-stroke-secondary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  &.default {
+    border-top: 0.1em solid var(--color-stroke-secondary);
+  }
+  &.contrast {
+    border-top: 0.1em solid var(--color-contrast);
+  }
+  &.accent {
+    border-top: 0.1em solid var(--color-blue);
+  }
+  &.brand {
+    border-top: 0.1em solid var(--color-brand);
+  }
+  &.leader {
+    border-top: 0.1em solid var(--color-leader);
+  }
+  
+  // Размеры
+  &.sm {
+    font-size: 0.75em;
+  }
+  
+  &.lg {
+    font-size: 1.5em;
+  }
+  
+  // Анимация
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}

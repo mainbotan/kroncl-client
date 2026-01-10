@@ -1,0 +1,167 @@
+// switch.module.scss
+@use '@/assets/styles/_mixins.scss' as *;
+
+.switchWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625em; // 10px при 1em = 16px
+  cursor: pointer;
+  
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  &.sm {
+    gap: 0.5em; // 8px
+  }
+  
+  &.lg {
+    gap: 0.75em; // 12px
+  }
+}
+
+.switch {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  
+  &:checked + .slider {
+    // Варианты для checked состояния
+    &.default {
+      background-color: var(--color-surface-secondary);
+      border-color: var(--color-stroke-secondary);
+    }
+    
+    &.leader {
+      background-color: var(--color-leader);
+      border-color: var(--color-leader);
+    }
+    
+    &.contrast {
+      background-color: var(--color-contrast);
+      border-color: var(--color-contrast);
+    }
+    
+    &.elevated {
+      background-color: var(--color-surface-elevated);
+      border-color: var(--color-stroke-secondary);
+    }
+    
+    &.empty {
+      background-color: transparent;
+      border-color: var(--color-stroke-secondary);
+    }
+    
+    &.glass {
+      background-color: var(--color-surface-glass);
+      border-color: var(--color-stroke-secondary);
+      backdrop-filter: blur(10px);
+    }
+    
+    &.brand {
+      background-color: var(--color-brand);
+      border-color: var(--color-brand);
+    }
+    
+    &.accent {
+      background-color: var(--color-blue);
+      border-color: var(--color-blue);
+    }
+    
+    &::before {
+      // Для checked состояния сдвигаем кружок вправо
+      // Ширина слайдера - ширина кружка - отступы с двух сторон
+      transform: translateY(-50%) translateX(calc(2.75em - 1em - 0.38em)); // 44px - 16px - 4px = 24px сдвиг
+    }
+  }
+  
+  &:disabled + .slider {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  &:focus-visible + .slider {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+}
+
+.slider {
+  position: relative;
+  display: inline-block;
+  width: 2.75em; // 44px
+  height: 1.5em; // 24px
+  background-color: var(--color-surface-secondary);
+  border: 1px solid var(--color-stroke-secondary);
+  border-radius: 1.5em;
+  transition: all 0.3s ease;
+  @include cursor(pointer);
+  
+  // Тумблер (кружок)
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0.125em; // 2px от левого края
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1em; // 16px
+    height: 1em;
+    background-color: var(--color-stroke-secondary);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.1);
+  }
+  
+  // Размеры для SM
+  .sm & {
+    width: 2.25em; // 36px
+    height: 1.25em; // 20px
+    
+    &::before {
+      width: 0.75em; // 12px
+      height: 0.75em;
+    }
+    
+    .switch:checked + &::before {
+      // 36px - 12px - 4px = 20px сдвиг
+      transform: translateY(-50%) translateX(calc(2.25em - 0.75em - 0.25em));
+    }
+  }
+  
+  // Размеры для LG
+  .lg & {
+    width: 3.25em; // 52px
+    height: 1.75em; // 28px
+    
+    &::before {
+      width: 1.25em; // 20px
+      height: 1.25em;
+    }
+    
+    .switch:checked + &::before {
+      // 52px - 20px - 4px = 28px сдвиг
+      transform: translateY(-50%) translateX(calc(3.25em - 1.25em - 0.25em));
+    }
+  }
+}
+
+.label {
+  font-size: 1em;
+  line-height: 1;
+  color: var(--color-text-primary);
+  user-select: none;
+  
+  .sm & {
+    font-size: 0.75em;
+  }
+  
+  .lg & {
+    font-size: 1.25em;
+  }
+  
+  .disabled & {
+    color: var(--color-text-disabled);
+  }
+}

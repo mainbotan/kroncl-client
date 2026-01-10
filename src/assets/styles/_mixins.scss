@@ -1,0 +1,117 @@
+@mixin smooth-appearance($from: 0, $to: 1, $time: 0.2s) {
+    @keyframes SmoothAppearance {
+        0% {
+            opacity: $from;
+        }
+        100% {
+            opacity: $to;
+        }
+    }
+    opacity: $from;
+    animation: SmoothAppearance $time forwards;
+}
+@mixin no-scrollbar() {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+@mixin text-ellipsis() {
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+@mixin lines-ellipsis($count: 2) {
+    display: -webkit-box;
+    -webkit-line-clamp: $count;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+@mixin box-shadow($px: 10px, $color: var(--color-background-secondary)) {
+    box-shadow: 0 0 $px $color;
+    transition: box-shadow var(--transition);
+}
+.element {
+    @include smooth-appearance(0, 1, 0.3s);
+}
+.another-element {
+    @include smooth-appearance(1, 0, 0.5s);
+}
+
+@keyframes animate-block {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+@mixin animated-block {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: animate-block 0.2s forwards;
+}
+@mixin cursor($type: pointer) {
+    cursor: $type;
+
+    @media (max-width: 720px) {
+        cursor: auto;
+    }
+}
+@mixin slide() {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--side-offset);
+}
+@mixin focus($border: 0px) {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    max-width: var(--focus-width);
+    border-left: $border solid var(--color-stroke-secondary);
+    border-right: $border solid var(--color-stroke-secondary);
+    padding-left: .8rem;
+    padding-right: .8rem;
+
+    @media (max-width: 720px) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+@mixin topic-link() {
+    display: inline-flex;
+    font-size: .4em;
+    flex-flow: row nowrap;
+    gap: 1em;
+    align-items: center;
+    @include cursor(pointer);
+    color: var(--color-text-secondary);
+    transition: color var(--transition);
+
+    .marker {
+        width: 1em;
+        height: .6em;
+        border-radius: 1em;
+        background-color: var(--color-brand);
+    }
+    .text, .indicator {
+        transition: transform var(--transition);
+    }
+    .indicator .svg {
+        width: .6em;
+        height: .6em;
+    }
+    &:hover {
+        color: var(--color-brand);
+        .text, .indicator {
+            transform: translateX(1em);
+        }
+    }
+}

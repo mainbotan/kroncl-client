@@ -1,0 +1,29 @@
+.area {
+    font-size: 1em;
+    display: inline-flex;
+    font-weight: 800;
+    position: relative;
+    overflow: visible;
+}
+
+.brand {
+    color: var(--color-brand);
+}
+
+.rotate {
+    display: inline-flex;
+    transform: rotate(15deg);
+    margin: 0 .05em;
+    transform-origin: center center;
+}
+
+.area[data-animate="true"] .shadow {
+    display: block;
+    position: absolute;
+    bottom: -0.1em;
+    right: 0.15em;
+    width: 0.8em;
+    height: 0.15em;
+    background: var(--color-brand);
+    border-radius: 50%;
+}

@@ -1,0 +1,28 @@
+import React from 'react';
+
+export default function Puzzle({ 
+  width = 40, 
+  height = 40, 
+  color = "currentColor",
+  className = ""
+}) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      version="1.1"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width={width}
+      height={height}
+      x="0"
+      y="0"
+      viewBox="0 0 448 448"
+      xmlSpace="preserve"
+      className={className}
+      fill={color}
+    >
+      <g>
+        <path d="M394.667 213.333h-32V128c0-23.573-19.093-42.667-42.667-42.667h-85.333v-32C234.667 23.893 210.773 0 181.333 0S128 23.893 128 53.333v32H42.667C19.094 85.333.214 104.426.214 128l-.107 81.067H32c31.787 0 57.6 25.813 57.6 57.6s-25.813 57.6-57.6 57.6H.107L0 405.333C0 428.907 19.093 448 42.667 448h81.067v-32c0-31.787 25.813-57.6 57.6-57.6s57.6 25.813 57.6 57.6v32H320c23.573 0 42.667-19.093 42.667-42.667V320h32c29.44 0 53.333-23.893 53.333-53.333s-23.893-53.334-53.333-53.334z" />
+      </g>
+    </svg>
+  );
+}

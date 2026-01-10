@@ -1,0 +1,56 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+// Section head
+@keyframes animate-head {
+    0% {
+        opacity: 0;
+        transform: translateX(-4rem);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes animate-head-mobile {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.head {
+    @include slide();
+    border-top: 1px solid var(--color-stroke-secondary);
+    border-bottom: 1px solid var(--color-stroke-secondary);
+    height: 4rem;
+    position: sticky;
+    backdrop-filter: blur(5px);
+    top: var(--header-height);
+    animation: animate-head .8s forwards;
+    background-color: var(--color-surface-glass);
+    z-index: 100;
+
+    .focus {
+        @include focus();
+        flex-flow: row nowrap;
+        align-items: center;
+        font-size: .5em;
+    }
+
+    @media (max-width: 720px) {
+        animation: animate-head-mobile 0.3s forwards;
+    }
+}
+
+.info {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+
+    .capture {
+        font-size: 1.25em;
+        font-weight: 600;
+        letter-spacing: .02em;
+    }
+}

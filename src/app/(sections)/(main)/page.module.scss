@@ -1,0 +1,33 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: column nowrap;
+    height: fit-content;
+    
+    &:nth-child(1) {
+        background: linear-gradient(180deg, transparent, rgba(104, 135, 236, 0.25), transparent);
+    }
+    &.cloudy {
+        background: linear-gradient(180deg, transparent, rgba(236, 73, 195, 0.124), transparent);
+    }
+    &.blue {
+        background: linear-gradient(180deg, transparent, var(--color-brand));
+    }
+    &.black {
+        background: #060606;
+        color: #ffffff;
+    }
+    &.relative {
+        position: relative;
+    }
+    
+    .arrow {
+        position: absolute;
+        z-index: 50;
+        height: 4em;
+        top: -2.5em;
+        left: 14em;
+        transform: scaleY(-1) rotate(-140deg);
+    }
+}

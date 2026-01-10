@@ -1,0 +1,34 @@
+{
+  "name": "kroncl-web-client",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo -p 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "fresh": "rm -rf .next && npm run dev"
+  },
+  "dependencies": {
+    "@next/font": "^14.2.15",
+    "@tanstack/react-query": "^5.90.2",
+    "@tanstack/react-query-devtools": "^5.90.2",
+    "animejs": "^4.2.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.26",
+    "next": "^15.4.6",
+    "qrcode": "^1.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "recharts": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "sass": "^1.90.0",
+    "typescript": "^5"
+  }
+}
