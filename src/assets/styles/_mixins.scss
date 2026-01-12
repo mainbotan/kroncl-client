@@ -115,3 +115,8 @@
         }
     }
 }
+@mixin text-plug() {
+    background-color: var(--color-stroke-secondary);
+    color: transparent;
+    border-radius: .12rem;
+}

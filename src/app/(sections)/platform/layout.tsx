@@ -35,6 +35,10 @@ export default function Layout({
           <div className={clsx(styles.panel, styles.company)}>
             <div className={styles.area}>
               <div className={styles.label}></div>
+              <div className={styles.basics}>
+                <span className={styles.name}>Easy Service</span>
+                <span className={styles.slogan}>Рабочее пространство</span>
+              </div>
               <div className={styles.body}>
                 <section className={styles.section}>
                   <span className={styles.icon}><Wallet className={styles.svg} /></span>
