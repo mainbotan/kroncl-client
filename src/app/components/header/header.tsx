@@ -128,7 +128,7 @@ export function Header() {
                             variant='contrast'
                             as="a"
                             href={authLinks.login}
-                            target="_blank"
+                            // target="_blank"
                             rel="noopener noreferrer"
                         >
                             Войти
@@ -183,7 +183,7 @@ export function Header() {
                             variant='contrast'
                             as="a"
                             href={authLinks.login}
-                            target="_blank"
+                            // target="_blank"
                             rel="noopener noreferrer"
                             onClick={closeMenu}
                         >

@@ -1,0 +1,126 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .4em;
+    width: 100%;
+    background-color: var(--color-blue);
+    height: 1.6em;
+    color: var(--color-accent-text-primary);
+}
+
+@keyframes show-block {
+    0% {
+        // transform: translateX(-6rem);
+        opacity: 0;
+    }
+    100% {
+        // transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.frame {
+    display: flex;
+    width: 14rem;
+    flex-flow: column nowrap;
+    overflow: hidden;
+
+    .head {
+        padding: 1.3rem;
+        font-size: .7em;
+        display: flex;
+        justify-content: center;
+        font-size: 1.5em;
+    }
+    .block {
+        display: flex;
+        flex-flow: column nowrap;
+        flex: 1;
+        // background-color: var(--color-surface-glass-secondary);
+        // border: 1px solid var(--color-stroke-secondary);
+        animation: show-block .7s forwards;
+        border-radius: .45rem;
+        min-height: 18rem;
+        padding: 0 .5rem;
+        font-size: .44em;
+
+        .hello {
+            display: block;
+            padding: 1rem 0rem 2rem 0;
+            font-size: 1.5em;
+            font-weight: 800;
+            letter-spacing: .02em;
+            line-height: 1.2;
+            text-align: center;
+
+            .brand {
+                color: var(--color-brand);
+            }
+        }
+        .credentials {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1rem;
+
+            .section {
+                display: flex;
+                flex-flow: column nowrap;
+                gap: .5em;
+
+                .name {
+                    font-size: .85em;
+                    color: var(--color-text-desription);
+                }
+            }
+        }
+    }
+    .afterword {
+        display: block;
+        text-align: center;
+        font-size: .35em;
+        line-height: 1.3;
+        color: var(--color-text-desription);
+        padding: 2em 1em;
+
+        .brand {
+            font-weight: 800;
+            color: var(--color-brand);
+        }
+        .accent {
+            color: var(--color-accent);
+            @include cursor(pointer);
+        }
+    }
+
+    @media (max-width: 720px) {
+        width: 90%;
+        font-size: 1.2em;
+        padding: 2rem 0;
+        
+        .block {
+            border-radius: 0;
+            height: 100%;
+            border-radius: 0;
+            border: none;
+            background-color: none;
+            min-height: calc(100vh - var(--header-height));
+            background-color: transparent;
+        }
+    }
+}
