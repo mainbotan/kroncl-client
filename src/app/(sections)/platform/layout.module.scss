@@ -24,6 +24,67 @@
         overflow-y: scroll;
         height: 100%;
         
+        .sections {
+            display: flex;
+            font-size: .23em;
+            flex-flow: column nowrap;
+            gap: .5rem;
+
+            .section {
+                display: flex;
+                flex-flow: column nowrap;
+                gap: 1em;
+                @include cursor(pointer);
+                overflow: hidden;
+
+                .icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 1;
+
+                    .svg {
+                        width: 3em;
+                        height: 3em;
+                        fill: var(--color-icon-primary);
+                        transition: fill var(--transition);
+                    }
+                }
+                .name {
+                    display: block;
+                    text-align: center;
+                    transition: color var(--transition);
+                    color: var(--color-text-secondary);
+                    padding: 0 1em;
+
+                    .text {
+                        display: inline-block;
+                        @include text-plug();
+                        // @include text-ellipsis();
+                    }
+                }
+                &:hover {
+                    .icon .svg {
+                        fill: var(--color-text-primary);
+                    }
+                    .name {
+                        color: var(--color-text-primary);
+                    }
+                }
+            }
+        }
+        .inter {
+            display: flex;
+            align-items: center;
+            height: 1rem;
+            justify-content: center;
+
+            span {
+                width: 70%;
+                height: 1px;
+                background-color: var(--color-stroke-secondary);
+            }
+        }
         .companies {
             display: flex;
             flex-flow: column nowrap;
@@ -31,7 +92,7 @@
             flex: 1;
             justify-content: start;
             align-items: center;
-            padding: .2rem 0;
+            padding: 0 0;
 
             .item {
                 display: flex;
@@ -98,7 +159,7 @@
         justify-content: end;
         align-items: center;
         padding: .6rem 0;
-        box-shadow: 0 0 10rem var(--color-leader);
+        box-shadow: 0 0 0rem var(--color-leader);
 
         .avatar {
             background-color: var(--color-surface-glass-secondary);
@@ -203,6 +264,8 @@
                     overflow: hidden;
 
                     .title {
+                        transition: color var(--transition);
+                        color: var(--color-text-description);
                         @include text-plug();
                         // @include text-ellipsis();
                     }
@@ -230,6 +293,10 @@
 
                 &:hover {
                     background-color: var(--color-surface-glass-secondary);
+
+                    .info .title {
+                        color: var(--color-text-primary);
+                    }
                 }
             }
             .inter {
@@ -247,14 +314,11 @@
 
     .area {
         display: block;
+        overflow-x: hidden;
         overflow-y: scroll;
         flex: 1;
         background-color: var(--color-surface-glass-secondary);
         border-radius: .2rem;
         max-height: calc(100vh - var(--header-height) - .5rem);
-
-        div {
-            height: 200vh;
-        }
     }
 }

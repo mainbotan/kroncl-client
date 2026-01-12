@@ -5,6 +5,7 @@ import CheckMark from "@/assets/ui-kit/icons/check-mark";
 import Wallet from "@/assets/ui-kit/icons/wallet";
 import { CompanySections } from "./sections.example";
 import { CompaniesIcons } from "./companies.example";
+import Collection from "@/assets/ui-kit/icons/collection";
 
 export const metadata: Metadata = {
   title: "Kroncl",
@@ -24,6 +25,17 @@ export default function Layout({
         <div className={styles.container}>
           <div className={clsx(styles.panel, styles.quickAccess)}>
               <div className={styles.top}>
+                <div className={styles.sections}>
+                  <section className={styles.section}>
+                    <div className={styles.icon}><Collection className={styles.svg} /></div>
+                    <div className={styles.name}><span className={styles.text}>Компании</span></div>
+                  </section>
+                  <section className={styles.section}>
+                    <div className={styles.icon}><Wallet className={styles.svg} /></div>
+                    <div className={styles.name}><span className={styles.text}>Кошелёк</span></div>
+                  </section>
+                </div>
+                <div className={styles.inter}><span /></div>
                 <div className={styles.companies}>
                     <div className={styles.item}>
                       <span className={styles.new}>32</span>
@@ -61,7 +73,7 @@ export default function Layout({
           </div>
           <div className={styles.content}>
             <div className={styles.area}>
-              <div />
+              {children}
             </div>
           </div>
         </div>
