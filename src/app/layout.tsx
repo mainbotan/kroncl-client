@@ -42,7 +42,7 @@ export default function RootLayout({
         <Providers>
             <Header />
             <div className={styles.content}>{children}</div>
-            <Footer />
+            {/* <Footer /> */}
         </Providers>
       </body>
     </html>

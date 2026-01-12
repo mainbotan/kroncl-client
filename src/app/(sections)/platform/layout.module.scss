@@ -11,72 +11,109 @@
 
 .panel.quickAccess {
     display: flex;
-    width: 2.7rem;
     flex-flow: column nowrap;
+    flex: 1;
+    max-width: 2.7rem;
+    min-width: 2.7rem;
+    max-height: calc(100vh - var(--header-height));
+    overflow: hidden;
 
-    .companies {
+    .top {
+        @include no-scrollbar();
+        display: block;
+        overflow-y: scroll;
+        height: 100%;
+        
+        .companies {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: .4rem;
+            flex: 1;
+            justify-content: start;
+            align-items: center;
+            padding: .2rem 0;
+
+            .item {
+                display: flex;
+                width: 2rem;
+                height: 2rem;
+                background-color: var(--color-surface-primary);
+                border-radius: .4rem;
+                // border: 1px solid var(--color-surface-glass);
+                cursor: pointer;
+                transition: transform var(--transition);
+                position: relative;
+
+                .sign, .new {
+                    position: absolute;
+                    z-index: 10;
+                    border: 2px solid var(--color-leader);
+                    background-color: var(--color-leader);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .sign {
+                    bottom: -.1rem;
+                    right: -.1rem;
+                    display: flex;
+                    width: .7rem;
+                    height: .7rem;
+                    border-radius: .2rem;
+
+                    .svg {
+                        width: .4rem;
+                        height: .4rem;
+                        fill: var(--color-icon-primary);
+                    }
+                }
+                .new {
+                    height: .84rem;
+                    top: -.1rem;
+                    right: -.15rem;
+                    padding: 0 .2rem;
+                    background-color: var(--color-green);
+                    border-radius: .4rem;
+                    font-size: .34em;
+                    color: #000;
+                }
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+                // &:nth-child(1) {
+                //     background-color: var(--color-green);
+                // }
+                // &:nth-child(2) {
+                //     background-color: var(--color-red);
+                // }
+            }
+        }
+    }
+
+    .bottom {
         display: flex;
         flex-flow: column nowrap;
-        gap: .4rem;
-        flex: 1;
-        justify-content: start;
+        pointer-events: none;
+        justify-content: end;
         align-items: center;
-        padding: .2rem 0;
+        padding: .6rem 0;
+        box-shadow: 0 0 10rem var(--color-leader);
 
-        .item {
-            display: flex;
+        .avatar {
+            background-color: var(--color-surface-glass-secondary);
             width: 2rem;
             height: 2rem;
-            background-color: var(--color-surface-primary);
-            border-radius: .4rem;
-            // border: 1px solid var(--color-surface-glass);
-            cursor: pointer;
-            transition: transform var(--transition);
-            position: relative;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #DD70F2, #E4685C);
+            padding: 2px;
 
-            .sign, .new {
-                position: absolute;
-                z-index: 10;
-                border: 2px solid var(--color-leader);
+            .img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
                 background-color: var(--color-leader);
-                display: flex;
-                align-items: center;
-                justify-content: center;
             }
-            .sign {
-                bottom: -.1rem;
-                right: -.1rem;
-                display: flex;
-                width: .7rem;
-                height: .7rem;
-                border-radius: .2rem;
-
-                .svg {
-                    width: .4rem;
-                    height: .4rem;
-                    fill: var(--color-icon-primary);
-                }
-            }
-            .new {
-                height: .84rem;
-                top: -.1rem;
-                right: -.15rem;
-                padding: 0 .2rem;
-                background-color: var(--color-green);
-                border-radius: .4rem;
-                font-size: .34em;
-                color: #000;
-            }
-
-            &:hover {
-                transform: scale(1.02);
-            }
-            // &:nth-child(1) {
-            //     background-color: var(--color-green);
-            // }
-            // &:nth-child(2) {
-            //     background-color: var(--color-red);
-            // }
         }
     }
 }
@@ -87,6 +124,14 @@
     padding: .2rem;
 
     .area {
+        display: block;
+        overflow-y: scroll;
+        flex: 1;
+        border-radius: .2rem;
+        max-height: calc(100vh - var(--header-height) - .5rem);
+        @include no-scrollbar();
+    }
+    .grid {
         display: flex;
         flex: 1;
         // background-color: var(--color-surface-primary);
@@ -206,6 +251,7 @@
         flex: 1;
         background-color: var(--color-surface-glass-secondary);
         border-radius: .2rem;
+        max-height: calc(100vh - var(--header-height) - .5rem);
 
         div {
             height: 200vh;

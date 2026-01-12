@@ -12,7 +12,7 @@
     .content {
         display: flex;
         flex: 1;
-        min-height: 100vh;
+        // min-height: 100vh;
         flex-flow: column nowrap;
 
         @media (max-width: 720px) {
