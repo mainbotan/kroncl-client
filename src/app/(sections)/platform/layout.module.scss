@@ -1,0 +1,25 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex: 1;
+    flex-flow: row nowrap;
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+    }
+}
+
+.panel {
+    display: flex;
+    flex: 1;
+    background-color: var(--color-surface-primary);
+
+    @media (max-width: 720px) {
+        display: none;
+    }
+}
+.content {
+    display: flex;
+    flex: 5;
+}

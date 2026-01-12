@@ -34,35 +34,34 @@
             // padding-left: .7em;
         }
     }
-    .peoples {
+    .sections {
         display: flex;
         flex: 1;
         flex-flow: row wrap;
-        justify-content: center;
-        align-items: center;
+        gap: 2rem 1.5rem;
+        padding: .5rem 0 3rem 0;
+        font-size: .6em;
 
-        .item {
-            width: 2em;
-            height: 2em;
-            background-size: cover;
-            background-image: center;
-            border-radius: 50%;
-            border: 3px solid var(--color-leader);
-            @include cursor(pointer);
-            margin-left: -.5em;
-            transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 1;
-            background-color: var(--color-surface-primary);
+        .group {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1.2em;
+            min-width: 9rem;
+            max-width: 9rem;
 
-            &:first-child {
-                margin-left: 0;
+            .name {
+                margin-bottom: .4em;
+                color: var(--color-text-description);
             }
+            .section {
+                font-size: .95em;
+                @include cursor(pointer);
+                transition: color var(--transition);
+                line-height: 1.3;
 
-            &:hover {
-                transform: translateY(-4px) scale(1.08);
-                z-index: 10;
-                border-width: 4px;
-                border-color: var(--color-leader);
+                &:hover {
+                    color: var(--color-brand);
+                }
             }
         }
     }
@@ -74,16 +73,9 @@
         .brand {
             max-width: 100%;
         }
-        .peoples {
-            font-size: .8em;
-            justify-content: start;
-            padding: 0 .35em;
-
-            .item {
-                &:first-child {
-                    margin-left: -.5em;
-                }
-            }
+        .sections .group {
+            min-width: 100%;
+            max-width: 100%;
         }
     }
 }

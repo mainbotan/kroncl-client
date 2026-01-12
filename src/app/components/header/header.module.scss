@@ -12,7 +12,7 @@
     z-index: 1001;
     background-color: var(--color-leader);
     // color: var(--color-contrast-text-primary);
-    // border-bottom: 1px solid var(--color-stroke-secondary);
+    border-bottom: 1px solid var(--color-stroke-secondary);
 
     &.active {
         position: fixed;
@@ -233,7 +233,7 @@
     background-color: var(--color-leader);
     padding: var(--header-height) .8rem .8rem .8rem;
     display: flex;
-    font-size: .45em;
+    font-size: .4em;
     flex-flow: column nowrap;
     gap: 2em;
     opacity: 0;
@@ -264,7 +264,6 @@
 
             .name {
                 width: 100%;
-                font-weight: 600;
             }
             .icon .svg {
                 width: 1em;
