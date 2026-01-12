@@ -125,7 +125,7 @@ p {
 * {
   // Для Firefox
   scrollbar-width: thin;
-  scrollbar-color: rgb(26, 26, 26) transparent;
+  scrollbar-color: var(--color-surface-tertiary) transparent;
   
   // Для Webkit (Chrome, Safari, Edge)
   &::-webkit-scrollbar {

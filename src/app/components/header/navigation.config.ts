@@ -10,17 +10,17 @@ export interface NavigationItem extends NavigationSection {
 
 export const navigationConfig: NavigationItem[] = [
     {
-        name: 'Новое',
+        name: 'Платформа',
         href: '/platform',
         out: false,
     },
     {
-        name: 'Тарифы',
+        name: 'Предпринимателям',
         href: '/pricing',
         out: false,
     },
     {
-        name: 'Экосистема',
+        name: 'Решения',
         href: '/ecosystem',
         out: false,
     },
