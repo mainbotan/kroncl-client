@@ -1,4 +1,4 @@
-import styles from './layout.module.scss';
+import styles from './../../layout.module.scss';
 import Bell from "@/assets/ui-kit/icons/bell";
 import CheckMark from "@/assets/ui-kit/icons/check-mark";
 import Clients from "@/assets/ui-kit/icons/clients";
