@@ -2,6 +2,10 @@
 
 .slide {
     @include slide();
+
+    @media (max-width: 720px) {
+        font-size: .8em;
+    }
 }
 .focus {
     @include focus();

@@ -8,7 +8,6 @@ import Button from '@/assets/ui-kit/button/button';
 import Menu from '@/assets/ui-kit/icons/menu';
 import Close from '@/assets/ui-kit/icons/close';
 import clsx from 'clsx';
-import { navigationConfig } from '../../../(external)/components/header/navigation.config';
 import { isSectionActive } from '@/assets/utils/sections';
 import { useState, useEffect } from 'react';
 import { authLinks } from '@/config/links.config';
@@ -16,6 +15,7 @@ import { LogoText } from '@/assets/ui-kit/logo/text/text';
 import Sun from '@/assets/ui-kit/icons/sun';
 import Moon from '@/assets/ui-kit/icons/moon';
 import { LogoFull } from '@/assets/ui-kit/logo/full/full';
+import Input from '@/assets/ui-kit/input/input';
 
 export function Header() {
     const pathname = usePathname();
@@ -58,34 +58,34 @@ export function Header() {
         setIsMenuOpen(false);
     };
 
-    const renderNavigationItem = (item: typeof navigationConfig[0]) => {
-        const isActive = isSectionActive(pathname, item);
+    // const renderNavigationItem = (item: typeof navigationConfig[0]) => {
+    //     const isActive = isSectionActive(pathname, item);
         
-        if (item.out) {
-            return (
-                <a 
-                    href={item.href}
-                    target="_blank"
-                    key={item.href}
-                    rel="noopener noreferrer"
-                    className={clsx(styles.section, isActive && styles.active)}
-                >
-                    <span className={styles.name}>{item.name}</span>
-                    <span className={styles.icon}><OutLink className={styles.svg} /></span>
-                </a>
-            );
-        }
+    //     if (item.out) {
+    //         return (
+    //             <a 
+    //                 href={item.href}
+    //                 target="_blank"
+    //                 key={item.href}
+    //                 rel="noopener noreferrer"
+    //                 className={clsx(styles.section, isActive && styles.active)}
+    //             >
+    //                 <span className={styles.name}>{item.name}</span>
+    //                 <span className={styles.icon}><OutLink className={styles.svg} /></span>
+    //             </a>
+    //         );
+    //     }
 
-        return (
-            <Link 
-                href={item.href}
-                key={item.href}
-                className={clsx(styles.section, isActive && styles.active)}
-            >
-                <span className={styles.name}>{item.name}</span>
-            </Link>
-        );
-    };
+    //     return (
+    //         <Link 
+    //             href={item.href}
+    //             key={item.href}
+    //             className={clsx(styles.section, isActive && styles.active)}
+    //         >
+    //             <span className={styles.name}>{item.name}</span>
+    //         </Link>
+    //     );
+    // };
 
     return (
         <>
@@ -97,13 +97,11 @@ export function Header() {
                     </span>
                 </Link>
 
-                {/* <div className={styles.navigation}>
+                <div className={styles.search}>
                     <div className={styles.frame}>
-                        {navigationConfig.map((item) => (
-                            renderNavigationItem(item)
-                        ))}
+                        <Input className={styles.input} variant='default' placeholder='Поиск по вашим организациям...' />
                     </div>
-                </div> */}
+                </div>
                 
                 <div className={styles.actions}>
                     <div className={styles.theme}>
@@ -123,7 +121,7 @@ export function Header() {
                         </div>
                     </div>
                     <div className={styles.buttons}>
-                        <Button 
+                        {/* <Button 
                             className={styles.button} 
                             variant='contrast'
                             as="a"
@@ -131,8 +129,8 @@ export function Header() {
                             // target="_blank"
                             rel="noopener noreferrer"
                         >
-                            Войти
-                        </Button>
+                            Пригласить
+                        </Button> */}
                     </div>
                     <div className={styles.burger} onClick={toggleMenu}>
                         {isMenuOpen ? (
@@ -148,7 +146,7 @@ export function Header() {
             {isMenuOpen && (
                 <div className={styles.menu}>
                     <div className={styles.sections}>
-                        {navigationConfig.map((item) => {
+                        {/* {navigationConfig.map((item) => {
                             if (item.out) {
                                 return (
                                     <a 
@@ -175,9 +173,9 @@ export function Header() {
                                     <span className={styles.name}>{item.name}</span>
                                 </Link>
                             );
-                        })}
+                        })} */}
                     </div>
-                    <div className={styles.actions}>
+                    {/* <div className={styles.actions}>
                         <Button 
                             className={styles.button} 
                             variant='contrast'
@@ -189,7 +187,7 @@ export function Header() {
                         >
                             Войти
                         </Button>
-                    </div>
+                    </div> */}
                 </div>
             )}
         </>

@@ -13,7 +13,7 @@ export default function Page() {
             <div className={styles.line}>Вход в аккаунт</div>
             <div className={styles.frame}>
                 <div className={styles.head}>
-                    <LogoIco animate />
+                    <LogoFull animate />
                 </div>
                 <div className={styles.block}>
                     <div className={styles.hello}>

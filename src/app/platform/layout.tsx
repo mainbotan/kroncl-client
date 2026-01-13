@@ -76,6 +76,25 @@ export default function Layout({
           </div>
           <div className={styles.content}>
             <div className={styles.area}>
+              <div className={styles.breadcrumbs}>
+                <span className={styles.point}>Пукпупу</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпупуsdask;dl</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпу22пу</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпупуsdask;dl</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпу22пу</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпупуsdask;dl</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпу22пу</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпупуsdask;dl</span>
+                <span className={styles.inter}>/</span>
+                <span className={styles.point}>Пукпу22пу</span>
+              </div>
               {children}
             </div>
           </div>
