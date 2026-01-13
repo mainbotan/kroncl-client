@@ -8,16 +8,7 @@
     min-height: 100vh;
     position: relative;
 
-    // Область инъекции {children}
-    .content {
-        display: flex;
-        flex: 1;
-        // min-height: 100vh;
-        flex-flow: column nowrap;
-        overflow: hidden;
-
-        @media (max-width: 720px) {
-            font-size: 1.2rem;
-        }
+    @media (max-width: 720px) {
+        font-size: 1.2rem;
     }
 }

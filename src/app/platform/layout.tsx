@@ -6,9 +6,10 @@ import Wallet from "@/assets/ui-kit/icons/wallet";
 import { CompanySections } from "./sections.example";
 import { CompaniesIcons } from "./companies.example";
 import Collection from "@/assets/ui-kit/icons/collection";
+import { Header } from "./components/header/header";
 
 export const metadata: Metadata = {
-  title: "Kroncl",
+  title: "Kroncl | Платформа.",
   description: "",
   appleWebApp: {
     capable: true,
@@ -22,6 +23,8 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
     return (
+      <>
+        <Header />
         <div className={styles.container}>
           <div className={clsx(styles.panel, styles.quickAccess)}>
               <div className={styles.top}>
@@ -77,5 +80,6 @@ export default function Layout({
             </div>
           </div>
         </div>
+      </>
     )
 }

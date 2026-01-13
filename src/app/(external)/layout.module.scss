@@ -1,0 +1,9 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+// Область инъекции {children}
+.content {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+    overflow: hidden;
+}

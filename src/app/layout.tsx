@@ -3,8 +3,6 @@ import '@/assets/styles/main.scss';
 import styles from './layout.module.scss';
 import Providers from "./providers";
 import ScrollToTop from "./ScrollToTop";
-import { Header } from "./components/header/header";
-import { Footer } from "./components/footer/footer";
 import ThemeScript from "@/assets/utils/theme";
 
 export const metadata: Metadata = {
@@ -40,9 +38,7 @@ export default function RootLayout({
       <body className={styles.container} suppressHydrationWarning>
         <ThemeScript />
         <Providers>
-            <Header />
-            <div className={styles.content}>{children}</div>
-            {/* <Footer /> */}
+            {children}
         </Providers>
       </body>
     </html>
