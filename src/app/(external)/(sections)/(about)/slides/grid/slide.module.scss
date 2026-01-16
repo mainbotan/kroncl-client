@@ -4,6 +4,11 @@
     @include slide();
     padding-top: 1rem;
     padding-bottom: 3rem;
+
+    @media (max-width: 720px) {
+        padding-left: .4rem;
+        padding-right: .4rem;
+    }
 }
 .focus {
     @include focus();
@@ -40,10 +45,16 @@
     .col {
         background-color: var(--color-leader);
         flex: 1;
+        position: relative;
+        flex-basis: 33%;
+
+        @media (max-width: 720px) {
+            flex-basis: content;
+        }
     }
 
     &:nth-child(1) {
-        min-height: 14rem;
+        height: fit-content;
 
         .cross {
             right: -.5em;
@@ -51,10 +62,45 @@
         }
 
         .col {
-            &:nth-child(1) {
-                background: linear-gradient(315deg, var(--color-leader), var(--color-surface-primary));
-            }
 
+            &:nth-child(1) {
+                display: flex;
+                background: linear-gradient(315deg, var(--color-leader), var(--color-surface-primary));
+                padding: 1.3rem;
+                flex-flow: column nowrap;
+                gap: 1em;
+                font-size: .7em;
+                font-weight: 600;
+                line-height: 1.2;
+                @include cursor(pointer);
+                height: 100%;
+                padding-bottom: 2.5rem;
+
+                .counter {
+                    display: flex;
+                    flex-flow: column nowrap;
+                    font-size: 2.8em;
+                    font-weight: 600;
+
+                    .value {
+                        transition: transform var(--transition), color var(--transition);
+                    }
+                    .ghost {
+                        font-size: .3em;
+                        color: var(--color-text-ghost);
+                    }
+                }
+                .brand {
+                    color: var(--color-brand);
+                }
+
+                &:hover {
+                    .counter .value {
+                        transform: translateY(-.3em);
+                        color: var(--color-brand);
+                    }
+                }
+            }
         }
 
         @media (max-width: 720px) {
