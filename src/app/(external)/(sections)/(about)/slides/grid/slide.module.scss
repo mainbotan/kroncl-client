@@ -41,6 +41,16 @@
             stroke-width: .2em;
         }
     }
+    .link {
+        font-size: .65rem;
+        font-weight: 400;
+        color: var(--color-text-ghost);
+        transition: color var(--transition);
+
+        &:hover {
+            color: var(--color-accent);
+        }
+    }
 
     .col {
         background-color: var(--color-leader);
@@ -62,19 +72,20 @@
         }
 
         .col {
+            display: flex;
+            padding: 1.3rem;
+            flex-flow: column nowrap;
+            gap: 1em;
+            font-size: .7em;
+            font-weight: 600;
+            line-height: 1.2;
+            @include cursor(pointer);
+            height: 100%;
+            padding-top: 2.5rem;
+            padding-bottom: 2.5rem;
 
             &:nth-child(1) {
-                display: flex;
                 background: linear-gradient(315deg, var(--color-leader), var(--color-surface-primary));
-                padding: 1.3rem;
-                flex-flow: column nowrap;
-                gap: 1em;
-                font-size: .7em;
-                font-weight: 600;
-                line-height: 1.2;
-                @include cursor(pointer);
-                height: 100%;
-                padding-bottom: 2.5rem;
 
                 .counter {
                     display: flex;
@@ -97,6 +108,48 @@
                 &:hover {
                     .counter .value {
                         transform: translateY(-.3em);
+                        color: var(--color-brand);
+                    }
+                }
+            }
+            &:nth-child(2) {
+                justify-content: end;
+
+                .circles {
+                    display: flex;
+                    height: 3rem;
+                    flex-flow: row nowrap;
+                    justify-content: center;
+                    align-items: center;
+
+                    .circle {
+                        width: 3rem;
+                        height: 3rem;
+                        border-radius: 50%;
+                        background: linear-gradient(315deg, var(--color-surface-secondary), var(--color-surface-tertiary));
+                        border: 2px solid var(--color-leader);
+                        margin-left: -.5rem;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.5em;
+                        font-weight: 600;
+                        color: var(--color-leader);
+                        transition: margin-left var(--transition), color var(--transition);
+
+                        &:nth-child(1) {
+                            margin-left: 0;
+                        }
+                    }
+                }
+                .title {
+                    display: block;
+                    text-align: center;
+                    font-size: 1.1em;
+                }
+                &:hover {
+                    .circles .circle {
+                        margin-left: 0;
                         color: var(--color-brand);
                     }
                 }

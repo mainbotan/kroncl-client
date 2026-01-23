@@ -16,7 +16,18 @@ export function GridSlide() {
                         </section>
                         <section><span className={styles.brand}>Экономьте время</span> менеджера на ведении учёта.</section>
                     </div>
-                    <div className={styles.col}></div>
+                    <div className={styles.col}>
+                        <section className={styles.circles}>
+                            <span className={styles.circle}>&#8381;</span>
+                            <span className={styles.circle}>&#8383;</span>
+                            <span className={styles.circle}>$</span>
+                            <span className={styles.circle}>&#165;</span>
+                        </section>
+                        <section className={styles.title}>
+                            <span className={styles.brand}>Контроль финансов</span> другого уровня.<br />
+                            <span className={styles.link}>Подробнее о модуле</span>
+                        </section>
+                    </div>
                     <div className={styles.col}></div>
                     <Cross className={styles.cross} />
                 </div>

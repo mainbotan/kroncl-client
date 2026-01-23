@@ -1,0 +1,26 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: .6rem;
+    font-size: .4em;
+    height: 2.4rem;
+    background-color: var(--color-surface-glass);
+    border-top: 1px solid var(--color-stroke-secondary);
+    justify-content: center;
+    align-items: center;
+
+    .brand {
+        color: var(--color-brand);
+    }
+}
+.logo {
+    font-size: 1.1em;
+
+    .ico {
+        span {
+            background-color: var(--color-contrast) !important;
+        }
+    }
+}

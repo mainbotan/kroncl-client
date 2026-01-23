@@ -1,0 +1,36 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+    z-index: 0;
+    right: -9rem;
+    top: -9rem;
+    flex-flow: row nowrap;
+    gap: 1rem;
+    transform: rotate(-25deg);
+
+    @media (max-width: 720px) {
+        display: none;
+    }
+}
+
+.col {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+
+    .box {
+        width: 5rem;
+        height: 5rem;
+        background-color: var(--color-surface-primary);
+        border-radius: .6rem;
+        background: linear-gradient(315deg, var(--color-surface-glass), var(--color-surface-primary));
+    }
+
+    &:nth-child(1) {
+        margin-top: -2rem;
+    }
+}
