@@ -256,7 +256,7 @@
         .section {
             display: flex;
             flex-flow: row nowrap;
-            height: 3em;
+            min-height: 3em;
             align-items: center;
             transition: color var(--transition);
             @include cursor(pointer);
@@ -264,11 +264,13 @@
             // background-color: var(--color-surface-primary);
             // padding: 0 1em;
             // border-radius: .5em;
-            border-bottom: 1px solid var(--color-stroke-secondary);
+            // border-bottom: 1px solid var(--color-stroke-secondary);
 
 
             .name {
                 width: 100%;
+                font-size: 1.2em;
+                font-weight: 600;
             }
             .icon .svg {
                 width: 1em;

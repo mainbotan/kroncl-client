@@ -77,4 +77,24 @@
             flex-direction: column;
         }
     }
+    &:nth-child(3) {
+        flex-flow: row wrap;
+        gap: .9rem;
+        padding: 0 5rem;
+
+        .box {
+            display: flex;
+            flex: 1;
+            min-height: 15rem;
+            background-color: var(--color-surface-glass-secondary);
+            border-radius: 1rem;
+            border: 1px solid var(--color-stroke-secondary);
+        }
+
+        @media (max-width: 720px) {
+            gap: .4rem;
+            padding: 0;
+            flex-direction: column;
+        }
+    }
 }

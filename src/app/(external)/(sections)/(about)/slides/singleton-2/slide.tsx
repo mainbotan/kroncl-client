@@ -12,6 +12,10 @@ export  function Singleton2Slide() {
                     <div className={styles.box}></div>
                     <div className={styles.box}></div>
                 </div>
+                <div className={styles.col}>
+                    <div className={styles.box}></div>
+                    <div className={styles.box}></div>
+                </div>
             </div>
         </div>
     )
