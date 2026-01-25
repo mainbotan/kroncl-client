@@ -1,0 +1,27 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.slide {
+    @include slide();
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    min-height: 33rem;
+    background-color: var(--color-surface-primary);
+    border-top: 1px solid var(--color-stroke-secondary);
+    border-bottom: 1px solid var(--color-stroke-secondary);
+
+    @media (max-width: 720px) {
+        padding-left: .4rem;
+        padding-right: .4rem;
+    }
+}
+.focus {
+    @include focus();
+    flex-flow: column nowrap;
+    gap: 1px;
+    justify-content: end;
+    position: relative;
+
+    .brand {
+        color: var(--color-brand);
+    }
+}
