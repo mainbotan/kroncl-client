@@ -10,7 +10,7 @@
 }
 .focus {
     @include focus();
-    min-height: 27rem;
+    min-height: 20rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
@@ -30,7 +30,9 @@
         color: var(--color-brand);
     }
     @media (max-width: 720px) {
-        min-height: 28.9rem;
+        min-height: 21.9rem;
+        padding-top: 5rem;
+        justify-content: start;
 
         .icon {
             font-size: 6em;
@@ -44,7 +46,6 @@
 
     &:nth-child(1) {
         flex-flow: column nowrap;
-        align-items: start;
         font-size: 1em;
         gap: .3em;
 
@@ -59,25 +60,29 @@
 
             @media (max-width: 720px) {
                 font-size: 1em;
+                line-height: 1.1;
+                text-align: center;
             }
         }
         .description {
             margin-top: 1em;
             margin-bottom: 1em;
-            font-size: .65em;
+            font-size: .45em;
             line-height: 1.4;
-            max-width: 70%;
-            color: var(--color-text-secondary);
+            max-width: 40%;
+            color: var(--color-text-ghost);
             flex-flow: column;
+            font-weight: 500;
 
             @media (max-width: 720px) {
-                font-size: .6em;
+                font-size: .52em;
                 max-width: 90%;
+                text-align: center;
             }
         }
         .note {
             color: var(--color-text-ghost);
-            font-size: .45em;
+            font-size: .4em;
             margin-top: .5em;
             line-height: 1.2;
         }
@@ -85,7 +90,7 @@
             display: flex;
             flex-flow: row nowrap;
             gap: 1em;
-            font-size: .45em;
+            font-size: .4em;
 
             .action {
                 transition: transform var(--transition);
@@ -97,6 +102,7 @@
 
             @media (max-width: 720px) {
                 width: 100%;
+                font-size: .45em;
 
                 .link {
                     display: flex;

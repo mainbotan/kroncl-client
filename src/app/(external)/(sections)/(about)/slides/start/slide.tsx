@@ -13,17 +13,15 @@ export function StartSlide() {
         <div className={styles.slide}>
             <div className={styles.focus}>
                 <div className={styles.col}>
-                    <div className={clsx(styles.logo, styles.brand)}><LogoText animate /></div>
                     <div className={styles.slogan}>
-                        Учётная система <span className={styles.brand}>#1</span><br /> 
-                        {/* в <span className={styles.brand}>этой стране.</span> */}
-                        для <span className={styles.brand}>малого бизнеса.</span>
+                        Учётная система <span className={styles.brand}>#1</span><br />
+                        малого бизнеса.
                     </div>
                     <div className={styles.description}>
                         Мы всей душой ненавидим 1с и Битрикс24 и показываем как <span className={styles.brand}>малый</span> и <span className={styles.brand}>средний</span> бизнес может вести учёт и планирование в России.
                     </div>
                     <div className={styles.actions}>
-                        <Link href={authLinks.registration} className={styles.link}><Button className={styles.action} variant='accent'>Начать бесплатно</Button></Link>
+                        <Link href={authLinks.registration} className={styles.link}><Button className={styles.action} variant='contrast'>Начать бесплатно</Button></Link>
                         <Link href={authLinks.login} className={styles.link}><Button className={styles.action} variant='glass'>Войти</Button></Link>
                     </div>
                     <div className={styles.note}>
