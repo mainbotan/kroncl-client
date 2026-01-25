@@ -25,6 +25,12 @@
         align-items: center;
         font-size: .66em;
         font-weight: 600;
+        
+        .ico { 
+            span {
+                background-color: var(--color-contrast) !important;
+            }
+        }
     }
 
     // navigation area

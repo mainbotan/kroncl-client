@@ -26,6 +26,7 @@
     min-height: 15rem;
     border-radius: 1rem;
     flex-flow: column nowrap;
+    border: 1px solid #222222;
     justify-content: center;
     align-items: center;
     padding: 2rem;
@@ -85,6 +86,9 @@
     @media (max-width: 720px) {
         padding: 2rem 1rem;
 
+        .title {
+            font-size: .7em;
+        }
         .description {
             width: 90%;
         }

@@ -26,17 +26,18 @@
     display: flex;
     flex-flow: row nowrap;
     gap: 1rem;
-    padding: 0 3rem;
+    padding: 0 3.5rem;
 
     .col {
         display: flex;
-        min-height: 20rem;
+        min-height: 23rem;
         border-radius: 1rem;
         border: 1px solid var(--color-stroke-secondary);
         position: relative;
         flex: 1;
         overflow: hidden;
         padding: 2rem 2rem 1.8rem 2rem;
+        transition: box-shadow var(--transition);
 
         &:nth-child(1) {
             background-color: var(--color-surface-glass);
@@ -45,6 +46,10 @@
         &:nth-child(2) {
             background-image: linear-gradient(to right top, #111111, #161616, #1a1a1a, #1e1e1e, #222222e2);
             backdrop-filter: blur(20px);
+        }
+
+        &:hover {
+            box-shadow: 0 0 .2em var(--color-surface-tertiary);
         }
     }
 

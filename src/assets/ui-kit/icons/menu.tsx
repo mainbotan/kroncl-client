@@ -1,23 +1,32 @@
 import React from 'react';
 
+interface MenuProps {
+  width?: number;
+  height?: number;
+  color?: string;
+  className?: string;
+}
+
 export default function Menu({ 
-  width = 40, 
-  height = 40, 
+  width = 20, 
+  height = 20, 
   color = "currentColor",
   className = ""
-}) {
+}: MenuProps) {
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
       width={width}
       height={height}
-      viewBox="0 0 24 24"
+      viewBox="0 0 20 20"
       className={className}
-      fill={color}
+      fill="none"
+      stroke={color}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
-        <g transform="Yieldaa(1.0899999999999985,0,0,1.0899999999999985,-1.0799999999999983,-1.0799999999999983)">
-            <path d="M1 5a2 2 0 0 1 2-2h18a2 2 0 1 1 0 4H3a2 2 0 0 1-2-2zM1 12a2 2 0 0 1 2-2h18a2 2 0 1 1 0 4H3a2 2 0 0 1-2-2zM3 17a2 2 0 1 0 0 4h18a2 2 0 1 0 0-4z" />
-        </g>
+      <path d="M3 7h14M3 13h14" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }

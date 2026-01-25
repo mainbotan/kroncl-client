@@ -16,6 +16,7 @@ import { LogoText } from '@/assets/ui-kit/logo/text/text';
 import Sun from '@/assets/ui-kit/icons/sun';
 import Moon from '@/assets/ui-kit/icons/moon';
 import { LogoFull } from '@/assets/ui-kit/logo/full/full';
+import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
 
 export function Header() {
     const pathname = usePathname();
@@ -93,7 +94,6 @@ export function Header() {
                 <Link href='/' onClick={closeMenu} className={styles.icon}>
                     <span className={styles.area}>
                         <LogoFull animate />
-                        <span className={styles.shadow} />
                     </span>
                 </Link>
 
@@ -106,7 +106,7 @@ export function Header() {
                 </div>
                 
                 <div className={styles.actions}>
-                    <div className={styles.theme}>
+                    {/* <div className={styles.theme}>
                         <div className={styles.switcher}>
                             <span 
                                 className={clsx(styles.box, theme === 'light' && styles.active)} 
@@ -121,7 +121,7 @@ export function Header() {
                                 <Moon className={styles.svg} />
                             </span>
                         </div>
-                    </div>
+                    </div> */}
                     <div className={styles.buttons}>
                         <Button 
                             className={styles.button} 

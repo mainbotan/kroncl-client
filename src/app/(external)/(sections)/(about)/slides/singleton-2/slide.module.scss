@@ -5,8 +5,6 @@
     padding-top: 3rem;
     padding-bottom: 3rem;
     min-height: 33rem;
-    // background-color: var(--color-surface-primary);
-    border-top: 1px solid var(--color-stroke-secondary);
 
     @media (max-width: 720px) {
         padding-left: .4rem;
@@ -34,7 +32,7 @@
         gap: .6rem;
         
         .title {
-            font-size: 1.2em;
+            font-size: 1.1em;
             text-align: center;
             line-height: 1.1;
             font-weight: 800;
@@ -55,28 +53,28 @@
     &:nth-child(2) {
         flex-flow: row wrap;
         gap: .9rem;
-        justify-content: center;
+        padding: 0 5rem;
 
         .box {
-            width: 9rem;
-            height: 9rem;
+            display: flex;
+            flex: 1;
+            min-height: 23rem;
+            background-color: var(--color-surface-glass-secondary);
             border-radius: 1rem;
-            background-color: var(--color-surface-secondary);
             border: 1px solid var(--color-stroke-secondary);
 
-            &:nth-child(1), &:nth-child(6) {
-                background-color: var(--color-contrast);
+            &:nth-child(1) {
+                background-color: rgb(156 87 87);
+            }
+            &:nth-child(2) {
+                background-color: rgb(87, 100, 156);
             }
         }
 
         @media (max-width: 720px) {
             gap: .4rem;
-
-            .box {
-                width: calc(50% - .4rem);
-                height: auto;
-                min-height: 9rem;
-            }
+            padding: 0;
+            flex-direction: column;
         }
     }
 }
