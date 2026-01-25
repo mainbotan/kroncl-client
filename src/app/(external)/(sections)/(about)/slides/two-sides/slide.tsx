@@ -1,3 +1,5 @@
+import { LeftBlock } from './left/block';
+import { RightBlock } from './right/block';
 import styles from './slide.module.scss';
 
 export function TwoSidesSlide() {
@@ -5,10 +7,10 @@ export function TwoSidesSlide() {
         <div className={styles.slide}>
             <div className={styles.focus}>
                 <div className={styles.row}>
-                    <div className={styles.col}></div>
-                    <div className={styles.col}></div>
+                    <LeftBlock className={styles.col} />
+                    <RightBlock className={styles.col}/>
                 </div>
             </div>
         </div>
     )
-}
+} 

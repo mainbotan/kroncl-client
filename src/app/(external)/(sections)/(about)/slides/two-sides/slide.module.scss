@@ -30,11 +30,13 @@
 
     .col {
         display: flex;
-        flex: 1;
         min-height: 20rem;
         border-radius: 1rem;
         border: 1px solid var(--color-stroke-secondary);
         position: relative;
+        flex: 1;
+        overflow: hidden;
+        padding: 2rem 2rem 1.8rem 2rem;
 
         &:nth-child(1) {
             background-color: var(--color-surface-glass);
@@ -51,7 +53,8 @@
         padding: 0;
 
         .col {
-            min-height: auto;
+            height: fit-content;
+            padding: 2rem 2rem 1rem 1rem;
         }
     }
 }

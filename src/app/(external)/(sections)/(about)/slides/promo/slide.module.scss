@@ -1,0 +1,22 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.slide {
+    @include slide();
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+
+    @media (max-width: 720px) {
+        padding-left: .4rem;
+        padding-right: .4rem;
+    }
+}
+.focus {
+    @include focus();
+    flex-flow: column nowrap;
+    justify-content: end;
+    position: relative;
+
+    .brand {
+        color: var(--color-brand);
+    }
+}
