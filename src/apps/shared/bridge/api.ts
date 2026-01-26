@@ -43,14 +43,31 @@ class ApiBridge {
                 headers: defaultHeaders,
             });
 
+            // checking json
+            const contentType = response.headers.get('content-type');
+            const hasJson = contentType && contentType.includes('application/json');
+
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                if (hasJson) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP ${response.status}: ${errorData.message || response.statusText}`);
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
             }
 
-            const data: ApiResponse<T> = await response.json();
-            return data;
+            if (hasJson) {
+                const data: ApiResponse<T> = await response.json();
+                return data;
+            } else {
+                throw new Error('Response is not JSON');
+            }
         } catch (error) {
-            throw error;
+            if (error instanceof Error) {
+                throw error;
+            } else {
+                throw new Error('Unknown error occurred');
+            }
         }
     }
 

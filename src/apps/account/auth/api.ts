@@ -15,13 +15,13 @@ export class AccountAuth {
 
     // Базовые эндпоинты
     private endpoints = {
-        login: '/api/account/auth',
-        register: '/api/account/reg',
-        logout: '/api/account/logout',  // --empty
-        refresh: '/api/account/refresh',
-        profile: '/api/account/profile',
-        confirm: '/api/account/confirm',
-        resendConfirm: '/api/account/confirm/resend',
+        login: '/account/auth',
+        register: '/account/reg',
+        logout: '/account/logout',  // --empty
+        refresh: '/account/refresh',
+        profile: '/account/profile',
+        confirm: '/account/confirm',
+        resendConfirm: '/account/confirm/resend',
     };
 
     /**

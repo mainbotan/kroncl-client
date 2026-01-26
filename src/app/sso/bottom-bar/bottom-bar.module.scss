@@ -1,0 +1,26 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    @include slide();
+
+    .focus {
+        @include focus();
+        height: 3rem;
+        font-size: .32em;
+        flex-flow: row wrap;
+        justify-content: center;
+        gap: 1em;
+    }
+    .section {
+        display: inline-flex;
+        color: var(--color-text-description);
+        transition: color var(--transition);
+        align-items: center;
+        gap: .55em;
+        @include cursor(pointer);
+
+        &:hover {
+            color: var(--color-accent);
+        }
+    }
+}
