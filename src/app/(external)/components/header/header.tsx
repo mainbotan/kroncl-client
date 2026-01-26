@@ -17,11 +17,15 @@ import Sun from '@/assets/ui-kit/icons/sun';
 import Moon from '@/assets/ui-kit/icons/moon';
 import { LogoFull } from '@/assets/ui-kit/logo/full/full';
 import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
+import { useAuth } from '@/apps/account/auth/context/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { slideDown } from './_animations';
 
 export function Header() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const { login, user, status } = useAuth();
 
     // Инициализация темы при загрузке
     useEffect(() => {
@@ -88,6 +92,45 @@ export function Header() {
         );
     };
 
+    
+    const [showAccountModal, setShowAccountModal] = useState(false);
+    const [hideTimer, setHideTimer] = useState<NodeJS.Timeout | null>(null);
+
+    const handleMouseEnter = () => {
+        if (hideTimer) {
+            clearTimeout(hideTimer);
+            setHideTimer(null);
+        }
+        setShowAccountModal(true);
+    };
+
+    const handleMouseLeave = () => {
+    const timer = setTimeout(() => {
+            setShowAccountModal(false);
+        }, 300);
+        setHideTimer(timer);
+    };
+
+    useEffect(() => {
+    if (user) {
+        setShowAccountModal(true);
+
+        const timer = setTimeout(() => {
+        setShowAccountModal(false);
+        }, 5000);
+        
+        setHideTimer(timer);
+        
+        return () => {
+        if (hideTimer) {
+            clearTimeout(hideTimer);
+        }
+        };
+    } else {
+        setShowAccountModal(false);
+    }
+    }, [user]);
+
     return (
         <>
             <header className={clsx(styles.container, isMenuOpen && styles.active)}>
@@ -122,18 +165,58 @@ export function Header() {
                             </span>
                         </div>
                     </div> */}
-                    <div className={styles.buttons}>
-                        <Button 
-                            className={styles.button} 
-                            variant='contrast'
-                            as="a"
-                            href={authLinks.login}
-                            // target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Войти
-                        </Button>
-                    </div>
+                    {!user && (
+                        <div className={styles.buttons}>
+                            <Button 
+                                className={styles.button} 
+                                variant='contrast'
+                                as="a"
+                                href={authLinks.login}
+                                // target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Войти
+                            </Button>
+                        </div>
+                    )}
+                    {user && (
+                        <div className={styles.account}>
+                            <span 
+                            className={styles.avatar}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            >
+                            <span className={styles.img} style={{backgroundImage: `url('${user.avatar_url}')`}} />
+                            </span>
+
+                            <AnimatePresence>
+                            {showAccountModal && (
+                            <motion.div 
+                                className={styles.modal}
+                                variants={slideDown}
+                                initial="hidden"
+                                animate="visible"
+                                exit="hidden"
+                                key="account-modal"
+                                onMouseEnter={handleMouseEnter} // Не скрываем при наведении на модалку
+                                onMouseLeave={handleMouseLeave} // Скрываем при уходе с модалки
+                            >
+                                <div className={styles.title}>
+                                Вошли как <span className={styles.contrast}>{user.name}</span>
+                                </div>
+                                <div className={styles.description}>
+                                Получен доступ к аккаунту
+                                </div>
+                                <Link href='/platform'>
+                                <Button fullWidth className={styles.button} variant='contrast'>
+                                    Продолжить
+                                </Button>
+                                </Link>
+                            </motion.div>
+                            )}
+                            </AnimatePresence>
+                        </div>
+                    )}
                     <div className={styles.burger} onClick={toggleMenu}>
                         {isMenuOpen ? (
                             <Close className={styles.svg} />
