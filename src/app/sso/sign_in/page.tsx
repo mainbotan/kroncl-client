@@ -2,21 +2,32 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import styles from '../layout.module.scss';
 import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
 import Input from '@/assets/ui-kit/input/input';
 import Button from '@/assets/ui-kit/button/button';
 import Link from 'next/link';
 import { authLinks } from '@/config/links.config';
-import { accountAuth } from '@/apps/account/auth/api';
+import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import Close from '@/assets/ui-kit/icons/close';
 import { buttonVariants, containerVariants, errorVariants, itemVariants } from './_animations';
+import Spinner from '@/assets/ui-kit/spinner/spinner';
 
 export default function LoginPage() {
+    const router = useRouter();
+    const { login, user, status } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingForm, setIsLoadingForm] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    // Редирект если авторизован
+    useEffect(() => {
+        if (status === 'authenticated') {
+            router.push('/platform');
+        }
+    }, [status, router]);
 
     useEffect(() => {
         if (error) {
@@ -28,7 +39,6 @@ export default function LoginPage() {
         }
     }, [error]);
 
-    // Скрываем ошибку при изменении полей ввода
     useEffect(() => {
         if (error) {
             setError(null);
@@ -53,32 +63,13 @@ export default function LoginPage() {
         }
 
         setError(null);
-        setIsLoading(true);
+        setIsLoadingForm(true);
 
         try {
-            console.log('Отправка запроса с данными:', { email, password: '***' });
+            const success = await login(email, password);
             
-            const response = await accountAuth.login({
-                email,
-                password
-            });
-
-            console.log('Ответ от сервера:', response);
-
-            if (response.status) {
-                console.log('✅ Успешная авторизация!');
-                console.log('Access token:', response.data.access_token);
-                console.log('Refresh token:', response.data.refresh_token);
-                console.log('Пользователь:', response.data.user);
-                
-                // Очистка полей
-                setEmail('');
-                setPassword('');
-                
-                alert('Вход успешен! Проверьте консоль для просмотра токенов.');
-                // window.location.href = '/dashboard';
-            } else {
-                setError(`Ошибка: ${response.message}`);
+            if (!success) {
+                setError('Неверный email или пароль');
             }
         } catch (error: any) {
             let errorMessage = 'Произошла ошибка при входе';
@@ -95,7 +86,7 @@ export default function LoginPage() {
             
             setError(errorMessage);
         } finally {
-            setIsLoading(false);
+            setIsLoadingForm(false);
         }
     };
 
@@ -105,6 +96,32 @@ export default function LoginPage() {
         }
     };
 
+    if (status === 'loading') {
+        return (
+            <div className={styles.frame} style={{
+                alignItems: "center", 
+                justifyContent: "center",
+                height: "100vh"
+            }}>
+                <Spinner variant='contrast' size='md' />
+            </div>
+        );
+    }
+
+    // Если уже авторизован (будет редирект, но на всякий случай)
+    if (status === 'authenticated') {
+        return (
+            <div className={styles.frame} style={{
+                alignItems: "center", 
+                justifyContent: "center",
+                height: "100vh"
+            }}>
+                <Spinner variant='contrast' size='md' />
+            </div>
+        );
+    }
+
+    // ТОЛЬКО когда точно знаем, что пользователь не авторизован (status === 'unauthenticated')
     return (
         <motion.div 
             className={styles.frame}
@@ -157,7 +174,7 @@ export default function LoginPage() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onKeyPress={handleKeyPress}
-                            disabled={isLoading}
+                            disabled={isLoadingForm}
                         />
                     </motion.div>
                 </motion.section>
@@ -175,7 +192,7 @@ export default function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             onKeyPress={handleKeyPress}
-                            disabled={isLoading}
+                            disabled={isLoadingForm}
                         />
                     </motion.div>
                     <motion.div
@@ -203,8 +220,8 @@ export default function LoginPage() {
                             className={styles.action} 
                             variant='contrast'
                             onClick={handleLogin}
-                            loading={isLoading}
-                            disabled={isLoading}
+                            loading={isLoadingForm}
+                            disabled={isLoadingForm}
                         >
                             Войти
                         </Button>
@@ -222,7 +239,7 @@ export default function LoginPage() {
                         <Button 
                             className={styles.action} 
                             variant='glass'
-                            disabled={isLoading}
+                            disabled={isLoadingForm}
                         >
                             Войти по ключу
                         </Button>
@@ -242,7 +259,7 @@ export default function LoginPage() {
                                 <Button 
                                     className={styles.action} 
                                     variant='accent'
-                                    disabled={isLoading}
+                                    disabled={isLoadingForm}
                                 >
                                     Создать аккаунт
                                 </Button>
@@ -258,7 +275,7 @@ export default function LoginPage() {
                             <Button 
                                 className={styles.action} 
                                 variant='glass'
-                                disabled={isLoading}
+                                disabled={isLoadingForm}
                             >
                                 Приглашение
                             </Button>

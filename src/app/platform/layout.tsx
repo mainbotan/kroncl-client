@@ -1,30 +1,23 @@
-import { Metadata } from "next";
+'use client';
+
 import styles from './layout.module.scss';
 import clsx from "clsx";
-import CheckMark from "@/assets/ui-kit/icons/check-mark";
-import Wallet from "@/assets/ui-kit/icons/wallet";
-import { CompanySections } from "./company/@panel/sections.example";
-import { CompaniesIcons } from "./companies.example";
 import Collection from "@/assets/ui-kit/icons/collection";
+import Wallet from "@/assets/ui-kit/icons/wallet";
+import { CompaniesIcons } from "./companies.example";
 import { Header } from "./components/header/header";
+import { useAuth } from "@/apps/account/auth/context/AuthContext";
 
-export const metadata: Metadata = {
-  title: "Kroncl | Платформа.",
-  description: "",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'black-translucent',
-  },
-};
-
-export default function Layout({
+export default function PlatformLayout({
   children,
   panel
 }: Readonly<{
   children: React.ReactNode;
   panel: React.ReactNode;
 }>) {
-    return (
+  const { user } = useAuth();
+
+  return (
       <>
         <Header />
         <div className={styles.container}>

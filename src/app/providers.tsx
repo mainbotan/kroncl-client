@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import ScrollToTop from './ScrollToTop';
+import { AuthProvider } from '@/apps/account/auth/context/AuthContext';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -11,7 +12,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 60 * 1000, // 1 минута
+            staleTime: 60 * 1000,
             refetchOnWindowFocus: false,
             retry: 1,
           },
@@ -21,7 +22,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       <ScrollToTop />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
