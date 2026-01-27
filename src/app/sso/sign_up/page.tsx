@@ -20,6 +20,8 @@ import {
   formVariants,
   inputErrorVariants 
 } from './_animations';
+import { External } from '../components/external/external';
+import { Warning } from '../components/warning/warning';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -299,7 +301,7 @@ export default function RegisterPage() {
                 className={styles.section}
                 variants={itemVariants}
                 >
-                <div className={styles.capture}>Имя / псевдоним</div>
+                <div className={styles.capture}>Имя / Псевдоним</div>
                 <motion.div whileHover={{ scale: 1.01 }}>
                     <Input 
                     className={styles.input} 
@@ -365,7 +367,7 @@ export default function RegisterPage() {
                 </section>
                 </motion.section>
             </motion.div>
-            
+            <Warning />
             <motion.div 
                 key="form-actions"
                 className={styles.actions}
@@ -409,6 +411,7 @@ export default function RegisterPage() {
                 </motion.div>
                 </motion.section>
             </motion.div>
+            <External />
             </>
         ) : (
             <>

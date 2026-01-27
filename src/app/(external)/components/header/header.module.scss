@@ -122,6 +122,12 @@
                     border-radius: 50%;
                     background-size: cover;
                     background-position: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: 600;
+                    font-size: .7em;
+                    color: var(--color-leader);
                 }
             }
 

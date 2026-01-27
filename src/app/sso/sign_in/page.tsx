@@ -13,6 +13,9 @@ import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import Close from '@/assets/ui-kit/icons/close';
 import { buttonVariants, containerVariants, errorVariants, itemVariants } from './_animations';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
+import Keyhole from '@/assets/ui-kit/icons/keyhole';
+import { External } from '../components/external/external';
+import { Warning } from '../components/warning/warning';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -203,7 +206,7 @@ export default function LoginPage() {
                     </motion.div>
                 </motion.section>
             </div>
-            
+            <Warning />
             <div className={styles.actions}>
                 <motion.section 
                     className={styles.section}
@@ -234,13 +237,14 @@ export default function LoginPage() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <Button 
+                        <Link href='/sso/otl'><Button 
                             className={styles.action} 
                             variant='glass'
                             disabled={isLoadingForm}
+                            fullWidth
                         >
-                            Войти по ключу
-                        </Button>
+                            <Keyhole className={styles.svg} /> Войти по ключу
+                        </Button></Link>
                     </motion.div>
                 </motion.section>
                 
@@ -281,6 +285,7 @@ export default function LoginPage() {
                     </section>
                 </motion.section>
             </div>
+            <External />
         </motion.div>
     );
 }

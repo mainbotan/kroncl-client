@@ -20,6 +20,7 @@ import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
 import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { slideDown } from './_animations';
+import { getRandomGradient } from '@/assets/utils/avatars';
 
 export function Header() {
     const pathname = usePathname();
@@ -186,7 +187,23 @@ export function Header() {
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
                             >
-                            <span className={styles.img} style={{backgroundImage: `url('${user.avatar_url}')`}} />
+                            {user.avatar_url ? (
+                                <span 
+                                    className={styles.img} 
+                                    style={{backgroundImage: `url('${user.avatar_url}')`}} 
+                                />
+                            ) : (
+                                // Рандомный яркий градиент
+                                <span 
+                                    className={`${styles.img} ${styles.gradient}`}
+                                    style={{ 
+                                        background: getRandomGradient(user)
+                                    }}
+                                >
+                                    {/* Можно добавить первую букву имени */}
+                                    {user.name?.charAt(0).toUpperCase()}
+                                </span>
+                            )}
                             </span>
 
                             <AnimatePresence>

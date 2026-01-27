@@ -3,8 +3,8 @@ import '@/assets/styles/main.scss';
 import styles from './layout.module.scss';
 import { Header } from "../(external)/components/header/header";
 import { SubFooter } from "../(external)/components/sub-footer/sub-footer";
-import { GoHomeBar } from "./go-home/bar";
-import { BottomBar } from "./bottom-bar/bottom-bar";
+import { GoHomeBar } from "./components/go-home/bar";
+import { BottomBar } from "./components/bottom-bar/bottom-bar";
 
 export const metadata: Metadata = {
   title: "Kroncl | Вход в аккаунт.",
