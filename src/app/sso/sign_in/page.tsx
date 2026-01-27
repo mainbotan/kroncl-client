@@ -101,7 +101,6 @@ export default function LoginPage() {
             <div className={styles.frame} style={{
                 alignItems: "center", 
                 justifyContent: "center",
-                height: "100vh"
             }}>
                 <Spinner variant='contrast' size='md' />
             </div>
@@ -114,7 +113,6 @@ export default function LoginPage() {
             <div className={styles.frame} style={{
                 alignItems: "center", 
                 justifyContent: "center",
-                height: "100vh"
             }}>
                 <Spinner variant='contrast' size='md' />
             </div>

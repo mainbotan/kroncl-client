@@ -30,9 +30,11 @@ export interface RegisterResponse {
 }
 
 export interface ConfirmRequest {
-    token: string;
+    user_id: string;
+    code: string;
 }
 
 export interface ResendConfirmRequest {
+    user_id: string;
     email: string;
 }

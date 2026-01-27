@@ -59,9 +59,9 @@
             display: flex;
             flex: 1;
             min-height: 23rem;
-            background-color: var(--color-surface-glass-secondary);
+            background-color: var(--color-surface-tertiary);
             border-radius: 1rem;
-            border: 1px solid var(--color-stroke-secondary);
+            // border: 1px solid var(--color-stroke-secondary);
 
             &:nth-child(1) {
                 background-color: rgb(156 87 87);
@@ -86,9 +86,9 @@
             display: flex;
             flex: 1;
             min-height: 15rem;
-            background-color: var(--color-surface-glass-secondary);
+            background-color: var(--color-surface-tertiary);
             border-radius: 1rem;
-            border: 1px solid var(--color-stroke-secondary);
+            // border: 1px solid var(--color-stroke-secondary);
         }
 
         @media (max-width: 720px) {
