@@ -1,0 +1,19 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.content {
+    display: flex;
+    flex: 1;
+    padding: .2rem 0;
+    overflow: hidden;
+
+    .area {
+        display: block;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        flex: 1;
+        border-radius: .6rem;
+        background-color: var(--color-leader);
+        max-height: calc(100vh - var(--header-height) - .5rem);
+        position: relative;
+    }
+}

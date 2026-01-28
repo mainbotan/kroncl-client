@@ -1,0 +1,114 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.panel {
+    .head {
+        display: none;
+        border: 1px solid red;
+        height: 3rem;
+    }
+
+    .scroll {
+        display: block;
+        flex: 1;
+        overflow-y: scroll;
+    }
+
+    .sections {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: .4em 0;
+        gap: .2em;
+
+        .capture {
+            color: var(--color-text-ghost);
+            font-size: .95em;
+            margin-bottom: .5em;
+            font-weight: 600;
+        }
+
+        .section {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: .44em;
+            align-items: center;
+            color: var(--color-text-ghost);
+            overflow: hidden;
+            border-radius: .7em;
+            @include cursor(pointer);
+            transition: color var(--transition), background-color var(--transition);
+            // background-color: var(--color-surface-glass-secondary);
+            // border: 1px solid var(--color-stroke-secondary);
+
+            .icon {
+                display: inline-flex;
+                padding: .5em;
+            }
+            .icon .svg {
+                width: 1.2em;
+                height: 1.2em;
+            }
+            .name {
+                @include text-ellipsis();
+                // font-weight: 600;
+                // letter-spacing: .02em;
+                font-size: .95em;
+            }
+
+            &:hover {
+                color: var(--color-text-primary);
+                background-color: var(--color-surface-elevated);
+            }
+        }
+    }
+    
+    .companies {
+        display: flex;
+        min-height: 5rem;
+        // background-color: var(--color-surface-elevated);
+        // border-radius: .6rem;
+        flex-flow: column nowrap;
+        padding: .4em 0;
+
+        .company {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            overflow: hidden;
+            gap: .6em;
+            border-radius: .6em;
+            transition: background-color var(--transition);
+            @include cursor(pointer);
+
+            .icon {
+                display: inline-flex;
+                padding: .2em;
+
+                .avatar {
+                    display: inline-flex;
+                    width: 2.1em;
+                    height: 2.1em;
+                    border-radius: 50%;
+                    background-color: var(--color-surface-primary);
+                    border: 1px solid var(--color-stroke-secondary);
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+            .name {
+                font-size: .97em;
+            }
+
+            &:hover {
+                background-color: var(--color-surface-elevated);
+            }
+        }
+    }
+
+    .foot {
+        display: flex;
+        flex-flow: column nowrap;
+        height: 4rem;
+        border-top: 1px solid var(--color-stroke-secondary);
+        justify-content: end;
+    }
+}

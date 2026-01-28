@@ -10,7 +10,7 @@
     flex-flow: row nowrap;
     padding: 0 .8rem;
     z-index: 1001;
-    background-color: var(--color-leader);
+    background-color: var(--color-surface-area);
     // color: var(--color-contrast-text-primary);
     // border-bottom: 1px solid var(--color-stroke-secondary);
 
@@ -39,7 +39,7 @@
         flex-flow: row nowrap;
         justify-content: center;
         align-items: center;
-        font-size: .52em;
+        font-size: .5em;
         color: grey;
         pointer-events: none;
         gap: 2em;
@@ -50,8 +50,8 @@
             gap: 2em;
 
             .input {
-                width: 20rem;
-                background-color: var(--color-surface-area);
+                width: 15rem;
+                background-color: var(--color-surface-elevated);
                 pointer-events: all;
                 border-width: 2px;
                 transition: width var(--transition);

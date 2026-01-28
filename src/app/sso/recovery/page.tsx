@@ -1,3 +1,5 @@
+'use client';
+
 import { LogoFull } from '@/assets/ui-kit/logo/full/full';
 import styles from '../layout.module.scss';
 import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';

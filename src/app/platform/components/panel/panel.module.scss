@@ -1,0 +1,136 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.panel {
+    display: flex;
+    width: 9rem;
+    padding: .2rem;
+    font-size: .37em;
+    overflow: hidden;
+    max-height: calc(100vh - var(--header-height));
+    flex-flow: column nowrap;
+
+    // .area {
+    //     display: block;
+    //     overflow-y: scroll;
+    //     flex: 1;
+    //     min-height: calc(100vh - var(--header-height) - .5rem);
+    //     max-height: calc(100vh - var(--header-height) - .5rem);
+    //     @include no-scrollbar();
+    // }
+    // .grid {
+    //     display: flex;
+    //     flex: 1;
+    //     // border-radius: .6rem;
+    //     flex-flow: column nowrap;
+    //     gap: .4rem;
+    //     justify-content: start;
+    //     overflow: hidden;
+    //     min-height: calc(100vh - var(--header-height) - .5rem);
+
+    //     .label {
+    //         height: 6rem;
+    //         background-color: var(--color-surface-glass);
+    //         border-top-right-radius: .3rem;
+    //         border-bottom-right-radius: .3rem;
+    //     }
+    //     .basics {
+    //         display: flex;
+    //         padding: .5rem;
+    //         flex-flow: column nowrap;
+    //         justify-content: center;
+    //         font-size: .55em;
+    //         gap: .2em;
+    //         align-items: start;
+
+    //         .slogan {
+    //             font-size: .7em;
+    //             color: var(--color-text-description);
+    //         }
+    //         .name, .slogan {
+    //             @include text-plug();
+    //         }
+    //     }
+    //     .body {
+    //         display: flex;
+    //         flex: 1;
+    //         flex-flow: column nowrap;
+    //         font-size: .4em;
+    //         gap: .3em;
+
+    //         .section {
+    //             display: flex;
+    //             flex-flow: row nowrap;
+    //             padding: .4em;
+    //             gap: 1em;
+    //             // border: 1px solid var(--color-stroke-secondary);
+    //             transition: background-color var(--transition), border var(--transition);
+    //             cursor: pointer;
+    //             border-radius: .2em;
+    //             overflow: hidden;
+
+
+    //             .icon {
+    //                 display: flex;
+    //                 align-items: center;
+
+    //                 .svg {
+    //                     width: 1.3em;
+    //                     height: 1.3em;
+    //                     fill: var(--color-icon-primary);
+    //                 }
+    //             }
+    //             .info {
+    //                 display: flex;
+    //                 flex-flow: column nowrap;
+    //                 gap: .2em;
+    //                 flex: 1;
+    //                 justify-content: center;
+    //                 align-items: start;
+    //                 overflow: hidden;
+
+    //                 .title {
+    //                     transition: color var(--transition);
+    //                     color: var(--color-text-description);
+    //                     @include text-plug();
+    //                     // @include text-ellipsis();
+    //                 }
+    //             }
+    //             .add {
+    //                 display: flex;
+    //                 flex-flow: row nowrap;
+    //                 gap: .2em;
+
+    //                 .item {
+    //                     display: inline-flex;
+    //                     align-items: center;
+    //                     background-color: var(--color-stroke-secondary);
+    //                     color: transparent;
+    //                     border-radius: .2em;
+    //                     padding: 0 .4em;
+
+    //                     .svg {
+    //                         width: 1em;
+    //                         height: 1em;
+    //                         fill: var(--color-icon-primary);
+    //                     }
+    //                 }
+    //             }
+
+    //             &:hover {
+    //                 background-color: var(--color-surface-glass-secondary);
+
+    //                 .info .title {
+    //                     color: var(--color-text-primary);
+    //                 }
+    //             }
+    //         }
+    //         .inter {
+    //             height: 1em;
+    //         }
+    //     }
+    // }
+
+    @media (max-width: 720px) {
+        // display: none;
+    }
+}
