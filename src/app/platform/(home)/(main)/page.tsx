@@ -18,13 +18,13 @@ export default function Page() {
             description: "Создание пространства для новой компании.",
             icon: Package,
             accent: true,
-            href: "/companies/new"
+            href: "/platform/companies/new"
         },
         {
             title: "Ваши организации",
             description: "Смотреть организации, в которых вы состоите.",
             icon: Collection,
-            href: "/companies"
+            href: "/platform/companies"
         },
     ];
     

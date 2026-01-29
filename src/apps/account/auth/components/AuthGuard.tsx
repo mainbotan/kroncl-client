@@ -17,7 +17,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (status === 'loading') {
         return (
-            <div style={{display: "flex", flex: "1", alignItems: "center", justifyContent: "center"}}><Spinner /></div>
+            <div style={{display: "flex", flex: "1", alignItems: "center", justifyContent: "center"}}><Spinner variant='default' /></div>
         )
     }
 
