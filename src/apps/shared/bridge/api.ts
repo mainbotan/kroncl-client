@@ -1,9 +1,10 @@
-// /apps/shared/bridge/api.ts
 import { ApiResponse, RequestOptions } from './types';
 import { accountAuth } from '@/apps/account/auth/api';
 
 class ApiBridge {
     private baseUrl: string;
+    private refreshInProgress = false;
+    private refreshPromise: Promise<ApiResponse<any> | null> | null = null;
 
     constructor() {
         this.baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
@@ -19,12 +20,41 @@ class ApiBridge {
         // Это для прямого управления токеном
     }
 
+    /**
+     * Общая логика обработки refresh токена
+     */
+    private async handleTokenRefresh(): Promise<boolean> {
+        if (this.refreshInProgress && this.refreshPromise) {
+            await this.refreshPromise;
+            return true;
+        }
+
+        this.refreshInProgress = true;
+        this.refreshPromise = (async () => {
+            try {
+                console.log('🔄 Автопродление токена...');
+                const refreshResult = await accountAuth.refreshTokens();
+                return refreshResult;
+            } catch (error) {
+                console.error('❌ Ошибка при обновлении токена:', error);
+                return null;
+            } finally {
+                this.refreshInProgress = false;
+                this.refreshPromise = null;
+            }
+        })();
+
+        const result = await this.refreshPromise;
+        return result?.status === true;
+    }
+
     private async request<T>(
         endpoint: string,
         options: RequestOptions = {},
         retryCount = 0
     ): Promise<ApiResponse<T>> {
         const { params, headers, ...fetchOptions } = options;
+        const maxRetries = 1; // Максимум одна попытка refresh
 
         let url = `${this.baseUrl}${endpoint}`;
         
@@ -58,46 +88,64 @@ class ApiBridge {
             const contentType = response.headers.get('content-type');
             const hasJson = contentType && contentType.includes('application/json');
 
-            if (!response.ok) {
-                // СНАЧАЛА пробуем получить JSON
-                if (hasJson) {
-                    try {
-                        const errorData = await response.json();
-                        // ВАЖНО: Возвращаем JSON как нормальный ответ, даже если status: false
-                        // Это НЕ ошибка HTTP, а нормальный ответ от API
-                        return errorData as ApiResponse<T>;
-                    } catch {
-                        // Если не удалось распарсить JSON, тогда бросаем ошибку
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
+            // Пробуем получить JSON в любом случае
+            let jsonResponse: ApiResponse<T> | null = null;
+            if (hasJson) {
+                try {
+                    jsonResponse = await response.json();
+                } catch {
+                    // Не удалось распарсить JSON
                 }
-                
-                // Если это 401 и НЕ эндпоинт авторизации, пробуем refresh
-                // НО ДЛЯ /account/auth не делаем refresh!
+            }
+
+            // Проверяем на 401 ошибку
+            if (response.status === 401) {
+                // Проверяем, не является ли это эндпоинтом авторизации
                 const isAuthEndpoint = endpoint.includes('/account/auth') || 
-                                    endpoint.includes('/account/reg');
+                                    endpoint.includes('/account/reg') ||
+                                    endpoint.includes('/account/refresh');
                 
-                if (response.status === 401 && retryCount === 0 && !isAuthEndpoint) {
-                    const refreshToken = localStorage.getItem('auth_refresh_token');
+                // Если это не auth endpoint и еще не превышено количество попыток
+                if (!isAuthEndpoint && retryCount < maxRetries) {
+                    console.log('🔐 Обнаружена 401 ошибка, пробуем refresh...');
                     
-                    if (refreshToken) {
-                        console.log('🔐 Обнаружена 401 ошибка, пробуем refresh...');
-                        const refreshResult = await accountAuth.refreshTokens();
+                    const refreshSuccess = await this.handleTokenRefresh();
+                    
+                    if (refreshSuccess) {
+                        console.log('🔄 Повторяем запрос после успешного refresh');
+                        return this.request<T>(endpoint, options, retryCount + 1);
+                    } else {
+                        console.log('❌ Refresh не удался, очищаем данные');
+                        accountAuth.clearToken();
                         
-                        if (refreshResult?.status) {
-                            console.log('🔄 Повторяем запрос после успешного refresh');
-                            return this.request<T>(endpoint, options, retryCount + 1);
+                        // Редирект на логин если на клиенте
+                        if (typeof window !== 'undefined' && window.location.pathname.includes('/platform')) {
+                            window.location.href = '/sso/sign_in';
                         }
                     }
                 }
                 
-                // Если нет JSON или это auth endpoint, бросаем ошибку
+                // Возвращаем ошибку или бросаем исключение
+                if (jsonResponse) {
+                    return jsonResponse;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            }
+
+            // Если ответ не ок и есть JSON - возвращаем его
+            if (!response.ok && jsonResponse) {
+                return jsonResponse;
+            }
+
+            // Если ответ не ок и нет JSON - бросаем ошибку
+            if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
-            if (hasJson) {
-                const data: ApiResponse<T> = await response.json();
-                return data;
+            // Успешный ответ с JSON
+            if (jsonResponse) {
+                return jsonResponse;
             } else {
                 throw new Error('Response is not JSON');
             }

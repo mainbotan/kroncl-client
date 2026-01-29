@@ -65,7 +65,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         initAuth();
     }, []);
-
+    useEffect(() => {
+        if (status === 'authenticated') {
+            // Проверяем токен каждые 5 минут
+            const interval = setInterval(async () => {
+                const token = AuthStorage.getAccessToken();
+                if (token) {
+                    try {
+                        // Простая проверка exp из JWT
+                        const parts = token.split('.');
+                        if (parts.length === 3) {
+                            const payload = JSON.parse(atob(parts[1]));
+                            const exp = payload.exp * 1000;
+                            const now = Date.now();
+                            const timeLeft = exp - now;
+                            
+                            // Если осталось меньше 10 минут, обновляем
+                            if (timeLeft < 10 * 60 * 1000) {
+                                console.log('🔄 Профилактическое обновление токена...');
+                                await accountAuth.refreshTokens();
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Token check error:', error);
+                    }
+                }
+            }, 5 * 60 * 1000); // 5 минут
+            
+            return () => clearInterval(interval);
+        }
+    }, [status]);
+    
     // Синхронизируем localStorage с cookies
     const syncWithCookies = () => {
         if (typeof window === 'undefined') return;

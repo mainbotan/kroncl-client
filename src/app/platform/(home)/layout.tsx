@@ -1,10 +1,8 @@
-'use client';
-
 import { useAuth } from "@/apps/account/auth/context/AuthContext";
 import PlatformContent from "../components/content/content";
 import { PanelSection } from "../components/panel/_types";
 import ClientPanel from "../components/panel/client-panel";
-import { useState, useEffect } from 'react';
+import PlatformPanel from "../components/panel/server-panel";
 
 export default function Layout({
   children
@@ -12,8 +10,6 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const title = "Рабочая область";
-  const [initialCollapsed, setInitialCollapsed] = useState(false);
-  
   const sections: PanelSection[] = [
     {
       name: 'Аккаунт',
@@ -30,20 +26,15 @@ export default function Layout({
       href: '/platform/security',
       icon: 'keyhole'
     },
+    {
+      name: 'Активность',
+      href: '/platform/activity',
+      icon: 'history'
+    },
   ];
-
-  // Читаем localStorage на клиенте
-  useEffect(() => {
-    const savedState = localStorage.getItem('panel-collapsed');
-    if (savedState !== null) {
-      setInitialCollapsed(JSON.parse(savedState));
-    }
-  }, []);
-
   return (
     <>
-      <ClientPanel 
-        initialCollapsed={initialCollapsed}
+      <PlatformPanel 
         sections={sections} 
         title={title} 
       />

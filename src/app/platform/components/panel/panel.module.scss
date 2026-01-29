@@ -45,6 +45,7 @@
             border-radius: .7em;
             @include cursor(pointer);
             border: 2px solid transparent;
+            transition: background-color var(--transition), border-color var(--transition), color var(--transition);
 
             .icon {
                 display: inline-flex;

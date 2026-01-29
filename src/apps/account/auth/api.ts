@@ -21,7 +21,7 @@ export class AccountAuth {
         register: '/account/reg',
         logout: '/account/logout',
         refresh: '/account/refresh',
-        profile: '/account/profile',
+        profile: '/account',
         confirm: '/account/confirm',
         resendConfirm: '/account/confirm/resend',
     };

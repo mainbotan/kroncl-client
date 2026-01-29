@@ -19,6 +19,7 @@ import Input from '@/assets/ui-kit/input/input';
 import { getRandomGradient } from '@/assets/utils/avatars';
 import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import Bell from '@/assets/ui-kit/icons/bell';
+import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
 
 export function Header() {
     const pathname = usePathname();
@@ -96,7 +97,7 @@ export function Header() {
             <header className={clsx(styles.container, isMenuOpen && styles.active)}>
                 <Link href='/platform' onClick={closeMenu} className={styles.icon}>
                     <span className={styles.area}>
-                        <LogoFull animate />
+                        <LogoIco animate />
                         <span className={styles.shadow} />
                     </span>
                 </Link>
