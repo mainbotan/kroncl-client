@@ -16,11 +16,15 @@ import Sun from '@/assets/ui-kit/icons/sun';
 import Moon from '@/assets/ui-kit/icons/moon';
 import { LogoFull } from '@/assets/ui-kit/logo/full/full';
 import Input from '@/assets/ui-kit/input/input';
+import { getRandomGradient } from '@/assets/utils/avatars';
+import { useAuth } from '@/apps/account/auth/context/AuthContext';
+import Bell from '@/assets/ui-kit/icons/bell';
 
 export function Header() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    const { login, user, status } = useAuth();
 
     // Инициализация темы при загрузке
     useEffect(() => {
@@ -90,7 +94,7 @@ export function Header() {
     return (
         <>
             <header className={clsx(styles.container, isMenuOpen && styles.active)}>
-                <Link href='/' onClick={closeMenu} className={styles.icon}>
+                <Link href='/platform' onClick={closeMenu} className={styles.icon}>
                     <span className={styles.area}>
                         <LogoFull animate />
                         <span className={styles.shadow} />
@@ -99,12 +103,12 @@ export function Header() {
 
                 <div className={styles.search}>
                     <div className={styles.frame}>
-                        <Input className={styles.input} variant='default' placeholder='Поиск по вашим организациям...' />
+                        <Input className={styles.input} variant='default' placeholder='Поиск по организациям' />
                     </div>
                 </div>
                 
                 <div className={styles.actions}>
-                    <div className={styles.theme}>
+                    {/* <div className={styles.theme}>
                         <div className={styles.switcher}>
                             <span 
                                 className={clsx(styles.box, theme === 'light' && styles.active)} 
@@ -119,26 +123,62 @@ export function Header() {
                                 <Moon className={styles.svg} />
                             </span>
                         </div>
-                    </div>
+                    </div> */}
                     <div className={styles.buttons}>
-                        {/* <Button 
+                        <Button 
                             className={styles.button} 
-                            variant='contrast'
+                            variant='default'
                             as="a"
                             href={authLinks.login}
                             // target="_blank"
                             rel="noopener noreferrer"
                         >
                             Пригласить
-                        </Button> */}
+                        </Button>
+                        <Button 
+                            className={styles.button} 
+                            variant='default'
+                            as="a"
+                            href={authLinks.login}
+                            // target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Bell className={styles.svg} />
+                        </Button>
                     </div>
-                    <div className={styles.burger} onClick={toggleMenu}>
+                    
+                    {user && (
+                    <div className={styles.account}>
+                        <span 
+                        className={styles.avatar}
+                        >
+                        {user.avatar_url ? (
+                            <span 
+                                className={styles.img} 
+                                style={{backgroundImage: `url('${user.avatar_url}')`}} 
+                            />
+                        ) : (
+                            // Рандомный яркий градиент
+                            <span 
+                                className={`${styles.img} ${styles.gradient}`}
+                                style={{ 
+                                    background: getRandomGradient(user)
+                                }}
+                            >
+                                {/* Можно добавить первую букву имени */}
+                                {user.name?.charAt(0).toUpperCase()}
+                            </span>
+                        )}
+                        </span>
+                    </div>
+                    )}
+                    {/* <div className={styles.burger} onClick={toggleMenu}>
                         {isMenuOpen ? (
                             <Close className={styles.svg} />
                         ) : (
                             <Menu className={styles.svg} />
                         )}
-                    </div>
+                    </div> */}
                 </div>
             </header>
 

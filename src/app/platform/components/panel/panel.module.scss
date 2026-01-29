@@ -9,128 +9,162 @@
     max-height: calc(100vh - var(--header-height));
     flex-flow: column nowrap;
 
-    // .area {
-    //     display: block;
-    //     overflow-y: scroll;
-    //     flex: 1;
-    //     min-height: calc(100vh - var(--header-height) - .5rem);
-    //     max-height: calc(100vh - var(--header-height) - .5rem);
-    //     @include no-scrollbar();
-    // }
-    // .grid {
-    //     display: flex;
-    //     flex: 1;
-    //     // border-radius: .6rem;
-    //     flex-flow: column nowrap;
-    //     gap: .4rem;
-    //     justify-content: start;
-    //     overflow: hidden;
-    //     min-height: calc(100vh - var(--header-height) - .5rem);
+    .head {
+        display: none;
+        border: 1px solid red;
+        height: 3rem;
+    }
 
-    //     .label {
-    //         height: 6rem;
-    //         background-color: var(--color-surface-glass);
-    //         border-top-right-radius: .3rem;
-    //         border-bottom-right-radius: .3rem;
-    //     }
-    //     .basics {
-    //         display: flex;
-    //         padding: .5rem;
-    //         flex-flow: column nowrap;
-    //         justify-content: center;
-    //         font-size: .55em;
-    //         gap: .2em;
-    //         align-items: start;
+    .scroll {
+        display: block;
+        flex: 1;
+        overflow-y: scroll;
+    }
 
-    //         .slogan {
-    //             font-size: .7em;
-    //             color: var(--color-text-description);
-    //         }
-    //         .name, .slogan {
-    //             @include text-plug();
-    //         }
-    //     }
-    //     .body {
-    //         display: flex;
-    //         flex: 1;
-    //         flex-flow: column nowrap;
-    //         font-size: .4em;
-    //         gap: .3em;
+    .sections {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: .4em 0;
+        gap: .2em;
 
-    //         .section {
-    //             display: flex;
-    //             flex-flow: row nowrap;
-    //             padding: .4em;
-    //             gap: 1em;
-    //             // border: 1px solid var(--color-stroke-secondary);
-    //             transition: background-color var(--transition), border var(--transition);
-    //             cursor: pointer;
-    //             border-radius: .2em;
-    //             overflow: hidden;
+        .capture {
+            color: var(--color-text-ghost);
+            font-size: .85em;
+            margin-bottom: .65em;
+            font-weight: 600;
+            padding: .3em;
+        }
 
+        .section {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: .44em;
+            align-items: center;
+            color: var(--color-text-ghost);
+            overflow: hidden;
+            border-radius: .7em;
+            @include cursor(pointer);
+            border: 2px solid transparent;
 
-    //             .icon {
-    //                 display: flex;
-    //                 align-items: center;
+            .icon {
+                display: inline-flex;
+                padding: .4em .5em;
+                
+                .svg {
+                    width: 1.2em;
+                    height: 1.2em;
+                }
+            }
+            .name {
+                @include text-ellipsis();
+                font-size: .95em;
+                overflow: hidden;
+            }
 
-    //                 .svg {
-    //                     width: 1.3em;
-    //                     height: 1.3em;
-    //                     fill: var(--color-icon-primary);
-    //                 }
-    //             }
-    //             .info {
-    //                 display: flex;
-    //                 flex-flow: column nowrap;
-    //                 gap: .2em;
-    //                 flex: 1;
-    //                 justify-content: center;
-    //                 align-items: start;
-    //                 overflow: hidden;
+            &:hover {
+                color: var(--color-text-primary);
+                background-color: var(--color-surface-secondary);
+            }
+            &.active {
+                background-color: rgba(73, 73, 114, 0.251);
+                color: var(--color-text-primary);
+            }
+        }
+    }
+    
+    .companies {
+        display: flex;
+        min-height: 5rem;
+        flex-flow: column nowrap;
+        padding: .4em 0;
+        
+        .company {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            overflow: hidden;
+            gap: .6em;
+            border-radius: .6em;
+            @include cursor(pointer);
+            background-color: var(--color-surface-elevated);
+            border: 1px solid transparent;
 
-    //                 .title {
-    //                     transition: color var(--transition);
-    //                     color: var(--color-text-description);
-    //                     @include text-plug();
-    //                     // @include text-ellipsis();
-    //                 }
-    //             }
-    //             .add {
-    //                 display: flex;
-    //                 flex-flow: row nowrap;
-    //                 gap: .2em;
+            .icon {
+                display: inline-flex;
+                padding: .2em;
 
-    //                 .item {
-    //                     display: inline-flex;
-    //                     align-items: center;
-    //                     background-color: var(--color-stroke-secondary);
-    //                     color: transparent;
-    //                     border-radius: .2em;
-    //                     padding: 0 .4em;
+                .avatar {
+                    display: inline-flex;
+                    width: 2.1em;
+                    height: 2.1em;
+                    border-radius: 50%;
+                    background-color: var(--color-surface-primary);
+                    border: 1px solid var(--color-stroke-primary);
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+            .name {
+                font-size: .97em;
+            }
 
-    //                     .svg {
-    //                         width: 1em;
-    //                         height: 1em;
-    //                         fill: var(--color-icon-primary);
-    //                     }
-    //                 }
-    //             }
+            &:hover {
+                background-color: var(--color-surface-elevated);
+                border: 1px solid var(--color-stroke-primary);
+            }
+        }
+    }
 
-    //             &:hover {
-    //                 background-color: var(--color-surface-glass-secondary);
+    .foot {
+        display: flex;
+        flex-flow: column nowrap;
+        border-top: 1px solid var(--color-stroke-secondary);
+        justify-content: end;
 
-    //                 .info .title {
-    //                     color: var(--color-text-primary);
-    //                 }
-    //             }
-    //         }
-    //         .inter {
-    //             height: 1em;
-    //         }
-    //     }
-    // }
+        .collapseIcon.rotated {
+            transform: rotate(180deg);
+        }
+    }
 
-    @media (max-width: 720px) {
-        // display: none;
+    &.compact {
+        width: 2rem;
+        padding-right: .4rem;
+
+        .scroll {
+            @include no-scrollbar();
+        }
+        
+        .sections {
+            padding: 0;
+            gap: .4em;
+            
+            .capture { 
+                display: none;
+            }
+
+            .section {
+                .name { 
+                    display: none;
+                }
+
+                .icon {
+                    padding: 0;
+                    flex: 1;
+                    display: flex;
+                    aspect-ratio: 1/1;
+                    align-items: center;
+                    justify-content: center;
+
+                    .svg {
+                        width: .8rem;
+                        height: .8rem;
+                    }
+                }
+            }
+        }
+        
+        .companies {
+            display: none;
+        }
     }
 }
