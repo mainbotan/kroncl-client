@@ -40,20 +40,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     // Если пользователь не подтвержден - считаем unauthenticated
                     if (userData.status === 'pending') {
                         setStatus('unauthenticated');
-                        // Но токен есть для подтверждения email
                     } else {
                         setStatus('authenticated');
+                        
+                        // Запрашиваем профиль ТОЛЬКО если данные устарели
+                        // Проверяем, когда последний раз обновлялся профиль
+                        const lastProfileUpdate = localStorage.getItem('last_profile_update');
+                        const now = Date.now();
+                        
+                        // Обновляем профиль раз в 5 минут или если его нет
+                        if (!lastProfileUpdate || (now - parseInt(lastProfileUpdate)) > 5 * 60 * 1000) {
+                            console.log('🔄 Запрашиваем свежий профиль...');
+                            const profileResponse = await accountAuth.getProfile();
+                            if (profileResponse.status && profileResponse.data) {
+                                setUser(profileResponse.data);
+                                localStorage.setItem('last_profile_update', now.toString());
+                            }
+                        }
                     }
                     
                     syncWithCookies();
-                    
-                    // Получаем свежий профиль только если пользователь подтвержден
-                    if (userData.status !== 'pending') {
-                        const profileResponse = await accountAuth.getProfile();
-                        if (profileResponse.status && profileResponse.data) {
-                            setUser(profileResponse.data);
-                        }
-                    }
                 } else {
                     setStatus('unauthenticated');
                 }
@@ -65,6 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         initAuth();
     }, []);
+    
     useEffect(() => {
         if (status === 'authenticated') {
             // Проверяем токен каждые 5 минут

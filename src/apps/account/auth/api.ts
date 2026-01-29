@@ -42,12 +42,34 @@ export class AccountAuth {
         
         const refreshToken = AuthStorage.getRefreshToken();
         const accessToken = AuthStorage.getAccessToken();
-        const user = AuthStorage.getUser();
         
-        // Если есть access token - всё ок (даже если нет пользователя)
+        // Если есть access token - проверяем его валидность
         if (accessToken) {
-            this.setToken(accessToken);
-            return true;
+            try {
+                // Проверяем JWT exp
+                const parts = accessToken.split('.');
+                if (parts.length === 3) {
+                    const payload = JSON.parse(atob(parts[1]));
+                    const exp = payload.exp * 1000;
+                    const now = Date.now();
+                    
+                    // Если токен истек больше чем 5 минут назад
+                    if (exp < now - (5 * 60 * 1000)) {
+                        console.log('🔄 Access токен истек, пробуем refresh...');
+                        if (refreshToken) {
+                            const refreshResult = await this.refreshTokens();
+                            return refreshResult?.status === true;
+                        }
+                        return false;
+                    }
+                    
+                    // Токен валиден
+                    this.setToken(accessToken);
+                    return true;
+                }
+            } catch (error) {
+                console.error('❌ Ошибка проверки токена:', error);
+            }
         }
         
         // Если есть только refresh token - пробуем восстановить
@@ -55,11 +77,7 @@ export class AccountAuth {
             console.log('🔄 Нет access токена, пробуем восстановить через refresh...');
             try {
                 const refreshResult = await this.refreshTokens();
-                
-                if (refreshResult?.status) {
-                    console.log('✅ Авторизация восстановлена через refresh');
-                    return true;
-                }
+                return refreshResult?.status === true;
             } catch (error) {
                 console.error('❌ Не удалось восстановить авторизацию:', error);
             }
@@ -77,6 +95,7 @@ export class AccountAuth {
         this.token = null;
         api.setToken(null);
         AuthStorage.clear();
+        api.clearCache(); // Очищаем кэш при logout
     }
 
     private getAuthHeaders(): Record<string, string> {
@@ -198,7 +217,7 @@ export class AccountAuth {
                             access_token: response.data.access_token,
                             refresh_token: response.data.refresh_token,
                         },
-                        existingUser || response.data.user || {} // Используем существующего пользователя
+                        existingUser || response.data.user || {}
                     );
                     
                     this.setToken(response.data.access_token);
@@ -221,7 +240,31 @@ export class AccountAuth {
         return this.refreshPromise;
     }
 
-    async getProfile(): Promise<ApiResponse<Account>> {
+    async getProfile(forceRefresh = false): Promise<ApiResponse<Account>> {
+        // Проверяем, есть ли данные в localStorage
+        const cachedUser = AuthStorage.getUser();
+        
+        // Если forceRefresh = false и есть кэшированный пользователь,
+        // возвращаем его сразу, но все равно делаем фоновый запрос для обновления
+        if (!forceRefresh && cachedUser) {
+            // Делаем фоновый запрос для обновления данных
+            this.updateProfileInBackground();
+            
+            // Возвращаем кэшированные данные
+            return {
+                status: true,
+                message: 'OK (cached)',
+                data: cachedUser,
+                _meta: {
+                    timestamp: new Date().toISOString(),
+                    request_id: `cached-${Date.now()}`,
+                    path: this.endpoints.profile,
+                    method: 'GET'
+                }
+            };
+        }
+        
+        // Делаем запрос к API
         const response = await api.get<Account>(this.endpoints.profile, {
             headers: this.getAuthHeaders()
         });
@@ -242,12 +285,56 @@ export class AccountAuth {
         return response;
     }
 
+    /**
+     * Фоновое обновление профиля без блокировки UI
+     */
+    private async updateProfileInBackground(): Promise<void> {
+        // Проверяем, когда последний раз обновляли профиль
+        const lastUpdate = localStorage.getItem('profile_last_update');
+        const now = Date.now();
+        
+        // Обновляем не чаще чем раз в 30 секунд
+        if (!lastUpdate || (now - parseInt(lastUpdate)) > 30 * 1000) {
+            try {
+                console.log('🔄 Фоновое обновление профиля...');
+                const response = await api.get<Account>(this.endpoints.profile, {
+                    headers: this.getAuthHeaders()
+                });
+                
+                if (response.status && response.data) {
+                    const currentUser = AuthStorage.getUser();
+                    if (currentUser) {
+                        const updatedUser = { ...currentUser, ...response.data };
+                        const tokens = {
+                            access_token: AuthStorage.getAccessToken() || '',
+                            refresh_token: AuthStorage.getRefreshToken() || '',
+                        };
+                        
+                        AuthStorage.setAuthData(tokens, updatedUser);
+                        localStorage.setItem('profile_last_update', now.toString());
+                        console.log('✅ Профиль обновлен в фоне');
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Ошибка фонового обновления профиля:', error);
+            }
+        }
+    }
+
     isAuthenticated(): boolean {
         return !!this.token && AuthStorage.hasToken();
     }
 
     getCurrentUser(): Account | null {
         return AuthStorage.getUser();
+    }
+
+    /**
+     * Инвалидация кэша профиля
+     */
+    invalidateProfileCache(): void {
+        localStorage.removeItem('profile_last_update');
+        // ApiBridge сам обработает кэш через свой механизм
     }
 }
 

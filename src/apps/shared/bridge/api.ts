@@ -5,6 +5,18 @@ class ApiBridge {
     private baseUrl: string;
     private refreshInProgress = false;
     private refreshPromise: Promise<ApiResponse<any> | null> | null = null;
+    
+    // Кэш для дебаунса запросов
+    private requestCache = new Map<string, {
+        promise: Promise<ApiResponse<any>>;
+        timestamp: number;
+        data?: any;
+    }>();
+    private cacheTTL = 1000; // 1 секунда TTL для одинаковых запросов
+    
+    // Дебаунс таймеры
+    private debounceTimers = new Map<string, NodeJS.Timeout>();
+    private debounceDelay = 300; // 300ms дебаунс
 
     constructor() {
         this.baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
@@ -48,7 +60,89 @@ class ApiBridge {
         return result?.status === true;
     }
 
-    private async request<T>(
+    /**
+     * Генерация ключа для кэширования запросов
+     */
+    private generateRequestKey(
+        endpoint: string, 
+        options: RequestOptions
+    ): string {
+        const { method = 'GET', params, body } = options;
+        
+        let key = `${method}:${endpoint}`;
+        
+        if (params) {
+            const sortedParams = Object.keys(params)
+                .sort()
+                .map(k => `${k}=${params[k]}`)
+                .join('&');
+            key += `?${sortedParams}`;
+        }
+        
+        // Для POST/PUT/PATCH запросов учитываем тело
+        if (body && ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase())) {
+            try {
+                const bodyStr = typeof body === 'string' ? body : JSON.stringify(body);
+                // Используем хэш или просто добавляем длину для простоты
+                key += `:body=${bodyStr.length}`;
+            } catch {
+                // Игнорируем ошибки сериализации
+            }
+        }
+        
+        return key;
+    }
+
+    /**
+     * Дебаунс запросов
+     */
+    private async debouncedRequest<T>(
+        endpoint: string,
+        options: RequestOptions = {},
+        retryCount = 0
+    ): Promise<ApiResponse<T>> {
+        const requestKey = this.generateRequestKey(endpoint, options);
+        
+        // Проверяем есть ли такой же активный запрос
+        const cached = this.requestCache.get(requestKey);
+        const now = Date.now();
+        
+        if (cached && (now - cached.timestamp) < this.cacheTTL) {
+            console.log(`📦 Используем кэшированный запрос: ${requestKey}`);
+            return cached.promise as Promise<ApiResponse<T>>;
+        }
+        
+        // Создаем новый промис для запроса
+        const requestPromise = this.makeRequest<T>(endpoint, options, retryCount);
+        
+        // Сохраняем в кэш
+        this.requestCache.set(requestKey, {
+            promise: requestPromise,
+            timestamp: now
+        });
+        
+        // Очищаем старые записи из кэша
+        this.cleanupCache();
+        
+        return requestPromise;
+    }
+
+    /**
+     * Очистка старого кэша
+     */
+    private cleanupCache(): void {
+        const now = Date.now();
+        for (const [key, value] of this.requestCache.entries()) {
+            if (now - value.timestamp > this.cacheTTL * 10) { // 10x TTL
+                this.requestCache.delete(key);
+            }
+        }
+    }
+
+    /**
+     * Основной метод выполнения запроса
+     */
+    private async makeRequest<T>(
         endpoint: string,
         options: RequestOptions = {},
         retryCount = 0
@@ -113,7 +207,7 @@ class ApiBridge {
                     
                     if (refreshSuccess) {
                         console.log('🔄 Повторяем запрос после успешного refresh');
-                        return this.request<T>(endpoint, options, retryCount + 1);
+                        return this.makeRequest<T>(endpoint, options, retryCount + 1);
                     } else {
                         console.log('❌ Refresh не удался, очищаем данные');
                         accountAuth.clearToken();
@@ -158,6 +252,22 @@ class ApiBridge {
         }
     }
 
+    private async request<T>(
+        endpoint: string,
+        options: RequestOptions = {},
+        retryCount = 0
+    ): Promise<ApiResponse<T>> {
+        // Для GET запросов используем дебаунс и кэш
+        const method = options.method?.toUpperCase() || 'GET';
+        
+        if (method === 'GET') {
+            return this.debouncedRequest<T>(endpoint, options, retryCount);
+        }
+        
+        // Для остальных методов просто делаем запрос
+        return this.makeRequest<T>(endpoint, options, retryCount);
+    }
+
     // crud методы
     get<T>(endpoint: string, options?: RequestOptions): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, { ...options, method: 'GET' });
@@ -189,6 +299,15 @@ class ApiBridge {
 
     delete<T>(endpoint: string, options?: RequestOptions): Promise<ApiResponse<T>> {
         return this.request<T>(endpoint, { ...options, method: 'DELETE' });
+    }
+
+    /**
+     * Очистка кэша (например, после logout)
+     */
+    clearCache(): void {
+        this.requestCache.clear();
+        this.debounceTimers.forEach(timer => clearTimeout(timer));
+        this.debounceTimers.clear();
     }
 }
 

@@ -19,7 +19,7 @@ interface SelectOption {
 
 interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
   size?: 'sm' | 'md' | 'bg';
-  variant?: 'default' | 'leader' | 'contrast' | 'empty' | 'glass';
+  variant?: 'default' | 'leader' | 'contrast' | 'empty' | 'glass' | 'elevated';
   error?: boolean;
   fullWidth?: boolean;
   options?: SelectOption[];
@@ -142,6 +142,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               [styles.bg]: size === 'bg',
               [styles.default]: variant === 'default',
               [styles.leader]: variant === 'leader',
+              [styles.elevated]: variant === 'elevated',
               [styles.contrast]: variant === 'contrast',
               [styles.empty]: variant === 'empty',
               [styles.glass]: variant === 'glass',
@@ -185,6 +186,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
               [styles.bg]: size === 'bg',
               [styles.default]: variant === 'default',
               [styles.leader]: variant === 'leader',
+              [styles.elevated]: variant === 'elevated',
               [styles.contrast]: variant === 'contrast',
               [styles.empty]: variant === 'empty',
               [styles.glass]: variant === 'glass',

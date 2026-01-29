@@ -1,0 +1,41 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    min-height: 100%;
+    flex-flow: column nowrap;
+    padding: 1rem;
+    font-size: .7em;
+    gap: .6rem;
+
+    .title {
+        font-size: 1.8em;
+        font-weight: 600;
+        letter-spacing: .02em;
+        line-height: 1.15;
+    }
+    .description {
+        color: var(--color-text-ghost);
+    }
+    .body {
+        display: flex;
+        margin-top: .3rem;
+        flex-flow: column nowrap;
+        gap: 1rem;
+    }
+    .section {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 1em;
+
+        .capture {
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: .02em;
+        }
+    }
+
+    .input, .action {
+        max-width: 25rem;
+    }
+}

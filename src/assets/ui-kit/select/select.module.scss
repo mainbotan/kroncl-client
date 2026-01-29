@@ -11,6 +11,10 @@
     opacity: 0.6;
     pointer-events: none;
   }
+  
+  &:focus {
+    border: 2px solid var(--color-accent);
+  }
 }
 
 .hiddenSelect {
@@ -48,12 +52,12 @@
   }
 
   &:focus:not(.disabled) {
-    border-color: var(--color-brand);
+    border: 2px solid var(--color-accent);
     box-shadow: 0 0 0 2px var(--color-brand-alpha);
   }
 
   &.open {
-    border-color: var(--color-brand);
+    border: 2px solid var(--color-accent);
   }
 
   // Variants
@@ -68,6 +72,10 @@
   &.contrast {
     background-color: var(--color-contrast);
     color: var(--color-contrast-text-primary);
+  }
+  &.elevated {
+    background-color: var(--color-surface-elevated);
+    color: var(--color-text-primary);
   }
   &.empty {
     background-color: transparent;
@@ -203,7 +211,7 @@
   
   &.selected {
     background-color: var(--color-brand-alpha);
-    color: var(--color-brand);
+    color: var(--color-text-hint);
   }
   
   &.disabled {
