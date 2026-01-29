@@ -31,7 +31,7 @@ export class AccountAuth {
             const storedToken = AuthStorage.getAccessToken();
             if (storedToken) {
                 this.token = storedToken;
-                api.setToken(storedToken);
+                // Убрал вызов api.setToken(storedToken) - вызывает циклическую зависимость
             }
         }
     }
@@ -88,7 +88,7 @@ export class AccountAuth {
 
     setToken(token: string): void {
         this.token = token;
-        api.setToken(token);
+        api.setToken(token); // Теперь это безопасно
     }
 
     clearToken(): void {

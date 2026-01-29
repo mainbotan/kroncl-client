@@ -1,5 +1,4 @@
 import { ApiResponse, RequestOptions } from './types';
-import { accountAuth } from '@/apps/account/auth/api';
 
 class ApiBridge {
     private baseUrl: string;
@@ -45,8 +44,49 @@ class ApiBridge {
         this.refreshPromise = (async () => {
             try {
                 console.log('🔄 Автопродление токена...');
-                const refreshResult = await accountAuth.refreshTokens();
-                return refreshResult;
+                
+                // Получаем refresh токен напрямую из localStorage
+                const refreshToken = typeof window !== 'undefined' 
+                    ? localStorage.getItem('auth_refresh_token')
+                    : null;
+                    
+                if (!refreshToken) {
+                    return null;
+                }
+                
+                // Делаем запрос refresh напрямую
+                const response = await this.post<any>('/account/refresh', { 
+                    refresh_token: refreshToken 
+                });
+                
+                if (response.status && response.data?.access_token) {
+                    // Сохраняем новый токен
+                    if (typeof window !== 'undefined') {
+                        localStorage.setItem('auth_access_token', response.data.access_token);
+                        if (response.data.refresh_token) {
+                            localStorage.setItem('auth_refresh_token', response.data.refresh_token);
+                        }
+                        
+                        // Обновляем cookies
+                        document.cookie = `auth_access_token=${response.data.access_token}; path=/; max-age=86400; SameSite=Lax`;
+                        if (response.data.refresh_token) {
+                            document.cookie = `auth_refresh_token=${response.data.refresh_token}; path=/; max-age=2592000; SameSite=Lax`;
+                        }
+                    }
+                    
+                    return response;
+                } else {
+                    // Если refresh не удался, очищаем токены
+                    if (typeof window !== 'undefined') {
+                        localStorage.removeItem('auth_access_token');
+                        localStorage.removeItem('auth_refresh_token');
+                        // Редирект на логин если на клиенте
+                        if (window.location.pathname.includes('/platform')) {
+                            window.location.href = '/sso/sign_in';
+                        }
+                    }
+                    return null;
+                }
             } catch (error) {
                 console.error('❌ Ошибка при обновлении токена:', error);
                 return null;
@@ -166,7 +206,10 @@ class ApiBridge {
         }
 
         // Добавляем токен если есть
-        const authToken = localStorage.getItem('auth_access_token');
+        const authToken = typeof window !== 'undefined' 
+            ? localStorage.getItem('auth_access_token')
+            : null;
+            
         const defaultHeaders: HeadersInit = {
             'Content-Type': 'application/json',
             ...(authToken ? { 'Authorization': `Bearer ${authToken}` } : {}),
@@ -210,11 +253,17 @@ class ApiBridge {
                         return this.makeRequest<T>(endpoint, options, retryCount + 1);
                     } else {
                         console.log('❌ Refresh не удался, очищаем данные');
-                        accountAuth.clearToken();
                         
-                        // Редирект на логин если на клиенте
-                        if (typeof window !== 'undefined' && window.location.pathname.includes('/platform')) {
-                            window.location.href = '/sso/sign_in';
+                        // Очищаем токены
+                        if (typeof window !== 'undefined') {
+                            localStorage.removeItem('auth_access_token');
+                            localStorage.removeItem('auth_refresh_token');
+                            localStorage.removeItem('auth_user');
+                            
+                            // Редирект на логин если на клиенте
+                            if (window.location.pathname.includes('/platform')) {
+                                window.location.href = '/sso/sign_in';
+                            }
                         }
                     }
                 }

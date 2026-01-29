@@ -8,10 +8,13 @@
     left: 0;
     height: 2rem;
     border-bottom: 1px solid var(--color-stroke-secondary);
+    background-color: var(--color-leader);
     width: 100%;
     overflow-x: scroll;
     white-space: nowrap;
     @include no-scrollbar();
+    border-top-left-radius: .6rem;
+    border-top-right-radius: .6rem;
 
     .grid {
         display: flex;
