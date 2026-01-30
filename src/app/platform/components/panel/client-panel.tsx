@@ -15,6 +15,7 @@ import Collection from "@/assets/ui-kit/icons/collection";
 import Keyhole from "@/assets/ui-kit/icons/keyhole";
 import History from "@/assets/ui-kit/icons/history";
 import Bell from "@/assets/ui-kit/icons/bell";
+import Upload from '@/assets/ui-kit/icons/upload';
 
 interface PlatformPanelProps {
   className?: string;
@@ -24,7 +25,6 @@ interface PlatformPanelProps {
   initialCollapsed?: boolean;
 }
 
-// Маппинг названий иконок на компоненты
 const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
   'account': Account,
   'collection': Collection,
@@ -33,6 +33,7 @@ const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
   'bell': Bell,
   'settings': SettingsIcon,
   'collapse-left': CollapseLeft,
+  'storage': Upload
 };
 
 export default function ClientPanel({

@@ -2,6 +2,7 @@ export const breadcrumbDictionary: Record<string, string> = {
     'platform': 'Платформа',
     'account': 'Аккаунт',
     'companies': "Организации",
+    'company': "Компания",
 
     'new': "Создание"
 };
