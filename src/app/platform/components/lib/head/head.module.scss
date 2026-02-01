@@ -36,7 +36,7 @@
         }
         .actions {
             display: flex;
-            align-items: center;
+            align-items: start;
             font-size: .7em;
             gap: .4rem;
         }
@@ -148,7 +148,7 @@
             .svg {
                 width: 1.1em;
                 height: 1.1em;
-                fill: var(--color-icon-primary);
+                fill: var(--color-accent-text-primary);
             }
         }
     }

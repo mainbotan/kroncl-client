@@ -35,37 +35,27 @@ export function CompanyCard({ company }: CompanyCardProps) {
         <div className={styles.card}>
             <div className={styles.icon}>
                 {company.avatar_url ? (
-                    <ModalTooltip
-                        content="Логотип компании"
-                        side="right"
-                    >
-                        <span 
-                            className={styles.avatar} 
-                            style={{ 
-                                backgroundImage: `url(${company.avatar_url})` 
-                            }}
-                        />
-                    </ModalTooltip>
+                    <Link href={`/platform/${company.id}`}
+                        className={styles.avatar} 
+                        style={{ 
+                            backgroundImage: `url(${company.avatar_url})` 
+                        }}
+                    />
                 ) : (
-                    <ModalTooltip
-                        content={`Инициалы компании: ${firstLetter}`}
-                        side="right"
+                    <Link href={`/platform/${company.id}`}
+                        className={styles.avatar}
+                        style={{ 
+                            backgroundColor: avatarColor,
+                            color: '#fff'
+                        }}
                     >
-                        <span 
-                            className={styles.avatar}
-                            style={{ 
-                                backgroundColor: avatarColor,
-                                color: '#fff'
-                            }}
-                        >
-                            {firstLetter}
-                        </span>
-                    </ModalTooltip>
+                        {firstLetter}
+                    </Link>
                 )}
             </div>
             <div className={styles.info}>
                 <div className={styles.capture}>
-                    <Link href={`/platform/companies/${company.id}`}>
+                    <Link href={`/platform/${company.id}`}>
                         {company.name}
                     </Link>
                     <span className={styles.marks}>
@@ -74,9 +64,9 @@ export function CompanyCard({ company }: CompanyCardProps) {
                             side="top"
                         >
                             {company.is_public ? (
-                                <Earth className={styles.svg} />
+                                <span><Earth className={styles.svg} /></span>
                             ) : (
-                                <Guard className={styles.svg} />
+                                <span><Guard className={styles.svg} /></span>
                             )}
                         </ModalTooltip>
                     </span>

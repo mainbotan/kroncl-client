@@ -22,6 +22,14 @@ export interface PlatformHeadProps {
   sections?: PlatformHeadSection[];
   currentPath?: string;
   showSearch?: boolean;
+  searchProps?: {
+    placeholder?: string;
+    defaultValue?: string;
+    onSearch?: (value: string) => void;
+    onInputChange?: (value: string) => void;
+    debounceMs?: number;
+    searchButton?: boolean;
+  };
   notes?: Array<{
     type: 'info' | 'accent' | 'warning';
     title: string;

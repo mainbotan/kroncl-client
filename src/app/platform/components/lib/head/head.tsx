@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect, useRef, useCallback } from 'react';
 import clsx from 'clsx';
 import styles from './head.module.scss';
 import Input from '@/assets/ui-kit/input/input';
@@ -7,8 +8,25 @@ import Search from '@/assets/ui-kit/icons/search';
 import Button from '@/assets/ui-kit/button/button';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { isSectionActive } from '@/assets/utils/sections';
 import { PlatformHeadProps } from './_types';
+
+// Простая функция дебаунса
+function useDebouncedCallback<T extends (...args: any[]) => any>(
+  callback: T,
+  delay: number
+) {
+  const timeoutRef = useRef<NodeJS.Timeout>();
+
+  return useCallback((...args: Parameters<T>) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      callback(...args);
+    }, delay);
+  }, [callback, delay]);
+}
 
 export function PlatformHead({
   title,
@@ -17,28 +35,65 @@ export function PlatformHead({
   sections = [],
   currentPath,
   showSearch = false,
+  searchProps = {},
   notes = []
 }: PlatformHeadProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const activePath = currentPath || pathname || '';
+  const [searchValue, setSearchValue] = useState(searchProps.defaultValue || '');
 
-  // Определяем активный раздел с учетом query параметров
+  // Определяем активный раздел
   const getActiveSectionValue = () => {
     if (!sections.length) return '';
     
-    // Получаем текущий параметр role
     const currentRole = searchParams.get('role');
+    if (currentRole === 'owner') return 'owner';
+    if (currentRole === 'guest') return 'joined';
+    return 'all';
+  };
+
+  // Создаем дебаунс функцию
+  const debouncedSearch = useDebouncedCallback(
+    (value: string) => {
+      if (searchProps.onSearch) {
+        searchProps.onSearch(value);
+      }
+    },
+    searchProps.debounceMs || 500
+  );
+
+  // Обработчик изменения инпута
+  const handleInputChange = (value: string) => {
+    setSearchValue(value);
     
-    // Определяем активную секцию по параметру role
-    if (currentRole === 'owner') {
-      return 'owner';
-    } else if (currentRole === 'guest') {
-      return 'joined'; // или 'guest', смотря какое value у секции
-    } else {
-      return 'all';
+    if (searchProps.onInputChange) {
+      searchProps.onInputChange(value);
+    }
+    
+    debouncedSearch(value);
+  };
+
+  // Обработчик клика по кнопке поиска
+  const handleSearchClick = () => {
+    if (searchProps.onSearch) {
+      searchProps.onSearch(searchValue);
     }
   };
+
+  // Обработчик нажатия Enter
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && searchProps.onSearch) {
+      searchProps.onSearch(searchValue);
+    }
+  };
+
+  // Синхронизация с defaultValue при изменении пропса
+  useEffect(() => {
+    if (searchProps.defaultValue !== undefined) {
+      setSearchValue(searchProps.defaultValue);
+    }
+  }, [searchProps.defaultValue]);
 
   const activeSectionValue = getActiveSectionValue();
 
@@ -118,14 +173,23 @@ export function PlatformHead({
       {showSearch && (
         <div className={styles.search}>
           <Input 
-            type='text' 
+            type='text'
+            value={searchValue}
+            onChange={(e) => handleInputChange(e.target.value)}
+            onKeyDown={handleKeyDown}
             className={styles.input} 
             variant='glass' 
-            placeholder="Поиск..."
+            placeholder={searchProps.placeholder || "Поиск..."}
           />
-          <Button className={styles.button} variant='accent'>
-            Искать
-          </Button>
+          {searchProps.searchButton !== false && (
+            <Button 
+              className={styles.button} 
+              variant='accent'
+              onClick={handleSearchClick}
+            >
+              <Search className={styles.svg} />
+            </Button>
+          )}
         </div>
       )}
 
