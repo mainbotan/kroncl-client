@@ -1,0 +1,49 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.pagination {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    padding: 1rem;
+    font-size: .7em;
+    gap: 1em;
+
+    .pages {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+        color: var(--color-text-description);
+
+        .page {
+            transition: color var(--transition);
+
+            &:hover {
+                color: var(--color-text-hint);
+            }
+            &.active {
+                color: var(--color-text-ghost);
+
+                &:hover {
+                    color: auto;
+                }
+            }
+        }
+    }
+
+    .section {
+        color: var(--color-text-ghost);
+        transition: color var(--transition);
+        @include cursor(pointer);
+
+        &:hover {
+            color: var(--color-text-hint);
+        }
+        &.disabled {
+            color: var(--color-text-description);
+
+            &:hover {
+                color: var(--color-text-description);
+            }
+        }
+    }
+}

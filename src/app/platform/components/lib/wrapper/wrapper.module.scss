@@ -1,0 +1,8 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+    padding: .8rem;
+}

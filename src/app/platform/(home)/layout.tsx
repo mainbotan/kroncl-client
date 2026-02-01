@@ -4,6 +4,7 @@ import { PanelSection } from "../components/panel/_types";
 import ClientPanel from "../components/panel/client-panel";
 import PlatformPanel from "../components/panel/server-panel";
 import AuthGuard from "@/apps/account/auth/components/AuthGuard";
+import { PlatformContentWrapper } from "../components/lib/wrapper/wrapper";
 
 export default function Layout({
   children
@@ -40,9 +41,11 @@ export default function Layout({
         title={title} 
       />
       <PlatformContent>
-        <AuthGuard>
-          {children}
-        </AuthGuard>
+        <PlatformContentWrapper>
+          <AuthGuard>
+            {children}
+          </AuthGuard>
+        </PlatformContentWrapper>
       </PlatformContent>
     </>
   );

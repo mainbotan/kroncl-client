@@ -366,12 +366,12 @@ export default function Page() {
           actions={[
             {
               label: 'Открыть компанию',
-              href: `/platform/company/${createdCompany?.id}`,
+              href: `/platform/${createdCompany?.id}`,
               variant: 'contrast' as const
             }
           ]}
           redirect={{
-            href: `/platform/company/${createdCompany?.id}`,
+            href: `/platform/${createdCompany?.id}`,
             delay: 5000,
             label: 'Автоматический переход в компанию через {seconds} сек.'
           }}

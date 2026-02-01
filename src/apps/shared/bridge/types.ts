@@ -1,9 +1,8 @@
-// обвязка запросов
 export interface ApiResponse<T = any> {
     status: boolean;
     message: string;
     data: T;
-    _meta: {
+    meta: {
         timestamp: string;
         request_id: string;
         path: string;

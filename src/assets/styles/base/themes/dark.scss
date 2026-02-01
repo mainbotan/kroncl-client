@@ -65,8 +65,9 @@
     // ==================== EFFECTS & GRADIENTS ====================
     --gradient-brand: linear-gradient(135deg, var(--color-brand) 0%, var(--color-blue) 100%);
     --gradient-surface: linear-gradient(135deg, var(--color-surface-primary) 0%, var(--color-surface-secondary) 100%);
-    --gradient-subtle: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    --gradient-purple: linear-gradient(135deg, #1A1A1A, #4c1e836c);
+    --gradient-subtle: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%
+    --gradient-purple: linear-gradient(135deg, #1A1A1A, #4c1e836c));
+    --gradient-accent: linear-gradient(135deg, #222222, #E12152, #D69703);
     
     --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
     --shadow-gentle: 0 4px 6px rgba(0, 0, 0, 0.03);
