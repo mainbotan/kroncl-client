@@ -37,6 +37,51 @@ export default async function CompanyLayout({
   
   const sections: PanelSection[] = [
     {
+      name: 'Сделки',
+      href: `/platform/${companyId}/dm`,
+      icon: 'deals'
+    },
+    {
+      name: 'Клиенты',
+      href: `/platform/${companyId}/crm`,
+      icon: 'clients'
+    },
+    {
+      name: 'Финансы',
+      href: `/platform/${companyId}/fm`,
+      icon: 'wallet'
+    },
+    {
+      name: 'Услуги',
+      href: `/platform/${companyId}/sm`,
+      icon: 'services'
+    },
+    {
+      name: 'Склад',
+      href: `/platform/${companyId}/wm`,
+      icon: 'warehouse'
+    },
+    {
+      name: 'Логистика',
+      href: `/platform/${companyId}/lm`,
+      icon: 'logistic'
+    },
+    {
+      name: 'Сотрудники',
+      href: `/platform/${companyId}/hrm`,
+      icon: 'team'
+    },
+    {
+      name: 'Доступы',
+      href: `/platform/${companyId}/accesses`,
+      icon: 'accesses'
+    },
+    {
+      name: 'Активность',
+      href: `/platform/${companyId}/activity`,
+      icon: 'activity'
+    },
+    {
       name: 'Хранилище',
       href: `/platform/${companyId}/storage`,
       icon: 'storage'

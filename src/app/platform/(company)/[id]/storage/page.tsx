@@ -15,7 +15,7 @@ export default function StoragePage() {
     const [loading, setLoading] = useState(true);
     
     // Условный лимит хранилища (например, 100 MB)
-    const STORAGE_LIMIT_MB = 1;
+    const STORAGE_LIMIT_MB = 20;
     
     useEffect(() => {
         loadData();

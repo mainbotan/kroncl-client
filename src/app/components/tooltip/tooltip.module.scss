@@ -18,6 +18,14 @@
     @include lines-ellipsis(3);
     backdrop-filter: blur(10px);
 
+    &.compact {
+        display: inline-block;
+        text-align: left;
+        width: fit-content;
+        max-width: 8rem;
+        padding: .7em .9em;
+    }
+
     svg {
         width: 1.1em;
         height: 1.1em;

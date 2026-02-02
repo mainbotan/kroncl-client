@@ -16,6 +16,15 @@ import Keyhole from "@/assets/ui-kit/icons/keyhole";
 import History from "@/assets/ui-kit/icons/history";
 import Bell from "@/assets/ui-kit/icons/bell";
 import Upload from '@/assets/ui-kit/icons/upload';
+import Clients from '@/assets/ui-kit/icons/clients';
+import Wallet from '@/assets/ui-kit/icons/wallet';
+import Team from '@/assets/ui-kit/icons/team';
+import TwoCards from '@/assets/ui-kit/icons/two-cards';
+import Warehouse from '@/assets/ui-kit/icons/warehouse';
+import Branching from '@/assets/ui-kit/icons/branching';
+import Deal from '@/assets/ui-kit/icons/deal';
+import Kanban from '@/assets/ui-kit/icons/kanban';
+import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 
 interface PlatformPanelProps {
   className?: string;
@@ -33,7 +42,16 @@ const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
   'bell': Bell,
   'settings': SettingsIcon,
   'collapse-left': CollapseLeft,
-  'storage': Upload
+  'storage': Upload,
+  'clients': Clients,
+  'wallet': Wallet,
+  'team': Team,
+  'services': TwoCards,
+  'warehouse': Warehouse,
+  'logistic': Branching,
+  'deals': Kanban,
+  'accesses': Keyhole,
+  'activity': History 
 };
 
 export default function ClientPanel({
@@ -119,24 +137,45 @@ export default function ClientPanel({
                 href: section.href,
                 exact: section.exact
               });
-              
-              return (
-                <a 
-                  key={index} 
-                  href={section.href}
-                  className={clsx(
-                    styles.section, 
-                    isActive && styles.active
-                  )}
-                  title={displayCollapsed ? section.name : undefined}
-                >
-                  <span className={styles.icon}>
-                    {renderIcon(section.icon)}
-                  </span>
-                  {!displayCollapsed && (
-                    <span className={styles.name}>{section.name}</span>
-                  )}
-                </a>
+
+              return displayCollapsed ? (
+                  <ModalTooltip
+                      content={section.name}
+                      side='right'
+                      compact
+                  >
+                    <a 
+                      key={index} 
+                      href={section.href}
+                      className={clsx(
+                        styles.section, 
+                        isActive && styles.active
+                      )}
+                    >
+                      <span className={styles.icon}>
+                        {renderIcon(section.icon)}
+                      </span>
+                      {!displayCollapsed && (
+                        <span className={styles.name}>{section.name}</span>
+                      )}
+                    </a>
+                  </ModalTooltip>
+              ) : (
+                  <a 
+                    key={index} 
+                    href={section.href}
+                    className={clsx(
+                      styles.section, 
+                      isActive && styles.active
+                    )}
+                  >
+                    <span className={styles.icon}>
+                      {renderIcon(section.icon)}
+                    </span>
+                    {!displayCollapsed && (
+                      <span className={styles.name}>{section.name}</span>
+                    )}
+                  </a>
               );
             })}
           </div>
