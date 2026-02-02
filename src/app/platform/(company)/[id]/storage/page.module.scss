@@ -1,0 +1,53 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.head {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    // border-top: 1px solid var(--color-stroke-secondary);
+
+    .stats {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1rem;
+
+        .stat {
+            display: inline-flex;
+            flex-flow: column nowrap;
+            justify-content: end;
+            gap: .2em;
+            padding: .8em 1em;
+            border: 1px solid var(--color-stroke-secondary);
+            border-radius: .5em;
+            @include cursor(pointer);
+
+            .value {
+                font-size: 1.3em;
+                font-weight: 600;
+                letter-spacing: .02em;
+            }
+            .name {
+                font-size: .6em;
+                color: var(--color-text-ghost);
+            }
+            &:nth-child(1) {
+                background-color: var(--color-surface-area);
+            }
+        }
+    }
+
+    .bar {
+        display: flex;
+        height: .9rem;
+        background-color: var(--color-surface-tertiary);
+        border-radius: 1rem;
+        overflow: hidden;
+
+        .line {
+            display: flex;
+            width: 20%;
+            transition: width var(--transition);
+            background-color: var(--color-blue);
+        }
+    }
+}
