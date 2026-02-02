@@ -10,12 +10,11 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { PlatformHeadProps } from './_types';
 
-// Простая функция дебаунса
 function useDebouncedCallback<T extends (...args: any[]) => any>(
   callback: T,
   delay: number
 ) {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   return useCallback((...args: Parameters<T>) => {
     if (timeoutRef.current) {

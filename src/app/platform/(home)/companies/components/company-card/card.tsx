@@ -6,12 +6,14 @@ import styles from './card.module.scss';
 import { getColorFromString, getFirstLetter } from '@/assets/utils/avatars';
 import Link from 'next/link';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
+import clsx from 'clsx';
 
 interface CompanyCardProps {
     company: AccountCompany;
+    className?: string;
 }
 
-export function CompanyCard({ company }: CompanyCardProps) {
+export function CompanyCard({ company, className = ''}: CompanyCardProps) {
     const firstLetter = getFirstLetter(company.name);
     const avatarColor = getColorFromString(company.name);
 
@@ -32,7 +34,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
     const dateTooltip = `Вы присоединились к компании ${formatDate(company.joined_at)}`;
 
     return (
-        <div className={styles.card}>
+        <div className={clsx(styles.card, className)}>
             <div className={styles.icon}>
                 {company.avatar_url ? (
                     <Link href={`/platform/${company.id}`}

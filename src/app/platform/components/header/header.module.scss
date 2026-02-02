@@ -48,19 +48,6 @@
             display: flex;
             flex-flow: row nowrap;
             gap: 2em;
-
-            .input {
-                width: 15rem;
-                background-color: var(--color-surface-glass);
-                pointer-events: all;
-                border-width: 2px;
-                transition: width var(--transition);
-
-                &:focus {
-                    border: 2px solid var(--color-accent);
-                    width: 30rem;
-                }
-            }
         }
 
         @media (max-width: 720px) {

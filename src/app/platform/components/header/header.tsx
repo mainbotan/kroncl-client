@@ -20,6 +20,7 @@ import { getRandomGradient } from '@/assets/utils/avatars';
 import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import Bell from '@/assets/ui-kit/icons/bell';
 import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
+import { PllatformSearch } from '../search/search';
 
 export function Header() {
     const pathname = usePathname();
@@ -104,7 +105,7 @@ export function Header() {
 
                 <div className={styles.search}>
                     <div className={styles.frame}>
-                        <Input className={styles.input} variant='default' placeholder='Поиск по организациям' />
+                        <PllatformSearch />
                     </div>
                 </div>
                 

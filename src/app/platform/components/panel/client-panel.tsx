@@ -143,6 +143,7 @@ export default function ClientPanel({
                       content={section.name}
                       side='right'
                       compact
+                      key={index}
                   >
                     <a 
                       key={index} 

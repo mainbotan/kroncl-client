@@ -1,4 +1,6 @@
-export const containerVariants = {
+import { Variants } from "framer-motion";
+
+export const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
@@ -9,7 +11,7 @@ export const containerVariants = {
     }
 };
 
-export const cardVariants = {
+export const cardVariants: Variants = {
     hidden: { 
         opacity: 0, 
         y: 20 
@@ -25,7 +27,7 @@ export const cardVariants = {
     }
 };
 
-export const emptyStateVariants = {
+export const emptyStateVariants: Variants = {
     hidden: { opacity: 0, scale: 0.95 },
     visible: { 
         opacity: 1, 
