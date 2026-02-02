@@ -8,6 +8,8 @@ import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import Collection from '@/assets/ui-kit/icons/collection';
 import Plus from '@/assets/ui-kit/icons/plus';
 import Package from '@/assets/ui-kit/icons/package';
+import Book from '@/assets/ui-kit/icons/book';
+import Dev from '@/assets/ui-kit/icons/dev';
 
 export default function Page() {
     const { user } = useAuth();
@@ -24,6 +26,29 @@ export default function Page() {
             title: "Ваши организации",
             description: "Смотреть организации, в которых вы состоите.",
             icon: Collection,
+            href: "/platform/companies"
+        },
+        {
+            title: "Документация",
+            description: "Смотреть организации, в которых вы состоите.",
+            icon: Book,
+            href: "/platform/companies"
+        },
+        {
+            title: "Разработчикам",
+            description: "Смотреть организации, в которых вы состоите.",
+            icon: Dev,
+            href: "/platform/companies"
+        },
+        {
+            title: "Аккаунт",
+            description: "Смотреть организации, в которых вы состоите.",
+            icon: Account,
+            href: "/platform/companies"
+        },
+        {
+            title: "Пригласите сотрудников",
+            description: "Смотреть организации, в которых вы состоите.",
             href: "/platform/companies"
         },
     ];

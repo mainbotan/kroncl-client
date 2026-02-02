@@ -137,16 +137,6 @@ export function Header() {
                         >
                             Пригласить
                         </Button>
-                        <Button 
-                            className={styles.button} 
-                            variant='default'
-                            as="a"
-                            href={authLinks.login}
-                            // target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Bell className={styles.svg} />
-                        </Button>
                     </div>
                     
                     {user && (

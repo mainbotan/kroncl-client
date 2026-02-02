@@ -3,9 +3,9 @@
 import Input from '@/assets/ui-kit/input/input';
 import styles from './search.module.scss';
 import clsx from 'clsx';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { areaVariants, canvasVariants } from './_animations';
+import { areaVariants, canvasVariants, optimizedAreaVariants, optimizedCanvasVariants } from './_animations';
 import { CompanyCard } from '../../(home)/companies/components/company-card/card';
 import { useCompanies } from '@/apps/account/companies/hooks/useCompanies';
 import Upload from '@/assets/ui-kit/icons/upload';
@@ -14,14 +14,19 @@ import Settings from '@/assets/ui-kit/icons/settings';
 import Keyhole from '@/assets/ui-kit/icons/keyhole';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { quickAccess } from './quick-access.config';
+import { memo } from 'react';
 
 interface PllatformSearchProps {
   onClose?: () => void;
 }
 
+// Мемоизированный CompanyCard
+const MemoizedCompanyCard = memo(CompanyCard);
+
 export function PllatformSearch({ onClose }: PllatformSearchProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const canvasRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -29,47 +34,52 @@ export function PllatformSearch({ onClose }: PllatformSearchProps) {
   // Используем хук компаний
   const { companies, loading, fetchCompanies } = useCompanies();
 
-  // Дебаунс поиска компаний
+  // Дебаунс поиска компаний - двухэтапный для оптимизации
   useEffect(() => {
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
 
-    if (searchQuery.trim() && searchQuery.trim().length >= 2) {
-      searchTimeoutRef.current = setTimeout(() => {
-        fetchCompanies({
-          search: searchQuery.trim(),
-          page: 1,
-          limit: 10
-        });
-      }, 300);
-    } else {
+    searchTimeoutRef.current = setTimeout(() => {
+      setDebouncedSearch(searchQuery.trim());
+    }, 150); // Уменьшили с 300 до 150мс
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+        searchTimeoutRef.current = null;
+      }
+    };
+  }, [searchQuery]);
+
+  // Поиск компаний по дебаунсированному запросу
+  useEffect(() => {
+    if (debouncedSearch.length >= 2) {
+      fetchCompanies({
+        search: debouncedSearch,
+        page: 1,
+        limit: 10
+      });
+    } else if (debouncedSearch === '') {
       fetchCompanies({
         page: 1,
         limit: 5
       });
     }
+  }, [debouncedSearch, fetchCompanies]);
 
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [searchQuery, fetchCompanies]);
-
-  // Обработчик клика вне области
+  // Оптимизированный обработчик клика вне области
   const handleClickOutside = useCallback((event: MouseEvent) => {
-    if (
-      canvasRef.current && 
-      !canvasRef.current.contains(event.target as Node) &&
-      inputRef.current &&
-      !inputRef.current.contains(event.target as Node)
-    ) {
+    const target = event.target as Node;
+    const clickedOutsideCanvas = canvasRef.current && !canvasRef.current.contains(target);
+    const clickedOutsideInput = inputRef.current && !inputRef.current.contains(target);
+    
+    if (clickedOutsideCanvas && clickedOutsideInput) {
       handleClose();
     }
   }, []);
 
-  // Обработчик нажатия клавиш
+  // Оптимизированный обработчик нажатия клавиш
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     // Ctrl+K или Cmd+K для открытия
     if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
@@ -84,52 +94,108 @@ export function PllatformSearch({ onClose }: PllatformSearchProps) {
   }, [isOpen]);
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    document.addEventListener('keydown', handleKeyDown);
+    const handleMouseDown = (event: MouseEvent) => handleClickOutside(event);
+    const handleKeyDownEvent = (event: KeyboardEvent) => handleKeyDown(event);
+    
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('keydown', handleKeyDownEvent);
     
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('keydown', handleKeyDownEvent);
     };
   }, [handleClickOutside, handleKeyDown]);
 
-  const handleOpen = () => {
+  const handleOpen = useCallback(() => {
     setIsOpen(true);
-    setTimeout(() => {
+    requestAnimationFrame(() => {
       inputRef.current?.focus();
-    }, 0);
-  };
+    });
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsOpen(false);
     setSearchQuery('');
+    setDebouncedSearch('');
     onClose?.();
-  };
+  }, [onClose]);
 
   // Обработчик клика на компанию
   const handleCompanyClick = useCallback(() => {
     handleClose();
+  }, [handleClose]);
+
+  const handleInputFocus = useCallback(() => {
+    setIsOpen(true);
   }, []);
 
-  const handleInputFocus = () => {
-    setIsOpen(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-  };
+  }, []);
 
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       console.log('Searching for:', searchQuery);
     }
-  };
+  }, [searchQuery]);
 
   useEffect(() => {
     if (!isOpen) {
       inputRef.current?.blur();
     }
   }, [isOpen]);
+
+  // Мемоизация результатов рендеринга компаний
+  const companyList = useMemo(() => {
+    if (loading) {
+      return (
+        <div className={styles.loading}>
+          <Spinner />
+        </div>
+      );
+    }
+
+    if (companies.length > 0) {
+      return (
+        <div className={styles.list}>
+          {companies.map((company) => (
+            <div 
+              key={company.id} 
+              className={styles.companyWrapper}
+              onClick={handleCompanyClick}
+            >
+              <MemoizedCompanyCard company={company} className={styles.item} />
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.empty}>
+        {debouncedSearch
+          ? `По запросу "${debouncedSearch}" организаций не найдено`
+          : 'Начните вводить название организации'}
+      </div>
+    );
+  }, [companies, loading, debouncedSearch, handleCompanyClick]);
+
+  // Мемоизация быстрого доступа
+  const quickAccessItems = useMemo(() => (
+    quickAccess.map((item) => (
+      <a 
+        key={item.id} 
+        href={item.href} 
+        className={styles.section}
+        onClick={handleClose}
+      >
+        <span className={styles.icon}>
+          <item.icon className={styles.svg} />
+        </span>
+        <span className={styles.name}>{item.title}</span>
+      </a>
+    ))
+  ), [handleClose]);
 
   return (
     <>
@@ -155,66 +221,31 @@ export function PllatformSearch({ onClose }: PllatformSearchProps) {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            variants={canvasVariants}
+            variants={optimizedCanvasVariants}
           >
             <motion.div 
               className={styles.area}
-              variants={areaVariants}
+              variants={optimizedAreaVariants}
               ref={canvasRef}
             >
               <div className={styles.grid}>
                 {/* Быстрый доступ */}
                 <div className={styles.group}>
                   <div className={styles.capture}>Быстрый доступ</div>
-                  {quickAccess.map((item) => (
-                    <a 
-                      key={item.id} 
-                      href={item.href} 
-                      className={styles.section}
-                      onClick={handleClose}
-                    >
-                      <span className={styles.icon}>
-                        <item.icon className={styles.svg} />
-                      </span>
-                      <span className={styles.name}>{item.title}</span>
-                    </a>
-                  ))}
+                  {quickAccessItems}
                 </div>
 
                 {/* Компании */}
                 <div className={clsx(styles.group, styles.companies)}>
                   <div className={styles.capture}>
                     Организации
-                    {searchQuery && companies.length > 0 && (
+                    {debouncedSearch && companies.length > 0 && (
                       <span className={styles.count}>
                         {companies.length} найдено
                       </span>
                     )}
                   </div>
-                  
-                  {loading ? (
-                    <div className={styles.loading}>
-                      <Spinner />
-                    </div>
-                  ) : companies.length > 0 ? (
-                    <div className={styles.list}>
-                      {companies.map((company) => (
-                        <div 
-                          key={company.id} 
-                          className={styles.companyWrapper}
-                          onClick={handleCompanyClick}
-                        >
-                          <CompanyCard company={company} className={styles.item} />
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className={styles.empty}>
-                      {searchQuery
-                        ? `По запросу "${searchQuery}" организаций не найдено`
-                        : 'Начните вводить название организации'}
-                    </div>
-                  )}
+                  {companyList}
                 </div>
               </div>
             </motion.div>
