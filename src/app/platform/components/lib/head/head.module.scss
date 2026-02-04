@@ -18,7 +18,7 @@
             display: flex;
             flex: 1;
             flex-flow: column nowrap;
-            gap: .28em;
+            gap: .3em;
 
             .capture {
                 font-weight: 600;
@@ -28,7 +28,7 @@
                 color: var(--color-text-secondary);
             }
             .description {
-                font-size: .65em;
+                font-size: .72em;
                 line-height: 1.4;
                 color: var(--color-text-ghost);
                 max-width: 30rem;

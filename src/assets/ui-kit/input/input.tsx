@@ -4,8 +4,10 @@ import clsx from 'clsx';
 import styles from './input.module.scss';
 import { InputHTMLAttributes, forwardRef } from 'react';
 
+export type InputVariant = 'default' | 'leader' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  variant?: 'default' | 'leader' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
+  variant?: InputVariant;
   size?: 'sm' | 'md' | 'lg';
   error?: boolean;
   fullWidth?: boolean;

@@ -1,8 +1,10 @@
+import { ButtonVariant } from "@/assets/ui-kit/button/button";
+
 export interface PlatformHeadAction {
   label: string;
   onClick?: () => void;
   href?: string;
-  variant?: 'default' | 'contrast' | 'accent' | 'light';
+  variant?: ButtonVariant;
   className?: string;
 }
 

@@ -1,7 +1,6 @@
 'use client';
 
 import Input from '@/assets/ui-kit/input/input';
-import styles from './page.module.scss';
 import Button from '@/assets/ui-kit/button/button';
 import clsx from 'clsx';
 import Earth from '@/assets/ui-kit/icons/earth';
@@ -14,6 +13,9 @@ import { companyInitApi } from '@/apps/company/init/api';
 import { PlatformResult } from '@/app/platform/components/lib/result/result';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { useRouter } from 'next/navigation';
+import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormStatus, PlatformFormUnify, PlatformFormVariants } from '@/app/platform/components/lib/form';
+import { PlatformHead } from '@/app/platform/components/lib/head/head';
+
 
 type FormData = {
   companyName: string;
@@ -114,8 +116,8 @@ export default function Page() {
   };
 
   // Обработчик изменения названия компании
-  const handleCompanyNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
+  const handleCompanyNameChange = (value: string) => {
+    const name = value;
     const newSlug = generateSlug(name);
     
     setFormData(prev => ({
@@ -128,8 +130,8 @@ export default function Page() {
   };
 
   // Обработчик изменения slug (ручное редактирование)
-  const handleSlugChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const input = e.target.value;
+  const handleSlugChange = (value: string) => {
+    const input = value;
     const cleanedSlug = generateSlug(input);
     
     setFormData(prev => ({
@@ -309,201 +311,194 @@ export default function Page() {
     };
   }, []);
 
-  // Определяем статус для отображения
-  const getStatusInfo = () => {
-    switch (slugStatus) {
-      case 'idle':
-        return {
-          className: '',
-          icon: null,
-          message: slugMessage
-        };
-      case 'checking':
-        return {
-          className: styles.checking,
-          icon: null,
-          message: slugMessage
-        };
-      case 'available':
-        return {
-          className: styles.success,
-          icon: <SuccessStatus className={styles.svg} />,
-          message: slugMessage
-        };
-      case 'not_available':
-      case 'error':
-        return {
-          className: styles.error,
-          icon: <ErrorStatus className={styles.svg} />,
-          message: slugMessage || 'Имя компании не доступно'
-        };
-      default:
-        return {
-          className: '',
-          icon: null,
-          message: ''
-        };
-    }
-  };
-
-  // Определяем состояние страницы
-  switch (pageState) {
-    case 'creating':
-      return (
-        <PlatformLoading capture="Создаём компанию..." />
-      );
-      
-    case 'provisioning':
-      return (
-        <PlatformLoading capture={provisioningMessage} />
-      );
-      
-    case 'success':
-      return (
-        <PlatformResult
-          title="Компания создана!"
-          description={`Компания "${createdCompany?.name}" успешно создана и развернута. Теперь вы можете начать работу.`}
-          actions={[
-            {
-              label: 'Открыть компанию',
-              href: `/platform/${createdCompany?.id}`,
-              variant: 'contrast' as const
-            }
-          ]}
-          redirect={{
-            href: `/platform/${createdCompany?.id}`,
-            delay: 5000,
-            label: 'Автоматический переход в компанию через {seconds} сек.'
-          }}
-          showIcon
-          status="success"
-        />
-      );
-      
+// Определяем статус для отображения
+const getStatusInfo = () => {
+  switch (slugStatus) {
+    case 'idle':
+      return {
+        type: 'info' as const,
+        icon: null,
+        message: slugMessage
+      };
+    case 'checking':
+      return {
+        type: 'info' as const,
+        icon: null,
+        message: slugMessage
+      };
+    case 'available':
+      return {
+        type: 'success' as const,
+        icon: <SuccessStatus />,
+        message: slugMessage
+      };
+    case 'not_available':
     case 'error':
-      return (
-        <PlatformResult
-          title="Ошибка создания"
-          description="Не удалось создать компанию. Возможно, возникла ошибка при развертывании хранилища."
-          actions={[
-            {
-              label: 'Попробовать снова',
-              href: '/platform/companies/new',
-              variant: 'contrast' as const
-            },
-            {
-              label: 'Домой',
-              href: '/platform',
-              variant: 'default' as const
-            }
-          ]}
-          showIcon
-          status="error"
-        />
-      );
-      
-    case 'form':
+      return {
+        type: 'error' as const,
+        icon: <ErrorStatus />,
+        message: slugMessage || 'Имя компании не доступно'
+      };
     default:
-      const statusInfo = getStatusInfo();
-      
-      return (
-        <div className={styles.container}>
-          <div className={styles.title}>
-            Создание компании
-          </div>
-          <div className={styles.description}>Создание пространства учётной системы для новой компании.</div>
-          <div className={styles.body}>
-            <div className={styles.section}>
-              <div className={styles.capture}>Название компании</div>
-              <div className={styles.unify}>
-                <Input 
-                  className={styles.input} 
-                  variant='elevated' 
-                  placeholder='До 32 символов'
-                  value={formData.companyName}
-                  onChange={handleCompanyNameChange}
-                  maxLength={32}
-                  disabled={pageState !== 'form'}
-                />
-                <Input 
-                  className={styles.input} 
-                  variant='empty' 
-                  value={formData.slug}
-                  onChange={handleSlugChange}
-                  placeholder='@'
-                  readOnly={pageState !== 'form'}
-                />
-              </div>
-              {slugStatus !== 'idle' && (
-                <div className={clsx(styles.status, statusInfo.className)}>
-                  {statusInfo.icon}
-                  <span className={styles.name}>{statusInfo.message}</span>
-                </div>
-              )}
-            </div>
-            
-            <div className={styles.section}>
-              <div className={styles.capture}>Видимость</div>
-              <div className={styles.description}>Настройки видимости позволяют регулировать кто из пользователей сможет видеть компанию в глобальном поиске.</div>
-              <div className={styles.variants}>
-                <div 
-                  className={clsx(styles.item, formData.visibility === 'private' && styles.active)} 
-                  data-value='private'
-                  onClick={() => pageState === 'form' && handleVisibilitySelect('private')}
-                >
-                  <div className={styles.name}><Guard className={styles.icon} /> Приватная</div>
-                  <div className={styles.description}>
-                    Доступ только по приглашению. Скрыть из глобального поиска.
-                  </div>
-                </div>
-                <div 
-                  className={clsx(styles.item, formData.visibility === 'public' && styles.active)} 
-                  data-value='public'
-                  onClick={() => pageState === 'form' && handleVisibilitySelect('public')}
-                >
-                  <div className={styles.name}><Earth className={styles.icon} /> Публичная</div>
-                  <div className={styles.description}>
-                    Компания отображается в глобальном поиске.
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className={styles.section}>
-              <div className={styles.capture}>Регион</div>
-              <div className={styles.description}>Выбор рабочей валюты компании и другие региональные настройки.</div>
-              <div className={styles.variants}>
-                <div 
-                  className={clsx(styles.item, formData.region === 'ru' && styles.active)} 
-                  data-value='ru'
-                  onClick={() => pageState === 'form' && handleRegionSelect('ru')}
-                >
-                  <div className={styles.name}>РФ <span className={styles.secondary}>ru-RU</span></div>
-                  <div className={styles.descriptio}>Расчёты системы в российских рублях.</div>
-                </div>
-                <div 
-                  className={clsx(styles.item, formData.region === 'kz' && styles.active)} 
-                  data-value='kz'
-                  onClick={() => pageState === 'form' && handleRegionSelect('kz')}
-                >
-                  <div className={styles.name}>Казахстан <span className={styles.secondary}>kz-KZ</span></div>
-                  <div className={styles.descriptio}>Расчёты системы в тенге.</div>
-                </div>
-              </div>
-            </div>
-            
-            <section className={styles.actions}>
-              <Button 
-                className={styles.action} 
-                variant='accent'
-                onClick={handleCreateCompany}
-                disabled={pageState !== 'form' || slugStatus !== 'available'}
-              >
-                Создать компанию
-              </Button>
-            </section>
-          </div>
-        </div>
-      );
+      return {
+        type: 'info' as const,
+        icon: null,
+        message: ''
+      };
   }
+};
+
+// Определяем состояние страницы
+switch (pageState) {
+  case 'creating':
+    return (
+      <PlatformLoading capture="Создаём компанию..." />
+    );
+    
+  case 'provisioning':
+    return (
+      <PlatformLoading capture={provisioningMessage} />
+    );
+    
+  case 'success':
+    return (
+      <PlatformResult
+        title="Компания создана!"
+        description={`Компания "${createdCompany?.name}" успешно создана и развернута. Теперь вы можете начать работу.`}
+        actions={[
+          {
+            label: 'Открыть компанию',
+            href: `/platform/${createdCompany?.id}`,
+            variant: 'contrast' as const
+          }
+        ]}
+        redirect={{
+          href: `/platform/${createdCompany?.id}`,
+          delay: 5000,
+          label: 'Автоматический переход в компанию через {seconds} сек.'
+        }}
+        showIcon
+        status="success"
+      />
+    );
+    
+  case 'error':
+    return (
+      <PlatformResult
+        title="Ошибка создания"
+        description="Не удалось создать компанию. Возможно, возникла ошибка при развертывании хранилища."
+        actions={[
+          {
+            label: 'Попробовать снова',
+            href: '/platform/companies/new',
+            variant: 'contrast' as const
+          },
+          {
+            label: 'Домой',
+            href: '/platform',
+            variant: 'default' as const
+          }
+        ]}
+        showIcon
+        status="error"
+      />
+    );
+    
+  case 'form':
+  default:
+    const statusInfo = getStatusInfo();
+    
+    return (
+      <>
+        <PlatformHead
+            title="Создание компании"
+            description='Создание пространства учётной системы для новой компании.'
+        />
+        <PlatformFormBody>
+          <PlatformFormSection title="Название компании">
+            <PlatformFormUnify>
+              <PlatformFormInput
+                value={formData.companyName}
+                onChange={handleCompanyNameChange}
+                placeholder="До 32 символов"
+                maxLength={32}
+                disabled={pageState !== 'form'}
+              />
+              <PlatformFormInput
+                value={formData.slug}
+                onChange={handleSlugChange}
+                placeholder="@"
+                variant="empty"
+                readOnly={pageState !== 'form'}
+              />
+            </PlatformFormUnify>
+            {slugStatus !== 'idle' && (
+              <PlatformFormStatus
+                type={statusInfo.type}  // Теперь type есть
+                message={statusInfo.message}
+                icon={statusInfo.icon}
+              />
+            )}
+          </PlatformFormSection>
+
+          <PlatformFormSection
+            title="Видимость"
+            description="Настройки видимости позволяют регулировать кто из пользователей сможет видеть компанию в глобальном поиске."
+          >
+            <PlatformFormVariants
+              options={[
+                {
+                  value: 'private',
+                  label: 'Приватная',
+                  description: 'Доступ только по приглашению. Скрыть из глобального поиска.',
+                  icon: <Guard />
+                },
+                {
+                  value: 'public',
+                  label: 'Публичная',
+                  description: 'Компания отображается в глобальном поиске.',
+                  icon: <Earth  />
+                }
+              ]}
+              value={formData.visibility}
+              onChange={handleVisibilitySelect}
+              disabled={pageState !== 'form'}
+            />
+          </PlatformFormSection>
+
+          <PlatformFormSection
+            title="Регион"
+            description="Выбор рабочей валюты компании и другие региональные настройки."
+          >
+            <PlatformFormVariants
+              options={[
+                {
+                  value: 'ru',
+                  label: <>РФ</>,
+                  description: 'Расчёты системы в российских рублях.'
+                },
+                {
+                  value: 'kz',
+                  label: <>Казахстан</>,
+                  description: 'Расчёты системы в тенге.'
+                }
+              ]}
+              value={formData.region}
+              onChange={handleRegionSelect}
+              disabled={pageState !== 'form'}
+            />
+          </PlatformFormSection>
+
+          <section>
+            <Button
+              variant="accent"
+              onClick={handleCreateCompany}
+              disabled={pageState !== 'form' || slugStatus !== 'available'}
+            >
+              Создать компанию
+            </Button>
+          </section>
+        </PlatformFormBody>
+      </>
+    );
 }

@@ -241,21 +241,16 @@ export class AccountAuth {
     }
 
     async getProfile(forceRefresh = false): Promise<ApiResponse<Account>> {
-        // Проверяем, есть ли данные в localStorage
         const cachedUser = AuthStorage.getUser();
         
-        // Если forceRefresh = false и есть кэшированный пользователь,
-        // возвращаем его сразу, но все равно делаем фоновый запрос для обновления
         if (!forceRefresh && cachedUser) {
-            // Делаем фоновый запрос для обновления данных
             this.updateProfileInBackground();
             
-            // Возвращаем кэшированные данные
             return {
                 status: true,
                 message: 'OK (cached)',
                 data: cachedUser,
-                _meta: {
+                meta: {
                     timestamp: new Date().toISOString(),
                     request_id: `cached-${Date.now()}`,
                     path: this.endpoints.profile,
@@ -289,7 +284,6 @@ export class AccountAuth {
      * Фоновое обновление профиля без блокировки UI
      */
     private async updateProfileInBackground(): Promise<void> {
-        // Проверяем, когда последний раз обновляли профиль
         const lastUpdate = localStorage.getItem('profile_last_update');
         const now = Date.now();
         
@@ -312,11 +306,11 @@ export class AccountAuth {
                         
                         AuthStorage.setAuthData(tokens, updatedUser);
                         localStorage.setItem('profile_last_update', now.toString());
-                        console.log('✅ Профиль обновлен в фоне');
+                        console.log('Профиль обновлен в фоне');
                     }
                 }
             } catch (error) {
-                console.error('❌ Ошибка фонового обновления профиля:', error);
+                console.error('Ошибка фонового обновления профиля:', error);
             }
         }
     }
@@ -334,7 +328,6 @@ export class AccountAuth {
      */
     invalidateProfileCache(): void {
         localStorage.removeItem('profile_last_update');
-        // ApiBridge сам обработает кэш через свой механизм
     }
 }
 
