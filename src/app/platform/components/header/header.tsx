@@ -100,7 +100,7 @@ export function Header() {
                     <span className={styles.area}>
                         <LogoIco animate />
                     </span>
-                    <span className={styles.text}>Бизнесу</span>
+                    {/* <span className={styles.text}>Бизнесу</span> */}
                 </Link>
 
                 <div className={styles.search}>
@@ -129,7 +129,7 @@ export function Header() {
                     <div className={styles.buttons}>
                         <Button 
                             className={styles.button} 
-                            variant='accent'
+                            variant='light'
                             href={authLinks.login}
                             // target="_blank"
                             rel="noopener noreferrer"
@@ -152,9 +152,9 @@ export function Header() {
                             // Рандомный яркий градиент
                             <span 
                                 className={`${styles.img} ${styles.gradient}`}
-                                style={{ 
-                                    background: getRandomGradient(user)
-                                }}
+                                // style={{ 
+                                //     background: getRandomGradient(user)
+                                // }}
                             >
                                 {/* Можно добавить первую букву имени */}
                                 {user.name?.charAt(0).toUpperCase()}

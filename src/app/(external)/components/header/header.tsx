@@ -170,7 +170,7 @@ export function Header() {
                         <div className={styles.buttons}>
                             <Button 
                                 className={styles.button} 
-                                variant='contrast'
+                                variant='accent'
                                 as="a"
                                 href={authLinks.login}
                                 // target="_blank"
@@ -280,7 +280,7 @@ export function Header() {
                     <div className={styles.actions}>
                         <Button 
                             className={styles.button} 
-                            variant='contrast'
+                            variant='accent'
                             as="a"
                             href={authLinks.login}
                             // target="_blank"

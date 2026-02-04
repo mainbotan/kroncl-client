@@ -1,5 +1,5 @@
 import AuthGuard from "@/apps/account/auth/components/AuthGuard";
-import { PanelSection } from "../../components/panel/_types";
+import { PanelAction, PanelSection } from "../../components/panel/_types";
 import PlatformPanel from "../../components/panel/server-panel";
 import PlatformContent from "../../components/content/content";
 import { AccountCompany } from "@/apps/account/companies/types";
@@ -7,6 +7,7 @@ import { CompanyProvider } from "@/apps/company/provider";
 import { notFound } from "next/navigation";
 import { companiesApiSSR } from "@/apps/account/companies/api-ssr";
 import { PlatformContentWrapper } from "../../components/lib/wrapper/wrapper";
+import { CompanyStorageWidget } from "./storage/widget/widget";
 
 interface CompanyLayoutProps {
   children: React.ReactNode;
@@ -88,11 +89,23 @@ export default async function CompanyLayout({
     },
   ];
 
+  const storageWidget = <CompanyStorageWidget />;
+
+  const actions: PanelAction[] = [
+    {
+      label: "Новая сделка",
+      href: `/platform/${companyId}/dm/new`,
+      variant: 'accent'
+    }
+  ];
+
   return (
     <>
       <PlatformPanel
         sections={sections} 
         title={company.name} 
+        children={storageWidget}
+        actions={actions}
       />
       <PlatformContent>
         <PlatformContentWrapper>

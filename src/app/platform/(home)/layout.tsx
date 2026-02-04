@@ -1,6 +1,6 @@
 import { useAuth } from "@/apps/account/auth/context/AuthContext";
 import PlatformContent from "../components/content/content";
-import { PanelSection } from "../components/panel/_types";
+import { PanelAction, PanelSection } from "../components/panel/_types";
 import ClientPanel from "../components/panel/client-panel";
 import PlatformPanel from "../components/panel/server-panel";
 import AuthGuard from "@/apps/account/auth/components/AuthGuard";
@@ -34,9 +34,17 @@ export default function Layout({
       icon: 'history'
     },
   ];
+  const actions: PanelAction[] = [
+    {
+      label: "Создать",
+      href: "/platform/companies/new",
+      variant: "accent"
+    }
+  ];
   return (
     <>
       <PlatformPanel 
+        actions={actions}
         sections={sections} 
         title={title} 
       />

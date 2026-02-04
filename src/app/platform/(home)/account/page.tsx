@@ -46,7 +46,7 @@ export default function Page() {
                 </div>
             </div>
             <div className={styles.actions}>
-                <Link href='/platform/account/edit'><Button className={styles.action} fullWidth variant='contrast'>Редактировать</Button></Link>
+                <Link href='/platform/account/edit'><Button className={styles.action} fullWidth variant='accent'>Редактировать</Button></Link>
             </div>
         </div>
     )

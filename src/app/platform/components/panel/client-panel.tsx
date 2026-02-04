@@ -2,9 +2,9 @@
 
 import clsx from 'clsx';
 import styles from './panel.module.scss';
-import { ComponentType, useEffect, useState } from 'react';
+import React, { ComponentType, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { CompanySection, PanelSection } from './_types';
+import { CompanySection, PanelAction, PanelSection } from './_types';
 import { isSectionActive } from '@/assets/utils/sections';
 import CollapseLeft from '@/assets/ui-kit/icons/collapse-left';
 
@@ -25,6 +25,8 @@ import Branching from '@/assets/ui-kit/icons/branching';
 import Deal from '@/assets/ui-kit/icons/deal';
 import Kanban from '@/assets/ui-kit/icons/kanban';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
+import Button from '@/assets/ui-kit/button/button';
+import Link from 'next/link';
 
 interface PlatformPanelProps {
   className?: string;
@@ -32,6 +34,8 @@ interface PlatformPanelProps {
   sections?: PanelSection[];
   companies?: CompanySection[];
   initialCollapsed?: boolean;
+  actions?: PanelAction[];
+  children?: React.ReactNode;
 }
 
 const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
@@ -60,6 +64,8 @@ export default function ClientPanel({
   sections = [],
   companies = [],
   initialCollapsed = false,
+  actions = [],
+  children = ''
 }: Readonly<PlatformPanelProps>) {
   const pathname = usePathname();
   
@@ -208,6 +214,43 @@ export default function ClientPanel({
                 )}
               </a>
             ))}
+          </div>
+        )}
+
+        {children}
+
+        {actions.length > 0 && (
+          <div className={styles.actions}>
+            {actions.map((action, index) => {
+              return (
+                <ModalTooltip
+                  content={action.label}
+                  side='right'
+                  compact
+                  key={index}
+                >
+                  {action.href ? (
+                  <Link href={action.href}>
+                    <Button
+                      className={clsx(styles.action, action.className)}
+                      variant={action.variant || 'default'}
+                      onClick={action.onClick}
+                    >
+                      {action.label}
+                    </Button>
+                  </Link>
+                  ) : (
+                    <Button
+                      className={clsx(styles.action, action.className)}
+                      variant={action.variant || 'default'}
+                      onClick={action.onClick}
+                    >
+                      {action.label}
+                    </Button>
+                  )}
+                </ModalTooltip>
+              );
+            })}
           </div>
         )}
       </div>

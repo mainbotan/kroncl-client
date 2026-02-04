@@ -21,7 +21,7 @@ export function StartSlide() {
                         Мы всей душой ненавидим 1с и Битрикс24 и показываем как <span className={styles.brand}>малый</span> и <span className={styles.brand}>средний</span> бизнес может вести учёт и планирование в России.
                     </div>
                     <div className={styles.actions}>
-                        <Link href={authLinks.registration} className={styles.link}><Button className={styles.action} variant='contrast'>Начать бесплатно</Button></Link>
+                        <Link href={authLinks.registration} className={styles.link}><Button className={styles.action} variant='accent'>Начать бесплатно</Button></Link>
                         <Link href={authLinks.login} className={styles.link}><Button className={styles.action} variant='glass'>Войти</Button></Link>
                     </div>
                     <div className={styles.note}>

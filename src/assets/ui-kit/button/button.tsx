@@ -1,4 +1,3 @@
-// button/button.tsx
 'use client';
 
 import clsx from 'clsx';
@@ -7,7 +6,7 @@ import { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
 import Spinner from '../spinner/spinner';
 import Link, { LinkProps } from 'next/link';
 
-type ButtonVariant = 'default' | 'leader' | 'light' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
+export type ButtonVariant = 'default' | 'leader' | 'light' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
 
 interface CommonProps {
   children: ReactNode;

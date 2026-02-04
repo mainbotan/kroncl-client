@@ -43,10 +43,10 @@
             align-items: center;
             color: var(--color-text-secondary);
             overflow: hidden;
-            border-radius: .4em;
+            border-radius: 1.2em;
             @include cursor(pointer);
             border: 2px solid transparent;
-            transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+            transition: border-color var(--transition), color var(--transition);
 
             .icon {
                 display: inline-flex;
@@ -55,7 +55,6 @@
                 .svg {
                     width: 1.2em;
                     height: 1.2em;
-                    fill: var(--color-icon-primary);
                 }
             }
             .name {
@@ -69,8 +68,50 @@
                 background-color: var(--color-surface-light);
             }
             &.active {
-                background-color: var(--color-surface-light);
+                background-color: var(--color-surface-active);
                 color: var(--color-text-primary);
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: .8em 0;
+        gap: .2em;
+
+        a {
+            width: 100%;
+        }
+
+        .action {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: .44em;
+            width: 100%;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 1.3em;
+            @include cursor(pointer);
+            border: 2px solid transparent;
+            transition: border-color var(--transition), color var(--transition);
+
+            .icon {
+                display: inline-flex;
+                padding: .4em .5em;
+                
+                .svg {
+                    width: 1.2em;
+                    height: 1.2em;
+                }
+            }
+            .name {
+                @include text-ellipsis();
+                font-size: .95em;
+                overflow: hidden;
+            }
+
+            &:hover {
             }
         }
     }
@@ -167,6 +208,10 @@
         }
         
         .companies {
+            display: none;
+        }
+
+        .actions {
             display: none;
         }
     }
