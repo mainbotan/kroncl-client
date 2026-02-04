@@ -126,8 +126,9 @@ export function Header() {
                             </span>
                         </div>
                     </div> */}
-                    <div className={styles.buttons}>
+                    {/* <div className={styles.buttons}>
                         <Button 
+                            icon={<Bell />}
                             className={styles.button} 
                             variant='light'
                             href={authLinks.login}
@@ -136,7 +137,7 @@ export function Header() {
                         >
                             Пригласить
                         </Button>
-                    </div>
+                    </div> */}
                     
                     {user && (
                     <div className={styles.account}>

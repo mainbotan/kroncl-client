@@ -115,8 +115,9 @@ export function PlatformHead({
                   className={clsx(styles.action, action.className)}
                   variant={action.variant || 'contrast'}
                   onClick={action.onClick}
+                  icon={action.icon}
                 >
-                  {action.label}
+                  {action.label && action.label}
                 </Button>
               );
 

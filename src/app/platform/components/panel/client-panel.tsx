@@ -257,12 +257,30 @@ export default function ClientPanel({
       
       <div className={styles.foot}>
         <div className={styles.sections}>
-          {staticFootSections.map((section, index) => (
+          {staticFootSections.map((section, index) => displayCollapsed ? (
+            <ModalTooltip
+              content={section.name}
+              side='right'
+              compact
+              key={index}
+            >
             <a 
               key={index}
               href={section.href}
               className={styles.section}
-              title={displayCollapsed ? section.name : undefined}
+            >
+              <span className={styles.icon}>
+                {renderIcon(section.icon)}
+              </span>
+              {!displayCollapsed && (
+                <span className={styles.name}>{section.name}</span>
+              )}
+            </a></ModalTooltip>
+          ) : (
+            <a 
+              key={index}
+              href={section.href}
+              className={styles.section}
             >
               <span className={styles.icon}>
                 {renderIcon(section.icon)}
@@ -273,10 +291,14 @@ export default function ClientPanel({
             </a>
           ))}
 
+          <ModalTooltip
+            content={displayCollapsed ? "Развернуть меню" : "Свернуть меню"}
+            side='right'
+            compact
+          >
           <section
             className={clsx(styles.section, styles.collapseBtn)}
             onClick={toggleCollapse}
-            title={displayCollapsed ? "Развернуть меню" : "Свернуть меню"}
           >
             <span className={styles.icon}>
               <CollapseLeft className={clsx(
@@ -291,6 +313,7 @@ export default function ClientPanel({
               </span>
             )}
           </section>
+          </ModalTooltip>
         </div>
       </div>
     </div>

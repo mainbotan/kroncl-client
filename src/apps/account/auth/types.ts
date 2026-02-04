@@ -38,3 +38,8 @@ export interface ResendConfirmRequest {
     user_id: string;
     email: string;
 }
+
+export interface UpdateProfileRequest {
+    name?: string;
+    avatar_url?: string;
+}

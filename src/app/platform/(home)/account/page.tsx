@@ -6,11 +6,37 @@ import { getRandomGradient } from '@/assets/utils/avatars';
 import Button from '@/assets/ui-kit/button/button';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { Account } from '@/apps/account/types';
+import { accountAuth } from '@/apps/account/auth/api';
+import Edit from '@/assets/ui-kit/icons/edit';
 
 export default function Page() {
-    const { login, user, status } = useAuth();
+    const [profile, setProfile] = useState<Account | null>(null);
+    const [loading, setLoading] = useState(true);
     
-    if (!user) {
+    useEffect(() => {
+        const loadProfile = async () => {
+            try {
+                setLoading(true);
+                const response = await accountAuth.getProfile();
+                
+                if (response.status && response.data) {
+                    setProfile(response.data);
+                } else {
+                    console.error('Не удалось загрузить профиль:', response.message);
+                }
+            } catch (error) {
+                console.error('Ошибка при загрузке профиля:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadProfile();
+    }, []);
+    
+    if (!profile) {
         return (
             <div></div>
         )
@@ -18,35 +44,42 @@ export default function Page() {
     return (
         <div className={styles.head}>
             <div className={styles.avatar}>
-                {user.avatar_url ? (
+                {profile.avatar_url ? (
                     <span 
                         className={styles.img} 
-                        style={{backgroundImage: `url('${user.avatar_url}')`}} 
+                        style={{backgroundImage: `url('${profile.avatar_url}')`}} 
                     />
                 ) : (
                     <span 
                         className={`${styles.img} ${styles.gradient}`}
                         style={{ 
-                            background: getRandomGradient(user)
+                            background: getRandomGradient(profile)
                         }}
                     >
-                        {user.name.charAt(0).toUpperCase()}
+                        {profile.name.charAt(0).toUpperCase()}
                     </span>
                 )}
             </div>
             <div className={styles.info}>
-                <div className={styles.name}>{user.name}</div>
+                <div className={styles.name}>{profile.name}</div>
                 <div className={styles.description}>
                 <ModalTooltip
-                    content={`${user.email} - на эту почту поступают приглашения.`}
+                    content={`${profile.email} - на эту почту поступают приглашения.`}
                     side='bottom'
                 >
-                    <span>{user.email}</span>
+                    <span>{profile.email}</span>
                 </ModalTooltip>
                 </div>
             </div>
             <div className={styles.actions}>
-                <Link href='/platform/account/edit'><Button className={styles.action} fullWidth variant='accent'>Редактировать</Button></Link>
+                <Button 
+                    icon={<Edit />} 
+                    as='link' 
+                    href='/platform/account/edit' 
+                    className={styles.action} 
+                    fullWidth 
+                    variant='light'
+                >Редактировать</Button>
             </div>
         </div>
     )

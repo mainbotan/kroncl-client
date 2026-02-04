@@ -1,4 +1,6 @@
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
+import Edit from "@/assets/ui-kit/icons/edit";
+import Plus from "@/assets/ui-kit/icons/plus";
 
 export function CompaniesHeader({ 
   searchQuery, 
@@ -15,7 +17,8 @@ export function CompaniesHeader({
         {
           label: 'Создать',
           href: '/platform/companies/new',
-          variant: 'light' as const
+          variant: 'accent',
+          icon: <Plus />
         }
       ]}
       sections={[

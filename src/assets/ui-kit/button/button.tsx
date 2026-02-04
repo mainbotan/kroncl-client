@@ -9,16 +9,17 @@ import Link, { LinkProps } from 'next/link';
 export type ButtonVariant = 'default' | 'leader' | 'light' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
 
 interface CommonProps {
-  children: ReactNode;
+  children?: ReactNode;
   variant?: ButtonVariant;
   fullWidth?: boolean;
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   className?: string;
   disabled?: boolean;
+  icon?: ReactNode;
 }
 
-type ButtonProps = CommonProps & (
+export type ButtonProps = CommonProps & (
   | ({ as?: 'button' } & ButtonHTMLAttributes<HTMLButtonElement>)
   | ({ as: 'a' } & AnchorHTMLAttributes<HTMLAnchorElement>)
   | ({ as: 'link' } & LinkProps)
@@ -32,6 +33,7 @@ export default function Button({
   loading = false,
   className,
   disabled = false,
+  icon,
   as = 'button',
   ...props
 }: ButtonProps) {
@@ -58,6 +60,31 @@ export default function Button({
     className
   );
 
+  // Рендер содержимого с иконкой
+  const renderContent = () => {
+    if (loading) {
+      return (
+        <>
+          <span className={styles.icon}><Spinner size="md" /></span>
+          {children && (<span className={styles.text}>{children}</span>)}
+        </>
+      );
+    }
+
+    if (icon) {
+      return (
+        <>
+          <span className={styles.icon}>{icon}</span>
+          {children && (<span className={styles.text}>{children}</span>)}
+        </>
+      );
+    }
+
+    return (
+      <span className={styles.text}>{children}</span>
+    );
+  };
+
   if (as === 'a') {
     const { href, target, rel, ...rest } = props as AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
@@ -68,14 +95,7 @@ export default function Button({
         className={commonClasses}
         {...rest}
       >
-        {loading ? (
-          <div className={styles.loadingContent}>
-            <Spinner size="sm" />
-            <span>{children}</span>
-          </div>
-        ) : (
-          children
-        )}
+        {renderContent()}
       </a>
     );
   }
@@ -88,14 +108,7 @@ export default function Button({
         className={commonClasses}
         {...rest}
       >
-        {loading ? (
-          <div className={styles.loadingContent}>
-            <Spinner size="sm" />
-            <span>{children}</span>
-          </div>
-        ) : (
-          children
-        )}
+        {renderContent()}
       </Link>
     );
   }
@@ -107,14 +120,7 @@ export default function Button({
       disabled={isDisabled}
       {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}
     >
-      {loading ? (
-        <div className={styles.loadingContent}>
-          <Spinner size="sm" />
-          <span>{children}</span>
-        </div>
-      ) : (
-        children
-      )}
+      {renderContent()}
     </button>
   );
 }

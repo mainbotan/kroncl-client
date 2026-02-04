@@ -5,7 +5,8 @@ import {
     RegisterRequest,
     RegisterResponse,
     ConfirmRequest,
-    ResendConfirmRequest
+    ResendConfirmRequest,
+    UpdateProfileRequest
 } from './types';
 import { ApiResponse, EmptyResponseData } from '@/apps/shared/bridge/types';
 import { Account } from '../types';
@@ -24,6 +25,7 @@ export class AccountAuth {
         profile: '/account',
         confirm: '/account/confirm',
         resendConfirm: '/account/confirm/resend',
+        updateProfile: '/account'
     };
 
     constructor() {
@@ -313,6 +315,29 @@ export class AccountAuth {
                 console.error('Ошибка фонового обновления профиля:', error);
             }
         }
+    }
+
+    async updateProfile(data: UpdateProfileRequest): Promise<ApiResponse<Account>> {
+        const response = await api.patch<Account>(this.endpoints.updateProfile, data, {
+            headers: this.getAuthHeaders()
+        });
+        
+        if (response.status && response.data) {
+            // Обновляем данные в storage
+            const currentUser = AuthStorage.getUser();
+            if (currentUser) {
+                const updatedUser = { ...currentUser, ...response.data };
+                const tokens = {
+                    access_token: AuthStorage.getAccessToken() || '',
+                    refresh_token: AuthStorage.getRefreshToken() || '',
+                };
+                
+                AuthStorage.setAuthData(tokens, updatedUser);
+                this.invalidateProfileCache();
+            }
+        }
+        
+        return response;
     }
 
     isAuthenticated(): boolean {
