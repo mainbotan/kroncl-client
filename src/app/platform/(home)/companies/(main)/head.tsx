@@ -15,7 +15,7 @@ export function CompaniesHeader({
         {
           label: 'Создать',
           href: '/platform/companies/new',
-          variant: 'contrast' as const
+          variant: 'light' as const
         }
       ]}
       sections={[

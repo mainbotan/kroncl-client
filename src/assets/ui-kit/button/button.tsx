@@ -7,7 +7,7 @@ import { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
 import Spinner from '../spinner/spinner';
 import Link, { LinkProps } from 'next/link';
 
-type ButtonVariant = 'default' | 'leader' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
+type ButtonVariant = 'default' | 'leader' | 'light' | 'contrast' | 'elevated' | 'empty' | 'glass' | 'brand' | 'accent';
 
 interface CommonProps {
   children: ReactNode;
@@ -44,6 +44,7 @@ export default function Button({
       [styles.default]: variant === 'default',
       [styles.leader]: variant === 'leader',
       [styles.contrast]: variant === 'contrast',
+      [styles.light]: variant === 'light',
       [styles.elevated]: variant === 'elevated',
       [styles.empty]: variant === 'empty',
       [styles.glass]: variant === 'glass',

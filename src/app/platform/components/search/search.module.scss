@@ -15,6 +15,7 @@
         z-index: 100;
         position: relative;
         padding-right: 5em;
+        border: 1px solid var(--color-stroke-primary);
 
         &:focus, &.focused {
             border: 2px solid var(--color-accent);

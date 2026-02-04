@@ -99,8 +99,8 @@ export function Header() {
                 <Link href='/platform' onClick={closeMenu} className={styles.icon}>
                     <span className={styles.area}>
                         <LogoIco animate />
-                        <span className={styles.shadow} />
                     </span>
+                    <span className={styles.text}>Бизнесу</span>
                 </Link>
 
                 <div className={styles.search}>
@@ -129,8 +129,7 @@ export function Header() {
                     <div className={styles.buttons}>
                         <Button 
                             className={styles.button} 
-                            variant='default'
-                            as="a"
+                            variant='accent'
                             href={authLinks.login}
                             // target="_blank"
                             rel="noopener noreferrer"

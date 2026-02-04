@@ -5,7 +5,7 @@ import styles from './search.module.scss';
 import clsx from 'clsx';
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { areaVariants, canvasVariants, optimizedAreaVariants, optimizedCanvasVariants } from './_animations';
+import { optimizedAreaVariants, optimizedCanvasVariants } from './_animations';
 import { CompanyCard } from '../../(home)/companies/components/company-card/card';
 import { useCompanies } from '@/apps/account/companies/hooks/useCompanies';
 import Upload from '@/assets/ui-kit/icons/upload';
@@ -63,7 +63,7 @@ export function PllatformSearch({ onClose }: PllatformSearchProps) {
     } else if (debouncedSearch === '') {
       fetchCompanies({
         page: 1,
-        limit: 5
+        limit: 10
       });
     }
   }, [debouncedSearch, fetchCompanies]);

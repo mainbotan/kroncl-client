@@ -495,7 +495,7 @@ export default function Page() {
             <section className={styles.actions}>
               <Button 
                 className={styles.action} 
-                variant='contrast'
+                variant='accent'
                 onClick={handleCreateCompany}
                 disabled={pageState !== 'form' || slugStatus !== 'available'}
               >

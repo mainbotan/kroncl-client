@@ -25,6 +25,14 @@
         align-items: center;
         font-size: .66em;
         font-weight: 600;
+        flex-flow: row nowrap;
+        gap: .6em;
+
+        .text {
+            font-weight: 800;
+            font-size: 1.1em;
+            letter-spacing: .015em;
+        }
     }
 
     // navigation area
@@ -112,7 +120,7 @@
             display: flex;
             flex-flow: row nowrap;
             align-items: center;
-            font-size: .44em;
+            font-size: .5em;
             gap: .9em;
 
             .button {

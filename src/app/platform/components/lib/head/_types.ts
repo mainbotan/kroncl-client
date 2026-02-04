@@ -2,7 +2,7 @@ export interface PlatformHeadAction {
   label: string;
   onClick?: () => void;
   href?: string;
-  variant?: 'default' | 'contrast' | 'accent';
+  variant?: 'default' | 'contrast' | 'accent' | 'light';
   className?: string;
 }
 

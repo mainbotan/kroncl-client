@@ -39,10 +39,11 @@
             display: flex;
             flex-flow: row nowrap;
             gap: .44em;
+            font-size: 1.05em;
             align-items: center;
-            color: var(--color-text-ghost);
+            color: var(--color-text-secondary);
             overflow: hidden;
-            border-radius: .7em;
+            border-radius: .4em;
             @include cursor(pointer);
             border: 2px solid transparent;
             transition: background-color var(--transition), border-color var(--transition), color var(--transition);
@@ -54,6 +55,7 @@
                 .svg {
                     width: 1.2em;
                     height: 1.2em;
+                    fill: var(--color-icon-primary);
                 }
             }
             .name {
@@ -64,10 +66,10 @@
 
             &:hover {
                 color: var(--color-text-primary);
-                background-color: var(--color-surface-secondary);
+                background-color: var(--color-surface-light);
             }
             &.active {
-                background-color: rgba(57, 57, 255, 0.162);
+                background-color: var(--color-surface-light);
                 color: var(--color-text-primary);
             }
         }

@@ -95,7 +95,7 @@
         display: block;
         overflow-x: scroll;
         @include no-scrollbar();
-        border-bottom: 3px solid var(--color-stroke-secondary);
+        border-bottom: 1px solid var(--color-stroke-secondary);
         overflow-y: visible;
 
         .grid {
@@ -126,24 +126,26 @@
     .search {
         display: flex;
         font-size: .7em;
-        padding: 1em;
-        background-color: var(--color-surface-elevated);
+        padding: 1em 0;
+        // background-color: var(--color-surface-elevated);
         flex-flow: row nowrap;
 
         .input {
             width: 100%;
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            border: 2px solid var(--color-stroke-secondary);
+            background-color: var(--color-surface-primary);
+            border: 1px solid var(--color-stroke-secondary);
 
             &:focus {
                 border-color: var(--color-blue);
+                border-width: 2px;
             }
         }
         .button {
             border-bottom-left-radius: 0;
             border-top-left-radius: 0;
-            border: 2px solid var(--color-stroke-secondary);
+            border: 1px solid var(--color-stroke-secondary);
 
             .svg {
                 width: 1.1em;

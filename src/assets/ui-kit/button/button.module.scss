@@ -2,13 +2,13 @@
 
 .button {
   display: inline-flex;
-  height: 2.7em;
+  height: 2.8em;
   font-size: 1em;
   line-height: 1;
   align-items: center;
   justify-content: center;
   padding: 0em 0.9em;
-  border-radius: 0.8em;
+  border-radius: 0.6em;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -48,8 +48,11 @@
     color: var(--color-accent-text-primary);
   }
   &.accent {
-    background-color: var(--color-blue);
+    background-color: var(--color-accent);
     color: var(--color-accent-text-primary);
+  }
+  &.light {
+    background-color: var(--color-surface-light);
   }
   &.fullWidth {
     width: 100%;
