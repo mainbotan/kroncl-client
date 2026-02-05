@@ -8,7 +8,7 @@ import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { fadeInUp, staggerChildren, boxHover } from './_animations'; // <-- Новая анимация
+import { fadeInUp, staggerChildren, boxHover } from './_animations';
 import { Account } from '@/apps/account/types';
 import { accountAuth } from '@/apps/account/auth/api';
 import Edit from '@/assets/ui-kit/icons/edit';

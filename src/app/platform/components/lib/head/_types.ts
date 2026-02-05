@@ -18,6 +18,12 @@ export interface PlatformHeadSection {
   disabled?: boolean;
 }
 
+export interface PlatformHeadNote {
+  type: 'info' | 'accent' | 'warning';
+  title: string;
+  description: string;
+}
+
 export interface PlatformHeadProps {
   title: string;
   description?: string;
@@ -33,9 +39,5 @@ export interface PlatformHeadProps {
     debounceMs?: number;
     searchButton?: boolean;
   };
-  notes?: Array<{
-    type: 'info' | 'accent' | 'warning';
-    title: string;
-    description: string;
-  }>;
+  notes?: PlatformHeadNote[];
 }
