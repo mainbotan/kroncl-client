@@ -10,10 +10,15 @@ import { useEffect, useState } from 'react';
 import { Account } from '@/apps/account/types';
 import { accountAuth } from '@/apps/account/auth/api';
 import Edit from '@/assets/ui-kit/icons/edit';
+import Exit from '@/assets/ui-kit/icons/exit';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
     const [profile, setProfile] = useState<Account | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const router = useRouter();
+    const { logoutLocal } = useAuth();
     
     useEffect(() => {
         const loadProfile = async () => {
@@ -36,11 +41,31 @@ export default function Page() {
         loadProfile();
     }, []);
     
+    const handleLogout = async () => {
+        if (isLoggingOut) return;
+        
+        try {
+            setIsLoggingOut(true);
+            await logoutLocal();
+            
+            router.push('/');
+            
+        } catch (error) {
+            console.error('Ошибка при выходе:', error);
+            
+            accountAuth.logoutLocal();
+            router.push('/');
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
+    
     if (!profile) {
         return (
             <div></div>
         )
     }
+    
     return (
         <div className={styles.head}>
             <div className={styles.avatar}>
@@ -63,12 +88,12 @@ export default function Page() {
             <div className={styles.info}>
                 <div className={styles.name}>{profile.name}</div>
                 <div className={styles.description}>
-                <ModalTooltip
-                    content={`${profile.email} - на эту почту поступают приглашения.`}
-                    side='bottom'
-                >
-                    <span>{profile.email}</span>
-                </ModalTooltip>
+                    <ModalTooltip
+                        content={`${profile.email} - на эту почту поступают приглашения.`}
+                        side='bottom'
+                    >
+                        <span>{profile.email}</span>
+                    </ModalTooltip>
                 </div>
             </div>
             <div className={styles.actions}>
@@ -79,8 +104,25 @@ export default function Page() {
                     className={styles.action} 
                     fullWidth 
                     variant='light'
-                >Редактировать</Button>
+                >
+                    Редактировать
+                </Button>
+                
+                <ModalTooltip
+                    content="Выйти из аккаунта. Действие нельзя отменить."
+                    side='left'
+                >
+                    <Button 
+                        icon={<Exit className={styles.icon} />} 
+                        className={styles.action} 
+                        fullWidth 
+                        onClick={handleLogout}
+                        loading={isLoggingOut}
+                        disabled={isLoggingOut}
+                        variant='default'
+                    />
+                </ModalTooltip>
             </div>
         </div>
-    )
+    );
 }

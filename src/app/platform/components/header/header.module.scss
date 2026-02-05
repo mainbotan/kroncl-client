@@ -2,7 +2,7 @@
 
 // header parent container
 .container {
-    display: flex;
+    display: var(--header-display);
     height: var(--header-height);
     position: relative;
     top: 0;

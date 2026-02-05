@@ -12,6 +12,7 @@
   --focus-width: 48rem;
   --header-height: 2.3rem;
   --side-offset: 2rem;
+  --header-display: flex;
   
   // Транзиции для темы - добавляем только для данных атрибутов
   transition: background-color var(--transition), 

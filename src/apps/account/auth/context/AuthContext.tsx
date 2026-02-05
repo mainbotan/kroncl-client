@@ -263,12 +263,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
-    // Логаут
-    const logout = async () => {
+    const logout = async (localOnly = false) => {
         try {
-            await accountAuth.logout();
+            if (!localOnly) {
+                await accountAuth.logout();
+            } else {
+                accountAuth.logoutLocal();
+            }
         } catch (error) {
             console.error('Logout error:', error);
+            accountAuth.logoutLocal();
         } finally {
             AuthStorage.clear();
             accountAuth.clearToken();
@@ -286,7 +290,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         register,
         confirmEmail,
         resendConfirmation,
-        logout,
+        logout: () => logout(false),
+        logoutLocal: () => logout(true),
     };
 
     return (

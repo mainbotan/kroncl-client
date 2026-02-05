@@ -52,11 +52,16 @@
     .actions {
         display: inline-flex;
         flex-flow: row nowrap;
-        gap: 1em;
+        gap: .8em;
         font-size: .7em;
 
         .action {
             transition: transform var(--transition);
+
+            .icon {
+                width: 1.3em;
+                height: 1.3em;
+            }
 
             &:hover {
                 transform: scale(1.02);

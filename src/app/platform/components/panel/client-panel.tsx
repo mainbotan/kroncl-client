@@ -113,7 +113,7 @@ export default function ClientPanel({
   const staticFootSections: PanelSection[] = [
     {
       name: 'Настройки',
-      href: '/settings',
+      href: '/platform/settings',
       icon: 'settings'
     }
   ];

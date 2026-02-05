@@ -340,6 +340,41 @@ export class AccountAuth {
         return response;
     }
 
+    logoutLocal(): void {
+        this.clearToken();
+        
+        // Дополнительная очистка всех возможных куки
+        if (typeof window !== 'undefined') {
+            // Очищаем куки авторизации
+            document.cookie = 'auth_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+            document.cookie = 'auth_refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax';
+            
+            // Очищаем другие возможные куки
+            const cookies = document.cookie.split(';');
+            for (const cookie of cookies) {
+                const eqPos = cookie.indexOf('=');
+                const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+                
+                // Удаляем все куки связанные с аутентификацией
+                if (name.includes('auth') || name.includes('token')) {
+                    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+                }
+            }
+            
+            // Очищаем sessionStorage и localStorage кроме системных данных
+            sessionStorage.clear();
+            
+            // Очищаем localStorage полностью или выборочно
+            const localStorageKeys = Object.keys(localStorage);
+            for (const key of localStorageKeys) {
+                // Удаляем всё кроме настроек приложения
+                if (key.includes('auth') || key.includes('token') || key.includes('user')) {
+                    localStorage.removeItem(key);
+                }
+            }
+        }
+    }
+
     isAuthenticated(): boolean {
         return !!this.token && AuthStorage.hasToken();
     }
