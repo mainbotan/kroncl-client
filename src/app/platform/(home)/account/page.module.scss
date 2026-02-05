@@ -5,7 +5,7 @@
     flex-flow: row nowrap;
     gap: 1.2em;
     padding: 0 0 1em 0;
-    border-bottom: 1px solid var(--color-stroke-secondary);
+    // border-bottom: 1px solid var(--color-stroke-secondary);
 
     .avatar {
         display: inline-flex;
@@ -75,6 +75,94 @@
 
         .actions a {
             width: 100%;
+        }
+    }
+}
+
+// account body
+.body {
+    display: flex;
+    flex-flow: row nowrap;
+    font-size: .7em;
+    gap: 1rem;
+    flex: 1;
+    min-height: 100%;
+    padding: 1rem 0;
+
+    .section {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .6rem;
+
+        &:nth-child(1) {
+            flex: 3;
+        }
+        &:nth-child(2) {
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+    }
+}
+
+// activity map
+.map {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: start;
+    gap: 2em;
+    // border: 1px solid var(--color-stroke-secondary);
+
+    .bed {
+        display: block;
+        overflow-x: scroll;
+    }
+    .bed, .grid {
+        display: flex;
+        flex-flow: column wrap;
+        gap: .4em;
+        max-height: 8rem;
+
+        // .box:last-child {
+        //     border: 2px solid var(--color-green) !important;
+        // }
+    }
+    .box {
+        display: inline-flex;
+        width: 1em;
+        height: 1em;
+        border-radius: .3em;
+        border: 1px solid var(--color-stroke-secondary);
+        @include cursor(pointer);
+        transition: border-color var(--transition), box-shadow var(--transition);
+
+        &.mn {
+            background-color: rgba(0, 0, 255, 0.316);
+        }
+        &.md {
+            background-color: rgba(0, 0, 255, 0.733);
+        }
+        &.mx {
+            background-color: blue;
+        }
+        &:hover {
+            border-color: var(--color-contrast);
+            box-shadow: 0 0 .2em var(--color-accent);
+        }
+    }
+    .legend {
+        display: flex;
+        color: var(--color-text-ghost);
+        flex-flow: row nowrap;
+        align-items: center;
+        gap: 1em;
+
+        .boxes {
+            display: inline-flex;
+            flex-flow: row nowrap;
+            gap: .1em;
         }
     }
 }
