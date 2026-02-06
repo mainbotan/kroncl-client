@@ -9,6 +9,7 @@ import Button from '@/assets/ui-kit/button/button';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { PlatformHeadProps } from './_types';
+import { isSectionActive } from '@/assets/utils/sections';
 
 function useDebouncedCallback<T extends (...args: any[]) => any>(
   callback: T,
@@ -39,18 +40,36 @@ export function PlatformHead({
 }: PlatformHeadProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const activePath = currentPath || pathname || '';
+  
+  // Получаем ПОЛНЫЙ URL с query параметрами
+  const getFullUrl = () => {
+    if (currentPath) return currentPath;
+    
+    const queryString = searchParams.toString();
+    return queryString ? `${pathname}?${queryString}` : pathname;
+  };
+  
+  const activePath = getFullUrl();
   const [searchValue, setSearchValue] = useState(searchProps.defaultValue || '');
 
-  // Определяем активный раздел
-  const getActiveSectionValue = () => {
-    if (!sections.length) return '';
+  // ДЕБАГ - посмотрим что получаем
+  useEffect(() => {
+    console.log('PlatformHead Debug:');
+    console.log('- pathname:', pathname);
+    console.log('- searchParams:', searchParams.toString());
+    console.log('- activePath (full URL):', activePath);
     
-    const currentRole = searchParams.get('role');
-    if (currentRole === 'owner') return 'owner';
-    if (currentRole === 'guest') return 'joined';
-    return 'all';
-  };
+    sections.forEach(section => {
+      console.log(`  Section "${section.label}":`, {
+        href: section.href,
+        exact: section.exact,
+        isActive: isSectionActive(activePath, {
+          href: section.href,
+          exact: section.exact
+        })
+      });
+    });
+  }, [activePath, sections, pathname, searchParams]);
 
   // Создаем дебаунс функцию
   const debouncedSearch = useDebouncedCallback(
@@ -94,8 +113,6 @@ export function PlatformHead({
     }
   }, [searchProps.defaultValue]);
 
-  const activeSectionValue = getActiveSectionValue();
-
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -135,7 +152,12 @@ export function PlatformHead({
         <div className={styles.sections}>
           <div className={styles.grid}>
             {sections.map((section) => {
-              const isActive = section.value === activeSectionValue;
+              const isActive = section.href ? isSectionActive(activePath, {
+                href: section.href,
+                exact: section.exact,
+                strongParams: section.strongParams
+              }) : false;
+              
               const sectionContent = (
                 <span
                   className={clsx(
@@ -154,7 +176,7 @@ export function PlatformHead({
 
               return section.href && !section.disabled ? (
                 <Link
-                  key={section.value}
+                  key={section.href}
                   href={section.href}
                   className={styles.sectionLink}
                 >

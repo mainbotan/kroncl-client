@@ -9,7 +9,7 @@ import { companiesApiSSR } from "@/apps/account/companies/api-ssr";
 import { PlatformContentWrapper } from "../../components/lib/wrapper/wrapper";
 import { CompanyStorageWidget } from "./storage/widget/widget";
 
-interface CompanyLayoutProps {
+export interface CompanyLayoutProps {
   children: React.ReactNode;
   params: {
     id: string;
@@ -73,14 +73,14 @@ export default async function CompanyLayout({
       icon: 'team'
     },
     {
-      name: 'Доступы',
-      href: `/platform/${companyId}/accesses`,
-      icon: 'accesses'
-    },
-    {
       name: 'Активность',
       href: `/platform/${companyId}/activity`,
       icon: 'activity'
+    },
+    {
+      name: 'Доступы',
+      href: `/platform/${companyId}/accesses`,
+      icon: 'accesses'
     },
     {
       name: 'Хранилище',

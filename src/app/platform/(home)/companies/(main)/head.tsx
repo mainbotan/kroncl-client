@@ -24,21 +24,24 @@ export function CompaniesHeader({
       sections={[
         {
           label: 'Все',
-          value: 'all',
-          href: '/platform/companies?role=all',
-          disabled: false
+          href: '/platform/companies',
+          disabled: false,
+          exact: true,
+          strongParams: true
         },
         {
           label: 'Владеете',
-          value: 'owner',
           href: '/platform/companies?role=owner',
-          disabled: false
+          disabled: false,
+          exact: true,
+          strongParams: true
         },
         {
           label: 'Приглашены',
-          value: 'joined',
           href: '/platform/companies?role=guest',
-          disabled: false
+          disabled: false,
+          exact: true,
+          strongParams: true
         }
       ]}
       showSearch={true}

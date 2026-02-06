@@ -11,11 +11,12 @@ export interface PlatformHeadAction {
 
 export interface PlatformHeadSection {
   label: string;
-  value: string;
-  href?: string;
+  value?: string;
+  href: string;
   exact?: boolean;
   badge?: number;
   disabled?: boolean;
+  strongParams?: boolean;
 }
 
 export interface PlatformHeadNote {
