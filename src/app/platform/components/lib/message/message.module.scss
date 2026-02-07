@@ -1,0 +1,106 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.messageContainer {
+    position: fixed;
+    z-index: 10000; // Высокий z-index
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: none; // Не блокируем события
+    
+    & > * {
+        pointer-events: auto;
+    }
+}
+
+.message {
+    pointer-events: auto;
+    width: 14rem;
+    font-size: .56rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .5rem;
+
+    &.error {
+        .base .icon svg {
+            fill: var(--color-error);
+        }
+    }
+
+    &.success {
+        .base .icon svg {
+            fill: var(--color-success);
+        }
+    }
+
+    &.warning {
+        .base .icon svg {
+            fill: var(--color-warning);
+        }
+    }
+
+    .base {
+        overflow: hidden;
+        display: flex;
+        flex-flow: row nowrap;
+        background-color: var(--color-surface-elevated);
+        border-radius: 2rem;
+        border: 1px solid var(--color-stroke-secondary);
+        height: 2.3rem;
+        align-items: center;
+        padding: 0;
+        @include cursor(pointer);
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        .icon {
+            display: inline-flex;
+            align-items: center;
+            min-width: 2.3rem;
+            height: 2.3rem;
+            border-radius: 50%;
+            justify-content: center;
+
+            svg {
+                width: 1.6em;
+                height: 1.6em;
+                fill: var(--color-icon-primary);
+            }
+        }
+        .label {
+            padding: 0 1.3em 0 0;
+            @include text-ellipsis();
+            color: var(--color-text-primary);
+        }
+
+        .line {
+            position: absolute;
+            z-index: 101;
+            bottom: 0;
+            left: 0;
+            height: .3em;
+            border-top-right-radius: 1em;
+            border-bottom-right-radius: 1em;
+            background-color: var(--color-accent);
+            transition: width 0.1s linear;
+        }
+    }
+
+    .about {
+        display: block;
+        padding: 1em;
+        border-radius: .6rem;
+        background-color: var(--color-surface-elevated);
+        border: 1px solid var(--color-stroke-secondary);
+        line-height: 1.4;
+        font-size: .87em;
+        color: var(--color-text-ghost);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 20rem;
+        word-wrap: break-word;
+    }
+}

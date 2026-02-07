@@ -3,6 +3,7 @@ import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import { CompanyLayoutProps } from "../layout";
 import Keyhole from "@/assets/ui-kit/icons/keyhole";
 import Plus from "@/assets/ui-kit/icons/plus";
+import { useMessage } from "@/app/platform/components/lib/message/provider";
 
 export default function Layout({
   children,

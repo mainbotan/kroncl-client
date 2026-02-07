@@ -8,6 +8,7 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useEffect, useState } from 'react';
 import { CompanyInvitationsResponse } from '@/apps/company/modules/accounts/types';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 
 export default function Page() {
     const accountsModule = useAccounts();

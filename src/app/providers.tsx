@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import ScrollToTop from './ScrollToTop';
 import { AuthProvider } from '@/apps/account/auth/context/AuthContext';
+import { PlatformMessageProvider } from './platform/components/lib/message/provider';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -23,7 +24,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <PlatformMessageProvider maxMessages={3}>
           {children}
+          </PlatformMessageProvider>
         </AuthProvider>
       <ScrollToTop />
       <ReactQueryDevtools initialIsOpen={false} />

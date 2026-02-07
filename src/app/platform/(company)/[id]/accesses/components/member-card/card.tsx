@@ -1,3 +1,5 @@
+'use client';
+
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import styles from './card.module.scss';
 import Button from '@/assets/ui-kit/button/button';
@@ -6,6 +8,7 @@ import { CompanyAccount } from '@/apps/company/modules/accounts/types';
 import { getGradientFromString, getFirstLetter } from '@/assets/utils/avatars';
 import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import { formatDate } from '@/assets/utils/date';
+import { useMessage } from '@/app/platform/components/lib/message/provider';
 
 interface MemberCardProps {
   account: CompanyAccount;
@@ -13,6 +16,13 @@ interface MemberCardProps {
 
 export function MemberCard({ account }: MemberCardProps) {
   const { user } = useAuth();
+  const { showMessage } = useMessage();
+
+  const handleSuccess = () => {
+      showMessage({
+      label: 'Запись успешно создана',
+      variant: 'success'})
+  };
   
   const isOwner = account.role_code === 'owner';
   const isCurrentUser = user?.id === account.id;
@@ -50,7 +60,7 @@ export function MemberCard({ account }: MemberCardProps) {
       </div>
       <div className={styles.actions}>
         {showKickButton && (
-          <Button className={styles.action} variant='light' icon={<Close />}>
+          <Button onClick={(() => handleSuccess())} className={styles.action} variant='light' icon={<Close />}>
             Выгнать
           </Button>
         )}
