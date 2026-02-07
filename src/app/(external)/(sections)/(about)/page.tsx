@@ -1,21 +1,29 @@
 import styles from './page.module.scss';
-import { GridSlide } from "./slides/grid/slide";
-import { PromoSlide } from "./slides/promo/slide";
-import { Singleton2Slide } from './slides/singleton-2/slide';
-import { SingletonSlide } from "./slides/singleton/slide";
-import { StartSlide } from "./slides/start/slide";
-import { TwoSidesSlide } from "./slides/two-sides/slide";
+import { DynamicsBlock } from './slides/dynamics/block';
+import { PartnersBlock } from './slides/partners/block';
+import { StartBlock } from './slides/start/block';
+import { ThesisBlock } from './slides/thesis/block';
 
 export default function Page() {
     return (
         <>
-        <StartSlide />
-        <div className={styles.gradient}>
-            <TwoSidesSlide />
-            <PromoSlide />
+        <div className={styles.container}>
+            <div className={styles.grid}>
+                <StartBlock className={styles.block} />
+                <PartnersBlock className={styles.block} />
+                
+                <div className={styles.theses}>
+                    <ThesisBlock className={styles.block} />
+                    <ThesisBlock className={styles.block} />
+                    <ThesisBlock className={styles.block} />
+                    <ThesisBlock className={styles.block} />
+                    <ThesisBlock className={styles.block} />
+                    <ThesisBlock className={styles.block} />
+                </div>
+                
+                <DynamicsBlock className={styles.block} />
+            </div>
         </div>
-        <SingletonSlide />
-        <Singleton2Slide />
         </>
     )
 }

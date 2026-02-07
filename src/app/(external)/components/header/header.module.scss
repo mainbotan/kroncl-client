@@ -61,6 +61,7 @@
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
+            color: var(--color-text-primary);
 
             .icon .svg {
                 width: 1em;
@@ -74,10 +75,10 @@
                 overflow: hidden;
             }
             &:hover, &.active {
-                color: var(--color-brand);
+                color: var(--color-text-hint);
 
                 .icon .svg {
-                    fill: var(--color-brand);
+                    fill: var(--color-hint);
                 }
             }
         }

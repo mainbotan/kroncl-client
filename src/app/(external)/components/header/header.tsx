@@ -170,13 +170,23 @@ export function Header() {
                         <div className={styles.buttons}>
                             <Button 
                                 className={styles.button} 
-                                variant='accent'
+                                variant='empty'
                                 as="a"
                                 href={authLinks.login}
                                 // target="_blank"
                                 rel="noopener noreferrer"
                             >
                                 Войти
+                            </Button>
+                            <Button 
+                                className={styles.button} 
+                                variant='accent'
+                                as="a"
+                                href={authLinks.registration}
+                                // target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Начать бесплатно
                             </Button>
                         </div>
                     )}

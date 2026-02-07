@@ -1,0 +1,30 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+
+    .slogan {
+        font-size: 1.8em;
+        font-weight: 600;
+        letter-spacing: .03em;
+    }
+    .description {
+        font-size: .8em;
+        line-height: 1.4;
+        max-width: 35rem;
+    }
+    .actions {
+        display: inline-flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        font-size: .73em;
+    }
+
+    @media (max-width: 720px) {
+        .slogan {
+            font-size: 1.4em;
+        }
+    }
+}

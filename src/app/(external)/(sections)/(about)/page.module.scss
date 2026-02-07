@@ -1,3 +1,60 @@
-.gradient {
-    // background: linear-gradient(180deg, transparent, rgba(153, 36, 231, 0.232));
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    @include slide();
+    flex: 1;
+    padding: 0;
+}
+.grid {
+    @include focus();
+    padding: 0 1px;
+    background-color: var(--color-stroke-secondary);
+    flex: 1;
+    flex-flow: column nowrap;
+    gap: 1px;
+
+    .block {
+        background-color: var(--color-leader);
+        font-size: .6em;
+        padding: 2.5rem 2rem;
+    }
+
+    @media (max-width: 720px) {
+        padding: 0;
+        
+        .block {
+            padding: 1.5rem 1rem;
+            font-size: .55em;
+        }
+    }
+}
+
+// theses grid
+.theses {
+    display: flex;
+    flex-flow: row wrap;
+
+    .block {
+        height: 10rem;
+        flex: 1;
+        padding: 2rem 1.5rem;
+        min-width: 33%;
+    }
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+
+        .block {
+            font-size: .6em;
+            padding: 1rem 1rem;
+            height: auto;
+
+            &:nth-child(1) {
+                padding-top: 2rem;
+            }
+            &:last-child {
+                padding-bottom: 2rem;
+            }
+        }
+    }
 }
