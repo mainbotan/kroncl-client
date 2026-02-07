@@ -17,6 +17,16 @@
         background-color: var(--color-leader);
         font-size: .6em;
         padding: 2.5rem 2rem;
+
+        // sections head
+        &.block {
+            background-color: var(--color-leader);
+        }
+    }
+
+    .interval {
+        background-color: var(--color-leader);
+        height: 5rem;
     }
 
     @media (max-width: 720px) {
