@@ -143,18 +143,18 @@ export default function Page() {
   };
 
   // Обработчик выбора видимости
-  const handleVisibilitySelect = (value: 'private' | 'public') => {
+  const handleVisibilitySelect = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      visibility: value
+      visibility: value as 'private' | 'public'
     }));
   };
 
   // Обработчик выбора региона
-  const handleRegionSelect = (value: 'ru' | 'kz') => {
+  const handleRegionSelect = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      region: value
+      region: value as 'ru' | 'kz'
     }));
   };
 
@@ -501,4 +501,5 @@ switch (pageState) {
         </PlatformFormBody>
       </>
     );
+  }
 }
