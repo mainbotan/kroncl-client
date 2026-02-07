@@ -1,0 +1,80 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.card {
+    display: flex;
+    min-height: 3rem;
+    padding: 1em 0;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 1em;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-stroke-secondary);
+
+    .icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 2.2em;
+        width: 2.2em;
+        height: 2.2em;
+        // border: 1px solid var(--color-stroke-primary);
+        border-radius: .4em;
+        @include cursor(pointer);
+
+        svg {
+            width: 1.3em;
+            height: 1.3em;
+
+            &.waiting {
+                color: var(--color-orange);
+            }
+            &.accepted {
+                color: var(--color-green);
+            }
+            &.rejected {
+                color: var(--color-red)
+            }
+        }
+    }
+    .arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 1em;
+            height: 1em;
+            color: var(--color-text-ghost);
+        }
+    }
+    .info {
+        display: flex;
+        flex: 1;
+        flex-flow: row wrap;
+        gap: .3em;
+        font-size: .9em;
+
+        .email {
+            @include cursor(pointer);
+        }
+    }
+    .actions {
+        display: inline-flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        font-size: .74em;
+
+        .action {
+            border-radius: 2em !important;
+            transition: transform var(--transition);
+
+            svg {
+                transform: rotate(180deg);
+            }
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { CompanyApi } from "../../api";
-import { CompanyAccountsResponse } from "./types";
+import { CompanyAccountsResponse, CompanyInvitationsResponse } from "./types";
 import { PaginationParams } from "../../../shared/pagination/types";
 
 export const accountsModule = (companyApi: CompanyApi) => ({
@@ -7,6 +7,14 @@ export const accountsModule = (companyApi: CompanyApi) => ({
     params?: PaginationParams & { search?: string; role?: string }
   ) {
     return companyApi.get<CompanyAccountsResponse>("/accounts", { 
+      params: params as Record<string, string | number | boolean | undefined> 
+    });
+  },
+
+  async getInvitations(
+    params?: PaginationParams
+  ) {
+    return companyApi.get<CompanyInvitationsResponse>("/accounts/invitations", { 
       params: params as Record<string, string | number | boolean | undefined> 
     });
   },

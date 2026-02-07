@@ -1,3 +1,5 @@
+import { PaginationMeta } from "@/apps/shared/pagination/types";
+
 // вроде где-то уже есть, похуй уберём ))) ага конечно ебанат, забудешь ты
 export interface CompanyAccount {
   id: string;
@@ -14,10 +16,19 @@ export interface CompanyAccount {
 
 export interface CompanyAccountsResponse {
   accounts: CompanyAccount[];
-  pagination: {
-    total: number;
-    page: number;
-    limit: number;
-    pages: number;
-  };
+  pagination: PaginationMeta;
+}
+
+export interface CompanyInvitation {
+  id: string;
+  company_id: string;
+  email: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CompanyInvitationsResponse {
+  invitations: CompanyInvitation[];
+  pagination: PaginationMeta;
 }
