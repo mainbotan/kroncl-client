@@ -6,6 +6,9 @@ import { PartnersBlock } from './slides/partners/block';
 import { StartBlock } from './slides/start/block';
 import { ThesisBlock } from './slides/thesis/block';
 import { authLinks } from '@/config/links.config';
+import { EcosystemBlock } from './slides/ecosystem/block';
+import { TimeSavingBlock } from './slides/time-saving/block';
+import { SimpleUiBlock } from './slides/simple-ui/block';
 
 export default function Page() {
     return (
@@ -34,6 +37,33 @@ export default function Page() {
                     ]}
                 />
                 <DynamicsBlock className={styles.block} />
+                <div className={styles.dynamicsGrid}>
+                    <TimeSavingBlock className={styles.block} />
+                    <SimpleUiBlock className={styles.block} />
+                </div>
+            
+                <div className={styles.interval} />
+                <HeadBlock className={clsx(styles.block, styles.head)} 
+                    title='Работайте в нескольких организациях'
+                    description='Мгновенно переключаясь между учётными системами.'
+                    variant='orange'
+                    location='left'
+                    actions={[
+                        {children: 'Начать сейчас', href: authLinks.registration, variant: 'contrast'}
+                    ]}
+                />
+                    
+                <div className={styles.interval} />
+                <HeadBlock className={clsx(styles.block, styles.head)} 
+                    title='Больше чем бизнес'
+                    description='Для тех, кто живёт делом.'
+                    variant='default'
+                    location='center'
+                    actions={[
+                        {children: 'Начать сейчас', href: authLinks.registration, variant: 'contrast'}
+                    ]}
+                />
+                <EcosystemBlock className={styles.block} />
             </div>
         </div>
         </>

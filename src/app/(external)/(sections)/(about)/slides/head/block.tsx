@@ -3,7 +3,7 @@ import clsx from "clsx";
 import styles from './block.module.scss';
 import Button, { ButtonProps } from "@/assets/ui-kit/button/button";
 
-type HeadBlockVariants = 'accent' | 'default';
+type HeadBlockVariants = 'accent' | 'default' | 'orange';
 type HeadBlockLocation = 'center' | 'left'
 
 interface HeadBlockProps extends PageBlockProps {

@@ -68,3 +68,25 @@
         }
     }
 }
+
+// dynamics 2 sections grid
+.dynamicsGrid {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1px;
+
+    .block {
+        min-height: 15rem;
+
+        &:nth-child(1) {
+            flex: 1;
+        }
+        &:nth-child(2) {
+            flex: 1.5;
+        }
+    }
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+    }
+}

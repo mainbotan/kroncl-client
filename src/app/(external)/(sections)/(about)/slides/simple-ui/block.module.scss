@@ -1,0 +1,73 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    position: relative;
+
+    .info {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 1em;
+        max-width: 19rem;
+        align-items: start;
+        z-index: 20;
+        
+        .capture {
+            font-size: 1.6em;
+            font-weight: 600;
+            letter-spacing: .02em;
+            line-height: 1.1;
+
+            .accent {
+                color: var(--color-text-hint);
+                @include cursor(pointer);
+            }
+        }
+        .description {
+            font-size: .82em;
+            line-height: 1.3;
+            color: var(--color-text-ghost);
+        }
+        .link {
+            display: inline-flex;
+            flex-flow: row nowrap;
+            justify-content: start;
+            font-size: .7em;
+            align-items: center;
+            color: var(--color-text-hint);
+            gap: .7em;
+            @include cursor(pointer);
+            transition: margin-left var(--transition);
+
+            .icon svg {
+                width: .6em;
+                height: .6em;
+            }
+
+            &:hover {
+                margin-left: 1em;
+            }
+        }
+    }
+
+    .circle {
+        width: 6em;
+        height: 6em;
+        border-radius: 50%;
+        background-color: var(--color-blue);
+        position: absolute;
+        z-index: 10;
+        right: -2em;
+        top: -2em;
+
+        &:nth-child(2) {
+            top: 3em;
+            right: -2em;
+            width: 5em;
+            height: 5em;
+            background-color: var(--color-purple);
+        }
+    }
+}

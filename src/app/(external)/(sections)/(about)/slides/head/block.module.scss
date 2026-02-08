@@ -3,7 +3,7 @@
 .block {
     display: flex;
     flex-flow: row nowrap;
-    gap: .4em;
+    gap: 1em;
 
     .info {
         display: flex;
@@ -46,6 +46,10 @@
         background-color: var(--color-accent) !important;
         color: var(--color-accent-text-primary);
     }
+    &.orange {
+        background-color: rgb(255, 99, 21) !important;
+        color: var(--color-accent-text-primary);
+    }
     &.center {
         flex-direction: column;
 
@@ -66,8 +70,9 @@
         .actions {
             justify-content: start;
         }
-        .title {
+        .info .title {
             font-size: 1.25em;
+            line-height: 1.1;
         }
     }
 }
