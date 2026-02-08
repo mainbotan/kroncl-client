@@ -32,3 +32,14 @@ export interface CompanyInvitationsResponse {
   invitations: CompanyInvitation[];
   pagination: PaginationMeta;
 }
+
+export interface RevokeInvitationResponse {
+  company_id: string;
+  invitation_id: string;
+  revoked: boolean;
+}
+
+export interface DropAccountResponse {
+  account_id: string;
+  removed: boolean;
+}
