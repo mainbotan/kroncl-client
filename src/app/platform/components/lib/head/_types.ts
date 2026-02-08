@@ -1,13 +1,6 @@
-import { ButtonVariant } from "@/assets/ui-kit/button/button";
+import { ButtonProps, ButtonVariant } from "@/assets/ui-kit/button/button";
 
-export interface PlatformHeadAction {
-  label?: string;
-  onClick?: () => void;
-  href?: string;
-  variant?: ButtonVariant;
-  className?: string;
-  icon?: React.ReactNode;
-}
+export type PlatformHeadAction = ButtonProps;
 
 export interface PlatformHeadSection {
   label: string;

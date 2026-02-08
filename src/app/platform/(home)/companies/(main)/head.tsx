@@ -15,7 +15,7 @@ export function CompaniesHeader({
       description="Компании, к которым вы имеете доступ, собраны здесь – перемещайтесь между учетными системами нескольких организаций без задержек."
       actions={[
         {
-          label: 'Создать',
+          children: 'Создать',
           href: '/platform/companies/new',
           variant: 'accent',
           icon: <Plus />

@@ -7,6 +7,7 @@ export const breadcrumbDictionary: Record<string, string> = {
 
     'new': "Создание",
     'edit': "Редактирование",
+    'invite': 'Пригласить',
 
     'storage': "Хранилище",
     'accesses': "Доступы",

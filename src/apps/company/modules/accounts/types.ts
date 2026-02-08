@@ -43,3 +43,17 @@ export interface DropAccountResponse {
   account_id: string;
   removed: boolean;
 }
+
+export interface InviteAccountRequest {
+  email: string;
+}
+
+export interface InviteAccountResponse {
+  company_id: string;
+  created_at: string;
+  email: string;
+  id: string;
+  status: string;
+  updated_at: string;
+}
+

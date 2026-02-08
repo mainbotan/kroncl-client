@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, act } from 'react';
 import clsx from 'clsx';
 import styles from './head.module.scss';
 import Input from '@/assets/ui-kit/input/input';
@@ -125,25 +125,12 @@ export function PlatformHead({
         
         {actions.length > 0 && (
           <div className={styles.actions}>
-            {actions.map((action, index) => {
-              const button = (
-                <Button
-                  key={index}
-                  className={clsx(styles.action, action.className)}
-                  variant={action.variant || 'contrast'}
-                  onClick={action.onClick}
-                  icon={action.icon}
-                >
-                  {action.label && action.label}
-                </Button>
-              );
-
-              return action.href ? (
-                <Link key={index} href={action.href} className={clsx(styles.action, action.className)}>
-                  {button}
-                </Link>
-              ) : button;
-            })}
+            {actions.map((action, index) => (
+              <Button
+                key={index}
+                {...action}
+              />
+            ))}
           </div>
         )}
       </div>

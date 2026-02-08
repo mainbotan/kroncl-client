@@ -1,5 +1,5 @@
 import { CompanyApi } from "../../api";
-import { CompanyAccountsResponse, CompanyInvitationsResponse, DropAccountResponse, RevokeInvitationResponse } from "./types";
+import { CompanyAccountsResponse, CompanyInvitationsResponse, DropAccountResponse, InviteAccountRequest, InviteAccountResponse, RevokeInvitationResponse } from "./types";
 import { PaginationParams } from "../../../shared/pagination/types";
 
 export const accountsModule = (companyApi: CompanyApi) => ({
@@ -25,5 +25,9 @@ export const accountsModule = (companyApi: CompanyApi) => ({
 
   async dropAccount(id: string) {
     return companyApi.delete<DropAccountResponse>(`/modules/accounts/${id}`);
+  },
+  
+  async inviteAccount(data: InviteAccountRequest) {
+    return companyApi.post<InviteAccountResponse>("/accounts/invitations", data);
   }
 });
