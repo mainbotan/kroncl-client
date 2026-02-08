@@ -9,6 +9,7 @@ import { authLinks } from '@/config/links.config';
 import { EcosystemBlock } from './slides/ecosystem/block';
 import { TimeSavingBlock } from './slides/time-saving/block';
 import { SimpleUiBlock } from './slides/simple-ui/block';
+import { thesesList } from './content/_theses';
 
 export default function Page() {
     return (
@@ -18,12 +19,9 @@ export default function Page() {
                 <StartBlock className={styles.block} />
                 <PartnersBlock className={styles.block} />
                 <div className={styles.theses}>
-                    <ThesisBlock className={styles.block} />
-                    <ThesisBlock className={styles.block} />
-                    <ThesisBlock className={styles.block} />
-                    <ThesisBlock className={styles.block} />
-                    <ThesisBlock className={styles.block} />
-                    <ThesisBlock className={styles.block} />
+                    {thesesList.map((thesis, index) => (
+                        <ThesisBlock className={styles.block} key={index} {...thesis} />
+                    ))}
                 </div>
                 
                 <div className={styles.interval} />

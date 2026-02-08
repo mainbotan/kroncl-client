@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { authLinks } from '@/config/links.config';
 import { PageBlockProps } from '@/app/(external)/_types';
 import ArtGrid from '../../components/art-grid/grid';
-import { CanvasGrid } from '../../components/canvas-grid/canvas-grid';
 
 export function StartBlock({className}: PageBlockProps) {
     return (
@@ -26,7 +25,7 @@ export function StartBlock({className}: PageBlockProps) {
                 </div>
             </div>
             <span className={styles.shadow} />
-            {/* <ArtGrid className={styles.art} /> */}
+            <ArtGrid className={styles.art} />
         </div>
     )
 }

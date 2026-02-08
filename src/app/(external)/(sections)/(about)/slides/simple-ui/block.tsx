@@ -8,6 +8,7 @@ import Arrow from '@/assets/ui-kit/icons/arrow';
 import Link from 'next/link';
 import { motion, useInView, Variants } from 'framer-motion';
 import { useRef } from 'react';
+import { arrowVariants, captureVariants, circleVariants, containerVariants, linkVariants, textItemVariants } from './_animations';
 
 export function SimpleUiBlock({className}: PageBlockProps) {
     const ref = useRef(null);
