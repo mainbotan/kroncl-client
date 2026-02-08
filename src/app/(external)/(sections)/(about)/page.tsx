@@ -10,6 +10,7 @@ import { EcosystemBlock } from './slides/ecosystem/block';
 import { TimeSavingBlock } from './slides/time-saving/block';
 import { SimpleUiBlock } from './slides/simple-ui/block';
 import { thesesList } from './content/_theses';
+import { partnersList } from './content/_partners';
 
 export default function Page() {
     return (
@@ -17,7 +18,7 @@ export default function Page() {
         <div className={styles.container}>
             <div className={styles.grid}>
                 <StartBlock className={styles.block} />
-                <PartnersBlock className={styles.block} />
+                <PartnersBlock partners={partnersList} className={styles.block} />
                 <div className={styles.theses}>
                     {thesesList.map((thesis, index) => (
                         <ThesisBlock className={styles.block} key={index} {...thesis} />

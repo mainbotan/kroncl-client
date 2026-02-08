@@ -14,7 +14,7 @@ export function StartBlock({className}: PageBlockProps) {
         <div className={clsx(styles.block, className)}>
             <div className={styles.content}>
                 <div className={styles.slogan}>
-                    Учётная система <span className={styles.brand}>#1</span> малого бизнеса.
+                    Облачная учётная система <span className={styles.brand}>#1</span> малого бизнеса.
                 </div>
                 <div className={styles.description}>
                     Мы всей душой ненавидим 1с и Битрикс24 и показываем как <span className={styles.brand}>малый</span> и <span className={styles.brand}>средний</span> бизнес может вести учёт и планирование в России.
