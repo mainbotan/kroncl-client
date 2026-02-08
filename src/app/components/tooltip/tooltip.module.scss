@@ -15,7 +15,6 @@
     display: block;
     text-align: center;
     line-height: 1.3;
-    @include lines-ellipsis(3);
     backdrop-filter: blur(10px);
 
     &.compact {
@@ -24,6 +23,12 @@
         width: fit-content;
         max-width: 8rem;
         padding: .7em .9em;
+    }
+    &.left {
+        text-align: left;
+    }
+    &.right {
+        text-align: right;
     }
 
     svg {

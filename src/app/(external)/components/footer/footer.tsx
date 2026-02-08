@@ -1,15 +1,64 @@
+'use client';
+
 import clsx from 'clsx';
 import styles from './footer.module.scss';
 import { LogoText } from '@/assets/ui-kit/logo/text/text';
 import Link from 'next/link';
 import { LogoFull } from '@/assets/ui-kit/logo/full/full';
+import { useEffect, useState } from 'react';
+import Sun from '@/assets/ui-kit/icons/sun';
+import Moon from '@/assets/ui-kit/icons/moon';
 
 export function Footer() {
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+    // Инициализация темы при загрузке
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme') as 'light' | 'dark';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+        setTheme(initialTheme);
+        document.documentElement.setAttribute('data-theme', initialTheme);
+    }, []);
+
+    // Установка светлой темы
+    const setLightTheme = () => {
+        if (theme !== 'light') {
+            setTheme('light');
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    };
+
+    // Установка темной темы
+    const setDarkTheme = () => {
+        if (theme !== 'dark') {
+            setTheme('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    };
     return (
         <footer className={styles.container}>
             <div className={styles.focus}>
                 <div className={styles.brand}>
                     <div className={styles.logo}><LogoFull /></div>
+                    
+                    <div className={styles.switcher}>
+                        <span 
+                            className={clsx(styles.box, theme === 'light' && styles.active)} 
+                            onClick={setLightTheme}
+                        >
+                            <Sun className={styles.svg} />
+                        </span>
+                        <span 
+                            className={clsx(styles.box, theme === 'dark' && styles.active)} 
+                            onClick={setDarkTheme}
+                        >
+                            <Moon className={styles.svg} />
+                        </span>
+                    </div>
                 </div>
                 <div className={styles.sections}>
                     <div className={styles.group}>

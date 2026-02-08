@@ -22,6 +22,7 @@
         flex-flow: column nowrap;
         gap: .1em;
         max-width: 9rem;
+        align-items: start;
         
         .logo {
             height: fit-content;
@@ -32,6 +33,48 @@
             color: grey;
             line-height: 1.3;
             // padding-left: .7em;
+        }
+
+        
+        .switcher {
+            margin-top: 1rem;
+            height: 1.42em;
+            display: inline-flex;
+            flex-flow: row nowrap;
+            border-radius: 1rem;
+            background-color: var(--color-surface-glass);
+            border: 1px solid var(--color-stroke-primary);
+            overflow: hidden;
+
+            .box {
+                display: inline-flex;
+                width: 1.3rem;
+                height: 1.3rem;
+                align-items: center;
+                justify-content: center;
+                transition: background-color var(--transition), border-color var(--transition);
+                border-radius: .3rem;
+                border: 1px solid transparent;
+                @include cursor(pointer);
+
+                .svg {
+                    width: 40%;
+                    height: 40%;
+                    fill: var(--color-icon-primary);
+                    transition: fill var(--transition);
+                }
+
+                &:hover {
+                    background-color: var(--color-surface-elevated);
+                }
+                &.active {
+                    background-color: var(--color-contrast);
+
+                    .svg {
+                        fill: var(--color-leader);
+                    }
+                }
+            }
         }
     }
     .sections {

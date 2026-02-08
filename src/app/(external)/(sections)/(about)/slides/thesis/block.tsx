@@ -2,11 +2,12 @@ import { PageBlockProps } from '@/app/(external)/_types';
 import styles from './block.module.scss';
 import clsx from 'clsx';
 import { desc } from 'framer-motion/client';
+import React from 'react';
 
 export type TesisProps = Tesis & PageBlockProps;
 export type Tesis = {
     capture?: string;
-    description?: string;
+    description?: React.ReactNode;
 }
 
 export function ThesisBlock({

@@ -8,6 +8,8 @@ interface CustomTooltipProps {
     side?: 'top' | 'right' | 'bottom' | 'left';
     align?: 'start' | 'center' | 'end';
     compact?: boolean;
+    location?: 'left' | 'center' | 'right'
+    className?: string;
 }
 
 export function ModalTooltip({ 
@@ -15,7 +17,9 @@ export function ModalTooltip({
     content, 
     side = 'top',
     align = 'center',
-    compact = false
+    compact = false,
+    className,
+    location = 'center'
 }: CustomTooltipProps) {
     return (
         <Tooltip.Provider>
@@ -25,7 +29,7 @@ export function ModalTooltip({
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
                     <Tooltip.Content
-                        className={clsx(styles.content, {
+                        className={clsx(styles.content, className, styles[location], {
                             [styles.compact]: compact
                         })}
                         side={side}
