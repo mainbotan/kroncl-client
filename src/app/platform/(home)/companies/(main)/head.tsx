@@ -18,7 +18,8 @@ export function CompaniesHeader({
           children: 'Создать',
           href: '/platform/companies/new',
           variant: 'accent',
-          icon: <Plus />
+          icon: <Plus />,
+          as: 'link'
         }
       ]}
       sections={[
@@ -38,7 +39,7 @@ export function CompaniesHeader({
         },
         {
           label: 'Приглашены',
-          href: '/platform/companies?role=guest',
+          href: '/platform/companies?role=member',
           disabled: false,
           exact: true,
           strongParams: true
