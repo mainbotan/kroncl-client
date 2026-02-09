@@ -19,9 +19,13 @@
     overflow-y: scroll;
     max-width: fit-content;
     max-height: fit-content;
-    max-width: calc(100vh - 6rem);
+    max-width: calc(100vw - 18rem);
     max-height: calc(100vh - 6rem);
     border-radius: .5rem;
     background-color: var(--color-surface-elevated);
     font-size: .6rem;
+
+    @media (max-width: 720px) {
+        max-width: calc(100vw - 2rem);
+    }
 }

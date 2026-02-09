@@ -14,6 +14,9 @@ import { useAccounts } from '@/apps/company/modules';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
+import clsx from 'clsx';
+import { ModalPermissions } from './modal-permissions/modal';
+import Keyhole from '@/assets/ui-kit/icons/keyhole';
 
 interface MemberCardProps {
   account: CompanyAccount;
@@ -22,7 +25,8 @@ interface MemberCardProps {
 export function MemberCard({ account }: MemberCardProps) {
   const { user } = useAuth();
   const accountsModule = useAccounts();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDropOpen, setIsModalDropOpen] = useState(false);
+  const [isModalPermissionsOpen, setIsModalPermissionsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const { showMessage } = useMessage();
 
@@ -33,7 +37,7 @@ export function MemberCard({ account }: MemberCardProps) {
           label: 'Пользователь выгнан из компании.',
           variant: 'success'
           });
-          setIsModalOpen(false);
+          setIsModalDropOpen(false);
           setIsVisible(false);
       } catch {
           showMessage({
@@ -45,7 +49,7 @@ export function MemberCard({ account }: MemberCardProps) {
   
   const isOwner = account.role_code === 'owner';
   const isCurrentUser = user?.id === account.id;
-  const showKickButton = !isOwner && !isCurrentUser;
+  const showKickButton = !isOwner;
 
   const avatarStyle = account.avatar_url
     ? { backgroundImage: `url(${account.avatar_url})` }
@@ -73,56 +77,75 @@ export function MemberCard({ account }: MemberCardProps) {
             }}
         >
       <div className={styles.card}>
-        <div 
-          className={styles.avatar}
-          style={avatarStyle}
-        >
-          {displayLetter}
-        </div>
-        <div className={styles.info}>
-          <div className={styles.identy}>
-            <span className={styles.name}>{account.name}</span>
-            <ModalTooltip content={`${account.email} - корпоративная почта аккаунта`}>
-              <span className={styles.email}>{account.email}</span>
-            </ModalTooltip>
+        <div className={styles.base}>
+          <div 
+            className={styles.avatar}
+            style={avatarStyle}
+          >
+            {displayLetter}
           </div>
-          <div className={styles.tags}>
-            <span className={styles.tag}>{account.role_name}</span>
-            <span className={styles.tag}>Присоединился {joinedDate}</span>
+          <div className={styles.info}>
+            <div className={styles.identy}>
+              <span className={styles.name}>{account.name}</span>
+              <ModalTooltip content={`${account.email} - корпоративная почта аккаунта`}>
+                <span className={styles.email}>{account.email}</span>
+              </ModalTooltip>
+            </div>
+            <div className={styles.tags}>
+              <span className={styles.tag}>{account.role_name}</span>
+              <span className={styles.tag}>Присоединился {joinedDate}</span>
+            </div>
           </div>
-        </div>
-        <div className={styles.actions}>
-          {showKickButton && (
-            <Button onClick={(() => setIsModalOpen(true))} className={styles.action} variant='light' icon={<Close />}>
-              Выгнать
-            </Button>
-          )}
+          <div className={styles.actions}>
+            {showKickButton && (
+              <Button onClick={(() => setIsModalDropOpen(true))} className={styles.action} variant='light' icon={<Close />}>
+                {isCurrentUser ? 'Выйти' : 'Выгнать'}
+              </Button>
+            )}
+            {!isOwner && (
+              <Button onClick={(() => setIsModalPermissionsOpen(true))} className={styles.action} variant='accent' icon={<Keyhole />}>
+                Разрешения
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
       {/* drop account */}
       <PlatformModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isModalDropOpen}
+          onClose={() => setIsModalDropOpen(false)}
           className={styles.modal}
       >
         <PlatformModalConfirmation
-            title='Выгнать пользователя?'
-            description={`Пользователь ${account.email} потеряет доступ к компании - в том числе все выданные разрешения.`}
+            title={isCurrentUser ? 'Выйти из компании?' : 'Выгнать пользователя?'}
+            description={
+              isCurrentUser ? `После выхода из компании вы потеряете доступ к учётной системе до следующего приглашения.` : 
+              `Пользователь ${account.email} потеряет доступ к компании - в том числе все выданные разрешения.`
+            }
             actions={[
                 {
                     children: 'Отмена', 
                     variant: 'light', 
-                    onClick: () => setIsModalOpen(false)
+                    onClick: () => setIsModalDropOpen(false)
                 },
                 {
                     variant: "accent", 
                     onClick: handleDrop,
                     icon: <Close />,
-                    children: 'Выгнать'
+                    children: isCurrentUser ? 'Выйти' : 'Выгнать'
                 }
             ]}
         />
+      </PlatformModal>
+
+      {/* modal permissions */}
+      <PlatformModal
+          isOpen={isModalPermissionsOpen}
+          onClose={() => setIsModalPermissionsOpen(false)}
+          className={styles.modal}
+      >
+        <ModalPermissions />
       </PlatformModal>
       </motion.div>
             )}
