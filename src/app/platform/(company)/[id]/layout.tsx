@@ -9,11 +9,13 @@ import { companiesApiSSR } from "@/apps/account/companies/api-ssr";
 import { PlatformContentWrapper } from "../../components/lib/wrapper/wrapper";
 import { CompanyStorageWidget } from "./storage/widget/widget";
 
-export interface CompanyLayoutProps {
+export interface CompanyLayoutProps extends CompanyParams {
   children: React.ReactNode;
+}
+export type CompanyParams = {
   params: {
     id: string;
-  };
+  }
 }
 
 async function getCompanyData(companyId: string): Promise<AccountCompany | null> {

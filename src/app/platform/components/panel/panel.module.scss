@@ -90,8 +90,9 @@
             gap: .44em;
             width: 100%;
             align-items: center;
+            height: 3em;
             overflow: hidden;
-            border-radius: 1.3em;
+            border-radius: 2em;
             @include cursor(pointer);
             border: 2px solid transparent;
             transition: border-color var(--transition), color var(--transition);

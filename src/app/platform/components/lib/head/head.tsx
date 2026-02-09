@@ -128,6 +128,7 @@ export function PlatformHead({
             {actions.map((action, index) => (
               <Button
                 key={index}
+                className={clsx(styles.action, action.className)}
                 {...action}
               />
             ))}

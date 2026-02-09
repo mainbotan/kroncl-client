@@ -39,6 +39,17 @@
             align-items: start;
             font-size: .7em;
             gap: .4rem;
+
+            .action {
+                border-radius: 2em;
+                height: 3.2em;
+                
+                transition: transform var(--transition);
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
         }
     
         @media (max-width: 720px) {
@@ -95,20 +106,22 @@
         display: block;
         overflow-x: scroll;
         @include no-scrollbar();
-        border-bottom: 1px solid var(--color-stroke-secondary);
+        // border-bottom: 1px solid var(--color-stroke-secondary);
         overflow-y: visible;
 
         .grid {
             display: flex;
-            gap: 0;
+            gap: 1em;
             flex-flow: row nowrap;
+            // border: 1px solid red;
 
             .section {
                 display: flex;
                 align-items: center;
-                padding: 0 1.2em;
-                border-bottom: 3px solid transparent;
-                height: 3.3em;
+                padding: 0 .8em;
+                border: 2px solid transparent;
+                height: 2.6em;
+                border-radius: .7em;
                 transition: color var(--transition), background-color var(--transition), border-color var(--transition);
                 @include cursor(pointer);
 
@@ -118,6 +131,8 @@
                 }
                 &.active {
                     border-color: var(--color-blue);
+                    background-color: var(--color-blue);
+                    color: var(--color-accent-text-primary);
                 }
             }
         }
