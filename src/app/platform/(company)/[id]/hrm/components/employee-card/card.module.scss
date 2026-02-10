@@ -34,7 +34,6 @@
             font-weight: 600;
             color: var(--color-leader);
             background-color: var(--color-surface-light);
-            border: 2px solid var(--color-stroke-primary);
         }
         .info {
             display: flex;
@@ -147,6 +146,7 @@
         @include text-ellipsis();
         width: fit-content;
         max-width: calc(100% - 3em);
+        transition: opacity var(--transition), margin-bottom var(--transition)
     }
 
     &:hover {
@@ -158,6 +158,10 @@
         }
         .flag {
             transform: rotate(-30deg);
+        }
+        .code {
+            opacity: 0;
+            margin-bottom: -2em;
         }
     }
 }
