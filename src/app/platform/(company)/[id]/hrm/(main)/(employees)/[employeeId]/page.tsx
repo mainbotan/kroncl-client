@@ -22,6 +22,8 @@ import PaperClip from "@/assets/ui-kit/icons/paper-clip";
 import { MemberCard } from "../../../../accesses/components/member-card/card";
 import { CompanyAccount } from "@/apps/company/modules/accounts/types";
 import { ModalSelectAccount } from "./components/modal-select-account/modal";
+import { motion, AnimatePresence } from 'framer-motion';
+import { sectionVariants, widgetVariants, accountCardVariants } from "./_animations";
 
 export default function Page() {
     const params = useParams();
@@ -41,7 +43,6 @@ export default function Page() {
     // привязанный аккаунт
     const [account, setAccount] = useState<CompanyAccount | null>(null);
     const [accountLoading, setAccountLoading] = useState(false);
-
 
     // первоначальная загрузка карты
     useEffect(() => {
@@ -147,47 +148,65 @@ export default function Page() {
     };
 
     if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
+        <motion.div 
+            style={{
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                fontSize: ".7em", 
+                color: "var(--color-text-description)", 
+                minHeight: "10rem"
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             <Spinner />
-        </div>
+        </motion.div>
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
+        <motion.div 
+            style={{
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                fontSize: ".7em", 
+                color: "var(--color-text-description)", 
+                minHeight: "10rem"
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             {error}
-        </div>
+        </motion.div>
     );
 
     if (!employee) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
+        <motion.div 
+            style={{
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                fontSize: ".7em", 
+                color: "var(--color-text-description)", 
+                minHeight: "10rem"
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+        >
             Не удалось загрузить карту сотрудника
-        </div>
+        </motion.div>
     );
 
     const fullName = `${employee.first_name} ${employee.last_name ? employee.last_name : ''}`;
     const initials = `${employee.first_name[0]}${employee.last_name ? employee.last_name[0] : ''}`;
     const avatarGradient = getGradientFromString(fullName);
+
+    const widgets = [
+        { value: fullName, legend: "Полное имя", variant: "accent" as const },
+        ...(employee.phone ? [{ value: formatPhoneNumber(employee.phone), legend: "Рабочий номер", variant: "default" as const }] : []),
+        ...(employee.email ? [{ value: employee.email, legend: "Корпоративная почта", variant: "default" as const }] : [])
+    ];
 
     return (
         <>
@@ -209,63 +228,98 @@ export default function Page() {
                     }
                 ]}
             />
-            <div className={styles.body}>
-                <section className={styles.section}>
+            
+            <motion.div 
+                className={styles.body}
+                initial="hidden"
+                animate="visible"
+                variants={sectionVariants}
+            >
+                <motion.section 
+                    className={styles.section}
+                    variants={sectionVariants}
+                >
                     <div className={styles.capture}>Базовая информация</div>
                     <div className={styles.description}>Контактные данные сотрудника</div>
                     <div className={styles.variants}>
-                        <EmployeeWidget
-                            value={fullName}
-                            legend="Полное имя"
-                            action="copy"
-                            variant="accent"
-                        />
-                        {employee.phone && (
-                            <EmployeeWidget
-                                value={formatPhoneNumber(employee.phone)}
-                                legend="Рабочий номер"
-                                action="copy"
-                            />
-                        )}
-                        {employee.email && (
-                            <EmployeeWidget
-                                value={employee.email}
-                                legend="Корпоративная почта"
-                                action="copy"
-                            />
-                        )}
+                        {widgets.map((widget, index) => (
+                            <motion.div
+                                key={widget.legend}
+                                custom={index}
+                                variants={widgetVariants}
+                            >
+                                <EmployeeWidget
+                                    value={widget.value}
+                                    legend={widget.legend}
+                                    action="copy"
+                                    variant={widget.variant}
+                                />
+                            </motion.div>
+                        ))}
                     </div>
-                </section>
-                <section className={styles.section}>
+                </motion.section>
+                
+                <motion.section 
+                    className={styles.section}
+                    variants={sectionVariants}
+                >
                     <div className={styles.unify}>
                         <div className={styles.capture}>Аккаунт</div>
-                        <Button onClick={() => setIsModalSelectAccountOpen(true)} icon={<PaperClip />} className={styles.action} variant="light">{employee.is_account_linked ? 'Изменить' : 'Выбрать'}</Button>
+                        <Button 
+                            onClick={() => setIsModalSelectAccountOpen(true)} 
+                            icon={<PaperClip />} 
+                            className={styles.action} 
+                            variant="light"
+                        >
+                            {employee.is_account_linked ? 'Изменить' : 'Выбрать'}
+                        </Button>
                     </div>
-                    {employee.is_account_linked && accountLoading && (
-                        <div style={{ display: "flex", justifyContent: "center", padding: "1rem" }}>
-                            <Spinner />
-                        </div>
-                    )}
-                    {employee.is_account_linked && !accountLoading && account && (
-                        <MemberCard className={styles.account} 
-                            account={account} 
-                            showDefaultActions={false}
-                            actions={[
-                                {
-                                    children: 'Отвязать',
-                                    variant: 'light',
-                                    onClick: handleUnlinkAccount
-                                }
-                            ]}
-                        />
-                    )}
+                    
+                    <AnimatePresence mode="wait">
+                        {employee.is_account_linked && accountLoading && (
+                            <motion.div 
+                                key="loading"
+                                style={{ display: "flex", justifyContent: "center", padding: "1rem" }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                            >
+                                <Spinner />
+                            </motion.div>
+                        )}
+                        
+                        {employee.is_account_linked && !accountLoading && account && (
+                            <motion.div
+                                key="account-card"
+                                variants={accountCardVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                layout
+                            >
+                                <MemberCard 
+                                    className={styles.account} 
+                                    account={account} 
+                                    showDefaultActions={false}
+                                    actions={[
+                                        {
+                                            children: 'Отвязать',
+                                            variant: 'light',
+                                            onClick: handleUnlinkAccount
+                                        }
+                                    ]}
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    
                     <div className={styles.note}>
                         <div className={styles.description}>
                             <Question /> У сотрудника может не быть аккаунта в системе - это нормально для организаций, в которых централизованный учёт ведут менеджеры.
                         </div>
                     </div>
-                </section>
-            </div>
+                </motion.section>
+            </motion.div>
 
             {/* drop account */}
             <PlatformModal
@@ -299,7 +353,6 @@ export default function Page() {
             >
                 <ModalSelectAccount 
                     onSelectAccount={(accountId) => {
-                        // Обновляем локальное состояние
                         setEmployee(prev => prev ? {
                             ...prev,
                             account_id: accountId,
@@ -307,13 +360,13 @@ export default function Page() {
                         } : null);
                         setIsModalSelectAccountOpen(false);
                         
-                        // загружаем данные аккаунта
                         accountsModule.getAccount(accountId).then(response => {
                             if (response.status) {
                                 setAccount(response.data);
                             }
                         });
-                    }}/>
+                    }}
+                />
             </PlatformModal>
         </>
     );

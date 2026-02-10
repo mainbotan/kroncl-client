@@ -10,6 +10,8 @@ import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { useEffect, useState } from 'react';
 import { CompanyAccountsResponse } from '@/apps/company/modules/accounts/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { motion, AnimatePresence } from 'framer-motion';
+import { listVariants, itemVariants } from './_animations';
 
 export function ModalSelectAccount({ 
     onSelectAccount 
@@ -59,12 +61,10 @@ export function ModalSelectAccount({
     const handleSearchChange = (value: string) => {
         setSearchValue(value);
         
-        // Очищаем предыдущий таймаут
         if (searchTimeout) {
             clearTimeout(searchTimeout);
         }
         
-        // Устанавливаем новый таймаут на 300мс
         const timeout = setTimeout(() => {
             loadData(value);
         }, 300);
@@ -72,7 +72,6 @@ export function ModalSelectAccount({
         setSearchTimeout(timeout);
     };
 
-    // Очистка таймаута при размонтировании
     useEffect(() => {
         return () => {
             if (searchTimeout) {
@@ -81,7 +80,6 @@ export function ModalSelectAccount({
         };
     }, [searchTimeout]);
 
-    // выбор аккаунта
     const handleSelectAccount = async (accountId: string) => {
         try {
             const response = await hrmModule.linkAccountToEmployee(employeeId, accountId);
@@ -97,6 +95,8 @@ export function ModalSelectAccount({
         }
     };
 
+    const accounts = data?.accounts || [];
+
     return (
         <div className={styles.modal}>
             <div className={styles.capture}>Выберите аккаунт</div>
@@ -109,38 +109,75 @@ export function ModalSelectAccount({
                 value={searchValue}
                 onChange={(e) => handleSearchChange(e.target.value)}
             />
+            
             <div className={styles.list}>
-                {loading && (
-                    <div style={{ display: "flex", justifyContent: "center", padding: "1rem" }}>
-                        <Spinner />
-                    </div>
-                )}
-                {!loading && data?.accounts.map((account) => (
-                    <MemberCard 
-                        key={account.id}
-                        account={account}
-                        showDefaultActions={false}
-                        actions={[
-                            {
-                                children: 'Выбрать',
-                                variant: 'accent',
-                                icon: <PaperClip />,
-                                onClick: () => handleSelectAccount(account.id)
-                            }
-                        ]}
-                    />
-                ))}
-                {!loading && (!data?.accounts || data.accounts.length === 0) && (
-                    <div style={{ 
-                        display: "flex", 
-                        justifyContent: "center", 
-                        padding: "2rem",
-                        color: "var(--color-text-description)",
-                        fontSize: "0.9em"
-                    }}>
-                        {searchValue ? 'Аккаунты не найдены' : 'Аккаунты не найдены'}
-                    </div>
-                )}
+                <AnimatePresence mode="wait">
+                    {loading && (
+                        <motion.div 
+                            key="loading"
+                            style={{ display: "flex", justifyContent: "center", padding: "1rem" }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                        >
+                            <Spinner />
+                        </motion.div>
+                    )}
+                    
+                    {!loading && (
+                        <motion.div
+                            key="content"
+                            variants={listVariants}
+                            initial="hidden"
+                            animate="visible"
+                            className={styles.listInner}
+                        >
+                            <AnimatePresence mode="popLayout">
+                                {accounts.map((account) => (
+                                    <motion.div
+                                        key={account.id}
+                                        variants={itemVariants}
+                                        layout
+                                        initial="hidden"
+                                        animate="visible"
+                                        exit="exit"
+                                    >
+                                        <MemberCard 
+                                            account={account}
+                                            showDefaultActions={false}
+                                            actions={[
+                                                {
+                                                    children: 'Выбрать',
+                                                    variant: 'accent',
+                                                    icon: <PaperClip />,
+                                                    onClick: () => handleSelectAccount(account.id)
+                                                }
+                                            ]}
+                                        />
+                                    </motion.div>
+                                ))}
+                                
+                                {accounts.length === 0 && (
+                                    <motion.div 
+                                        key="empty"
+                                        style={{ 
+                                            display: "flex", 
+                                            justifyContent: "center", 
+                                            padding: "2rem",
+                                            color: "var(--color-text-description)",
+                                            fontSize: "0.9em"
+                                        }}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                    >
+                                        {searchValue ? 'Аккаунты не найдены' : 'Аккаунты не найдены'}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     )
