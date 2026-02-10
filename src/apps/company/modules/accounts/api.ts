@@ -1,5 +1,5 @@
 import { CompanyApi } from "../../api";
-import { CompanyAccountsResponse, CompanyInvitationsResponse, DropAccountResponse, InviteAccountRequest, InviteAccountResponse, RevokeInvitationResponse } from "./types";
+import { CompanyAccount, CompanyAccountsResponse, CompanyInvitationsResponse, DropAccountResponse, InviteAccountRequest, InviteAccountResponse, RevokeInvitationResponse } from "./types";
 import { PaginationParams } from "../../../shared/pagination/types";
 
 export const accountsModule = (companyApi: CompanyApi) => ({
@@ -9,6 +9,11 @@ export const accountsModule = (companyApi: CompanyApi) => ({
     return companyApi.get<CompanyAccountsResponse>("/accounts", { 
       params: params as Record<string, string | number | boolean | undefined> 
     });
+  },
+
+  
+  async getAccount(id: string) {
+    return companyApi.get<CompanyAccount>(`/accounts/${id}`);
   },
 
   async getInvitations(

@@ -14,7 +14,8 @@ export const breadcrumbDictionary: Record<string, string> = {
     'accounts': "Аккаунты",
     'permissions': "Разрешения",
     'invitations': "Приглашения",
-    'hrm': 'Сотрудники'
+    'hrm': 'Сотрудники',
+    'positions': 'Должности'
 };
 
 export function getBreadcrumbName(pathSegment: string): string {
@@ -25,7 +26,7 @@ export function getBreadcrumbName(pathSegment: string): string {
         return `${pathSegment.substring(0, 6)}...`;
     }
     if (/^\d+$/.test(pathSegment) || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(pathSegment)) {
-        return `#${pathSegment.substring(0, 4)}`; // cокращаем айди
+        return `#${pathSegment.substring(0, 4)}`;
     }
     return pathSegment
         .replace(/-/g, ' ')

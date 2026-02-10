@@ -1,0 +1,54 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.widget {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .3em;
+    min-width: 14em;
+    overflow: hidden;
+    border-radius: .9em;
+    border: 1px solid var(--color-stroke-secondary);
+    background-color: var(--color-surface-glass-secondary);
+    padding: .7em;
+
+    .value {
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: var(--color-text-ghost);
+    }
+    .legend {
+        font-size: .8em;
+        line-height: 1.3;
+        color: var(--color-text-description);
+        @include text-ellipsis();
+    }
+    .action {
+        border-radius: 2em;
+        font-size: .76em;
+        margin-top: .5em;
+        transition: background-color var(--transition), color var(--transition);
+
+        &:hover {
+            background-color: var(--color-accent);
+            color: var(--color-accent-text-primary);
+        }
+    }
+
+    &.accent {
+        background-color: var(--color-accent);
+        
+        .value, .legend {
+            color: var(--color-accent-text-primary);
+        }
+        .action {
+            background-color: var(--color-contrast) !important;
+            color: var(--color-leader) !important;
+            transition: transform var(--transition);
+            border: none !important;
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+}

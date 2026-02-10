@@ -1,0 +1,40 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.body {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2em;
+    padding: 1em 0;
+
+    .section {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .2em;
+
+        .capture {
+            font-weight: 600;
+            font-size: .9em;
+            line-height: 1.2;
+            letter-spacing: .02em;
+        }
+        .description {
+            line-height: 1.4;
+            font-size: .72em;
+            color: var(--color-text-secondary);
+            max-width: 25rem;
+
+            svg {
+                width: 1.2em;
+                height: 1.2em;
+                margin-right: .4em;
+            }
+        }
+        .variants {
+            display: flex;
+            flex-flow: row wrap;
+            gap: .6em;
+            font-size: .9em;
+            margin-top: .7em;
+        }
+    }
+}

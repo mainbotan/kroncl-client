@@ -2,9 +2,9 @@
 
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import Plus from "@/assets/ui-kit/icons/plus";
-import { CompanyParams } from "../layout";
+import { CompanyParams } from "../../../layout";
 import styles from './page.module.scss';
-import { EmployeeCard } from "./components/employee-card/card";
+import { EmployeeCard } from "../../components/employee-card/card";
 import { useHrm } from '@/apps/company/modules';
 import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { EmployeesResponse } from '@/apps/company/modules/hrm/types';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Employee } from '@/apps/company/modules/hrm/types';
+import { sections } from "../_sections";
 
 export default function Page() {
     const params = useParams();
@@ -121,6 +122,7 @@ export default function Page() {
                         href: `/platform/${companyId}/hrm/new`
                     }
                 ]}
+                sections={sections(companyId)}
                 searchProps={{
                     placeholder: 'Поиск по сотрудникам',
                     defaultValue: searchParams.get('search') || '',
