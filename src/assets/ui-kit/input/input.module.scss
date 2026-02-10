@@ -51,6 +51,9 @@
     background-color: var(--color-blue);
     color: var(--color-leader);
   }
+  &.light {
+    background-color: var(--color-surface-light);
+  }
   &.fullWidth {
     width: 100%;
   }

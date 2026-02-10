@@ -12,25 +12,36 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import styles from './page.module.scss';
 import Button from "@/assets/ui-kit/button/button";
-import { EmployeeWidget } from "./widget/widget";
+import { EmployeeWidget } from "./components/widget/widget";
 import { formatPhoneNumber } from "@/assets/utils/phone-utils";
 import Question from "@/assets/ui-kit/icons/question";
 import { PlatformModal } from "@/app/platform/components/lib/modal/modal";
 import { PlatformModalConfirmation } from "@/app/platform/components/lib/modal/confirmation/confirmation";
 import { useMessage } from "@/app/platform/components/lib/message/provider";
+import PaperClip from "@/assets/ui-kit/icons/paper-clip";
+import { MemberCard } from "../../../../accesses/components/member-card/card";
+import { CompanyAccount } from "@/apps/company/modules/accounts/types";
+import { ModalSelectAccount } from "./components/modal-select-account/modal";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const employeeId = params.employeeId as string;
     const hrmModule = useHrm();
+    const accountsModule = useAccounts();
     const router = useRouter();
 
     const [employee, setEmployee] = useState<Employee | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isModalDropOpen, setIsModalDropOpen] = useState(false);
+    const [isModalSelectAccountOpen, setIsModalSelectAccountOpen] = useState(false);
     const { showMessage } = useMessage();
+
+    // привязанный аккаунт
+    const [account, setAccount] = useState<CompanyAccount | null>(null);
+    const [accountLoading, setAccountLoading] = useState(false);
+
 
     // первоначальная загрузка карты
     useEffect(() => {
@@ -70,6 +81,31 @@ export default function Page() {
         };
     }, [employeeId]);
 
+    // Добавить useEffect для загрузки аккаунта
+    useEffect(() => {
+        const fetchAccount = async () => {
+            if (employee?.account_id) {
+                setAccountLoading(true);
+                try {
+                    const response = await accountsModule.getAccount(employee.account_id);
+                    if (response.status) {
+                        setAccount(response.data);
+                    }
+                } catch (err) {
+                    console.error('Error loading account:', err);
+                } finally {
+                    setAccountLoading(false);
+                }
+            }
+        };
+        
+        if (employee?.is_account_linked && employee.account_id) {
+            fetchAccount();
+        } else {
+            setAccount(null);
+        }
+    }, [employee]);
+
     // функции обработки
     const handleDrop = async () => {
         try {
@@ -86,6 +122,26 @@ export default function Page() {
                 label: 'Не удалось удалить карту сотрудника.',
                 variant: 'error',
                 about: errorMessage
+            });
+        }
+    };
+
+    const handleUnlinkAccount = async () => {
+        try {
+            const response = await hrmModule.unlinkAccountFromEmployee(employeeId);
+            if (response.status) {
+                setEmployee(response.data);
+                setAccount(null);
+                showMessage({
+                    label: 'Аккаунт отвязан',
+                    variant: 'success'
+                });
+            }
+        } catch (error: any) {
+            showMessage({
+                label: 'Не удалось отвязать аккаунт',
+                variant: 'error',
+                about: error.message
             });
         }
     };
@@ -181,11 +237,32 @@ export default function Page() {
                     </div>
                 </section>
                 <section className={styles.section}>
-                    <div className={styles.capture}>Аккаунт</div>
-                    <div className={styles.description}>
-                        <Question /> У сотрудника может не быть аккаунта в системе - это нормально для организаций, в которых централизованный учёт ведут менеджеры.
+                    <div className={styles.unify}>
+                        <div className={styles.capture}>Аккаунт</div>
+                        <Button onClick={() => setIsModalSelectAccountOpen(true)} icon={<PaperClip />} className={styles.action} variant="light">{employee.is_account_linked ? 'Изменить' : 'Выбрать'}</Button>
                     </div>
-                    <div className={styles.variants}>
+                    {employee.is_account_linked && accountLoading && (
+                        <div style={{ display: "flex", justifyContent: "center", padding: "1rem" }}>
+                            <Spinner />
+                        </div>
+                    )}
+                    {employee.is_account_linked && !accountLoading && account && (
+                        <MemberCard className={styles.account} 
+                            account={account} 
+                            showDefaultActions={false}
+                            actions={[
+                                {
+                                    children: 'Отвязать',
+                                    variant: 'light',
+                                    onClick: handleUnlinkAccount
+                                }
+                            ]}
+                        />
+                    )}
+                    <div className={styles.note}>
+                        <div className={styles.description}>
+                            <Question /> У сотрудника может не быть аккаунта в системе - это нормально для организаций, в которых централизованный учёт ведут менеджеры.
+                        </div>
                     </div>
                 </section>
             </div>
@@ -212,6 +289,31 @@ export default function Page() {
                         }
                     ]}
                 />
+            </PlatformModal>
+
+            {/* modal select account */}
+            <PlatformModal
+                isOpen={isModalSelectAccountOpen}
+                onClose={() => setIsModalSelectAccountOpen(false)}
+                className={styles.modal}
+            >
+                <ModalSelectAccount 
+                    onSelectAccount={(accountId) => {
+                        // Обновляем локальное состояние
+                        setEmployee(prev => prev ? {
+                            ...prev,
+                            account_id: accountId,
+                            is_account_linked: true
+                        } : null);
+                        setIsModalSelectAccountOpen(false);
+                        
+                        // загружаем данные аккаунта
+                        accountsModule.getAccount(accountId).then(response => {
+                            if (response.status) {
+                                setAccount(response.data);
+                            }
+                        });
+                    }}/>
             </PlatformModal>
         </>
     );

@@ -7,7 +7,6 @@
 
     .base {
         display: flex;
-        min-height: 4rem;
         padding: 1em 0;
         flex-flow: row nowrap;
         align-items: start;
@@ -59,9 +58,10 @@
                 .tag {
                     display: inline-flex;
                     padding: .3em .6em;
-                    background-color: var(--color-surface-elevated);
+                    background-color: var(--color-surface-light);
                     border-radius: 1em;
                     @include cursor(pointer);
+                    border: 1px solid var(--color-stroke-secondary);
                 }
             }
         }

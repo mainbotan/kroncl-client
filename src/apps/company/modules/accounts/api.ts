@@ -10,7 +10,6 @@ export const accountsModule = (companyApi: CompanyApi) => ({
       params: params as Record<string, string | number | boolean | undefined> 
     });
   },
-
   
   async getAccount(id: string) {
     return companyApi.get<CompanyAccount>(`/accounts/${id}`);

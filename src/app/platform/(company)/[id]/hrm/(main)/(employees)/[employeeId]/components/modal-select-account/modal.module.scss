@@ -1,0 +1,29 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.modal {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+    width: 20rem;
+    height: calc(100vh - 4rem);
+    padding: 0 1em;
+
+    .capture {
+        font-size: 1.2em;
+        padding: 1em 0;
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: var(--color-text-primary);
+        line-height: 1.15;
+    }
+
+    .input {
+        font-size: 1em;
+    }
+
+    .list {
+        display: flex;
+        flex-flow: column nowrap;
+        font-size: 1.1em;
+    }
+}

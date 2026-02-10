@@ -239,8 +239,8 @@ export default function Page() {
     return (
         <>
             <PlatformHead
-                title='Новый сотрудник'
-                description="Инициализация карты нового сотрудника организации."
+                title='Обновление карты сотрудника'
+                description={`Номер карты: ${employee.id}`}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Имя, фамилия сотрудника'>

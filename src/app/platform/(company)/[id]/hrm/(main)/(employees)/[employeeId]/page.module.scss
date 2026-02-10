@@ -11,6 +11,22 @@
         flex-flow: column nowrap;
         gap: .2em;
 
+        .unify {
+            display: flex;
+            flex-flow: row wrap;
+            gap: 1em;
+            align-items: center;
+
+            .action {
+                font-size: .7em;
+                border-radius: 2em;
+                transition: transform var(--transition);
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
+        }
         .capture {
             font-weight: 600;
             font-size: .9em;
@@ -35,6 +51,14 @@
             gap: .6em;
             font-size: .9em;
             margin-top: .7em;
+        }
+        .note {
+            display: inline-flex;
+            width: fit-content;
+            padding: .6em;
+            border-radius: .8em;
+            background-color: var(--color-surface-glass-secondary);
+            margin-top: .6em;
         }
     }
 }

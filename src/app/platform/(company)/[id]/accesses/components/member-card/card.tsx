@@ -2,7 +2,7 @@
 
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import styles from './card.module.scss';
-import Button from '@/assets/ui-kit/button/button';
+import Button, { ButtonProps } from '@/assets/ui-kit/button/button';
 import Close from '@/assets/ui-kit/icons/close';
 import { CompanyAccount } from '@/apps/company/modules/accounts/types';
 import { getGradientFromString, getFirstLetter } from '@/assets/utils/avatars';
@@ -20,9 +20,17 @@ import Keyhole from '@/assets/ui-kit/icons/keyhole';
 
 interface MemberCardProps {
   account: CompanyAccount;
+  className?: string;
+  showDefaultActions?: boolean;
+  actions?: ButtonProps[];
 }
 
-export function MemberCard({ account }: MemberCardProps) {
+export function MemberCard({ 
+  account, 
+  showDefaultActions = true, 
+  className, 
+  actions 
+}: MemberCardProps) {
   const { user } = useAuth();
   const accountsModule = useAccounts();
   const [isModalDropOpen, setIsModalDropOpen] = useState(false);
@@ -76,7 +84,7 @@ export function MemberCard({ account }: MemberCardProps) {
             }
             }}
         >
-      <div className={styles.card}>
+      <div className={clsx(styles.card, className)}>
         <div className={styles.base}>
           <div 
             className={styles.avatar}
@@ -97,16 +105,27 @@ export function MemberCard({ account }: MemberCardProps) {
             </div>
           </div>
           <div className={styles.actions}>
-            {showKickButton && (
-              <Button onClick={(() => setIsModalDropOpen(true))} className={styles.action} variant='light' icon={<Close />}>
-                {isCurrentUser ? 'Выйти' : 'Выгнать'}
-              </Button>
+            {showDefaultActions && (
+              <>
+              {showKickButton && (
+                <Button onClick={(() => setIsModalDropOpen(true))} className={styles.action} variant='light' icon={<Close />}>
+                  {isCurrentUser ? 'Выйти' : 'Выгнать'}
+                </Button>
+              )}
+              {!isOwner && (
+                <Button onClick={(() => setIsModalPermissionsOpen(true))} className={styles.action} variant='accent' icon={<Keyhole />}>
+                  Разрешения
+                </Button>
+              )}
+              </>
             )}
-            {!isOwner && (
-              <Button onClick={(() => setIsModalPermissionsOpen(true))} className={styles.action} variant='accent' icon={<Keyhole />}>
-                Разрешения
-              </Button>
-            )}
+            {actions?.map((action, index) => (
+              <Button 
+                key={index} 
+                className={clsx(styles.action, action.className)} 
+                {...action}
+              />
+            ))}
           </div>
         </div>
       </div>

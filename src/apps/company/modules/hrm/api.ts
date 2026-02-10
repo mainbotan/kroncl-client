@@ -21,5 +21,11 @@ export const hrmModule = (companyApi: CompanyApi) => ({
     },
     async updateEmployee(id: string, data: CreateEmployeeRequest) {
         return companyApi.patch<Employee>(`/modules/hrm/employees/${id}`, data);
-    }
+    },
+    async linkAccountToEmployee(employeeId: string, accountId: string) {
+        return companyApi.post<Employee>(`/modules/hrm/employees/${employeeId}/link-account`, {account_id: accountId });
+    },
+    async unlinkAccountFromEmployee(employeeId: string) {
+        return companyApi.post<Employee>(`/modules/hrm/employees/${employeeId}/unlink-account`);
+    },
 })
