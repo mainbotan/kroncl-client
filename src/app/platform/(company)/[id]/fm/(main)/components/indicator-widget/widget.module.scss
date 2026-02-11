@@ -1,0 +1,55 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.widget {
+    display: inline-flex;
+    flex-flow: column nowrap;
+    padding: .2rem .3em;
+    // border: 1px solid var(--color-stroke-secondary);
+    // min-width: 14em;
+    min-height: 6em;
+    border-radius: .8em;
+    justify-content: end;
+    // background-color: var(--color-surface-glass);
+    gap: .4em;
+    @include cursor(pointer);
+
+    .value {
+        font-size: 2.6em;
+        font-weight: 600;
+        letter-spacing: .02em;
+        display: inline-flex;
+        gap: .2em;
+        flex-flow: row wrap;
+        align-items: end;
+
+        .unit {
+            color: var(--color-text-description);
+        }
+        .icon svg {
+            width: .5em;
+            height: .5em;
+            fill: var(--color-text-description);
+        }
+    }
+    .legend {
+        color: var(--color-text-ghost);
+        font-size: 1em;
+
+        .secondary {
+            color: var(--color-text-description);
+        }
+    }
+
+    &.sm {
+        font-size: .8em;
+    }
+    &.lg {
+        font-size: 1.2em;
+    }
+
+    &.secondary {
+        .value, .legend {
+            color: var(--color-text-description);
+        }
+    }
+}

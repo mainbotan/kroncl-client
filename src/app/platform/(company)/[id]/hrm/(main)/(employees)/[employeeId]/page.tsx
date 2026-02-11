@@ -120,7 +120,7 @@ export default function Page() {
         } catch (error: any) {
             const errorMessage = error.message || 'Внутренняя ошибка системы.'
             showMessage({
-                label: 'Не удалось удалить карту сотрудника.',
+                label: 'Не удалось диактивировать карту сотрудника.',
                 variant: 'error',
                 about: errorMessage
             });
@@ -328,8 +328,8 @@ export default function Page() {
                 className={styles.modal}
             >
                 <PlatformModalConfirmation
-                    title='Удалить сотрудника?'
-                    description='Запись сотрудника, включая историю всех действий, будет навсегда удалена.'
+                    title='Диактивировать сотрудника?'
+                    description='Карта сотрудника будет диактивирована. Мы не удалим её, но последующие действия с картой будут заблокированы.'
                     actions={[
                         {
                             children: 'Отмена', 
@@ -339,7 +339,7 @@ export default function Page() {
                         {
                             variant: "accent", 
                             onClick: handleDrop,
-                            children: 'Удалить навсегда'
+                            children: 'Удалить'
                         }
                     ]}
                 />

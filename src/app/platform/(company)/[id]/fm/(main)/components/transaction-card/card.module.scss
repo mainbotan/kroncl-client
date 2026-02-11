@@ -1,0 +1,83 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.transaction {
+    display: flex;
+    height: 3.8em;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid var(--color-stroke-secondary);;
+    align-items: center;
+    gap: 1em;
+    padding: 0 0;
+    @include cursor(pointer);
+    transition: opacity var(--transition), border-color var(--transition), var(--transition), padding var(--transition);
+
+    .section {
+        &.amount {
+            @include text-ellipsis();
+            display: inline-block;
+            width: 6em;
+
+            .symbol {
+                margin-left: .2em;
+                // color: var(--color-text-description);
+            }
+        }
+        &.comment, &.category {
+            color: var(--color-text-ghost);
+            width: 15em;
+            line-height: 1.3;
+
+            .secondary {
+                color: var(--color-text-description);
+            }
+        }
+        &.employee {
+            display: flex;
+            flex: 1;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: 1em;
+            overflow: hidden;
+
+            .avatar {
+                display: inline-flex;
+                width: 2.3em;
+                min-width: 2.3em;
+                height: 2.3em;
+                border-radius: 50%;
+                background-color: var(--color-surface-light);
+                align-items: center;
+                justify-content: center;
+                color: var(--color-leader);
+                // font-weight: 600;
+                // letter-spacing: .02em
+                font-size: .9em
+            }
+            .name {
+                @include text-ellipsis();
+            }
+        }
+        &.date {
+            display: inline-flex;
+            color: var(--color-text-description);
+            font-size: .9em;
+        }
+    }
+
+    &.minus {
+        .section.amount {
+            color: var(--color-red);
+        }
+    }
+    &.plus {
+        .section.amount {
+            color: var(--color-green);
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-glass-secondary);
+        padding: 0 1em;
+        border-color: var(--color-stroke-primary);
+    }
+}
