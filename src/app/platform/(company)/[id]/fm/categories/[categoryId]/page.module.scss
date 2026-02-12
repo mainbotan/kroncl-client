@@ -1,0 +1,7 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.body {
+    display: flex;
+    flex-flow: column nowrap;
+    border: 1px solid red;
+}

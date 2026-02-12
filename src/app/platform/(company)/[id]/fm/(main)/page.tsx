@@ -8,8 +8,14 @@ import { transactionsMock } from './_transactions';
 import { Timeline } from './components/timeline/timeline';
 import { useState, useMemo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import Arrow from '@/assets/ui-kit/icons/arrow';
+import Wallet from '@/assets/ui-kit/icons/wallet';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Page() {
+    const params = useParams();
+    const companyId = params.id as string;
     const [timelinePosition, setTimelinePosition] = useState<number | null>(null);
     const [itemHeight, setItemHeight] = useState(60); // начальная высота
     const transactionRef = useRef<HTMLDivElement>(null);
@@ -59,16 +65,6 @@ export default function Page() {
                         <div className={styles.grid}>
                             <span className={styles.date}>
                                 11 февраля 2026
-                                {/* {timelinePosition !== null && (
-                                    <span style={{ 
-                                        width: '.4em', 
-                                        height: '.4em', 
-                                        borderRadius: '50%', 
-                                        backgroundColor: 'var(--color-accent)',
-                                        display: 'inline-block',
-                                        marginLeft: '0.5em'
-                                    }} />
-                                )} */}
                             </span>
                         </div>
                     </div>
@@ -86,7 +82,7 @@ export default function Page() {
                                 amount: 0,
                                 unit: '₽',
                             }}
-                            legend='Кредитная нагрузка'
+                            legend='Долговая нагрузка'
                             size='sm'
                             variant='secondary'
                         />
@@ -99,16 +95,40 @@ export default function Page() {
                             variant='secondary'
                         />
                     </div>
-                    <div className={styles.quickActions}>
-                        <Button className={styles.action} variant='light'>
-                            Расход
-                        </Button>
-                        <Button className={styles.action} variant='accent'>
-                            Приход
-                        </Button>
-                    </div>
+                    {/* <div className={styles.quickActions}>
+                    </div> */}
                 </div>
-                <div className={styles.actions}></div>
+                <div className={styles.actions}>
+                    <Button 
+                        className={styles.action} 
+                        variant='light'
+                        children='Расход'
+                        as='link'
+                        href={`/platform/${companyId}/fm/transactions/new/expense`}
+                        />
+                    <Button 
+                        icon={<Wallet />} 
+                        className={styles.action} 
+                        variant='accent'
+                        children='Доход'
+                        as='link'
+                        href={`/platform/${companyId}/fm/transactions/new/income`}
+                        />
+                </div>
+            </div>
+            <div className={styles.cards}>
+                <Link href={`/platform/${companyId}/fm/categories`} className={clsx(styles.card, styles.accent)}>
+                    <div className={styles.name}>Категории</div>
+                    <div className={styles.description}>Категории расходов/доходов</div>
+                </Link>
+                <Link href={`/platform/${companyId}/fm/analyse`} className={styles.card}>
+                    <div className={styles.name}>Сквозная аналитика</div>
+                    <div className={styles.description}>E2E анализ доходности</div>
+                </Link>
+                <Link href={`/platform/${companyId}/fm/debts`} className={styles.card}>
+                    <div className={styles.name}>Долги</div>
+                    <div className={styles.description}>Управление долговыми обязательствами</div>
+                </Link>
             </div>
             <div className={styles.body} style={{ position: 'relative' }}>
                 <Timeline 
