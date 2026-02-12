@@ -63,13 +63,20 @@
             font-size: .9em;
         }
     }
+    a {
+        transition: color var(--transition);
 
-    &.minus {
+        &:hover {
+            color: var(--color-text-hint);
+        }
+    }
+
+    &.expense {
         .section.amount {
             color: var(--color-red);
         }
     }
-    &.plus {
+    &.income {
         .section.amount {
             color: var(--color-green);
         }

@@ -4,28 +4,82 @@ import Button from '@/assets/ui-kit/button/button';
 import styles from './page.module.scss';
 import { IndicatorWidget } from './components/indicator-widget/widget';
 import { TransactionCard } from './components/transaction-card/card';
-import { transactionsMock } from './_transactions';
 import { Timeline } from './components/timeline/timeline';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import clsx from 'clsx';
-import Arrow from '@/assets/ui-kit/icons/arrow';
 import Wallet from '@/assets/ui-kit/icons/wallet';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useFm } from '@/apps/company/modules';
+import { TransactionsResponse } from '@/apps/company/modules/fm/types';
+import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
+import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
+import { motion } from 'framer-motion';
+import { transactionVariants } from './_animations';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
-    const [timelinePosition, setTimelinePosition] = useState<number | null>(null);
-    const [itemHeight, setItemHeight] = useState(60); // начальная высота
-    const transactionRef = useRef<HTMLDivElement>(null);
+    const fmModule = useFm();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const { handlePageChange } = usePagination({
+        baseUrl: pathname,
+        defaultLimit: 20
+    });
 
-    // Сортируем транзакции от новых к старым
-    const sortedTransactions = useMemo(() => {
-        return [...transactionsMock].sort((a, b) => 
-            new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-    }, []);
+    const [timelinePosition, setTimelinePosition] = useState<number | null>(null);
+    const [itemHeight, setItemHeight] = useState(60);
+    const transactionRef = useRef<HTMLDivElement>(null);
+    
+    const [data, setData] = useState<TransactionsResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        loadData();
+    }, [searchParams]);
+
+    const loadData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const page = parseInt(searchParams.get('page') || '1');
+            const limit = parseInt(searchParams.get('limit') || '20');
+            const start_date = searchParams.get('start_date') || undefined;
+            const end_date = searchParams.get('end_date') || undefined;
+            const direction = searchParams.get('direction') as 'income' | 'expense' | undefined;
+            const status = searchParams.get('status') as 'pending' | 'completed' | 'failed' | 'cancelled' | undefined;
+            const category_id = searchParams.get('category_id') || undefined;
+            const employee_id = searchParams.get('employee_id') || undefined;
+            const search = searchParams.get('search') || undefined;
+
+            const response = await fmModule.getTransactions({
+                page,
+                limit,
+                start_date,
+                end_date,
+                direction,
+                status,
+                category_id,
+                employee_id,
+                search
+            });
+            
+            if (response.status) {
+                setData(response.data);
+            } else {
+                setError("Не удалось загрузить транзакции");
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Ошибка загрузки");
+            console.error('Error loading transactions:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Получаем реальную высоту транзакции
     useEffect(() => {
@@ -40,22 +94,59 @@ export default function Page() {
         window.addEventListener('resize', updateItemHeight);
         
         return () => window.removeEventListener('resize', updateItemHeight);
-    }, []);
+    }, [data]);
+
+    const transactions = data?.transactions || [];
+    const pagination = data?.pagination;
 
     // Определяем индекс разделения на основе позиции таймлайна
     const splitIndex = useMemo(() => {
         if (timelinePosition === null) return -1;
         
-        const total = sortedTransactions.length;
-        // Позиционируем таймлайн между элементами
+        const total = transactions.length;
         const index = Math.floor((timelinePosition / 100) * (total + 1));
-        return Math.max(-1, Math.min(total, index)); // -1 означает перед всеми
-    }, [timelinePosition, sortedTransactions]);
+        return Math.max(-1, Math.min(total, index));
+    }, [timelinePosition, transactions]);
 
     const handleTimelinePositionChange = (position: number) => {
         setTimelinePosition(position);
-        console.log('Timeline position:', position, 'Split index:', splitIndex);
     };
+
+    const queryParams: Record<string, string> = {};
+    const limitParam = searchParams.get('limit');
+    if (limitParam) queryParams.limit = limitParam;
+    const directionParam = searchParams.get('direction');
+    if (directionParam) queryParams.direction = directionParam;
+    const statusParam = searchParams.get('status');
+    if (statusParam) queryParams.status = statusParam;
+    const searchParam = searchParams.get('search');
+    if (searchParam) queryParams.search = searchParam;
+
+    if (loading) return (
+        <div style={{
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            fontSize: ".7em", 
+            color: "var(--color-text-description)", 
+            minHeight: "10rem"
+        }}>
+            <Spinner />
+        </div>
+    );
+    
+    if (error) return (
+        <div style={{
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            fontSize: ".7em", 
+            color: "var(--color-text-description)", 
+            minHeight: "10rem"
+        }}>
+            {error}
+        </div>
+    );
 
     return (
         <>
@@ -88,15 +179,13 @@ export default function Page() {
                         />
                         <IndicatorWidget 
                             value={{
-                                amount: 0
+                                amount: transactions.length
                             }}
                             legend='Операций'
                             size='sm'
                             variant='secondary'
                         />
                     </div>
-                    {/* <div className={styles.quickActions}>
-                    </div> */}
                 </div>
                 <div className={styles.actions}>
                     <Button 
@@ -105,7 +194,7 @@ export default function Page() {
                         children='Расход'
                         as='link'
                         href={`/platform/${companyId}/fm/transactions/new/expense`}
-                        />
+                    />
                     <Button 
                         icon={<Wallet />} 
                         className={styles.action} 
@@ -113,9 +202,10 @@ export default function Page() {
                         children='Доход'
                         as='link'
                         href={`/platform/${companyId}/fm/transactions/new/income`}
-                        />
+                    />
                 </div>
             </div>
+            
             <div className={styles.cards}>
                 <Link href={`/platform/${companyId}/fm/categories`} className={clsx(styles.card, styles.accent)}>
                     <div className={styles.name}>Категории</div>
@@ -130,44 +220,62 @@ export default function Page() {
                     <div className={styles.description}>Управление долговыми обязательствами</div>
                 </Link>
             </div>
+
             <div className={styles.body} style={{ position: 'relative' }}>
                 <Timeline 
                     onPositionChange={handleTimelinePositionChange}
                     itemHeight={itemHeight}
                 />
                 
-                {sortedTransactions.map((transaction, index) => (
-                    <div 
-                        key={index} 
-                        ref={index === 0 ? transactionRef : null}
-                        style={{
-                            position: 'relative',
-                            zIndex: splitIndex === index ? 5 : 1
-                        }}
-                    >
-                        <TransactionCard 
-                            {...transaction} 
-                            className={clsx(styles.transaction, {
-                                [styles.beforeSplit]: splitIndex !== -1 && index < splitIndex,
-                                [styles.afterSplit]: splitIndex !== -1 && index >= splitIndex
-                            })}
-                        />
-                        
-                        {/* Визуальная линия при ховере таймлайна */}
-                        {splitIndex === index && (
-                            <div style={{
-                                position: 'absolute',
-                                top: '-1px',
-                                left: 0,
-                                right: 0,
-                                height: '2px',
-                                backgroundColor: 'transparent',
-                                zIndex: 10,
-                                pointerEvents: 'none'
-                            }} />
-                        )}
+                {transactions.length === 0 ? (
+                    <div style={{
+                        display: "flex", 
+                        alignItems: "center", 
+                        justifyContent: "center", 
+                        fontSize: ".7em", 
+                        color: "var(--color-text-description)", 
+                        minHeight: "10rem",
+                        width: "100%"
+                    }}>
+                        Нет операций
                     </div>
-                ))}
+                ) : (
+                    <>
+                        {transactions.map((transaction, index) => (
+                            <motion.div 
+                                key={transaction.id} 
+                                ref={index === 0 ? transactionRef : null}
+                                style={{
+                                    position: 'relative',
+                                    zIndex: splitIndex === index ? 5 : 1
+                                }}
+                                variants={transactionVariants}
+                                initial="hidden"
+                                animate="visible"
+                                custom={index}
+                            >
+                                <TransactionCard 
+                                    transaction={transaction}
+                                    className={clsx(styles.transaction, {
+                                        [styles.beforeSplit]: splitIndex !== -1 && index < splitIndex,
+                                        [styles.afterSplit]: splitIndex !== -1 && index >= splitIndex
+                                    })}
+                                />
+                            </motion.div>
+                        ))}
+                        
+                        {pagination && pagination.pages > 1 && (
+                            <div className={styles.pagination}>
+                                <PlatformPagination
+                                    meta={pagination}
+                                    baseUrl={pathname}
+                                    queryParams={queryParams}
+                                    onPageChange={(page) => handlePageChange(page)}
+                                />
+                            </div>
+                        )}
+                    </>
+                )}
             </div>
         </>
     );
