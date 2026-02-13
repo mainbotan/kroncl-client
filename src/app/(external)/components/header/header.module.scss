@@ -109,13 +109,12 @@
                 display: inline-flex;
                 width: 1.8rem;
                 height: 1.8rem;
-                background-color: var(--color-surface-primary);
+                background-color: var(--color-accent);
                 align-items: center;
                 justify-content: center;
                 padding: 2px;
                 border-radius: 50%;
                 transition: background-color var(--transition);
-                background: var(--color-stroke-secondary);
 
                 .img {
                     width: 100%;
@@ -347,9 +346,9 @@
         gap: .5em;
 
         .button {
-            border-radius: .6em;
+            height: 3.4em;
+            border-radius: 2em;
             transition: transform var(--transition);
-            height: 3em;
 
             &:hover {
                 transform: scale(1.02);
