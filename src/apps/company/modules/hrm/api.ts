@@ -13,8 +13,11 @@ export const hrmModule = (companyApi: CompanyApi) => ({
     async getEmployee(id: string) {
         return companyApi.get<Employee>(`/modules/hrm/employees/${id}`)
     },
-    async deleteEmployee(id: string) {
-        return companyApi.delete<Employee>(`/modules/hrm/employees/${id}`)
+    async deactivateEmployee(id: string) {
+        return companyApi.post<Employee>(`/modules/hrm/employees/${id}/deactivate`)
+    },
+    async activateEmployee(id: string) {
+        return companyApi.post<Employee>(`/modules/hrm/employees/${id}/activate`)
     },
     async createEmployee(data: CreateEmployeeRequest) {
         return companyApi.post<Employee>("/modules/hrm/employees", data);

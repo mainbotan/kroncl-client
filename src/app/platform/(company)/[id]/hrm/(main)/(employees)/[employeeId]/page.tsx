@@ -37,6 +37,7 @@ export default function Page() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isModalDropOpen, setIsModalDropOpen] = useState(false);
+    const [isModalActivateOpen, setIsModalActivateOpen] = useState(false);
     const [isModalSelectAccountOpen, setIsModalSelectAccountOpen] = useState(false);
     const { showMessage } = useMessage();
 
@@ -108,19 +109,46 @@ export default function Page() {
     }, [employee]);
 
     // функции обработки
-    const handleDrop = async () => {
+    const handleDeactivate = async () => {
         try {
-            await hrmModule.deleteEmployee(employee!.id);
+            await hrmModule.deactivateEmployee(employee!.id);
             showMessage({
-                label: 'Сотрудник удалён.',
+                label: 'Сотрудник деактивирован.',
                 variant: 'success'
             });
             setIsModalDropOpen(false);
-            router.push(`/platform/${companyId}/hrm`);
+            // Обновляем данные сотрудника
+            const response = await hrmModule.getEmployee(employeeId);
+            if (response.status) {
+                setEmployee(response.data);
+            }
         } catch (error: any) {
-            const errorMessage = error.message || 'Внутренняя ошибка системы.'
+            const errorMessage = error.message || 'Внутренняя ошибка системы.';
             showMessage({
-                label: 'Не удалось диактивировать карту сотрудника.',
+                label: 'Не удалось деактивировать карту сотрудника.',
+                variant: 'error',
+                about: errorMessage
+            });
+        }
+    };
+
+    const handleActivate = async () => {
+        try {
+            await hrmModule.activateEmployee(employee!.id);
+            showMessage({
+                label: 'Сотрудник активирован.',
+                variant: 'success'
+            });
+            setIsModalActivateOpen(false);
+            // Обновляем данные сотрудника
+            const response = await hrmModule.getEmployee(employeeId);
+            if (response.status) {
+                setEmployee(response.data);
+            }
+        } catch (error: any) {
+            const errorMessage = error.message || 'Внутренняя ошибка системы.';
+            showMessage({
+                label: 'Не удалось активировать карту сотрудника.',
                 variant: 'error',
                 about: errorMessage
             });
@@ -201,6 +229,7 @@ export default function Page() {
     const fullName = `${employee.first_name} ${employee.last_name ? employee.last_name : ''}`;
     const initials = `${employee.first_name[0]}${employee.last_name ? employee.last_name[0] : ''}`;
     const avatarGradient = getGradientFromString(fullName);
+    const isActive = employee.status === 'active';
 
     const widgets = [
         { value: fullName, legend: "Полное имя", variant: "accent" as const },
@@ -208,25 +237,38 @@ export default function Page() {
         ...(employee.email ? [{ value: employee.email, legend: "Корпоративная почта", variant: "default" as const }] : [])
     ];
 
+    const actions = [
+        {
+            children: 'Редактировать',
+            icon: <Edit />,
+            variant: 'accent' as const,
+            as: 'link' as const,
+            href: `/platform/${companyId}/hrm/${employeeId}/edit`
+        }
+    ];
+
+    if (isActive) {
+        actions.push({
+            children: 'Деактивировать',
+            icon: <Exit />,
+            variant: 'accent',
+            onClick: () => setIsModalDropOpen(true)
+        });
+    } else {
+        actions.push({
+            children: 'Активировать',
+            icon: <Exit />,
+            variant: 'accent',
+            onClick: () => setIsModalActivateOpen(true)
+        });
+    }
+
     return (
         <>
             <PlatformHead
                 title={`${fullName}`}
-                description={`Карта сотрудника ${fullName}, создана ${formatDate(employee.created_at)}`}
-                actions={[
-                    {
-                        children: 'Редактировать',
-                        icon: <Edit />,
-                        variant: 'accent',
-                        as: 'link',
-                        href: `/platform/${companyId}/hrm/${employeeId}/edit`
-                    }, {
-                        children: 'Удалить',
-                        icon: <Exit />,
-                        variant: 'empty',
-                        onClick: () => setIsModalDropOpen(true)
-                    }
-                ]}
+                description={`Карта сотрудника ${fullName}, создана ${formatDate(employee.created_at)}. Статус: ${isActive ? 'активен' : 'неактивен'}.`}
+                actions={actions}
             />
             
             <motion.div 
@@ -321,15 +363,15 @@ export default function Page() {
                 </motion.section>
             </motion.div>
 
-            {/* drop account */}
+            {/* modal deactivate */}
             <PlatformModal
                 isOpen={isModalDropOpen}
                 onClose={() => setIsModalDropOpen(false)}
                 className={styles.modal}
             >
                 <PlatformModalConfirmation
-                    title='Диактивировать сотрудника?'
-                    description='Карта сотрудника будет диактивирована. Мы не удалим её, но последующие действия с картой будут заблокированы.'
+                    title='Деактивировать сотрудника?'
+                    description='Карта сотрудника будет деактивирована. Мы не удалим её, но последующие действия с картой будут заблокированы.'
                     actions={[
                         {
                             children: 'Отмена', 
@@ -338,8 +380,32 @@ export default function Page() {
                         },
                         {
                             variant: "accent", 
-                            onClick: handleDrop,
-                            children: 'Удалить'
+                            onClick: handleDeactivate,
+                            children: 'Деактивировать'
+                        }
+                    ]}
+                />
+            </PlatformModal>
+
+            {/* modal activate */}
+            <PlatformModal
+                isOpen={isModalActivateOpen}
+                onClose={() => setIsModalActivateOpen(false)}
+                className={styles.modal}
+            >
+                <PlatformModalConfirmation
+                    title='Активировать сотрудника?'
+                    description='Карта сотрудника будет активирована. Он снова сможет выполнять действия в системе.'
+                    actions={[
+                        {
+                            children: 'Отмена', 
+                            variant: 'light', 
+                            onClick: () => setIsModalActivateOpen(false)
+                        },
+                        {
+                            variant: "accent", 
+                            onClick: handleActivate,
+                            children: 'Активировать'
                         }
                     ]}
                 />
