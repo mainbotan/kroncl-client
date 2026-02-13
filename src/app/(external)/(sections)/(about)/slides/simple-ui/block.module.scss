@@ -53,20 +53,20 @@
     }
 
     .circle {
-        width: 6em;
-        height: 6em;
+        width: 5em;
+        height: 5em;
         border-radius: 50%;
         background-color: var(--color-blue);
         position: absolute;
         z-index: 10;
-        right: -2em;
-        top: -2em;
+        right: -3em;
+        top: -4em;
 
         &:nth-child(2) {
-            top: 3em;
+            top: 0em;
             right: -2em;
-            width: 5em;
-            height: 5em;
+            width: 3em;
+            height: 3em;
             background-color: var(--color-purple);
         }
     }

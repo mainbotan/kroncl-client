@@ -1,0 +1,25 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: block;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .2em;
+
+    .value {
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: var(--color-text-primary);
+        line-height: 1.2;
+        text-align: center;
+        font-size: 1.7em;
+    }
+    .legend {
+        font-size: 1em;
+        font-weight: 600;
+        letter-spacing: .02em;
+        line-height: 1.2;
+        text-align: center;
+        color: var(--color-text-ghost);
+    }
+}

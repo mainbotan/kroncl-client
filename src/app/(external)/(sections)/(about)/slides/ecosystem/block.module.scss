@@ -2,10 +2,41 @@
 
 .block {
     display: block;
-    min-height: 20rem;
+    min-height: 17rem;
     position: relative;
+    // background: linear-gradient(315deg, #8416FF, rgb(225, 22, 167), #FF0101);
 
+    .tag {
+        position: absolute;
+        z-index: 2;
+        font-size: .7em;
 
+        &:nth-child(1), &:nth-child(5) {
+            bottom: 3.5rem;
+        }
+        &:nth-child(2), &:nth-child(4) {
+            bottom: 7.8rem;
+        }
+        &:nth-child(3) {
+            bottom: 10rem;
+        }
+
+        &:nth-child(1) {
+            left: 6%;
+        }
+        &:nth-child(5) {
+            right: 6%;
+        }
+        &:nth-child(2) {
+            left: 17%;
+        }
+        &:nth-child(4) {
+            right: 17%;
+        }
+        &:nth-child(3) {
+            left: calc(50% - 5em);
+        }
+    }
     .svg {
         position: absolute;
         z-index: 1;
@@ -21,6 +52,44 @@
     }
 
     @media (max-width: 720px) {
-        min-height: 8rem;
+        min-height: 10rem;
+
+        .tag {
+            position: absolute;
+            z-index: 2;
+            font-size: .6em;
+
+            &:nth-child(1), &:nth-child(5) {
+                bottom: 2rem;
+            }
+            &:nth-child(2), &:nth-child(4) {
+                bottom: 4.5rem;
+            }
+            &:nth-child(3) {
+                bottom: 7rem;
+            }
+
+            &:nth-child(1) {
+                left: 5%;
+            }
+            &:nth-child(5) {
+                right: 5%;
+            }
+            &:nth-child(2) {
+                left: 14%;
+            }
+            &:nth-child(4) {
+                right: 14%;
+            }
+            &:nth-child(3) {
+                left: calc(50% - 5em);
+            }
+        }
+        .svg {
+            bottom: 0;
+            left: -20%;
+            bottom: -4px;
+            width: 140%;
+        }
     }
 }

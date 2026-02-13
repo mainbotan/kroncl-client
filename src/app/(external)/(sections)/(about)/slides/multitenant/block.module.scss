@@ -1,0 +1,79 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    min-height: 5em;
+    position: relative;
+    flex-flow: column nowrap;
+    gap: 2em;
+
+    .title {
+        font-size: 1.4em;
+        font-weight: 600;
+        letter-spacing: .02em;
+        color: var(--color-text-primary);
+        line-height: 1.2;
+
+        .accent {
+            color: var(--color-accent);
+        }
+    }
+    .icons {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        font-size: .8em;
+        justify-content: center;
+
+        $shadow-width: .2em;
+
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 5em;
+            width: 9em;
+            padding: 1em 1.5em;
+            // border: 1px solid var(--color-stroke-secondary);
+            border-radius: .8em;
+            line-height: 1.2;
+            font-weight: 600;
+            letter-spacing: .02em;
+            // @include cursor(pointer);
+
+            &:nth-child(1) {
+                background-color: var(--color-brand);
+                color: var(--color-accent-text-primary);
+                box-shadow: 0 0 $shadow-width var(--color-brand);
+            }
+            &:nth-child(2) {
+                background-color: var(--color-accent);
+                color: var(--color-accent-text-primary);
+                box-shadow: 0 0 $shadow-width var(--color-accent);
+            }
+            &:nth-child(3) {
+                background-color: var(--color-purple);
+                color: var(--color-accent-text-primary);
+                box-shadow: 0 0 $shadow-width var(--color-purple);
+            }
+            &:nth-child(4) {
+                background-color: var(--color-green);
+                color: var(--color-accent-text-primary);
+                box-shadow: 0 0 $shadow-width var(--color-green);
+            }
+            &:nth-child(5) {
+                background-color: var(--color-yellow);
+                color: var(--color-accent-text-primary);
+                box-shadow: 0 0 $shadow-width var(--color-yellow);
+            }
+        }
+    }
+
+    @media (max-width: 720px) {
+        .icons {
+            .icon {
+                width: calc(50% - .5em);
+            }
+        }
+    }
+}

@@ -10,6 +10,8 @@ import { TimeSavingBlock } from './slides/time-saving/block';
 import { SimpleUiBlock } from './slides/simple-ui/block';
 import { partnersList } from './content/_partners';
 import { SwitchableBlock } from './slides/switchable/block';
+import { StatisticsBlock } from './slides/statistics/block';
+import { MultitenantBlock } from './slides/multitenant/block';
 
 export default function Page() {
     return (
@@ -47,6 +49,7 @@ export default function Page() {
                         {children: 'Начать сейчас', href: authLinks.registration, variant: 'contrast'}
                     ]}
                 />
+                <MultitenantBlock className={styles.block} />
                     
                 <div className={styles.interval} />
                 <HeadBlock className={clsx(styles.block, styles.head)} 
@@ -58,6 +61,23 @@ export default function Page() {
                         {children: 'Начать сейчас', href: authLinks.registration, variant: 'contrast'}
                     ]}
                 />
+                <div className={styles.statisticsGrid}>
+                    <StatisticsBlock 
+                        value='до 10000'
+                        legend='запросов/день к 1 организации'
+                        className={styles.block} 
+                        />
+                    <StatisticsBlock 
+                        value='7+'
+                        legend='модулей учёта & аналитики'
+                        className={styles.block} 
+                        />
+                    <StatisticsBlock 
+                        value='∞'
+                        legend='приглашений сотрудников'
+                        className={styles.block} 
+                        />
+                </div>
                 <EcosystemBlock className={styles.block} />
             </div>
         </div>

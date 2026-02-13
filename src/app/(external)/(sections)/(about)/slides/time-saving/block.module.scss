@@ -29,19 +29,20 @@
 
         &:nth-child(1), &:nth-child(2) {
             .value {
-                background: linear-gradient(45deg, var(--color-green), var(--color-blue), var(--color-purple), var(--color-yellow));
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-                color: transparent;
-                animation: gradient 3s ease infinite;
+                color: var(--color-accent);
+                // background: linear-gradient(45deg, var(--color-green), var(--color-blue), var(--color-purple), var(--color-yellow));
+                // background-size: 300% 300%;
+                // -webkit-background-clip: text;
+                // background-clip: text;
+                // -webkit-text-fill-color: transparent;
+                // color: transparent;
+                // animation: gradient 3s ease infinite;
 
-                @keyframes gradient {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
-                }
+                // @keyframes gradient {
+                //     0% { background-position: 0% 50%; }
+                //     50% { background-position: 100% 50%; }
+                //     100% { background-position: 0% 50%; }
+                // }
             }
         }
     }

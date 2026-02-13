@@ -60,3 +60,20 @@
         flex-direction: column;
     }
 }
+
+// statistics grid
+.statisticsGrid {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1px;
+    
+    .block {
+        flex: 1;
+        padding-top: 1.5em;
+        padding-bottom: 1.5em;
+    }
+    
+    @media (max-width: 720px) {
+        flex-direction: column;
+    }
+}
