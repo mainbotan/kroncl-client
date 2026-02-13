@@ -1,0 +1,11 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.employeeBlock {
+    font-size: 1.2em;
+}
+.emptyEmployee {
+    color: var(--color-text-description);
+}
+.categoryBlock {
+    font-size: 1.2em;
+}

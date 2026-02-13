@@ -16,10 +16,27 @@
     flex: 1;
 }
 
-.capture {
-    font-size: 1em;
-    font-weight: 600;
-    letter-spacing: .02em;
+.top {
+    display: inline-flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    justify-content: start;
+    align-items: center;
+
+    .capture {
+        font-size: 1em;
+        font-weight: 600;
+        letter-spacing: .02em;
+    }
+    .actions {
+        display: flex;
+        flex-flow: row wrap;
+        gap: .5em;
+
+        .action {
+            border-radius: 2em;
+        }
+    }
 }
 .description {
     color: var(--color-text-description);

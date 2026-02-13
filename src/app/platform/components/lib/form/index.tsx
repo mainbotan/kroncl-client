@@ -8,26 +8,40 @@ import {
   PlatformFormInputProps,
   PlatformFormVariantsProps,
   PlatformFormStatusProps,
-  PlatformFormUnifyProps
+  PlatformFormUnifyProps,
+  PlatformFormBodyProps
 } from './_types';
+import Button from '@/assets/ui-kit/button/button';
+
 
 export function PlatformFormBody({
-  children
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return <div className={styles.form}>{children}</div>;
+  children,
+  className
+}: Readonly<PlatformFormBodyProps>) {
+  return <div className={clsx(styles.form, className)}>{children}</div>;
 }
 
 export function PlatformFormSection({
   title,
   description,
   children,
-  className
+  className,
+  actions
 }: Readonly<PlatformFormSectionProps>) {
   return (
     <div className={clsx(styles.section, className)}>
-      {title && <div className={styles.capture}>{title}</div>}
+      {(title || actions) && (
+        <div className={styles.top}>
+            {title && <div className={styles.capture}>{title}</div>}
+            {actions && (
+              <span className={styles.actions}>
+                {actions.map((action, index) => (
+                  <Button key={index} className={clsx(styles.action, action.className)} {...action} />
+                ))}
+              </span>
+            )}
+        </div>
+      )}
       {description && <div className={styles.description}>{description}</div>}
       {children}
     </div>

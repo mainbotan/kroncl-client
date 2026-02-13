@@ -17,6 +17,8 @@ import { PlatformPagination } from '@/app/platform/components/lib/pagination/pag
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import { motion } from 'framer-motion';
 import { transactionVariants } from './_animations';
+import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
+import { CreateOperationModal } from './components/create-operation-modal/modal';
 
 export default function Page() {
     const params = useParams();
@@ -193,7 +195,7 @@ export default function Page() {
                         variant='light'
                         children='Расход'
                         as='link'
-                        href={`/platform/${companyId}/fm/transactions/new/expense`}
+                        href={`/platform/${companyId}/fm/new-operation?direction=expense`}
                     />
                     <Button 
                         icon={<Wallet />} 
@@ -201,7 +203,7 @@ export default function Page() {
                         variant='accent'
                         children='Доход'
                         as='link'
-                        href={`/platform/${companyId}/fm/transactions/new/income`}
+                        href={`/platform/${companyId}/fm/new-operation?direction=income`}
                     />
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import styles from './card.module.scss';
-import Button from '@/assets/ui-kit/button/button';
+import Button, { ButtonProps } from '@/assets/ui-kit/button/button';
 import clsx from 'clsx';
 import { Employee } from '@/apps/company/modules/hrm/types';
 import { useParams } from 'next/navigation';
@@ -8,9 +8,17 @@ import { getFirstLetter, getGradientFromString } from '@/assets/utils/avatars';
 
 interface EmployeeCardProps {
     employee: Employee;
+    showDefaultActions?: boolean;
+    actions?: ButtonProps[];
+    variant?: 'default' | 'compact';
 }
 
-export function EmployeeCard({ employee }: EmployeeCardProps) {
+export function EmployeeCard({ 
+    employee ,
+    showDefaultActions = true,
+    actions,
+    variant = 'default'
+}: EmployeeCardProps) {
     const params = useParams();
     const companyId = params.id as string;
 
@@ -20,7 +28,7 @@ export function EmployeeCard({ employee }: EmployeeCardProps) {
     const avatarGradient = getGradientFromString(fullName);
 
     return (
-        <div className={styles.card}>
+        <div className={clsx(styles.card, styles[variant])}>
             <div className={styles.base}>
                 <div 
                     className={styles.avatar}
@@ -40,14 +48,19 @@ export function EmployeeCard({ employee }: EmployeeCardProps) {
                 </div>
             </div>
             <div className={styles.actions}>
-                <Button 
-                    href={`/platform/${companyId}/hrm/${employee.id}`} 
-                    as='link' 
-                    className={styles.action} 
-                    variant='accent'
-                >
-                    Карта сотрудника
-                </Button>
+                {showDefaultActions && (
+                    <Button 
+                        href={`/platform/${companyId}/hrm/${employee.id}`} 
+                        as='link' 
+                        className={styles.action} 
+                        variant='accent'
+                    >
+                        Карта сотрудника
+                    </Button>
+                )}
+                {actions?.map((action, index) => (
+                    <Button key={index} className={clsx(styles.action, action.className)} {...action} />
+                ))}
             </div>
             <span className={styles.flag} />
             <span className={styles.code}>{employee.id}</span>

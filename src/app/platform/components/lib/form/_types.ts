@@ -1,10 +1,18 @@
+import { ButtonProps } from "@/assets/ui-kit/button/button";
+import { InputVariant } from "@/assets/ui-kit/input/input";
 import { ReactNode } from "react";
+
+export interface PlatformFormBodyProps {
+  className?: string;
+  children: ReactNode;
+}
 
 export interface PlatformFormSectionProps {
   title?: string;
   description?: string;
   children: ReactNode;
   className?: string;
+  actions?: ButtonProps[];
 }
 
 export interface PlatformFormInputProps {
@@ -15,7 +23,7 @@ export interface PlatformFormInputProps {
   maxLength?: number;
   disabled?: boolean;
   readOnly?: boolean;
-  variant?: 'elevated' | 'empty';
+  variant?: InputVariant;
   className?: string;
 }
 

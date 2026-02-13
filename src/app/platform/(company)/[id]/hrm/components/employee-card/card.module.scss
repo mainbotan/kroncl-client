@@ -71,37 +71,6 @@
         }
     }
 
-    .stat {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: start;
-        gap: .8em;
-        padding-top: .4em;
-        border-top: 1px solid var(--color-stroke-secondary);
-
-        .section {
-            display: flex;
-            flex-flow: column nowrap;
-            gap: .2em;
-            justify-content: center;
-            padding: .5em .5em;
-            // background-color: var(--color-surface-tertiary);
-            // border-radius: .4em;
-
-            .value {
-                font-weight: 600;
-                font-size: 1.05em;
-                letter-spacing: .02em;
-                @include text-ellipsis();
-            }
-            .legend {
-                font-size: .74em;
-                color: var(--color-text-secondary);
-                @include text-ellipsis();
-            }
-        }
-    }
-
     .actions {
         display: flex;
         flex-flow: row wrap;
@@ -147,6 +116,34 @@
         width: fit-content;
         max-width: calc(100% - 3em);
         transition: opacity var(--transition), margin-bottom var(--transition)
+    }
+
+    &.compact {
+        min-height: 3em;
+        width: 100%;
+        flex-flow: row nowrap;
+        align-items: start;
+
+        .actions {
+            display: flex;
+            flex-flow: row wrap;
+            gap: 1em;
+            font-size: .7em;
+            margin-bottom: 0;
+            opacity: 1;
+
+            .action {
+                border-radius: 2em;
+                transition: transform var(--transition);
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
+        }
+        .code {
+            display: none;
+        }
     }
 
     &:hover {
