@@ -1,0 +1,50 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    @include slide();
+    flex: 1;
+    padding: 0;
+}
+.grid {
+    @include focus();
+    padding: 0 1px;
+    background-color: var(--color-stroke-secondary);
+    flex: 1;
+    flex-flow: column nowrap;
+    gap: 1px;
+
+    .block {
+        background-color: var(--color-leader);
+        font-size: .6em;
+        padding: 2.5rem 2rem;
+    }
+
+    .interval {
+        background-color: var(--color-leader);
+        height: 5rem;
+    }
+
+    @media (max-width: 720px) {
+        padding: 0;
+        
+        .block {
+            padding: 1.5rem 1rem;
+            font-size: .55em;
+        }
+    }
+}
+
+// benefits
+.benefitsGrid {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1px;
+    
+    .block {
+        flex: 1;
+    }
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+    }
+}

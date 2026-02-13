@@ -1,0 +1,32 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    min-height: 1.4em;
+    flex-flow: row nowrap;
+
+    .col {
+        display: flex;
+        flex: 1;
+
+        &:nth-child(1), &:nth-child(9) {
+            background-color: rgb(64, 11, 124);
+        }
+        &:nth-child(2), &:nth-child(8) {
+            background-color: rgb(76, 13, 149);
+            flex: 2;
+        }
+        &:nth-child(3), &:nth-child(7) {
+            background-color: rgb(91, 16, 176);
+            flex: 3;
+        }
+        &:nth-child(4), &:nth-child(6) {
+            background-color: rgb(101, 15, 200);
+            flex: 4;
+        }
+        &:nth-child(5) {
+            background-color: rgb(126, 14, 255);
+            flex: 5;
+        }
+    }
+}

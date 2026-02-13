@@ -1,0 +1,34 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    min-height: 15em;
+    flex-flow: column nowrap;
+    gap: 1em;
+    
+    .point {
+        display: inline-flex;
+        flex-flow: row nowrap;
+        gap: .7em;
+        font-size: .7em;
+        align-items: center;
+
+        .marker {
+            width: 1.3em;
+            min-width: 1.3em;
+            height: .7em;
+            border-radius: 1em;
+            background-color: var(--color-purple);
+        }
+    }
+    .title {
+        font-size: 1.5em;
+        font-weight: 600;
+        letter-spacing: .02em;
+        line-height: 1.2;
+    }
+    .description {
+        font-size: .76em;
+        line-height: 2;
+    }
+}
