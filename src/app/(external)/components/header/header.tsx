@@ -229,13 +229,13 @@ export function Header() {
                                 onMouseLeave={handleMouseLeave} // Скрываем при уходе с модалки
                             >
                                 <div className={styles.title}>
-                                Вошли как <span className={styles.contrast}>{user.name}</span>
+                                    <span className={styles.contrast}>{user.name}</span>
                                 </div>
                                 <div className={styles.description}>
-                                Получен доступ к аккаунту
+                                    Получен доступ к аккаунту. Продолжить работу?
                                 </div>
                                 <Link href='/platform'>
-                                <Button fullWidth className={styles.button} variant='contrast'>
+                                <Button fullWidth className={styles.button} variant='accent'>
                                     Продолжить
                                 </Button>
                                 </Link>

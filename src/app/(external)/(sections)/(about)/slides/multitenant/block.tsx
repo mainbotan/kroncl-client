@@ -2,6 +2,7 @@ import { PageBlockProps } from '@/app/(external)/_types';
 import styles from './block.module.scss';
 import clsx from 'clsx';
 import { orgsList } from './_orgs';
+import Button from '@/assets/ui-kit/button/button';
 
 export function MultitenantBlock({
     className
@@ -15,9 +16,12 @@ export function MultitenantBlock({
                 <br />
                 Изолированный учёт филиалов.
             </div>
+            <div className={styles.actions}>
+                <Button as='link' href='/multi-tenancy' className={styles.action} variant='accent'>Больше о многозадачности</Button>
+            </div>
             <div className={styles.icons}>
                 {orgsList.map((org, index) => (
-                    <div className={styles.icon}>
+                    <div className={styles.icon} key={index}>
                         {org.label}
                     </div>
                 ))}

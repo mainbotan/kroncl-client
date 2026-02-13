@@ -5,7 +5,7 @@
     min-height: 5em;
     position: relative;
     flex-flow: column nowrap;
-    gap: 2em;
+    gap: 1em;
 
     .title {
         font-size: 1.4em;
@@ -18,11 +18,26 @@
             color: var(--color-accent);
         }
     }
+    .actions {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        font-size: .7em;
+
+        .action {
+            transition: transform var(--transition);
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
     .icons {
         display: flex;
         flex-flow: row wrap;
         gap: 1em;
         font-size: .8em;
+        margin-top: 1em;
         justify-content: center;
 
         $shadow-width: .2em;

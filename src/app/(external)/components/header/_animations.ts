@@ -1,4 +1,6 @@
-export const slideDown = {
+import { Variants } from "framer-motion";
+
+export const slideDown: Variants = {
   hidden: { 
     y: -10, 
     opacity: 0,
