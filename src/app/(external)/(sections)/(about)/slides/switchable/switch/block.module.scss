@@ -1,0 +1,41 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: block;
+    position: relative;
+    background-color: var(--color-leader);
+    overflow-x: scroll;
+    white-space: nowrap;
+    font-size: .37em;
+    @include no-scrollbar();
+    padding: 0 1.5rem;
+
+    .grid {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+        justify-content: start;
+
+        .section {
+            height: 3.7em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 4px solid transparent;
+            padding: 0 .5em;
+            @include cursor(pointer);
+            transition: border-color var(--transition);
+
+            &:hover {
+                border-color: var(--color-stroke-secondary);
+            }
+            &.active {
+                border-color: var(--color-accent);
+            }
+        }
+    }
+
+    @media (max-width: 720px) {
+        padding: 0 1rem;
+    }
+}

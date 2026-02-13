@@ -39,36 +39,6 @@
     }
 }
 
-// theses grid
-.theses {
-    display: flex;
-    flex-flow: row wrap;
-
-    .block {
-        height: 10rem;
-        flex: 1;
-        padding: 2rem 1.5rem;
-        min-width: 33%;
-    }
-
-    @media (max-width: 720px) {
-        flex-direction: column;
-
-        .block {
-            font-size: .6em;
-            padding: 1rem 1rem;
-            height: fit-content;
-
-            &:nth-child(1) {
-                padding-top: 2rem;
-            }
-            &:last-child {
-                padding-bottom: 2rem;
-            }
-        }
-    }
-}
-
 // dynamics 2 sections grid
 .dynamicsGrid {
     display: flex;

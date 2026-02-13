@@ -1,0 +1,7 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    min-height: 5rem;
+    font-size: .6em;
+    background-color: var(--color-leader);
+}

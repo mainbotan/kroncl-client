@@ -1,5 +1,5 @@
 import { ModalTooltip } from "@/app/components/tooltip/tooltip";
-import { Tesis } from "../slides/thesis/block";
+import { Tesis } from "./thesis/block";
 import Link from "next/link";
 
 export const thesesList: Tesis[] = [
