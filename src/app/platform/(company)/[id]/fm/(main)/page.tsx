@@ -20,6 +20,7 @@ import { transactionVariants } from './_animations';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
+import { formatDate } from '@/assets/utils/date';
 
 export default function Page() {
     const params = useParams();
@@ -223,7 +224,7 @@ export default function Page() {
                     <div className={styles.metaLine}>
                         <div className={styles.grid}>
                             <span className={styles.date}>
-                                11 февраля 2026
+                                {formatDate(new Date().toISOString())}
                             </span>
                         </div>
                     </div>
@@ -284,7 +285,7 @@ export default function Page() {
                     <div className={styles.name}>Категории</div>
                     <div className={styles.description}>Категории расходов/доходов</div>
                 </Link>
-                <Link href={`/platform/${companyId}/fm/analyse`} className={styles.card}>
+                <Link href={`/platform/${companyId}/fm/e2e`} className={styles.card}>
                     <div className={styles.name}>Сквозная аналитика</div>
                     <div className={styles.description}>E2E анализ доходности</div>
                 </Link>

@@ -11,6 +11,7 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useEffect, useState } from 'react';
 import { CategoriesResponse, TransactionCategory } from '@/apps/company/modules/fm/types';
 import { useFm } from "@/apps/company/modules";
+import { GroupChart } from "./components/group-chart/chart";
 
 export default function Page() {
     const params = useParams();
@@ -113,7 +114,7 @@ export default function Page() {
         <>
             <PlatformHead
                 title='Категории трат и доходов'
-                description="Анализ операций по категориям. Управление категориями."
+                description="Управление категориями."
                 actions={[
                     {
                         icon: <Plus />,

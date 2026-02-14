@@ -1,0 +1,17 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    justify-content: start;
+    align-items: start;
+
+    .block {
+        width: 16em;
+        height: 18em;
+        border: 1px solid var(--color-stroke-secondary);
+        border-radius: .8em;
+        background-color: var(--color-surface-glass-secondary);
+    }
+}
