@@ -18,13 +18,15 @@ import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import { motion } from 'framer-motion';
 import { transactionVariants } from './_animations';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
-import { CreateOperationModal } from './components/create-operation-modal/modal';
+import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const fmModule = useFm();
     const pathname = usePathname();
+    const { showMessage } = useMessage();
     const searchParams = useSearchParams();
     const router = useRouter();
     const { handlePageChange } = usePagination({
@@ -112,6 +114,45 @@ export default function Page() {
 
     const handleTimelinePositionChange = (position: number) => {
         setTimelinePosition(position);
+    };
+
+    
+    // Состояние для глобальной модалки реверса
+    const [reverseModal, setReverseModal] = useState<{
+        isOpen: boolean;
+        transactionId: string | null;
+    }>({ isOpen: false, transactionId: null });
+    
+    const [isReversing, setIsReversing] = useState(false);
+
+    const handleCreateReverse = async () => {
+        if (!reverseModal.transactionId) return;
+        
+        setIsReversing(true);
+        try {
+            const response = await fmModule.createReverseTransaction(reverseModal.transactionId);
+            
+            if (response.status) {
+                showMessage({
+                    label: 'Реверс-операция успешно создана',
+                    variant: 'success'
+                });
+                setReverseModal({ isOpen: false, transactionId: null });
+                // Обновить список транзакций
+                loadData();
+            } else {
+                throw new Error(response.message || 'Ошибка создания реверс-операции');
+            }
+        } catch (error: any) {
+            showMessage({
+                label: error.message || 'Не удалось создать реверс-операцию',
+                variant: 'error',
+                about: error.message
+            });
+            setReverseModal({ isOpen: false, transactionId: null });
+        } finally {
+            setIsReversing(false);
+        }
     };
 
     const queryParams: Record<string, string> = {};
@@ -262,23 +303,53 @@ export default function Page() {
                                         [styles.beforeSplit]: splitIndex !== -1 && index < splitIndex,
                                         [styles.afterSplit]: splitIndex !== -1 && index >= splitIndex
                                     })}
+                                    onReverse={() => setReverseModal({ 
+                                        isOpen: true, 
+                                        transactionId: transaction.id 
+                                    })}
                                 />
                             </motion.div>
                         ))}
-                        
-                        {pagination && pagination.pages > 1 && (
-                            <div className={styles.pagination}>
-                                <PlatformPagination
-                                    meta={pagination}
-                                    baseUrl={pathname}
-                                    queryParams={queryParams}
-                                    onPageChange={(page) => handlePageChange(page)}
-                                />
-                            </div>
-                        )}
                     </>
                 )}
             </div>
+            {pagination && pagination.pages > 1 && (
+                <div className={styles.pagination}>
+                    <PlatformPagination
+                        meta={pagination}
+                        baseUrl={pathname}
+                        queryParams={queryParams}
+                        onPageChange={(page) => handlePageChange(page)}
+                    />
+                </div>
+            )}
+
+            
+            {/* Глобальная модалка реверса — одна на всю страницу */}
+            <PlatformModal
+                isOpen={reverseModal.isOpen}
+                onClose={() => setReverseModal({ isOpen: false, transactionId: null })}
+                className={styles.modal}
+            >
+                <PlatformModalConfirmation
+                    title='Создать реверс-операцию?'
+                    description='Удалять уже существующие операции нельзя, поэтому единственный способ отменить операцию - создать обратную.'
+                    actions={[
+                        {
+                            children: 'Отмена', 
+                            variant: 'light', 
+                            onClick: () => setReverseModal({ isOpen: false, transactionId: null }),
+                            disabled: isReversing
+                        },
+                        {
+                            variant: "accent", 
+                            onClick: handleCreateReverse,
+                            children: isReversing ? 'Создание...' : 'Создать',
+                            disabled: isReversing
+                        }
+                    ]}
+                />
+            </PlatformModal>
         </>
     );
 }

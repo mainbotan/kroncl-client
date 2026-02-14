@@ -16,6 +16,7 @@ export interface Transaction {
     direction: TransactionDirection;
     status: TransactionStatus;
     comment: string | null;
+    reverse_to: string | null;
     created_at: string;
     metadata: Record<string, any> | null;
 }

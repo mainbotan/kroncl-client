@@ -267,7 +267,7 @@ export default function Page() {
         <>
             <PlatformHead
                 title={`${fullName}`}
-                description={`Карта сотрудника ${fullName}, создана ${formatDate(employee.created_at)}. Статус: ${isActive ? 'активен' : 'неактивен'}.`}
+                description={`Карта сотрудника ${fullName}, создана ${formatDate(employee.created_at)} Статус: ${isActive ? 'активен' : 'неактивен'}.`}
                 actions={actions}
             />
             

@@ -3,7 +3,7 @@
 .canvas {
     display: flex;
     position: fixed;
-    z-index: 999;
+    z-index: 999999;
     top: 0;
     left: 0;
     width: 100%;
@@ -14,7 +14,7 @@
     justify-content: center;
 }
 .modal {
-    z-index: 10000;
+    z-index: 1000000000;
     display: block;
     overflow-y: scroll;
     max-width: fit-content;

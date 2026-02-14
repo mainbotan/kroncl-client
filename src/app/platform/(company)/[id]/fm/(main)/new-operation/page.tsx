@@ -268,7 +268,6 @@ export default function Page() {
                             <EmployeeCard 
                                 employee={formData.employee}
                                 variant='default'
-                                showDefaultActions={false}
                             />
                         </div>
                     ) : (

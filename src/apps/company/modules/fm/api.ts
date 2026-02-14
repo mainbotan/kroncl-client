@@ -29,6 +29,10 @@ export const fmModule = (companyApi: CompanyApi) => ({
     async getTransaction(id: string) {
         return companyApi.get<TransactionDetail>(`/modules/fm/transactions/${id}`);
     },
+
+    async createReverseTransaction(id: string) {
+        return companyApi.post<TransactionDetail>(`/modules/fm/transactions/${id}/reverse`);
+    },
     
     async createTransaction(data: CreateTransactionRequest) {
         return companyApi.post<TransactionDetail>("/modules/fm/transactions", data);
