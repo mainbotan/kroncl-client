@@ -30,6 +30,10 @@
             height: .5em;
             fill: var(--color-text-description);
         }
+
+        .negative {
+            color: var(--color-red);
+        }
     }
     .legend {
         color: var(--color-text-ghost);

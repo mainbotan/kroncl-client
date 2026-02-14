@@ -2,6 +2,35 @@ import { PaginationMeta } from "@/apps/shared/pagination/types";
 import { Employee } from "@/apps/company/modules/hrm/types";
 
 // --------
+// ANALYSIS
+// --------
+
+export type GroupBy = 'category' | 'employee' | 'day' | 'month';
+
+export interface AnalysisSummary {
+    total_income: number;
+    total_expense: number;
+    net_balance: number;
+    transaction_count: number;
+    avg_transaction: number;
+}
+
+export interface GroupedStats {
+    group_key: string;
+    group_name: string;
+    income: number;
+    expense: number;
+    net: number;
+    count: number;
+}
+
+export interface GetAnalysisParams {
+    start_date?: string;
+    end_date?: string;
+    group_by?: GroupBy;
+}
+
+// --------
 // TRANSACTIONS
 // --------
 

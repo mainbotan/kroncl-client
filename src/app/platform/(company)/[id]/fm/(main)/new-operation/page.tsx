@@ -241,10 +241,7 @@ export default function Page() {
                 <PlatformFormSection title='Валюта'>
                     <PlatformFormVariants
                         options={[
-                            { value: 'RUB', label: '₽ RUB' },
-                            { value: 'USD', label: '$ USD' },
-                            { value: 'EUR', label: '€ EUR' },
-                            { value: 'KZT', label: '₸ KZT' }
+                            { value: 'RUB', label: '₽ RUB' }
                         ]}
                         value={formData.currency}
                         onChange={handleCurrencyChange}

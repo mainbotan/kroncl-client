@@ -11,7 +11,7 @@ import Wallet from '@/assets/ui-kit/icons/wallet';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useFm } from '@/apps/company/modules';
-import { TransactionsResponse } from '@/apps/company/modules/fm/types';
+import { TransactionsResponse, AnalysisSummary } from '@/apps/company/modules/fm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
@@ -39,11 +39,14 @@ export default function Page() {
     const transactionRef = useRef<HTMLDivElement>(null);
     
     const [data, setData] = useState<TransactionsResponse | null>(null);
+    const [summary, setSummary] = useState<AnalysisSummary | null>(null);
     const [loading, setLoading] = useState(true);
+    const [summaryLoading, setSummaryLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         loadData();
+        loadSummary();
     }, [searchParams]);
 
     const loadData = async () => {
@@ -82,6 +85,27 @@ export default function Page() {
             console.error('Error loading transactions:', err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const loadSummary = async () => {
+        setSummaryLoading(true);
+        try {
+            const start_date = searchParams.get('start_date') || undefined;
+            const end_date = searchParams.get('end_date') || undefined;
+
+            const response = await fmModule.getAnalysisSummary({
+                start_date,
+                end_date
+            });
+            
+            if (response.status) {
+                setSummary(response.data);
+            }
+        } catch (err) {
+            console.error('Error loading summary:', err);
+        } finally {
+            setSummaryLoading(false);
         }
     };
 
@@ -138,8 +162,9 @@ export default function Page() {
                     variant: 'success'
                 });
                 setReverseModal({ isOpen: false, transactionId: null });
-                // Обновить список транзакций
+                // Обновить список транзакций и сводку
                 loadData();
+                loadSummary();
             } else {
                 throw new Error(response.message || 'Ошибка создания реверс-операции');
             }
@@ -165,7 +190,7 @@ export default function Page() {
     const searchParam = searchParams.get('search');
     if (searchParam) queryParams.search = searchParam;
 
-    if (loading) return (
+    if (loading || (summaryLoading && !summary)) return (
         <div style={{
             display: "flex", 
             alignItems: "center", 
@@ -204,27 +229,32 @@ export default function Page() {
                     </div>
                     <div className={styles.indicators}>
                         <IndicatorWidget 
-                            value={{
-                                amount: 100290,
+                            value={summary ? {
+                                amount: summary.net_balance,
                                 unit: '₽',
-                            }}
+                            } : undefined}
+                            loading={summaryLoading}
                             legend='Ресурсы предприятия'
                             about='Казна организации - общий объём финансов, доступных для операций.'
                         />
+                        
                         <IndicatorWidget 
-                            value={{
-                                amount: 0,
-                                unit: '₽',
-                            }}
-                            legend='Долговая нагрузка'
+                            value={summary ? {
+                                amount: summary.transaction_count
+                            } : undefined}
+                            loading={summaryLoading}
+                            legend='Операций'
                             size='sm'
                             variant='secondary'
                         />
+
                         <IndicatorWidget 
-                            value={{
-                                amount: transactions.length
-                            }}
-                            legend='Операций'
+                            value={summary ? {
+                                amount: summary.avg_transaction,
+                                unit: '₽',
+                            } : undefined}
+                            loading={summaryLoading}
+                            legend='Средний чек'
                             size='sm'
                             variant='secondary'
                         />

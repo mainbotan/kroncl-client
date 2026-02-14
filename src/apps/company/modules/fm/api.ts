@@ -10,10 +10,42 @@ import {
     CategoriesResponse,
     CreateCategoryRequest,
     UpdateCategoryRequest,
-    GetCategoriesParams
+    GetCategoriesParams,
+    GetAnalysisParams,
+    GroupBy,
+    AnalysisSummary,
+    GroupedStats
 } from "./types";
 
 export const fmModule = (companyApi: CompanyApi) => ({
+    // --------
+    // ANALYSIS
+    // --------
+    
+    async getAnalysisSummary(
+        params?: GetAnalysisParams
+    ) {
+        return companyApi.get<AnalysisSummary>("/modules/fm/analysis/summary", {
+            params: params as Record<string, string | number | boolean | undefined>
+        });
+    },
+    
+    async getGroupedAnalysis(
+        params?: GetAnalysisParams & { group_by: GroupBy }
+    ) {
+        const queryParams: Record<string, string | number | boolean | undefined> = {};
+        
+        if (params) {
+            if (params.start_date) queryParams.start_date = params.start_date;
+            if (params.end_date) queryParams.end_date = params.end_date;
+            if (params.group_by) queryParams.group_by = params.group_by;
+        }
+        
+        return companyApi.get<GroupedStats[]>("/modules/fm/analysis/grouped", {
+            params: queryParams
+        });
+    },
+
     // --------
     // TRANSACTIONS
     // --------

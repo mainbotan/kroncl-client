@@ -5,6 +5,7 @@ import styles from './widget.module.scss';
 import React from 'react';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import clsx from 'clsx';
+import Spinner from '@/assets/ui-kit/spinner/spinner';
 
 export interface IndicatorWidgetValue {
     amount: number;
@@ -13,11 +14,12 @@ export interface IndicatorWidgetValue {
 }
 
 export interface IndicatorWidgetProps {
-    value: IndicatorWidgetValue;
+    value?: IndicatorWidgetValue;
     legend?: string;
     about?: string;
     size?: 'sm' | 'md' | 'lg',
-    variant?: 'normal' | 'empty' | 'accent' | 'secondary'
+    variant?: 'normal' | 'empty' | 'accent' | 'secondary',
+    loading?: boolean;
 }
 
 export function IndicatorWidget({
@@ -25,20 +27,27 @@ export function IndicatorWidget({
     legend,
     about,
     size = 'md',
-    variant = 'normal'
+    variant = 'normal',
+    loading
 }: IndicatorWidgetProps) {
 
     const renderContent = () => {
         return (
             <div className={clsx(styles.widget, styles[size], styles[variant])}>
                 <div className={styles.value}>
-                    <span className={styles.amount}>
-                        {value.amount.toLocaleString('ru-RU')}
+                    {loading && (
+                        <Spinner variant='accent' size='sm' />
+                    )}
+                    <span className={clsx(
+                        styles.amount,
+                        value?.amount && value.amount < 0 && styles.negative
+                    )}>
+                        {value?.amount?.toLocaleString('ru-RU')}
                     </span>
-                    {value.unit && <span className={styles.unit}>{value.unit}</span>}
-                    {value.icon && <span className={styles.icon}>{value.icon}</span>}
+                    {value?.unit && <span className={styles.unit}>{value?.unit}</span>}
+                    {value?.icon && <span className={styles.icon}>{value?.icon}</span>}
                 </div>
-                {legend && <div className={styles.legend}>{legend}</div>}
+                {loading ? (<div></div>) : legend && <div className={styles.legend}>{legend}</div>}
             </div>
         )
     }
