@@ -77,3 +77,9 @@
         flex-direction: column;
     }
 }
+
+// tariffs block from (customers)/pricing
+.tariffsBlock {
+    height: fit-content !important;
+    min-height: fit-content !important;
+}

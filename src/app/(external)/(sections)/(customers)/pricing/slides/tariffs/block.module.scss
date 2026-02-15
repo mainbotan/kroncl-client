@@ -1,19 +1,53 @@
 @use '@/assets/styles/_mixins.scss' as *;
 
 .block {
-    display: block;
-    // overflow-x: scroll;
-    // white-space: nowrap;
-    // border: 1px dashed red;
-    // padding-top: 0 !important;
-    // padding-bottom: 0 !important;
+    display: flex;
     min-height: 100%;
-    
-    .grid {
+    justify-content: start;
+    flex-flow: column nowrap;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    gap: .5rem;
+
+    .control {
         display: flex;
-        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
         gap: 1em;
-        justify-content: start;
-        align-items: start;
+        min-height: 3rem;
+        font-size: .65em;
+
+        .action {
+            border-radius: 2em;
+            height: 3em;
+        }
+    }
+
+    .wrap {
+        display: block;
+        padding: 0 1rem;
+
+        .grid {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: 1em;
+            justify-content: start;
+            align-items: start;
+        }
+    }
+
+    @media (max-width: 720px) {
+        
+        .wrap {
+            overflow-x: scroll;
+            padding: 0 1rem;
+            @include no-scrollbar();
+
+            .grid {
+                font-size: 1.1em;
+                width: fit-content;
+                margin-right: 2rem;
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ import { partnersList } from './content/_partners';
 import { SwitchableBlock } from './slides/switchable/block';
 import { StatisticsBlock } from './slides/statistics/block';
 import { MultitenantBlock } from './slides/multitenant/block';
+import { TariffsBlock } from '../(customers)/pricing/slides/tariffs/block';
 
 export default function Page() {
     return (
@@ -79,6 +80,7 @@ export default function Page() {
                         />
                 </div>
                 <EcosystemBlock className={styles.block} />
+                <TariffsBlock className={clsx(styles.block, styles.tariffsBlock)} />
             </div>
         </div>
         </>
