@@ -1,0 +1,60 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.card {
+    display: flex;
+    min-width: 5em;
+    flex: 1;
+    min-height: 14em;
+    border: 1px solid var(--color-stroke-secondary);
+    transition: background-color var(--transition);
+    flex-flow: column nowrap;
+    padding: .5em;
+    gap: 1em;
+    color: var(--color-text-primary);
+
+    .info {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+        justify-content: start;
+        padding: .6em .3em;
+
+        .value {
+            font-size: 1.8em;
+            font-weight: 600;
+            letter-spacing: .02em;
+        }
+    }
+
+    .actions {
+        display: flex;
+        font-size: .6em;
+        flex-flow: column nowrap;
+        gap: .4em;
+
+        .action {
+            height: 3em;
+            border-radius: 2em;
+            transition: transform var(--transition);
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-elevated);
+    }
+
+    &.accent {
+        background-color: var(--color-accent);
+        color: var(--color-accent-text-primary);
+
+        .actions .action {
+            background-color: var(--color-contrast);
+            border: none;
+            color: var(--color-leader)
+        }
+    }
+}
