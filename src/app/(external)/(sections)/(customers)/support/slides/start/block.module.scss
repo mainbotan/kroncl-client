@@ -1,0 +1,7 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: row nowrap;
+    position: relative;
+}

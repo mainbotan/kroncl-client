@@ -1,0 +1,14 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: column nowrap;
+    position: relative;
+
+    .grid {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        gap: 1.5em;
+    }
+}
