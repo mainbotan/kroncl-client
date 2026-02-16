@@ -1,0 +1,24 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: column nowrap;
+    position: relative;
+    gap: 1px;
+
+    .capture, .link {
+        font-weight: 600;
+        letter-spacing: .02em;
+        line-height: 1.2;
+        padding-top: 1em !important;
+        padding-bottom: 1em !important;
+        transition: background-color var(--transition);
+
+        &.capture {
+            color: var(--color-text-ghost);
+        }
+        &.link:hover {
+            background-color: var(--color-stroke-secondary);
+        }
+    }
+}

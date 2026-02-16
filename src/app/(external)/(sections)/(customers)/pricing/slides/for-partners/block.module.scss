@@ -1,0 +1,28 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1px;
+    position: relative;
+    min-height: 5rem;
+
+    .col {
+        display: flex;
+        flex: 1;
+
+        &:nth-child(1) {
+            background-color: var(--color-accent);
+            color: var(--color-accent-text-primary);
+            flex-flow: column nowrap;
+            justify-content: center;
+            gap: .3em;
+
+            .capture {
+                font-weight: 600;
+                letter-spacing: .02em;
+                line-height: 1.2;
+            }
+        }
+    }
+}
