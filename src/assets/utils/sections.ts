@@ -38,7 +38,7 @@ export const isSectionActive = (currentUrl: string, section: NavigationSection):
         // ВСЕ параметры секции должны быть в текущем URL с теми же значениями
         // ИГНОРИРУЕМ параметры limit и page
         for (const [key, sectionValue] of sectionParams.entries()) {
-          if (key === 'limit' || key === 'page') continue;
+          if (key === 'limit' || key === 'page' || key === 'start_date' || key === 'end_date') continue;
           if (currentParams.get(key) !== sectionValue) {
             return false;
           }

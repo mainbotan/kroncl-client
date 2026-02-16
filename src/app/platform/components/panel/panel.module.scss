@@ -73,7 +73,9 @@
             }
         }
     }
+    .children {
 
+    }
     .actions {
         display: flex;
         flex-flow: column nowrap;
@@ -212,6 +214,9 @@
             display: none;
         }
 
+        .children {
+            display: none;
+        }
         .actions {
             display: none;
         }

@@ -217,7 +217,9 @@ export default function ClientPanel({
           </div>
         )}
 
-        {children}
+        <div className={styles.children}>
+          {children}
+        </div>
 
         {actions.length > 0 && (
           <div className={styles.actions}>
