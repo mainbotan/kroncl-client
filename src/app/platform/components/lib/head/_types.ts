@@ -34,4 +34,5 @@ export interface PlatformHeadProps {
     searchButton?: boolean;
   };
   notes?: PlatformHeadNote[];
+  children?: React.ReactNode;
 }

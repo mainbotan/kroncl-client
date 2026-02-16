@@ -36,6 +36,7 @@ export function PlatformHead({
   currentPath,
   showSearch = false,
   searchProps = {},
+  children,
   notes = []
 }: PlatformHeadProps) {
   const pathname = usePathname();
@@ -135,7 +136,7 @@ export function PlatformHead({
           </div>
         )}
       </div>
-
+      {children && (children)}
       {sections.length > 0 && (
         <div className={styles.sections}>
           <div className={styles.grid}>

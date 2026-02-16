@@ -20,6 +20,7 @@ export interface IndicatorWidgetProps {
     size?: 'sm' | 'md' | 'lg',
     variant?: 'normal' | 'empty' | 'accent' | 'secondary',
     loading?: boolean;
+    className?: string;
 }
 
 export function IndicatorWidget({
@@ -28,12 +29,13 @@ export function IndicatorWidget({
     about,
     size = 'md',
     variant = 'normal',
-    loading
+    loading,
+    className
 }: IndicatorWidgetProps) {
 
     const renderContent = () => {
         return (
-            <div className={clsx(styles.widget, styles[size], styles[variant])}>
+            <div className={clsx(styles.widget, className, styles[size], styles[variant])}>
                 <div className={styles.value}>
                     {loading && (
                         <Spinner variant='accent' size='sm' />
