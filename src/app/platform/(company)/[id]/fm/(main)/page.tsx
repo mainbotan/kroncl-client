@@ -287,7 +287,7 @@ export default function Page() {
                 </Link>
                 <Link href={`/platform/${companyId}/fm/e2e`} className={styles.card}>
                     <div className={styles.name}>Сквозная аналитика</div>
-                    <div className={styles.description}>E2E анализ доходности</div>
+                    <div className={styles.description}>E2E анализ финансов</div>
                 </Link>
                 <Link href={`/platform/${companyId}/fm/debts`} className={styles.card}>
                     <div className={styles.name}>Долги</div>
