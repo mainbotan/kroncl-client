@@ -73,46 +73,6 @@
 
         // account avatar
         .account {
-            display: inline-flex;
-            width: 2.3rem;
-            height: 2.3rem;
-            align-items: center;
-            justify-content: center;
-            @include cursor(pointer);
-
-            .avatar {
-                display: inline-flex;
-                width: 1.6rem;
-                height: 1.6rem;
-                background-color: var(--color-surface-primary);
-                align-items: center;
-                justify-content: center;
-                padding: 2px;
-                border-radius: 50%;
-                transition: background-color var(--transition);
-                background: var(--color-stroke-secondary);
-                background-color: var(--color-brand);
-
-                .img {
-                    width: 100%;
-                    height: 100%;
-                    border-radius: 50%;
-                    background-size: cover;
-                    background-position: center;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: 600;
-                    font-size: .6em;
-                    color: var(--color-leader);
-                    border: 2px solid var(--color-leader);
-                }
-            }
-            &:hover {
-                .avatar {
-                    background-color: var(--color-brand);
-                }
-            }
         }
 
         // actions buttons
@@ -144,52 +104,6 @@
 
             @media (max-width: 720px) {
                 display: none;
-            }
-        }
-
-        // theme switcher
-        .theme {
-            display: inline-flex;
-            align-items: center;
-
-            .switcher {
-                height: 1.4rem;
-                display: inline-flex;
-                flex-flow: row nowrap;
-                border-radius: .3rem;
-                background-color: var(--color-surface-glass);
-                border: 1px solid var(--color-stroke-primary);
-                overflow: hidden;
-
-                .box {
-                    display: inline-flex;
-                    width: 1.3rem;
-                    height: 1.3rem;
-                    align-items: center;
-                    justify-content: center;
-                    transition: background-color var(--transition), border-color var(--transition);
-                    border-radius: .3rem;
-                    border: 1px solid transparent;
-                    @include cursor(pointer);
-
-                    .svg {
-                        width: 40%;
-                        height: 40%;
-                        fill: var(--color-icon-primary);
-                        transition: fill var(--transition);
-                    }
-
-                    &:hover {
-                        border-color: var(--color-brand);
-                    }
-                    &.active {
-                        background-color: var(--color-brand);
-
-                        .svg {
-                            fill: var(--color-accent-text-primary);
-                        }
-                    }
-                }
             }
         }
 

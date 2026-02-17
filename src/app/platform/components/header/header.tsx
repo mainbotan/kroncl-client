@@ -21,12 +21,12 @@ import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import Bell from '@/assets/ui-kit/icons/bell';
 import { LogoIco } from '@/assets/ui-kit/logo/ico/ico';
 import { PllatformSearch } from '../search/search';
+import { AccountWidget } from './account-widget/widget';
 
 export function Header() {
     const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
-    const { login, user, status } = useAuth();
 
     // Инициализация темы при загрузке
     useEffect(() => {
@@ -110,60 +110,8 @@ export function Header() {
                 </div>
                 
                 <div className={styles.actions}>
-                    {/* <div className={styles.theme}>
-                        <div className={styles.switcher}>
-                            <span 
-                                className={clsx(styles.box, theme === 'light' && styles.active)} 
-                                onClick={setLightTheme}
-                            >
-                                <Sun className={styles.svg} />
-                            </span>
-                            <span 
-                                className={clsx(styles.box, theme === 'dark' && styles.active)} 
-                                onClick={setDarkTheme}
-                            >
-                                <Moon className={styles.svg} />
-                            </span>
-                        </div>
-                    </div> */}
-                    {/* <div className={styles.buttons}>
-                        <Button 
-                            icon={<Bell />}
-                            className={styles.button} 
-                            variant='light'
-                            href={authLinks.login}
-                            // target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Пригласить
-                        </Button>
-                    </div> */}
+                    <AccountWidget className={styles.account} />
                     
-                    {user && (
-                    <div className={styles.account}>
-                        <span 
-                        className={styles.avatar}
-                        >
-                        {user.avatar_url ? (
-                            <span 
-                                className={styles.img} 
-                                style={{backgroundImage: `url('${user.avatar_url}')`}} 
-                            />
-                        ) : (
-                            // Рандомный яркий градиент
-                            <span 
-                                className={`${styles.img} ${styles.gradient}`}
-                                // style={{ 
-                                //     background: getRandomGradient(user)
-                                // }}
-                            >
-                                {/* Можно добавить первую букву имени */}
-                                {user.name?.charAt(0).toUpperCase()}
-                            </span>
-                        )}
-                        </span>
-                    </div>
-                    )}
                     {/* <div className={styles.burger} onClick={toggleMenu}>
                         {isMenuOpen ? (
                             <Close className={styles.svg} />

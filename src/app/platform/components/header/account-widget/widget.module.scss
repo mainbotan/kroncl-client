@@ -1,0 +1,80 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.widget {
+    display: inline-flex;
+    position: relative;
+    padding: 0 .4em;
+    align-items: center;
+    justify-content: center;
+
+    .overlay {
+        width: 1.47em;
+        height: 1.47em;
+        background-color: var(--color-stroke-tertiary);
+        border-radius: 50%;
+        padding: 2px;
+        @include cursor(pointer);
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            font-size: .7em;
+            font-weight: 600;
+            letter-spacing: .02em;
+            color: var(--color-leader);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--color-stroke-secondary);
+        }
+    }
+    .control {
+        position: fixed;
+        z-index: 10000;
+        top: 3em;
+        right: 2em;
+        width: 12em;
+        min-height: 5em;
+        font-size: .6em;
+        border-radius: .4em;
+        background-color: var(--color-surface-elevated);
+        border: 1px solid var(--color-stroke-secondary);
+        display: flex;
+        flex-flow: column nowrap;
+        overflow: hidden;
+
+        .section {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+            gap: .8em;
+            height: 2.4em;
+            padding: 0 .7em;
+            border-bottom: 1px solid var(--color-stroke-primary);
+            transition: background-color var(--transition);
+            @include cursor(pointer);
+
+            .icon {
+                display: inline-flex;
+                align-items: center;
+
+                svg {
+                    width: 1em;
+                    height: 1em;
+                    fill: var(--color-icon-primary);
+                }
+            }
+            .capture {
+                font-size: .9em;
+                @include text-ellipsis();
+            }
+
+            &:hover {
+                background: var(--color-surface-light);
+            }
+        }
+    }
+}
