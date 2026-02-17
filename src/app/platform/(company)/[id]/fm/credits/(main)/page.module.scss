@@ -1,0 +1,6 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    display: flex;
+    border: 1px solid var(--color-red);
+}

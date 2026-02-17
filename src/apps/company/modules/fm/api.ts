@@ -14,7 +14,13 @@ import {
     GetAnalysisParams,
     GroupBy,
     AnalysisSummary,
-    GroupedStats
+    GroupedStats,
+    // COUNTERPARTIES
+    Counterparty,
+    CounterpartiesResponse,
+    CreateCounterpartyRequest,
+    UpdateCounterpartyRequest,
+    GetCounterpartiesParams
 } from "./types";
 
 export const fmModule = (companyApi: CompanyApi) => ({
@@ -100,5 +106,37 @@ export const fmModule = (companyApi: CompanyApi) => ({
     
     async deleteCategory(id: string) {
         return companyApi.delete<{ category_id: string; deleted: boolean }>(`/modules/fm/transactions/categories/${id}`);
+    },
+
+    // --------
+    // COUNTERPARTIES
+    // --------
+    
+    async getCounterparties(
+        params?: GetCounterpartiesParams
+    ) {
+        return companyApi.get<CounterpartiesResponse>("/modules/fm/counterparties", {
+            params: params as Record<string, string | number | boolean | undefined>
+        });
+    },
+    
+    async getCounterparty(id: string) {
+        return companyApi.get<Counterparty>(`/modules/fm/counterparties/${id}`);
+    },
+    
+    async createCounterparty(data: CreateCounterpartyRequest) {
+        return companyApi.post<Counterparty>("/modules/fm/counterparties", data);
+    },
+    
+    async updateCounterparty(id: string, data: UpdateCounterpartyRequest) {
+        return companyApi.patch<Counterparty>(`/modules/fm/counterparties/${id}`, data);
+    },
+    
+    async activateCounterparty(id: string) {
+        return companyApi.post<Counterparty>(`/modules/fm/counterparties/${id}/activate`);
+    },
+    
+    async deactivateCounterparty(id: string) {
+        return companyApi.post<Counterparty>(`/modules/fm/counterparties/${id}/deactivate`);
     }
 });

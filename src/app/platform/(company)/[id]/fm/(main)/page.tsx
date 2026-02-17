@@ -289,7 +289,7 @@ export default function Page() {
                     <div className={styles.name}>Сквозная аналитика</div>
                     <div className={styles.description}>E2E анализ финансов</div>
                 </Link>
-                <Link href={`/platform/${companyId}/fm/debts`} className={styles.card}>
+                <Link href={`/platform/${companyId}/fm/credits`} className={styles.card}>
                     <div className={styles.name}>Долги</div>
                     <div className={styles.description}>Управление долговыми обязательствами</div>
                 </Link>

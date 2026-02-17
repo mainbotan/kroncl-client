@@ -15,13 +15,14 @@ export const breadcrumbDictionary: Record<string, string> = {
     'permissions': "Разрешения",
     'invitations': "Приглашения",
     'hrm': 'Сотрудники',
+    'employees': 'Сотрудники',
     'positions': 'Должности',
     'fm': 'Финансы',
     'categories': 'Категории',
     'new-operation': 'Новая операция',
     'e2e': 'Анализ',
-    'employees': 'Сотрудники',
-    'debts': 'Долговые обязательства'
+    'credits': 'Долговые обязательства',
+    'counterparties': 'Контрагенты'
 };
 
 export function getBreadcrumbName(pathSegment: string): string {
