@@ -1,0 +1,35 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.log {
+    height: 2.7em;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    gap: 2em;
+    @include cursor(pointer);
+    padding: 1em .5em;
+    transition: background-color var(--transition);
+
+    .timestamp {
+        color: var(--color-text-description);
+    }
+    .name {
+        color: var(--color-text-primary);
+        flex: 1;
+    }
+    .link {
+        color: var(--color-text-hint);
+    }
+    .key {
+        color: var(--color-text-primary);
+    }
+    svg {
+        fill: var(--color-accent);
+        width: 1.2em;
+        height: 1.2em;
+    }
+
+    &:hover {
+        background-color: var(--color-surface-glass-secondary);
+    }
+}
