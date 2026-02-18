@@ -151,7 +151,7 @@ export default function Page() {
                 <>
                 <div className={styles.grid}>
                     {counterparties.map((counterparty: Counterparty) => (
-                        <CounterpartyCard key={counterparty.id} counterparty={counterparty} />
+                        <CounterpartyCard key={counterparty.id} counterparty={counterparty} className={styles.item} />
                     ))}
                 </div>
                 {pagination && pagination.pages > 1 && (

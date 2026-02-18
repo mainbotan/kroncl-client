@@ -20,7 +20,17 @@ import {
     CounterpartiesResponse,
     CreateCounterpartyRequest,
     UpdateCounterpartyRequest,
-    GetCounterpartiesParams
+    GetCounterpartiesParams,
+    // CREDITS
+    Credit,
+    CreditDetail,
+    CreditsResponse,
+    CreateCreditRequest,
+    UpdateCreditRequest,
+    GetCreditsParams,
+    PayCreditRequest,
+    CreditPaymentsResponse,
+    CreditPaymentsParams
 } from "./types";
 
 export const fmModule = (companyApi: CompanyApi) => ({
@@ -138,5 +148,50 @@ export const fmModule = (companyApi: CompanyApi) => ({
     
     async deactivateCounterparty(id: string) {
         return companyApi.post<Counterparty>(`/modules/fm/counterparties/${id}/deactivate`);
+    },
+
+    // --------
+    // CREDITS
+    // --------
+    
+    async getCredits(
+        params?: GetCreditsParams
+    ) {
+        return companyApi.get<CreditsResponse>("/modules/fm/credits", {
+            params: params as Record<string, string | number | boolean | undefined>
+        });
+    },
+    
+    async getCredit(id: string) {
+        return companyApi.get<CreditDetail>(`/modules/fm/credits/${id}`);
+    },
+    
+    async createCredit(data: CreateCreditRequest) {
+        return companyApi.post<CreditDetail>("/modules/fm/credits", data);
+    },
+    
+    async updateCredit(id: string, data: UpdateCreditRequest) {
+        return companyApi.patch<CreditDetail>(`/modules/fm/credits/${id}`, data);
+    },
+    
+    async activateCredit(id: string) {
+        return companyApi.post<CreditDetail>(`/modules/fm/credits/${id}/activate`);
+    },
+    
+    async deactivateCredit(id: string) {
+        return companyApi.post<CreditDetail>(`/modules/fm/credits/${id}/deactivate`);
+    },
+    
+    async payCredit(id: string, data: PayCreditRequest) {
+        return companyApi.post<TransactionDetail>(`/modules/fm/credits/${id}/pay`, data);
+    },
+    
+    async getCreditTransactions(
+        id: string,
+        params?: CreditPaymentsParams
+    ) {
+        return companyApi.get<CreditPaymentsResponse>(`/modules/fm/credits/${id}/transactions`, {
+            params: params as Record<string, string | number | boolean | undefined>
+        });
     }
 });

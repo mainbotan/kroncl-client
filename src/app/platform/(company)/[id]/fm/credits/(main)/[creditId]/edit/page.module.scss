@@ -1,0 +1,13 @@
+.counterpartyBlock {
+    font-size: 1.4em;
+}
+.dateRow {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+
+    .start_date, .end_date {
+        flex: 1;
+        max-width: 10rem;
+    }
+}

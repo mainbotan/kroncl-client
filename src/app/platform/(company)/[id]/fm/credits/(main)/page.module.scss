@@ -2,5 +2,11 @@
 
 .grid {
     display: flex;
-    border: 1px solid var(--color-red);
+    flex-flow: column nowrap;
+    padding: 0em 0;
+    gap: 1em;
+
+    .item {
+        border-bottom: 1px solid var(--color-stroke-secondary);
+    }
 }

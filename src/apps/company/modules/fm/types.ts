@@ -178,3 +178,90 @@ export interface CounterpartiesResponse {
     counterparties: Counterparty[];
     pagination: PaginationMeta;
 }
+
+// --------
+// CREDITS
+// --------
+
+export type CreditType = 'debt' | 'credit';
+export type CreditStatus = 'active' | 'closed';
+
+export interface Credit {
+    id: string;
+    name: string;
+    comment: string | null;
+    type: CreditType;
+    status: CreditStatus;
+    total_amount: number;
+    currency: CurrencyType;
+    interest_rate: number;
+    start_date: string;
+    end_date: string;
+    metadata: Record<string, any> | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface CreditDetail extends Credit {
+    counterparty: Counterparty;
+}
+
+export interface CreateCreditRequest {
+    name: string;
+    type: CreditType;
+    total_amount: number;
+    currency: CurrencyType;
+    interest_rate: number;
+    start_date: string;
+    end_date: string;
+    counterparty_id: string;
+    comment?: string;
+    metadata?: Record<string, any>;
+}
+
+export interface UpdateCreditRequest {
+    name?: string;
+    comment?: string | null;
+    type?: CreditType;
+    total_amount?: number;
+    currency?: CurrencyType;
+    interest_rate?: number;
+    start_date?: string;
+    end_date?: string;
+    counterparty_id?: string;
+    metadata?: Record<string, any>;
+}
+
+export interface GetCreditsParams {
+    page?: number;
+    limit?: number;
+    type?: CreditType;
+    status?: CreditStatus;
+    search?: string;
+}
+
+export interface CreditsResponse {
+    credits: CreditDetail[];
+    pagination: PaginationMeta;
+}
+
+// --------
+// CREDIT PAYMENTS
+// --------
+
+export interface PayCreditRequest {
+    employee_id: string;
+    amount: number;
+    paid_at: string;
+    comment?: string;
+}
+
+export interface CreditPaymentsParams {
+    page?: number;
+    limit?: number;
+}
+
+export interface CreditPaymentsResponse {
+    transactions: TransactionDetail[];
+    pagination: PaginationMeta;
+}
