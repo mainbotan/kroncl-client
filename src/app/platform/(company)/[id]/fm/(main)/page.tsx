@@ -45,10 +45,6 @@ export default function Page() {
     const [summaryLoading, setSummaryLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        loadData();
-        loadSummary();
-    }, [searchParams]);
 
     const loadData = async () => {
         setLoading(true);
@@ -109,6 +105,11 @@ export default function Page() {
             setSummaryLoading(false);
         }
     };
+    
+    useEffect(() => {
+        loadData();
+        loadSummary();
+    }, [searchParams]);
 
     // Получаем реальную высоту транзакции
     useEffect(() => {
