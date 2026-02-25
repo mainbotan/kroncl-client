@@ -8,6 +8,8 @@ import { notFound } from "next/navigation";
 import { companiesApiSSR } from "@/apps/account/companies/api-ssr";
 import { PlatformContentWrapper } from "../../components/lib/wrapper/wrapper";
 import { CompanyStorageWidget } from "./storage/widget/widget";
+import { ModalPageProvider } from "../../components/lib/modal-page/context";
+import { PlatformModalPage } from "../../components/lib/modal-page/modal";
 
 export interface CompanyLayoutProps extends CompanyParams {
   children: React.ReactNode;
@@ -55,14 +57,9 @@ export default async function CompanyLayout({
       icon: 'wallet'
     },
     {
-      name: 'Услуги',
-      href: `/platform/${companyId}/sm`,
-      icon: 'services'
-    },
-    {
-      name: 'Склад',
-      href: `/platform/${companyId}/wm`,
-      icon: 'warehouse'
+      name: 'Каталог',
+      href: `/platform/${companyId}/cm`,
+      icon: 'catalog'
     },
     {
       name: 'Логистика',
@@ -113,7 +110,10 @@ export default async function CompanyLayout({
         <PlatformContentWrapper>
           <AuthGuard>
             <CompanyProvider company={company}>
-              {children}
+              <ModalPageProvider>
+                {children}
+                <PlatformModalPage />
+              </ModalPageProvider>
             </CompanyProvider>
           </AuthGuard>
         </PlatformContentWrapper>

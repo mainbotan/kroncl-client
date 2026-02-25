@@ -15,7 +15,7 @@ export default function PlatformContent({
     return (
         <div className={clsx(styles.content, className)}>
             <Breadcrumbs />
-            <div className={styles.area}>
+            <div className={styles.area} data-area="true">
                 {children}
             </div>
         </div>

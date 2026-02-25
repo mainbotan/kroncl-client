@@ -1,0 +1,86 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.client {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1em;
+    min-height: 3em;
+    align-items: center;
+
+    .icon {
+        display: inline-flex;
+        width: 2.6em;
+        min-width: 2.6em;
+        border-radius: 50%;
+        height: 2.6em;
+        font-size: .9em;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--color-text-primary);
+        border: 1px solid var(--color-stroke-secondary);
+        background-color: var(--color-surface-light);
+    }
+
+    .info {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .5em;
+        flex: 1;
+        
+        .name {
+            display: flex;
+            flex-flow: row wrap;
+            gap: .6em;
+            color: var(--color-text-primary);
+            font-weight: 600;
+            letter-spacing: .02em;
+            font-size: .94em;
+
+            .contact {
+                color: var(--color-text-description);
+                @include cursor(pointer);
+            }
+        }
+        .description {
+            font-size: .7em;
+            color: var(--color-text-secondary);
+        }
+
+        .tags {
+            display: flex;
+            flex-flow: row wrap;
+            gap: .6em;
+            font-size: .7em;
+            color: var(--color-text-primary);
+
+            .tag {
+                padding: .2em .4em;
+                border-radius: 2em;
+                background-color: var(--color-surface-light);
+                @include cursor(pointer);
+
+                &.accent {
+                    background-color: var(--color-accent);
+                    color: var(--color-accent-text-primary);
+                }
+            }
+        }
+    }
+    
+    .actions {
+        display: flex;
+        flex-flow: row wrap;
+        gap: .7em;
+        font-size: .9em;
+
+        .action {
+            border-radius: 2em;
+            transition: transform var(--transition);
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+}

@@ -1,0 +1,40 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.page {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 70%;
+    background-color: var(--color-leader);
+    border-left: 1px solid var(--color-stroke-secondary);
+    overflow-y: auto;
+    z-index: 200;
+
+    .close {
+        display: inline-flex;
+        width: 2.4em;
+        height: 2.4em;
+        border-radius: 50%;
+        background-color: var(--color-surface-glass-secondary);
+        position: absolute;
+        left: calc(100% - 3.4em);
+        top: 1em;
+        z-index: 201;
+        @include cursor(pointer);
+        transition: transform var(--transition);
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            fill: var(--color-icon-primary);
+            width: 1.24em;
+            height: 1.24em;
+        }
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+}

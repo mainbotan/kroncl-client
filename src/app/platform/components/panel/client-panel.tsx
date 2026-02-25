@@ -50,7 +50,7 @@ const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
   'clients': Clients,
   'wallet': Wallet,
   'team': Team,
-  'services': TwoCards,
+  'catalog': TwoCards,
   'warehouse': Warehouse,
   'logistic': Branching,
   'deals': Kanban,
