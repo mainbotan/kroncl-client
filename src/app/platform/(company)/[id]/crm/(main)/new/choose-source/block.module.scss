@@ -1,0 +1,11 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+}
+.loading, .empty {
+    font-size: .9em;
+    color: var(--color-text-description);
+}

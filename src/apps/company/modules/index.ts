@@ -1,4 +1,5 @@
 import { accountsModule } from "./accounts/api";
+import { crmModule } from "./crm/api";
 import { fmModule } from "./fm/api";
 import { useCompanyModule } from "./hooks/useModule";
 import { hrmModule } from "./hrm/api";
@@ -10,3 +11,4 @@ export const useAccounts = () => useCompanyModule(accountsModule);
 export const useHrm = () => useCompanyModule(hrmModule);
 export const useFm = () => useCompanyModule(fmModule);
 export const useLogs = () => useCompanyModule(logsModule);
+export const useCrm = () => useCompanyModule(crmModule);

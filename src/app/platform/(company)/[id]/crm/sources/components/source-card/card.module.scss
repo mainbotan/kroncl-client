@@ -1,0 +1,63 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.card {
+    display: flex;
+    width: 13em;
+    min-height: 8em;
+    border-radius: .7em;
+    background-color: var(--color-surface-glass);
+    border: 1px solid var(--color-stroke-secondary);
+    padding: 1em;
+    flex-flow: column nowrap;
+    gap: 1em;
+    transition: background-color var(--transition);
+    @include cursor(pointer);
+    
+    .info {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .2em;
+
+        .name {
+            font-weight: 600;
+            line-height: 1.2;
+            @include lines-ellipsis(2);
+            color: var(--color-text-primary);
+            letter-spacing: .02em;
+        }
+        .comment {
+            font-size: .7em;
+            color: var(--color-text-secondary);
+            line-height: 1.2;
+        }
+        .tags {
+            display: flex;
+            flex-flow: row wrap;
+            gap: .5em;
+            margin-top: .3em;
+            font-size: .7em;
+
+            .tag {
+                display: inline-block;
+                @include text-ellipsis();
+                width: fit-content;
+                padding: .4em .6em;
+                background-color: var(--color-surface-light);
+                border-radius: 1em;
+                
+                &.accent {
+                    background-color: var(--color-accent);
+                    color: var(--color-accent-text-primary);
+                }
+            }
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-elevated);
+    }
+    &.selected {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 1px var(--color-accent);
+    }
+}

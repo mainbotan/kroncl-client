@@ -1,0 +1,17 @@
+.currentSource {
+    font-size: 0.9rem;
+    color: var(--color-text-description);
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: var(--color-background-secondary);
+    border-radius: 0.5rem;
+
+    .sourceName {
+        color: var(--color-text-primary);
+        font-weight: 500;
+    }
+}
+
+.sourceBlock {
+    margin-top: 0.5rem;
+}
