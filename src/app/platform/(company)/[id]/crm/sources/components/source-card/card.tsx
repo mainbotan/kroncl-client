@@ -78,7 +78,7 @@ export function SourceCard({
     }
 
     return (
-        <Link href={`/platform/${companyId}/crm/sources/${source.id}`} className={styles.card}>
+        <Link href={`/platform/${companyId}/crm/sources/${source.id}`} className={clsx(styles.card, isSelected && styles.selected)}>
             {cardContent}
         </Link>
     );

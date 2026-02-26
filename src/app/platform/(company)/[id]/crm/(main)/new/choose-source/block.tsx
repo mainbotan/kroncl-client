@@ -73,15 +73,18 @@ export function ChooseSourceBlock({
 
     return (
         <div className={clsx(styles.grid, className)}>
-            {sources.map((source) => (
-                <SourceCard 
-                    key={source.id} 
-                    source={source}
-                    selectable
-                    isSelected={selectedId === source.id}
-                    onSelect={handleSelect}
-                />
-            ))}
+            {sources.map((source) => {
+                // console.log('Source:', source.id, 'Selected:', selectedId, 'Is selected:', selectedId === source.id);
+                return (
+                    <SourceCard 
+                        key={source.id} 
+                        source={source}
+                        selectable
+                        isSelected={selectedId === source.id}
+                        onSelect={handleSelect}
+                    />
+                )
+            })}
         </div>
     );
 }

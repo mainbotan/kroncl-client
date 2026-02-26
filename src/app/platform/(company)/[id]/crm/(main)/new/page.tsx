@@ -284,6 +284,7 @@ export default function Page() {
                         className={styles.sourceBlock}
                         onSelect={handleSourceSelect}
                         disabled={isLoading}
+                        selectedId={formData.source?.id}
                     />
                     {sourceStatus !== 'idle' && (
                         <PlatformFormStatus
