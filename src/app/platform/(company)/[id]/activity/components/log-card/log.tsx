@@ -61,11 +61,14 @@ export function LogCard({ log, className }: LogCardProps) {
                     
                     {log.metadata && (
                         <>
-                            {log.metadata.filters && (
-                                <div className={styles.group}>
-                                    <div className={styles.capture}>Фильтры</div>
-                                    {Object.entries(log.metadata.filters).map(([key, value]) => (
-                                        <section key={key} className={clsx(styles.section, styles.stroke)}>
+                            {/* Сначала отображаем все простые поля metadata (не объекты) */}
+                            {Object.entries(log.metadata)
+                                .filter(([_, value]) => 
+                                    typeof value !== 'object' || value === null
+                                )
+                                .map(([key, value]) => (
+                                    <div key={key} className={styles.group}>
+                                        <section className={clsx(styles.section, styles.stroke)}>
                                             <div className={styles.key}>{key}</div>
                                             <div className={styles.value}>
                                                 {value === null || value === undefined 
@@ -74,30 +77,30 @@ export function LogCard({ log, className }: LogCardProps) {
                                                 }
                                             </div>
                                         </section>
-                                    ))}
-                                </div>
-                            )}
+                                    </div>
+                                ))}
                             
-                            {log.metadata.pagination && (
-                                <div className={styles.group}>
-                                    <div className={styles.capture}>Пагинация</div>
-                                    {Object.entries(log.metadata.pagination).map(([key, value]) => (
-                                        <section key={key} className={clsx(styles.section, styles.stroke)}>
-                                            <div className={styles.key}>{key}</div>
-                                            <div className={styles.value}>{String(value)}</div>
-                                        </section>
-                                    ))}
-                                </div>
-                            )}
-                            
-                            {log.metadata.result_count !== undefined && (
-                                <div className={styles.group}>
-                                    <section className={clsx(styles.section, styles.stroke)}>
-                                        <div className={styles.key}>result_count</div>
-                                        <div className={styles.value}>{log.metadata.result_count}</div>
-                                    </section>
-                                </div>
-                            )}
+                            {/* Потом отображаем объекты (filters, pagination и т.д.) */}
+                            {Object.entries(log.metadata)
+                                .filter(([_, value]) => 
+                                    typeof value === 'object' && value !== null
+                                )
+                                .map(([key, value]) => (
+                                    <div key={key} className={styles.group}>
+                                        <div className={styles.capture}>{key}</div>
+                                        {Object.entries(value).map(([subKey, subValue]) => (
+                                            <section key={subKey} className={clsx(styles.section, styles.stroke)}>
+                                                <div className={styles.key}>{subKey}</div>
+                                                <div className={styles.value}>
+                                                    {subValue === null || subValue === undefined 
+                                                        ? 'не указано' 
+                                                        : String(subValue)
+                                                    }
+                                                </div>
+                                            </section>
+                                        ))}
+                                    </div>
+                                ))}
                         </>
                     )}
                 </div>
