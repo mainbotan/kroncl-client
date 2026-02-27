@@ -14,6 +14,9 @@ import { PlatformModalConfirmation } from "@/app/platform/components/lib/modal/c
 import { useMessage } from "@/app/platform/components/lib/message/provider";
 import { motion } from 'framer-motion';
 import { getFullName, getClientTypeLabel } from "./_utils";
+import styles from './page.module.scss';
+import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormUnify } from "@/app/platform/components/lib/form";
+import { formatPhoneNumber } from "@/assets/utils/phone-utils";
 
 export default function Page() {
     const params = useParams();
@@ -167,6 +170,8 @@ export default function Page() {
     const fullName = getFullName(client);
     const isActive = client.status === 'active';
     const typeLabel = getClientTypeLabel(client.type);
+    const displayPhone = client.phone ? formatPhoneNumber(client.phone) : null;
+    const displayEmail = client.email || null;
 
     const actions = [
         {
@@ -201,6 +206,43 @@ export default function Page() {
                 description={`Карточка клиента. Создан ${formatDate(client.created_at)} Статус: ${isActive ? 'активен' : 'неактивен'}.`}
                 actions={actions}
             />
+
+            <div className={styles.body}>
+                <section className={styles.section}>
+                    <div className={styles.capture}>Обращаться</div>
+                    <div className={styles.value}>{fullName}</div>
+                </section>
+                {client.phone && (
+                <section className={styles.section}>
+                    <div className={styles.capture}>Рабочий номер</div>
+                    <div className={styles.value}>{displayPhone}</div>
+                </section>
+                )}
+                {client.email && (
+                <section className={styles.section}>
+                    <div className={styles.capture}>Рабочая почта</div>
+                    <div className={styles.value}>{displayEmail}</div>
+                </section>
+                )}
+                {typeLabel && (
+                <section className={styles.section}>
+                    <div className={styles.capture}>Тип</div>
+                    <div className={styles.value}>{typeLabel}</div>
+                </section>
+                )}
+                {client.comment && (
+                <section className={styles.section}>
+                    <div className={styles.capture}>Комментарий</div>
+                    <div className={styles.value}>{client.comment}</div>
+                </section>
+                )}
+                {client.created_at && (
+                <section className={styles.section}>
+                    <div className={styles.capture}>Создан</div>
+                    <div className={styles.value}>{formatDate(client.created_at)}</div>
+                </section>
+                )}
+            </div>
 
             {/* modal deactivate */}
             <PlatformModal

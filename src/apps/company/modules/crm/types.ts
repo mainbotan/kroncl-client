@@ -34,7 +34,7 @@ export interface CreateClientRequest {
     email?: string | null;
     comment?: string | null;
     type: ClientType;
-    status?: ClientStatus;  // defaults to active
+    status?: ClientStatus;
     source_id: string;
     metadata?: Record<string, any>;
 }
@@ -58,6 +58,7 @@ export interface GetClientsParams {
     type?: ClientType;
     status?: ClientStatus;
     search?: string;
+    sourceId?: string;
 }
 
 export interface ClientsResponse {

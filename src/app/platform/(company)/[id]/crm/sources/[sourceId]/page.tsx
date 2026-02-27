@@ -7,15 +7,19 @@ import Edit from "@/assets/ui-kit/icons/edit";
 import Exit from "@/assets/ui-kit/icons/exit";
 import Spinner from "@/assets/ui-kit/spinner/spinner";
 import { formatDate } from "@/assets/utils/date";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Button from "@/assets/ui-kit/button/button";
-import Question from "@/assets/ui-kit/icons/question";
 import { PlatformModal } from "@/app/platform/components/lib/modal/modal";
 import { PlatformModalConfirmation } from "@/app/platform/components/lib/modal/confirmation/confirmation";
 import { useMessage } from "@/app/platform/components/lib/message/provider";
 import { motion } from 'framer-motion';
 import { getSourceTypeLabel } from "./_utils";
+import styles from './page.module.scss';
+import { ClientCard } from "../../components/client-card/card";
+import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
+import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
+import { ClientsResponse, ClientDetail } from '@/apps/company/modules/crm/types';
+import { sectionsList } from "../_sections";
 
 export default function Page() {
     const params = useParams();
@@ -23,13 +27,36 @@ export default function Page() {
     const sourceId = params.sourceId as string;
     const crmModule = useCrm();
     const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { showMessage } = useMessage();
+    const { handlePageChange } = usePagination({
+        baseUrl: pathname,
+        defaultLimit: 20
+    });
 
     const [source, setSource] = useState<ClientSource | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isModalDeactivateOpen, setIsModalDeactivateOpen] = useState(false);
     const [isModalActivateOpen, setIsModalActivateOpen] = useState(false);
+    
+    // данные клиентов
+    const [clientsData, setClientsData] = useState<ClientsResponse | null>(null);
+    const [clientsLoading, setClientsLoading] = useState(true);
+
+    const handleSearch = (searchValue: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        
+        if (searchValue.trim()) {
+            params.set('search', searchValue);
+            params.set('page', '1');
+        } else {
+            params.delete('search');
+        }
+        
+        router.push(`${pathname}?${params.toString()}`);
+    };
 
     // загрузка данных источника
     useEffect(() => {
@@ -68,6 +95,41 @@ export default function Page() {
             isMounted = false;
         };
     }, [sourceId]);
+
+    // загрузка клиентов источника
+    useEffect(() => {
+        const loadClients = async () => {
+            if (!sourceId) return;
+            
+            setClientsLoading(true);
+            try {
+                const page = parseInt(searchParams.get('page') || '1');
+                const limit = parseInt(searchParams.get('limit') || '20');
+                const search = searchParams.get('search') || undefined;
+                const type = searchParams.get('type') as any;
+                const status = searchParams.get('status') as any;
+
+                const response = await crmModule.getClients({
+                    page,
+                    limit,
+                    search,
+                    type,
+                    status,
+                    sourceId    // привязываемся к источнику
+                });
+                
+                if (response.status) {
+                    setClientsData(response.data);
+                }
+            } catch (err) {
+                console.error('Error loading clients:', err);
+            } finally {
+                setClientsLoading(false);
+            }
+        };
+
+        loadClients();
+    }, [sourceId, searchParams]);
 
     const handleDeactivate = async () => {
         try {
@@ -169,14 +231,6 @@ export default function Page() {
     const isActive = source.status === 'active';
     const typeLabel = getSourceTypeLabel(source.type);
 
-    const widgets = [
-        { value: source.name, legend: "Название источника", variant: "accent" as const },
-        ...(source.url ? [{ value: source.url, legend: "URL", variant: "default" as const }] : []),
-        ...(source.comment ? [{ value: source.comment, legend: "Комментарий", variant: "default" as const }] : []),
-        { value: typeLabel, legend: "Тип источника", variant: "default" as const },
-        ...(source.system ? [{ value: "Да", legend: "Системный источник", variant: "default" as const }] : [])
-    ];
-
     const actions = [
         {
             children: 'Редактировать',
@@ -203,13 +257,74 @@ export default function Page() {
         });
     }
 
+    const clients = clientsData?.clients || [];
+    const pagination = clientsData?.pagination;
+
+    const queryParams: Record<string, string> = {};
+    const limitParam = searchParams.get('limit');
+    if (limitParam) queryParams.limit = limitParam;
+    const searchParam = searchParams.get('search');
+    if (searchParam) queryParams.search = searchParam;
+    const typeParam = searchParams.get('type');
+    if (typeParam) queryParams.type = typeParam;
+    const statusParam = searchParams.get('status');
+    if (statusParam) queryParams.status = statusParam;
+
     return (
         <>
             <PlatformHead
                 title={source.name}
                 description={`Источник трафика. Создан ${formatDate(source.created_at)} Статус: ${isActive ? 'активен' : 'неактивен'}.`}
                 actions={actions}
+                searchProps={{
+                    placeholder: 'Поиск по клиентам источника',
+                    defaultValue: searchParams.get('search') || '',
+                    onSearch: handleSearch
+                }}
+                showSearch
             />
+
+            {clientsLoading ? (
+                <div style={{
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    fontSize: ".7em", 
+                    color: "var(--color-text-description)", 
+                    minHeight: "10rem"
+                }}>
+                    <Spinner />
+                </div>
+            ) : clients.length === 0 ? (
+                <div style={{
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    fontSize: ".7em", 
+                    color: "var(--color-text-description)", 
+                    minHeight: "10rem"
+                }}>
+                    Источник пока не привлёк ни одного клиента
+                </div>
+            ) : (
+                <>
+                    <div className={styles.grid}>
+                        {clients.map((client: ClientDetail) => (
+                            <ClientCard key={client.id} client={client} />
+                        ))}
+                    </div>
+                    {pagination && pagination.pages > 1 && (
+                        <div className={styles.pagination}>
+                            <PlatformPagination
+                                meta={pagination}
+                                baseUrl={pathname}
+                                queryParams={queryParams}
+                                onPageChange={(page) => handlePageChange(page)}
+                            />
+                        </div>
+                    )}
+                </>
+            )}
 
             {/* modal deactivate */}
             <PlatformModal

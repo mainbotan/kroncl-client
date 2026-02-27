@@ -11,6 +11,7 @@ import { getGradientFromString } from '@/assets/utils/avatars';
 import { formatDate } from '@/assets/utils/date';
 import { formatPhoneNumber } from '@/assets/utils/phone-utils';
 import Button from '@/assets/ui-kit/button/button';
+import { useMessage } from '@/app/platform/components/lib/message/provider';
 
 interface ClientCardProps {
     client: ClientDetail;
@@ -27,6 +28,7 @@ export function ClientCard({
 }: ClientCardProps) {
     const params = useParams();
     const companyId = params.id as string;
+    const { showMessage } = useMessage();
 
     const fullName = getFullName(client);
     const initials = getInitials(client);
@@ -35,6 +37,21 @@ export function ClientCard({
     const displayPhone = client.phone ? formatPhoneNumber(client.phone) : null;
     const displayEmail = client.email || null;
     const createdDate = formatDate(client.created_at);
+
+    const handleCopy = async (text: string, type: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            showMessage({
+                label: `${type} скопирован`,
+                variant: 'success'
+            });
+        } catch {
+            showMessage({
+                label: `Не удалось скопировать ${type.toLowerCase()}`,
+                variant: 'error'
+            });
+        }
+    };
 
     const handleClick = (e: React.MouseEvent) => {
         if (selectable && onSelect) {
@@ -52,10 +69,32 @@ export function ClientCard({
                 <div className={styles.name}>
                     <span>{fullName}</span>
                     {displayPhone && (
-                        <span className={styles.contact}>{displayPhone}</span>
+                        <ModalTooltip content='Нажмите, чтобы скопировать телефон'>
+                            <span 
+                                className={styles.contact}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleCopy(client.phone!, 'Телефон');
+                                }}
+                            >
+                                {displayPhone}
+                            </span>
+                        </ModalTooltip>
                     )}
                     {displayEmail && !displayPhone && (
-                        <span className={styles.contact}>{displayEmail}</span>
+                        <ModalTooltip content='Нажмите, чтобы скопировать email'>
+                            <span 
+                                className={styles.contact}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    handleCopy(client.email!, 'Email');
+                                }}
+                            >
+                                {displayEmail}
+                            </span>
+                        </ModalTooltip>
                     )}
                 </div>
                 <div className={styles.tags}>

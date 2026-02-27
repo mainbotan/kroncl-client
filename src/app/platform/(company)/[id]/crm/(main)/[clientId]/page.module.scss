@@ -1,0 +1,25 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.body {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .2em;
+
+    .section {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .5em;
+        font-size: .86em;
+        padding: .7em 0;
+        border-bottom: 1px solid var(--color-stroke-secondary);
+
+        .capture {
+            font-weight: 600;
+            letter-spacing: .02em;
+            color: var(--color-text-description);
+        }
+        .value {
+            color: var(--color-text-primary);
+        }
+    }
+}

@@ -63,9 +63,14 @@
                 white-space: nowrap;
                 @include text-ellipsis();
                 width: fit-content;
+                max-width: 14em;
 
                 &.accent {
                     background-color: var(--color-accent);
+                    color: var(--color-accent-text-primary);
+                }
+                &.inactive {
+                    background-color: var(--color-red);
                     color: var(--color-accent-text-primary);
                 }
             }

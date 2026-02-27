@@ -122,7 +122,7 @@ export function TransactionCard({
                         className={styles.action} 
                         variant='accent'
                     >
-                        Сторно
+                        Отменить
                     </Button>
                 </ModalTooltip>
             </div>

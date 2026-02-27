@@ -56,8 +56,17 @@ export const crmModule = (companyApi: CompanyApi) => ({
     async getClients(
         params?: GetClientsParams
     ) {
+        const queryParams: Record<string, string | number | boolean | undefined> = {
+            ...params
+        };
+        
+        // Если есть sourceId, добавляем его в запрос
+        if (params?.sourceId) {
+            queryParams.source_id = params.sourceId;
+        }
+        
         return companyApi.get<ClientsResponse>("/modules/crm/clients", {
-            params: params as Record<string, string | number | boolean | undefined>
+            params: queryParams
         });
     },
     
