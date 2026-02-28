@@ -1,0 +1,38 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.control {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    font-size: .7em;
+    justify-content: start;
+    margin-bottom: 1.5em;
+
+    .input {
+        flex: .5;
+    }
+    .action {
+        flex: 1;
+    }
+
+    .input, .action {
+        max-width: 13em;
+    }
+
+    @media (max-width: 720px) {
+        flex-flow: row wrap;
+
+        .input {
+            width: 40%;
+            flex: .5;
+        }
+        .action {
+            width: 100%;
+            flex: 1;
+            min-width: 100%;
+        }
+        .input, .action {
+            min-height: 2.8em;
+        }
+    }
+}

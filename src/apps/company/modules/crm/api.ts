@@ -14,6 +14,11 @@ import {
     CreateSourceRequest,
     UpdateSourceRequest,
     GetSourcesParams,
+    // Analysis
+    ClientsSummary,
+    GroupedClientsStats,
+    GetAnalysisParams,
+    GroupBy
 } from "./types";
 
 export const crmModule = (companyApi: CompanyApi) => ({
@@ -88,5 +93,40 @@ export const crmModule = (companyApi: CompanyApi) => ({
     
     async deactivateClient(id: string) {
         return companyApi.post<ClientDetail>(`/modules/crm/clients/${id}/deactivate`);
+    },
+
+    // --------
+    // ANALYSIS
+    // --------
+    
+    async getClientsSummary(
+        params?: GetAnalysisParams
+    ) {
+        const queryParams: Record<string, string | number | boolean | undefined> = {};
+        
+        if (params) {
+            if (params.start_date) queryParams.start_date = params.start_date;
+            if (params.end_date) queryParams.end_date = params.end_date;
+        }
+        
+        return companyApi.get<ClientsSummary>("/modules/crm/analysis/summary", {
+            params: queryParams
+        });
+    },
+    
+    async getGroupedClients(
+        params?: GetAnalysisParams & { group_by: GroupBy }
+    ) {
+        const queryParams: Record<string, string | number | boolean | undefined> = {};
+        
+        if (params) {
+            if (params.start_date) queryParams.start_date = params.start_date;
+            if (params.end_date) queryParams.end_date = params.end_date;
+            if (params.group_by) queryParams.group_by = params.group_by;
+        }
+        
+        return companyApi.get<GroupedClientsStats[]>("/modules/crm/analysis/grouped", {
+            params: queryParams
+        });
     }
 });

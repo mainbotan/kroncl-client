@@ -129,3 +129,30 @@ export interface ClientSourceLink {
     source_id: string;
     created_at: string;
 }
+
+// --------
+// ANALYSIS
+// --------
+
+export type GroupBy = 'source' | 'day' | 'month';
+
+export interface ClientsSummary {
+    total_clients: number;
+    active_clients: number;
+    inactive_clients: number;
+    individual_clients: number;
+    legal_clients: number;
+    new_clients: number;
+}
+
+export interface GroupedClientsStats {
+    group_key: string;      // source_id или дата
+    group_name: string;     // название источника или отформатированная дата
+    clients_count: number;
+}
+
+export interface GetAnalysisParams {
+    start_date?: string;
+    end_date?: string;
+    group_by?: GroupBy;
+}

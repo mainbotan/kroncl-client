@@ -15,7 +15,7 @@ export const sectionsList = (companyId: string): PlatformHeadSection[] => {
         },
         {
             label: 'Анализ',
-            href: `/platform/${companyId}/crm/analyse`,
+            href: `/platform/${companyId}/crm/analysis`,
             strongParams: true
         }
     ]);

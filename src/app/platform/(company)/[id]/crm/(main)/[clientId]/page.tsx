@@ -17,6 +17,9 @@ import { getFullName, getClientTypeLabel } from "./_utils";
 import styles from './page.module.scss';
 import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormUnify } from "@/app/platform/components/lib/form";
 import { formatPhoneNumber } from "@/assets/utils/phone-utils";
+import Link from "next/link";
+import clsx from "clsx";
+import { ModalTooltip } from "@/app/components/tooltip/tooltip";
 
 export default function Page() {
     const params = useParams();
@@ -234,6 +237,14 @@ export default function Page() {
                 <section className={styles.section}>
                     <div className={styles.capture}>Комментарий</div>
                     <div className={styles.value}>{client.comment}</div>
+                </section>
+                )}
+                {client.source && (
+                <section className={styles.section}>
+                    <div className={styles.capture}>Источник привлечения</div>
+                    <ModalTooltip content={`Источник привлечения клиента - ${client.source.name}. ${client.source.comment}`}>
+                        <Link href={`/platform/${companyId}/crm/sources/${client.source.id}`} className={clsx(styles.value, styles.link)}>{client.source.name}</Link>
+                    </ModalTooltip>
                 </section>
                 )}
                 {client.created_at && (

@@ -12,6 +12,7 @@
         font-size: .86em;
         padding: .7em 0;
         border-bottom: 1px solid var(--color-stroke-secondary);
+        align-items: start;
 
         .capture {
             font-weight: 600;
@@ -20,6 +21,10 @@
         }
         .value {
             color: var(--color-text-primary);
+
+            &.link {
+                color: var(--color-text-hint);
+            }
         }
     }
 }
