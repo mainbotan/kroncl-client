@@ -106,6 +106,37 @@ export class AccountAuth {
         } : {};
     }
 
+    /**
+     * Вход по ключу (fingerprint)
+     */
+    async loginWithKey(key: string): Promise<ApiResponse<LoginResponse>> {
+        const response = await api.post<LoginResponse>('/account/fingerprints/auth', { 
+            key: key 
+        });
+        
+        if (response.status && response.data.access_token) {
+            // Сохраняем в localStorage
+            AuthStorage.setAuthData(
+                {
+                    access_token: response.data.access_token,
+                    refresh_token: response.data.refresh_token,
+                },
+                response.data.user
+            );
+            
+            // Устанавливаем токен
+            this.setToken(response.data.access_token);
+            
+            // Устанавливаем cookie для middleware
+            if (typeof window !== 'undefined') {
+                document.cookie = `auth_access_token=${response.data.access_token}; path=/; max-age=${60 * 60 * 24}; SameSite=Lax`;
+                document.cookie = `auth_refresh_token=${response.data.refresh_token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+            }
+        }
+        
+        return response;
+    }
+
     async login(credentials: LoginRequest): Promise<ApiResponse<LoginResponse>> {
         const response = await api.post<LoginResponse>(this.endpoints.login, credentials);
         

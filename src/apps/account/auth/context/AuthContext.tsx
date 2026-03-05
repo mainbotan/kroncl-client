@@ -13,6 +13,7 @@ interface AuthContextType {
     user: Account | null;
     status: AuthStatus;
     login: (email: string, password: string) => Promise<boolean>;
+    loginWithKey: (key: string) => Promise<boolean>;
     register: (email: string, password: string, name: string) => Promise<{success: boolean, message?: string}>;
     confirmEmail: (token: string) => Promise<boolean>;
     resendConfirmation: (email: string) => Promise<boolean>;
@@ -121,6 +122,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Удаляем cookies
             document.cookie = 'auth_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
             document.cookie = 'auth_refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        }
+    };
+
+    const loginWithKey = async (key: string): Promise<boolean> => {
+        try {
+            const response = await accountAuth.loginWithKey(key);
+            
+            if (response.status) {
+                setUser(response.data.user);
+                setStatus('authenticated');
+                return true;
+            }
+            
+            setStatus('unauthenticated');
+            return false;
+        } catch (error) {
+            setStatus('unauthenticated');
+            return false;
         }
     };
 
@@ -292,6 +311,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         resendConfirmation,
         logout: () => logout(false),
         logoutLocal: () => logout(true),
+        loginWithKey
     };
 
     return (

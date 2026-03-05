@@ -27,7 +27,9 @@ export const breadcrumbDictionary: Record<string, string> = {
     'crm': 'Клиентская база',
     'cm': 'Каталог',
     'sources': 'Ресурсы',
-    'analysis': 'Анализ'
+    'analysis': 'Анализ',
+    'security': 'Безопасность',
+    'create-fingerprint': 'Создание ключа'
 };
 
 export function getBreadcrumbName(pathSegment: string): string {

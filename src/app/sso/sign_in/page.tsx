@@ -237,7 +237,7 @@ export default function LoginPage() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
-                        <Link href='/sso/otl'><Button 
+                        <Link href='/sso/fingerprint'><Button 
                             className={styles.action} 
                             variant='glass'
                             disabled={isLoadingForm}

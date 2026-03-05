@@ -1,0 +1,93 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.token {
+    display: flex;
+    flex-flow: column nowrap;
+    transition: background-color var(--transition);
+
+    &.open {
+        background-color: var(--color-surface-tertiary);
+    }
+}
+
+.base {
+    display: flex;
+    height: 3.3em;
+    padding: 0 1em;
+    @include cursor(pointer);
+    flex-flow: row nowrap;
+    gap: 1em;
+    overflow: hidden;
+    align-items: center;
+    transition: background-color var(--transition);
+
+    .indicator {
+        display: inline-flex;
+        min-width: .5em;
+        width: .5em;
+        height: .5em;
+        border-radius: 50%;
+
+        &.green {
+            background-color: var(--color-green);
+        }
+        &.red {
+            background-color: var(--color-red);
+        }
+    }
+    .section {
+        display: inline-flex;
+        @include text-ellipsis();
+        width: fit-content;
+        
+        &.secondary {
+            color: var(--color-text-description);
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-tertiary);
+    }
+}
+
+.details {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    padding: 1em 1em;
+
+    .group {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 1em;
+        width: calc(50% - 2em);
+
+        .section {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: .4em;
+            overflow: hidden;
+
+            .key {
+                color: var(--color-text-description);
+                @include text-ellipsis();
+            }
+            .value {
+                color: var(--color-text-primary);
+                @include text-ellipsis();
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        width: 100%;
+        justify-content: end;
+        flex-flow: row wrap;
+        gap: 1em;
+
+        .action {
+            border-radius: 2em;
+        }
+    }
+}

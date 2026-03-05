@@ -1,0 +1,36 @@
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.modal {
+    display: flex;
+    flex-flow: column;
+    gap: 1em;
+    padding: 1.2em;
+    max-width: 15rem;
+    min-width: 15rem;
+
+    .head {
+        font-size: 1.2em;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+    .value {
+        display: flex;
+    }
+    .display {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: .5em;
+
+        .action {
+            border-radius: 2em;
+            flex: 1;
+        }
+    }
+
+    @media (max-width: 720px) {
+        min-width: 100%;
+    }
+}

@@ -43,3 +43,17 @@ export interface UpdateProfileRequest {
     name?: string;
     avatar_url?: string;
 }
+
+// --------
+// FINGERPRINT
+// --------
+
+export interface FingerprintLoginRequest {
+    key: string;
+}
+
+export interface FingerprintLoginResponse {
+    access_token: string;
+    refresh_token: string;
+    user: Account;
+}

@@ -1,0 +1,17 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+    font-size: .8em;
+    // border-top: 1px solid var(--color-stroke-primary);
+
+    .item {
+        border-bottom: 1px solid var(--color-stroke-primary);
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
