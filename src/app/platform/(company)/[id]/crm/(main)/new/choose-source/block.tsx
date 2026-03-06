@@ -63,7 +63,7 @@ export function ChooseSourceBlock({
         );
     }
 
-    if (sources.length === 0) {
+    if (!sources || sources.length === 0) {
         return (
             <div className={clsx(styles.empty, className)}>
                 Нет активных источников для выбора
