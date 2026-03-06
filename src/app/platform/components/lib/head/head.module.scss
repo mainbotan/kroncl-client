@@ -41,7 +41,7 @@
             gap: .4rem;
 
             .action {
-                border-radius: 2em;
+                border-radius: .76em;
                 height: 3.2em;
                 
                 transition: transform var(--transition);
@@ -102,26 +102,27 @@
     }
 
     .sections {
-        font-size: .7em;
+        font-size: .73em;
         display: block;
         overflow-x: scroll;
         @include no-scrollbar();
-        // border-bottom: 1px solid var(--color-stroke-secondary);
+        border-bottom: 3px solid var(--color-stroke-secondary);
         overflow-y: visible;
 
         .grid {
             display: flex;
-            gap: 1em;
+            gap: 0;
             flex-flow: row nowrap;
             // border: 1px solid red;
 
             .section {
                 display: flex;
                 align-items: center;
-                padding: 0 .8em;
+                padding: 0 1.2em;
                 border: 2px solid transparent;
-                height: 2.6em;
-                border-radius: .7em;
+                height: 3em;
+                border-top-left-radius: .45em;
+                border-top-right-radius: .5em;
                 transition: color var(--transition), background-color var(--transition), border-color var(--transition);
                 @include cursor(pointer);
 
@@ -140,7 +141,7 @@
 
     .search {
         display: flex;
-        font-size: .7em;
+        font-size: .77em;
         padding: 1em 0;
         // background-color: var(--color-surface-elevated);
         flex-flow: row nowrap;
