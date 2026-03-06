@@ -10,6 +10,8 @@ import { PlatformContentWrapper } from "../../components/lib/wrapper/wrapper";
 import { CompanyStorageWidget } from "./storage/widget/widget";
 import { ModalPageProvider } from "../../components/lib/modal-page/context";
 import { PlatformModalPage } from "../../components/lib/modal-page/modal";
+import { PlatformSideContent } from "../../components/side-content/content";
+import { SideContentProvider } from "../../components/side-content/context";
 
 export interface CompanyLayoutProps extends CompanyParams {
   children: React.ReactNode;
@@ -58,7 +60,7 @@ export default async function CompanyLayout({
     },
     {
       name: 'Каталог',
-      href: `/platform/${companyId}/cm`,
+      href: `/platform/${companyId}/wm`,
       icon: 'catalog'
     },
     {
@@ -107,18 +109,21 @@ export default async function CompanyLayout({
         children={storageWidget}
         actions={actions}
       />
-      <PlatformContent>
-        <PlatformContentWrapper>
-          <AuthGuard>
-            <CompanyProvider company={company}>
-              <ModalPageProvider>
-                {children}
-                <PlatformModalPage />
-              </ModalPageProvider>
-            </CompanyProvider>
-          </AuthGuard>
-        </PlatformContentWrapper>
-      </PlatformContent>
+      <SideContentProvider>
+        <PlatformContent>
+          <PlatformContentWrapper>
+            <AuthGuard>
+              <CompanyProvider company={company}>
+                <ModalPageProvider> {/** not used yet */}
+                    {children}
+                  <PlatformModalPage />
+                </ModalPageProvider>
+              </CompanyProvider>
+            </AuthGuard>
+          </PlatformContentWrapper>
+        </PlatformContent>
+        <PlatformSideContent />
+      </SideContentProvider>
     </>
   );
 }

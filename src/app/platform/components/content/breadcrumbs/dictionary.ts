@@ -25,7 +25,7 @@ export const breadcrumbDictionary: Record<string, string> = {
     'counterparties': 'Контрагенты',
     'activity': 'Активность',
     'crm': 'Клиентская база',
-    'cm': 'Каталог',
+    'wm': 'Каталог & Склад',
     'sources': 'Ресурсы',
     'analysis': 'Анализ',
     'security': 'Безопасность',

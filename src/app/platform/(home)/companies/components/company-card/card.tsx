@@ -34,32 +34,30 @@ export function CompanyCard({ company, className = ''}: CompanyCardProps) {
     const dateTooltip = `Вы присоединились к компании ${formatDate(company.joined_at)}`;
 
     return (
-        <div className={clsx(styles.card, className)}>
+        <Link href={`/platform/${company.id}`} className={clsx(styles.card, className)}>
             <div className={styles.icon}>
                 {company.avatar_url ? (
-                    <Link href={`/platform/${company.id}`}
+                    <div
                         className={styles.avatar} 
                         style={{ 
                             backgroundImage: `url(${company.avatar_url})` 
                         }}
                     />
                 ) : (
-                    <Link href={`/platform/${company.id}`}
-                        className={styles.avatar}
+                    <div className={styles.avatar}
                         style={{ 
                             backgroundColor: avatarColor,
                             color: '#fff'
-                        }}
-                    >
+                        }}>
                         {firstLetter}
-                    </Link>
+                    </div>
                 )}
             </div>
             <div className={styles.info}>
                 <div className={styles.capture}>
-                    <Link href={`/platform/${company.id}`}>
+                    <div>
                         {company.name}
-                    </Link>
+                    </div>
                     <span className={styles.marks}>
                         <ModalTooltip
                             content={statusTooltip}
@@ -97,6 +95,6 @@ export function CompanyCard({ company, className = ''}: CompanyCardProps) {
                     </ModalTooltip>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
