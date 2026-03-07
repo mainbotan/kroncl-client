@@ -111,7 +111,7 @@ export default async function CompanyLayout({
           title={company.name} 
           children={storageWidget}
           actions={actions}
-          head={<PlatformCompanyPanelHead />}
+          // head={<PlatformCompanyPanelHead />}
         />
 
         <PlatformContent>
