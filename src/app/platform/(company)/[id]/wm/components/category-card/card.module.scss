@@ -2,7 +2,7 @@
 
 .card {
     display: flex;
-    background-color: var(--color-surface-secondary);
+    background-color: var(--color-surface-glass-secondary);
     border: 1px solid var(--color-stroke-secondary);
     border-radius: .6em;
     @include cursor(pointer);
@@ -62,7 +62,7 @@
     }
 
     &:hover {
-        background-color: var(--color-surface-glass-secondary);
+        background-color: var(--color-surface-elevated);
     }
 
     &.default {

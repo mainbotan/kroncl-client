@@ -6,27 +6,24 @@ import Button from "@/assets/ui-kit/button/button";
 import { useState, useEffect } from 'react';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { useWm } from '@/apps/company/modules';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
-import { ChooseCategoryModal } from "../../../../components/choose-category-modal/modal";
+import { ChooseCategoryModal } from "../../../components/choose-category-modal/modal";
 import { CatalogCategory, UnitType, InventoryType, TrackedType } from '@/apps/company/modules/wm/types';
 import styles from './page.module.scss';
-import { CategoryCard } from "../../../../components/category-card/card";
+import { CategoryCard } from "../../../components/category-card/card";
 import Spinner from '@/assets/ui-kit/spinner/spinner';
-import { _units } from "../../new/_units";
+import { _units } from "./_units";
 
-export default function EditUnitPage() {
-    const params = useParams();
-    const companyId = params.id as string;
-    const unitId = params.unitId as string;
+export default function NewUnitPage() {
     const wmModule = useWm();
     const { showMessage } = useMessage();
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const categoryId = searchParams.get('category_id');
     
     const [isLoading, setIsLoading] = useState(false);
-    const [isFetching, setIsFetching] = useState(true);
-    const [isFetchingCategory, setIsFetchingCategory] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [isFetchingCategory, setIsFetchingCategory] = useState(!!categoryId);
     const [isModalChooseCategoryOpen, setIsModalChooseCategoryOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState<CatalogCategory | null>(null);
     
@@ -42,48 +39,12 @@ export default function EditUnitPage() {
         currency: 'RUB' as const
     });
 
-    // Загружаем данные позиции
+    // Загружаем категорию если есть category_id
     useEffect(() => {
-        loadUnit();
-    }, [unitId]);
-
-    const loadUnit = async () => {
-        setIsFetching(true);
-        setError(null);
-        try {
-            const response = await wmModule.getUnit(unitId);
-            
-            if (response.status) {
-                const unit = response.data;
-                setFormData({
-                    name: unit.name,
-                    comment: unit.comment || '',
-                    type: unit.type,
-                    inventory_type: unit.inventory_type,
-                    tracked_type: unit.tracked_type || 'fifo',
-                    unit: unit.unit,
-                    sale_price: unit.sale_price.toString(),
-                    purchase_price: unit.purchase_price?.toString() || '',
-                    currency: unit.currency
-                });
-
-                // Загружаем категорию
-                if (unit.category_id) {
-                    await loadCategory(unit.category_id);
-                }
-            } else {
-                throw new Error(response.message || 'Ошибка загрузки позиции');
-            }
-        } catch (err: any) {
-            setError(err.message || 'Не удалось загрузить позицию');
-            showMessage({
-                label: err.message || 'Не удалось загрузить позицию',
-                variant: 'error'
-            });
-        } finally {
-            setIsFetching(false);
+        if (categoryId) {
+            loadCategory(categoryId);
         }
-    };
+    }, [categoryId]);
 
     const loadCategory = async (id: string) => {
         setIsFetchingCategory(true);
@@ -205,8 +166,8 @@ export default function EditUnitPage() {
         setIsLoading(true);
         try {
             const request: any = {
-                name: formData.name.trim() || undefined,
-                comment: formData.comment.trim() || null,
+                name: formData.name.trim(),
+                comment: formData.comment.trim() || undefined,
                 type: formData.type,
                 inventory_type: formData.inventory_type,
                 unit: formData.unit.trim(),
@@ -215,30 +176,29 @@ export default function EditUnitPage() {
                 category_id: selectedCategory.id
             };
 
+            // Добавляем status (по умолчанию active)
+            request.status = 'active';
+
             // Добавляем tracked_type для tracked товаров
             if (formData.inventory_type === 'tracked') {
                 request.tracked_type = formData.tracked_type;
                 request.purchase_price = parseFloat(formData.purchase_price);
-            } else {
-                // Для untracked убираем tracked_type и purchase_price
-                request.tracked_type = null;
-                request.purchase_price = null;
             }
 
-            const response = await wmModule.updateUnit(unitId, request);
+            const response = await wmModule.createUnit(request);
 
             if (response.status) {
                 showMessage({
-                    label: 'Товарная позиция успешно обновлена',
+                    label: 'Товарная позиция успешно создана',
                     variant: 'success'
                 });
                 router.back();
             } else {
-                throw new Error(response.message || 'Ошибка обновления');
+                throw new Error(response.message || 'Ошибка создания');
             }
         } catch (error: any) {
             showMessage({
-                label: error.message || 'Не удалось обновить позицию',
+                label: error.message || 'Не удалось создать позицию',
                 variant: 'error'
             });
         } finally {
@@ -265,41 +225,11 @@ export default function EditUnitPage() {
         return true;
     };
 
-    if (isFetching) {
-        return (
-            <div style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}>
-                <Spinner />
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}>
-                {error}
-            </div>
-        );
-    }
-
     return (
         <>
             <PlatformHead
-                title='Редактирование позиции'
-                description="Изменение параметров товарной позиции."
+                title='Новая товарная позиция'
+                description="Создание новой позиции в каталоге товаров и услуг."
             />
             <PlatformFormBody>
                 <PlatformFormSection 
@@ -449,7 +379,7 @@ export default function EditUnitPage() {
                         onClick={handleSubmit}
                         disabled={!isFormValid() || isLoading}
                     >
-                        {isLoading ? 'Сохранение...' : 'Сохранить изменения'}
+                        {isLoading ? 'Создание...' : 'Создать позицию'}
                     </Button>
                 </section>
             </PlatformFormBody>
