@@ -1,0 +1,8 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    display: flex;
+    gap: .9em;
+    // padding: 1em 0;
+    flex-flow: row wrap;
+}

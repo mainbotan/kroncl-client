@@ -29,7 +29,8 @@ export const breadcrumbDictionary: Record<string, string> = {
     'sources': 'Ресурсы',
     'analysis': 'Анализ',
     'security': 'Безопасность',
-    'create-fingerprint': 'Создание ключа'
+    'create-fingerprint': 'Создание ключа',
+    'units': 'Товарные позиции'
 };
 
 export function getBreadcrumbName(pathSegment: string): string {

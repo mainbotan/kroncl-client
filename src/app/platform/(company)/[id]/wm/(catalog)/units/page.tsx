@@ -1,0 +1,209 @@
+'use client';
+
+import { PlatformHead } from "@/app/platform/components/lib/head/head";
+import { useSideContent } from "@/app/platform/components/side-content/context";
+import Plus from "@/assets/ui-kit/icons/plus";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { sectionsList } from "../../_sections";
+import styles from './page.module.scss';
+import { CategoryCard } from "../../components/category-card/card";
+import { useEffect, useState } from 'react';
+import { CategoriesResponse, CatalogCategory } from '@/apps/company/modules/wm/types';
+import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
+import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
+import { useWm } from "@/apps/company/modules";
+
+export default function CatalogPage() {
+    const params = useParams();
+    const companyId = params.id as string;
+    const wmModule = useWm();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const { handlePageChange } = usePagination({
+        baseUrl: pathname,
+        defaultLimit: 20
+    });
+
+    const [data, setData] = useState<CategoriesResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const categoryId = searchParams.get('category_id');
+
+    const handleSearch = (searchValue: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        
+        if (searchValue.trim()) {
+            params.set('search', searchValue);
+            params.set('page', '1');
+        } else {
+            params.delete('search');
+        }
+        
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
+    const handleCategoryClick = (category: CatalogCategory) => {
+        // При клике на категорию добавляем её ID в параметры для отображения подкатегорий
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('category_id', category.id);
+        params.delete('page'); // Сбрасываем страницу при переходе в подкатегорию
+        router.push(`${pathname}?${params.toString()}`);
+    };
+
+    useEffect(() => {
+        loadData();
+    }, [searchParams, categoryId]);
+
+    const loadData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const page = parseInt(searchParams.get('page') || '1');
+            const limit = parseInt(searchParams.get('limit') || '20');
+            const search = searchParams.get('search');
+            const status = searchParams.get('status') as any;
+
+            const response = await wmModule.getCategories({
+                page,
+                limit,
+                search: search || undefined,
+                status: status || undefined,
+                parent_id: categoryId || null
+            });
+            
+            if (response.status) {
+                setData(response.data);
+            }
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Ошибка загрузки");
+            console.error('Error loading categories:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) return (
+        <div style={{
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            fontSize: ".7em", 
+            color: "var(--color-text-description)", 
+            minHeight: "10rem"
+        }}>
+            <Spinner />
+        </div>
+    );
+    
+    if (error) return (
+        <div style={{
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            fontSize: ".7em", 
+            color: "var(--color-text-description)", 
+            minHeight: "10rem"
+        }}>
+            {error}
+        </div>
+    );
+
+    const categories = data?.categories || [];
+    const pagination = data?.pagination;
+
+    const queryParams: Record<string, string> = {};
+    const limitParam = searchParams.get('limit');
+    if (limitParam) queryParams.limit = limitParam;
+    const searchParam = searchParams.get('search');
+    if (searchParam) queryParams.search = searchParam;
+    const statusParam = searchParams.get('status');
+    if (statusParam) queryParams.status = statusParam;
+    if (categoryId) queryParams.category_id = categoryId;
+
+    return (
+        <>
+            <PlatformHead
+                title='Каталог & Склад'
+                description="Управление ассортиментом услуг и товаров. Контроль остатков."
+                actions={[
+                    {
+                        children: 'Категория',
+                        variant: 'light',
+                        as: 'link',
+                        href: categoryId 
+                            ? `/platform/${companyId}/wm/new-category?parent_id=${categoryId}`
+                            : `/platform/${companyId}/wm/new-category`,
+                        icon: <Plus />
+                    },
+                    {
+                        children: 'Товарная позиция',
+                        variant: 'accent',
+                        as: 'link',
+                        href: `/platform/${companyId}/wm/new-unit`,
+                        icon: <Plus />
+                    }
+                ]}
+                sections={sectionsList(companyId)}
+                searchProps={{
+                    placeholder: 'Поиск по категориям',
+                    defaultValue: searchParams.get('search') || '',
+                    onSearch: handleSearch
+                }}
+                showSearch={true}
+            />
+            {categoryId && (
+                <div className={styles.breadcrumbs}>
+                    <button 
+                        onClick={() => {
+                            const params = new URLSearchParams(searchParams.toString());
+                            params.delete('category_id');
+                            router.push(`${pathname}?${params.toString()}`);
+                        }}
+                        className={styles.backButton}
+                    >
+                        ← Назад к родительским категориям
+                    </button>
+                </div>
+            )}
+            {categories.length === 0 ? (
+                <div style={{
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    fontSize: ".7em", 
+                    color: "var(--color-text-description)", 
+                    minHeight: "10rem",
+                    gridColumn: "1 / -1"
+                }}>
+                    {categoryId ? 'В этой категории нет подкатегорий' : 'Категорий пока нет'}
+                </div>
+            ) : (
+                <>
+                <div className={styles.grid}>
+                    {categories.map((category) => (
+                        <CategoryCard 
+                            key={category.id} 
+                            category={category} 
+                            className={styles.item}
+                            onClick={handleCategoryClick}
+                        />
+                    ))}
+                </div>
+                {pagination && pagination.pages > 1 && (
+                    <div className={styles.pagination}>
+                        <PlatformPagination
+                            meta={pagination}
+                            baseUrl={pathname}
+                            queryParams={queryParams}
+                            onPageChange={(page) => handlePageChange(page)}
+                        />
+                    </div>
+                )}
+                </>
+            )}
+        </>
+    );
+}
