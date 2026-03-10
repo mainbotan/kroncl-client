@@ -3,7 +3,7 @@
 import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormVariants } from "@/app/platform/components/lib/form";
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import Button from "@/assets/ui-kit/button/button";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react'; // Добавить useMemo
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { useWm } from '@/apps/company/modules';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -39,6 +39,21 @@ export default function NewUnitPage() {
         purchase_price: '',
         currency: 'RUB' as const
     });
+
+    // Фильтруем единицы измерения
+    const unitOptions = useMemo(() => {
+        if (formData.tracking_detail === 'serial') {
+            return _units.filter(unit => unit.value === 'pcs');
+        }
+        return _units;
+    }, [formData.tracking_detail]);
+
+    // Автоматически ставим 'pcs' для serial
+    useEffect(() => {
+        if (formData.tracking_detail === 'serial' && formData.unit !== 'pcs') {
+            setFormData(prev => ({ ...prev, unit: 'pcs' }));
+        }
+    }, [formData.tracking_detail]);
 
     // Загружаем категорию если есть category_id
     useEffect(() => {
@@ -93,19 +108,26 @@ export default function NewUnitPage() {
                 purchase_price: '',
                 tracking_detail: undefined
             } : {
-                // Если tracked, ставим tracking_detail по умолчанию
-                tracking_detail: 'batch'
+                // Если tracked, ставим tracking_detail по умолчанию И tracked_type для batch
+                tracking_detail: 'batch',
+                tracked_type: 'fifo'
             })
         }));
     };
 
-    const handleTrackingDetailChange = (value: string) => {  // НОВЫЙ ОБРАБОТЧИК
+    const handleTrackingDetailChange = (value: string) => {
         const newTrackingDetail = value as TrackingDetail;
         setFormData(prev => ({ 
             ...prev, 
             tracking_detail: newTrackingDetail,
-            // Если выбрали serial, убираем tracked_type
-            ...(newTrackingDetail === 'serial' ? { tracked_type: undefined } : {})
+            // Если выбрали serial, убираем tracked_type и ставим unit='pcs'
+            ...(newTrackingDetail === 'serial' ? { 
+                tracked_type: undefined,
+                unit: 'pcs'
+            } : {
+                // Если batch, ставим tracked_type по умолчанию
+                tracked_type: 'fifo'
+            })
         }));
     };
 
@@ -346,7 +368,7 @@ export default function NewUnitPage() {
 
                 {formData.inventory_type === 'tracked' && (
                     <>
-                        <PlatformFormSection title='Детализация учета'>  {/* НОВАЯ СЕКЦИЯ */}
+                        <PlatformFormSection title='Детализация учета'>
                             <PlatformFormVariants
                                 options={[
                                     { 
@@ -392,11 +414,19 @@ export default function NewUnitPage() {
 
                 <PlatformFormSection title='Единица измерения'>
                     <PlatformFormVariants
-                        options={_units}
+                        options={unitOptions}
                         value={formData.unit}
                         onChange={handleUnitChange}
-                        disabled={isLoading}
+                        disabled={isLoading || (formData.tracking_detail === 'serial' && formData.unit === 'pcs')}
                     />
+                    {formData.tracking_detail === 'serial' && (
+                        <div style={{  
+                            color: 'var(--color-text-hint)', 
+                            marginTop: '0.2em' 
+                        }}>
+                            Для поштучного учета доступна только единица "Штука (pcs)"
+                        </div>
+                    )}
                 </PlatformFormSection>
 
                 <PlatformFormSection title={formData.type === 'service' ? 'Цена оказания услуги (₽)' : 'Цена продажи (₽)'}>

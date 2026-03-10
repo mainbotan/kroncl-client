@@ -3,7 +3,7 @@
 .card {
     display: flex;
     background-color: var(--color-surface-glass-secondary);
-    border: 1px solid var(--color-stroke-secondary);
+    border: 1px solid var(--color-stroke-primary);
     border-radius: .6em;
     @include cursor(pointer);
     padding: 1em;
