@@ -14,8 +14,8 @@ export const sectionsList = (companyId: string): PlatformHeadSection[] => {
             strongParams: true,
         },
         {
-            label: 'Остатки & Наличие',
-            href: `/platform/${companyId}/wm/stocks`,
+            label: 'Движение товаров',
+            href: `/platform/${companyId}/wm/movement`,
             strongParams: true,
         },
         {

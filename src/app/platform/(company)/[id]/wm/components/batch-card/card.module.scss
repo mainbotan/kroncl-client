@@ -1,0 +1,75 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.batch {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    border: 1px solid var(--color-stroke-secondary);
+    overflow: hidden;
+    background-color: var(--color-surface-glass-secondary);
+    @include cursor(pointer);
+    transition: background-color var(--transition), border var(--transition);
+
+    .base {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+        align-items: center;
+        font-size: .84em;
+        padding: .4em 1em;
+        height: 3.5em;
+    }
+
+    .indicator {
+        display: inline-flex;
+        min-width: .5em;
+        width: .5em;
+        height: .5em;
+        border-radius: 50%;
+        background-color: var(--color-surface-light);
+        @include cursor(pointer);
+
+        &.active {
+            background-color: var(--color-green);
+        }
+    }
+
+    .info {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: .8em;
+        flex: 1;
+        align-items: center;
+        
+
+        .section.secondary {
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            @include text-ellipsis();
+            width: fit-content;
+        }
+
+        .section.type {
+            min-width: 5em;
+        }
+
+        .section.name {
+            display: flex;
+            width: 100%;
+            flex: 1;
+            @include text-ellipsis();
+        }
+
+        .section.date {
+            color: var(--color-accent);
+            @include cursor(pointer);
+            min-width: 6em;
+            text-align: right;
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-elevated);
+        border-color: var(--color-stroke-primary);
+    }
+}

@@ -73,9 +73,11 @@ export function UnitCard({
                             <span className={styles.sale}>{unit.sale_price.toLocaleString()} &#8381;</span>
                         </ModalTooltip>
                     </span>
-                    <ModalTooltip content={unit.inventory_type === 'tracked' ? 'Наличие единиц товарной позиции учитывается на складе' : 'Товарная позиция не учитывается на складе'}>
-                        <span className={clsx(styles.section, styles.secondary, styles.stocks)}>{getInventoryLabel(unit.inventory_type)}</span>
-                    </ModalTooltip>
+                    {!compact && (
+                        <ModalTooltip content={unit.inventory_type === 'tracked' ? 'Наличие единиц товарной позиции учитывается на складе' : 'Товарная позиция не учитывается на складе'}>
+                            <span className={clsx(styles.section, styles.secondary, styles.stocks)}>{getInventoryLabel(unit.inventory_type)}</span>
+                        </ModalTooltip>
+                    )}
                     <ModalTooltip content='Уникальный идентификатор товарной позиции'>
                         <span className={clsx(styles.section, styles.id)}>{unit.id.split('-')[0]}</span>
                     </ModalTooltip>

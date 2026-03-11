@@ -1,0 +1,26 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: block;
+    max-height: 13em;
+    overflow-y: scroll;
+    background-color: var(--color-surface-secondary);
+    border-radius: 1em;
+    border: 1px solid var(--color-stroke-primary);
+
+    .grid {
+        display: flex;
+        min-height: 20em;
+        flex-flow: column nowrap;
+        justify-content: start;
+        font-size: 1.3em;
+        overflow: hidden;
+    }
+    .empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-flow: column nowrap;
+        min-height: 13em;
+    }
+}

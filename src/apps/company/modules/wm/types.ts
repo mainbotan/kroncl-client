@@ -124,13 +124,95 @@ export interface UnitsResponse {
 }
 
 // --------
-// UNIT-CATEGORY LINKS
+// STOCKS
 // --------
 
-export interface UnitCategoryLink {
+export type StockDirection = 'income' | 'outcome';
+export type StockPositionType = 'batch' | 'serial';
+
+export interface StockBatch {
     id: string;
-    unit_id: string;
-    category_id: string;
+    direction: StockDirection;
+    comment: string | null;
+    metadata: Record<string, any> | null;
     created_at: string;
     updated_at: string;
+}
+
+export interface StockPosition {
+    id: string;
+    type: StockPositionType;
+    unit_id: string;
+    quantity: number;
+    created_at: string;
+}
+
+export interface StockBatchPosition {
+    unit_id: string;
+    quantity: number;
+    price: number;
+}
+
+export interface CreateStockBatchRequest {
+    direction: StockDirection;
+    comment?: string | null;
+    positions: StockBatchPosition[];
+    metadata?: Record<string, any>;
+}
+
+export interface PositionWithUnit {
+    id: string;
+    type: StockPositionType;
+    unit_id: string;
+    quantity: number;
+    created_at: string;
+    batch_id: string;
+    unit: CatalogUnit;
+}
+
+export interface BatchWithPositions {
+    id: string;
+    direction: StockDirection;
+    comment: string | null;
+    metadata: Record<string, any> | null;
+    created_at: string;
+    updated_at: string;
+    positions: PositionWithUnit[];
+}
+
+export interface CreateStockBatchResponse {
+    batch_id: string;
+    direction: StockDirection;
+    comment: string | null;
+    metadata: Record<string, any> | null;
+    created_at: string;
+    updated_at: string;
+    positions: PositionWithUnit[];
+}
+
+export interface GetStockBatchesParams {
+    page?: number;
+    limit?: number;
+    direction?: StockDirection;
+    unit_id?: string;
+    search?: string;
+}
+
+export interface GetStockPositionsParams {
+    page?: number;
+    limit?: number;
+    type?: StockPositionType;
+    unit_id?: string;
+    batch_id?: string;
+    in_stock?: boolean;
+}
+
+export interface StockBatchesResponse {
+    batches: StockBatch[];
+    pagination: PaginationMeta;
+}
+
+export interface StockPositionsResponse {
+    positions: PositionWithUnit[];
+    pagination: PaginationMeta;
 }

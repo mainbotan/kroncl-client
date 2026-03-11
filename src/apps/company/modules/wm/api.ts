@@ -12,8 +12,15 @@ import {
     CreateUnitRequest,
     UpdateUnitRequest,
     GetUnitsParams,
-    // Unit-Category Links
-    UnitCategoryLink
+    // Stocks
+    BatchWithPositions,
+    CreateStockBatchRequest,
+    CreateStockBatchResponse,
+    GetStockBatchesParams,
+    GetStockPositionsParams,
+    PositionWithUnit,
+    StockBatchesResponse,
+    StockPositionsResponse,
 } from "./types";
 
 export const wmModule = (companyApi: CompanyApi) => ({
@@ -76,7 +83,7 @@ export const wmModule = (companyApi: CompanyApi) => ({
             if (params.type !== undefined) queryParams.type = params.type;
             if (params.status !== undefined) queryParams.status = params.status;
             if (params.inventory_type !== undefined) queryParams.inventory_type = params.inventory_type;
-            if (params.tracking_detail !== undefined) queryParams.tracking_detail = params.tracking_detail; // НОВЫЙ ФИЛЬТР
+            if (params.tracking_detail !== undefined) queryParams.tracking_detail = params.tracking_detail;
             if (params.category_id !== undefined) {
                 queryParams.category_id = params.category_id === null ? undefined : params.category_id;
             }
@@ -109,18 +116,59 @@ export const wmModule = (companyApi: CompanyApi) => ({
     },
 
     // --------
-    // UNIT-CATEGORY LINKS
+    // STOCKS - BATCHES
     // --------
     
-    async getUnitCategoryLinks(unitId: string) {
-        return companyApi.get<UnitCategoryLink[]>(`/modules/wm/catalog/units/${unitId}/categories`);
+    async getStockBatches(
+        params?: GetStockBatchesParams
+    ) {
+        const queryParams: Record<string, string | number | boolean | undefined> = {};
+        
+        if (params) {
+            if (params.page !== undefined) queryParams.page = params.page;
+            if (params.limit !== undefined) queryParams.limit = params.limit;
+            if (params.direction !== undefined) queryParams.direction = params.direction;
+            if (params.unit_id !== undefined) queryParams.unit_id = params.unit_id;
+            if (params.search !== undefined) queryParams.search = params.search;
+        }
+        
+        return companyApi.get<StockBatchesResponse>("/modules/wm/stocks/batches", {
+            params: queryParams
+        });
     },
     
-    async linkUnitToCategory(unitId: string, categoryId: string) {
-        return companyApi.post<UnitCategoryLink>(`/modules/wm/catalog/units/${unitId}/categories/${categoryId}`);
+    async getStockBatch(id: string) {
+        return companyApi.get<BatchWithPositions>(`/modules/wm/stocks/batches/${id}`);
     },
     
-    async unlinkUnitFromCategory(unitId: string, categoryId: string) {
-        return companyApi.delete<void>(`/modules/wm/catalog/units/${unitId}/categories/${categoryId}`);
-    }
+    async createStockBatch(data: CreateStockBatchRequest) {
+        return companyApi.post<CreateStockBatchResponse>("/modules/wm/stocks/batches", data);
+    },
+
+    // --------
+    // STOCKS - POSITIONS
+    // --------
+    
+    async getStockPositions(
+        params?: GetStockPositionsParams
+    ) {
+        const queryParams: Record<string, string | number | boolean | undefined> = {};
+        
+        if (params) {
+            if (params.page !== undefined) queryParams.page = params.page;
+            if (params.limit !== undefined) queryParams.limit = params.limit;
+            if (params.type !== undefined) queryParams.type = params.type;
+            if (params.unit_id !== undefined) queryParams.unit_id = params.unit_id;
+            if (params.batch_id !== undefined) queryParams.batch_id = params.batch_id;
+            if (params.in_stock !== undefined) queryParams.in_stock = params.in_stock;
+        }
+        
+        return companyApi.get<StockPositionsResponse>("/modules/wm/stocks/positions", {
+            params: queryParams
+        });
+    },
+    
+    async getStockPosition(id: string) {
+        return companyApi.get<PositionWithUnit>(`/modules/wm/stocks/positions/${id}`);
+    },
 });
