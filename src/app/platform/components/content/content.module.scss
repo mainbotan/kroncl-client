@@ -17,6 +17,9 @@
         background-color: var(--platform-active-area);
         backdrop-filter: blur(var(--platform-active-area-blur));
         max-height: calc(100vh - var(--header-height) - .5rem);
+        border-bottom: 1px solid var(--platform-active-area-border);
+        border-left: 1px solid var(--platform-active-area-border);
+        border-right: 1px solid var(--platform-active-area-border);
         position: relative;
         padding-top: 2rem;
     }

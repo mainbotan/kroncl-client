@@ -29,5 +29,11 @@ export const _themes: Theme[] = [
         capture: 'Violet light',
         description: 'Background gradient',
         cover: '/images/themes/light-violet.png'
-    }
+    },
+    {
+        id: 'noire',
+        capture: 'Total black',
+        description: 'Background gradient',
+        cover: '/images/themes/noire.png'
+    },
 ]

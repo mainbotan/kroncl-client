@@ -1,0 +1,60 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+$col-width: 14em;
+$col-gap: 0em;
+$row-gap: 0em;
+
+.canvas {
+    display: block;
+    flex: 1;
+    overflow-x: scroll;
+    white-space: nowrap;
+
+    .grid {
+        display: flex;
+        min-height: calc(100vh - 11rem);
+        flex-flow: row nowrap;
+        justify-content: start;
+        gap: $col-gap;
+
+        .col {
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: start;
+            gap: $row-gap;
+            width: $col-width;
+            min-width: $col-width;
+            border-left: 1px dashed var(--color-stroke-primary);
+
+            &:last-child {
+                border-right: 1px dashed var(--color-stroke-primary);
+            }
+
+            .head {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: .8em;
+                height: 4em;
+                border-bottom: 1px dashed var(--color-stroke-primary);
+                background-color: var(--color-surface-glass-secondary);
+                overflow: hidden;
+                padding: 0 2em;
+
+                .title {
+                    @include text-ellipsis();
+                    text-align: center;
+
+                    .secondary {
+                        color: var(--color-text-secondary)
+                    }
+                }
+            }
+            .item {
+                min-height: 11em;
+                font-size: .87em;
+                border-bottom: 1px dashed var(--color-stroke-primary);
+            }
+        }
+    }
+}

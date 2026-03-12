@@ -2,6 +2,7 @@
 @use 'base/typography' as *;
 @use 'base/themes/dark/classic.scss' as dark-classic;
 @use 'base/themes/dark/violet.scss' as dark-violet;
+@use 'base/themes/dark/noire.scss' as dark-noire;
 @use 'base/themes/light/classic.scss' as light-classic;
 @use 'base/themes/light/violet.scss' as light-violet;
 
@@ -68,6 +69,9 @@ html[data-theme="dark"] {
 }
 html[data-theme="dark-violet"] {
   @include dark-violet.theme;
+}
+html[data-theme="noire"] {
+  @include dark-noire.theme;
 }
 
 html[data-theme="light"] {

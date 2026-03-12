@@ -27,7 +27,8 @@
         flex-flow: column nowrap;
         gap: .5em;
         flex: 1;
-        
+        overflow: hidden;
+
         .name {
             display: flex;
             flex-flow: row wrap;
@@ -36,6 +37,7 @@
             font-weight: 600;
             letter-spacing: .02em;
             font-size: .94em;
+            @include text-ellipsis();
 
             .contact {
                 color: var(--color-text-description);
@@ -90,6 +92,24 @@
             &:hover {
                 transform: scale(1.02);
             }
+        }
+    }
+
+    &.default {
+
+    }
+    &.minimalistic {
+        .info {
+            .tags .tag {
+                display: none;
+
+                &:first-child {
+                    display: inline-block;
+                }
+            }
+        }
+        .actions {
+            display: none;
         }
     }
 }

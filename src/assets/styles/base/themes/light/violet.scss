@@ -4,6 +4,7 @@
     @include base.theme();
     
     // ==================== PLATFORM SPECIFIC =======================
+    --platform-active-area-border: transparent;
     --platform-background: linear-gradient(135deg, #f3dcf5, violet);
     --platform-active-area: var(--color-surface-glass);
     --platform-active-area-blur: 10px;

@@ -21,6 +21,7 @@
         flex-flow: row nowrap;
         gap: .8em;
         align-items: start;
+        overflow: hidden;
 
         .avatar {
             display: inline-flex;
@@ -40,6 +41,7 @@
             flex-flow: column nowrap;
             gap: .4em;
             padding: .4em 0;
+            overflow: hidden;
 
             .name {
                 font-size: .84em;
@@ -118,6 +120,23 @@
         transition: opacity var(--transition), margin-bottom var(--transition)
     }
 
+    &:hover {
+        background-color: var(--color-surface-glass-secondary);
+
+        .actions {
+            margin-bottom: 0;
+            opacity: 1;
+        }
+        .flag {
+            transform: rotate(-30deg);
+        }
+        .code {
+            opacity: 0;
+            margin-bottom: -2em;
+        }
+    }
+
+    
     &.compact {
         min-height: 3em;
         width: 100%;
@@ -145,20 +164,27 @@
             display: none;
         }
     }
+    
+    &.minimalistic {
+        padding: 0;
+        min-height: fit-content;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
 
-    &:hover {
-        background-color: var(--color-surface-glass-secondary);
+        .base {
+            align-items: center;
+        }
+        .base .avatar {
+            font-size: .8em;
+        }
 
-        .actions {
-            margin-bottom: 0;
-            opacity: 1;
+        .actions, .flag, .code {
+            display: none;
         }
-        .flag {
-            transform: rotate(-30deg);
-        }
-        .code {
-            opacity: 0;
-            margin-bottom: -2em;
+
+        &:hover {
+            background-color: transparent;
         }
     }
 }

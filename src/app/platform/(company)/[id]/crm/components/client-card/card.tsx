@@ -17,14 +17,18 @@ interface ClientCardProps {
     client: ClientDetail;
     isSelected?: boolean;
     onSelect?: (client: ClientDetail) => void;
+    variant?: 'default' | 'minimalistic';
     selectable?: boolean;
+    className?: string;
 }
 
 export function ClientCard({ 
     client, 
     isSelected, 
     onSelect,
-    selectable = false 
+    selectable = false,
+    className,
+    variant = 'default'
 }: ClientCardProps) {
     const params = useParams();
     const companyId = params.id as string;
@@ -102,11 +106,13 @@ export function ClientCard({
                         <span className={clsx(styles.tag, styles.accent)}>{typeLabel}</span>
                     </ModalTooltip>
                     
-                    <ModalTooltip content='Источник привлечения'>
-                        <span className={clsx(styles.tag, styles.source)}>
-                            {client.source.name}
-                        </span>
-                    </ModalTooltip>
+                    {client.source && (
+                        <ModalTooltip content='Источник привлечения'>
+                            <span className={clsx(styles.tag, styles.source)}>
+                                {client.source.name}
+                            </span>
+                        </ModalTooltip>
+                    )}
                     
                     <ModalTooltip content='Дата создания клиента'>
                         <span className={styles.tag}>{createdDate}</span>
@@ -146,7 +152,7 @@ export function ClientCard({
     );
 
     return (
-        <div className={clsx(styles.client, isSelected && styles.selected)}>
+        <div className={clsx(styles.client, styles[variant], className, isSelected && styles.selected)}>
             {cardContent}
         </div>
     );

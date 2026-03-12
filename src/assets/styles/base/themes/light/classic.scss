@@ -78,6 +78,7 @@
     --shadow-floating: 0 10px 25px rgba(0, 0, 0, 0.05);
     
     // ==================== PLATFORM SPECIFIC =======================
+    --platform-active-area-border: transparent;
     --platform-background: var(--color-surface-area);
     --platform-active-area: var(--color-leader);
     --platform-active-area-blur: 0px;

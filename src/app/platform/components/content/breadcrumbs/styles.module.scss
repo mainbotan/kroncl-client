@@ -16,6 +16,9 @@
     @include no-scrollbar();
     border-top-left-radius: .6rem;
     border-top-right-radius: .6rem;
+    border-top: 1px solid var(--platform-active-area-border);
+    border-left: 1px solid var(--platform-active-area-border);
+    border-right: 1px solid var(--platform-active-area-border);
 
     .grid {
         display: flex;

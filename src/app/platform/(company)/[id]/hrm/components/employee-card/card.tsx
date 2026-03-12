@@ -10,14 +10,16 @@ interface EmployeeCardProps {
     employee: Employee;
     showDefaultActions?: boolean;
     actions?: ButtonProps[];
-    variant?: 'default' | 'compact';
+    variant?: 'default' | 'compact' | 'minimalistic';
+    className?: string;
 }
 
 export function EmployeeCard({ 
     employee ,
     showDefaultActions = true,
     actions,
-    variant = 'default'
+    variant = 'default',
+    className
 }: EmployeeCardProps) {
     const params = useParams();
     const companyId = params.id as string;
@@ -28,7 +30,7 @@ export function EmployeeCard({
     const avatarGradient = getGradientFromString(fullName);
 
     return (
-        <div className={clsx(styles.card, styles[variant])}>
+        <div className={clsx(styles.card, className, styles[variant])}>
             <div className={styles.base}>
                 <div 
                     className={styles.avatar}
