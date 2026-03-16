@@ -27,6 +27,9 @@ import Kanban from '@/assets/ui-kit/icons/kanban';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import Button from '@/assets/ui-kit/button/button';
 import Link from 'next/link';
+import Support from '@/assets/ui-kit/icons/support';
+import Business from '@/assets/ui-kit/icons/business';
+import Folder from '@/assets/ui-kit/icons/folder';
 
 interface PlatformPanelProps {
   className?: string;
@@ -56,7 +59,10 @@ const iconComponents: Record<string, ComponentType<{ className?: string }>> = {
   'logistic': Branching,
   'deals': Kanban,
   'accesses': Keyhole,
-  'activity': History 
+  'activity': History,
+  'files': Folder,
+  'branding': Business,
+  'support': Support
 };
 
 export default function ClientPanel({

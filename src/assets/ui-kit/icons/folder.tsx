@@ -1,0 +1,24 @@
+import React from 'react';
+
+export default function Folder({ 
+  width = 40, 
+  height = 40, 
+  color = "currentColor",
+  className = ""
+}) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width={width}
+      height={height}
+      viewBox="0 0 48 48"
+      className={className}
+      fill={color}
+    >
+      <g data-name="Open Folder">
+        <path d="M47.62 18.54A2.987 2.987 0 0 0 45 17H16.572a4.43 4.43 0 0 0-4.252 3.19L6.693 39.48A4.889 4.889 0 0 1 2 43h35.748a4.89 4.89 0 0 0 4.694-3.52l5.402-18.52a3.14 3.14 0 0 0-.223-2.42z" />
+        <path d="m4.77 38.92 5.63-19.29A6.45 6.45 0 0 1 16.57 15H42v-1a4 4 0 0 0-4-4H22.756a2.005 2.005 0 0 1-1.556-.74l-1.966-2.417A4.994 4.994 0 0 0 15.36 5H4a4 4 0 0 0-4 4v30a2 2 0 0 0 2 2 2.895 2.895 0 0 0 2.77-2.08z" />
+      </g>
+    </svg>
+  );
+}

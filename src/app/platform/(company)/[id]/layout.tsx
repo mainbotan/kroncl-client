@@ -66,14 +66,19 @@ export default async function CompanyLayout({
       icon: 'catalog'
     },
     {
-      name: 'Логистика',
-      href: `/platform/${companyId}/lm`,
-      icon: 'logistic'
-    },
-    {
       name: 'Сотрудники',
       href: `/platform/${companyId}/hrm`,
       icon: 'team'
+    },
+    {
+      name: 'Файлы',
+      href: `/platform/${companyId}/files`,
+      icon: 'files'
+    },
+    {
+      name: 'Ресурсы бренда',
+      href: `/platform/${companyId}/branding`,
+      icon: 'branding'
     },
     {
       name: 'Активность',
@@ -89,6 +94,11 @@ export default async function CompanyLayout({
       name: 'Хранилище',
       href: `/platform/${companyId}/storage`,
       icon: 'storage'
+    },
+    {
+      name: 'Поддержка',
+      href: `/platform/${companyId}/support`,
+      icon: 'support'
     },
   ];
 
