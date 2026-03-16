@@ -1,0 +1,12 @@
+.body {
+    display: flex;
+    flex-flow: column nowrap;
+
+    .block {
+        border-bottom: 1px dashed var(--color-stroke-secondary);
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}

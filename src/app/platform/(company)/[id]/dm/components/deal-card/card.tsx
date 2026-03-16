@@ -81,24 +81,12 @@ export function DealCard({
                 <div className={styles.title}>{getDisplayId()}</div>
             </div>
 
-            {deal.employees && deal.employees.length > 0 && (
-                <div className={styles.employees}>
-                    <div className={styles.capture}>Ответственные</div>
-                    <div className={styles.items}>
-                        {deal.employees.map((employee) => (
-                            <div key={employee.id}>
-                                {renderEmployeeLink(employee)}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
             {deal.comment && (
                 <div className={styles.comment}>
                     {deal.comment}
                 </div>
             )}
+            
             {deal.type && (
                 <TypeCard
                     variant='tag'
@@ -112,9 +100,23 @@ export function DealCard({
                     className={styles.client}
                     variant="minimalistic"
                     client={deal.client}
+                    disableLink={true}
                 />
             )}
-            
+
+            {deal.employees && deal.employees.length > 0 && (
+                <div className={styles.employees}>
+                    <div className={styles.capture}>Ответственные</div>
+                    <div className={styles.items}>
+                        {deal.employees.map((employee) => (
+                            <div key={employee.id}>
+                                {renderEmployeeLink(employee)}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <Button
                 as='link'
                 variant="accent"

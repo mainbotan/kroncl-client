@@ -10,7 +10,7 @@ import { getInitials, getFullName } from './_utils';
 import { getGradientFromString } from '@/assets/utils/avatars';
 import { formatDate } from '@/assets/utils/date';
 import { formatPhoneNumber } from '@/assets/utils/phone-utils';
-import Button from '@/assets/ui-kit/button/button';
+import Button, { ButtonProps } from '@/assets/ui-kit/button/button';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 
 interface ClientCardProps {
@@ -20,6 +20,9 @@ interface ClientCardProps {
     variant?: 'default' | 'minimalistic';
     selectable?: boolean;
     className?: string;
+    actions?: ButtonProps[];
+    disableLink?: boolean; // Добавляем пропс для отключения ссылки
+    showActions?: boolean;
 }
 
 export function ClientCard({ 
@@ -28,7 +31,10 @@ export function ClientCard({
     onSelect,
     selectable = false,
     className,
-    variant = 'default'
+    variant = 'default',
+    actions,
+    disableLink = false,
+    showActions = false
 }: ClientCardProps) {
     const params = useParams();
     const companyId = params.id as string;
@@ -132,7 +138,8 @@ export function ClientCard({
                 </div>
             </div>
             <div className={styles.actions}>
-                {selectable ? (
+                {showActions || !disableLink &&
+                selectable ? (
                     <Button 
                         className={styles.action} 
                         variant='light'
@@ -140,13 +147,16 @@ export function ClientCard({
                     >
                         {isSelected ? 'Выбрано' : 'Выбрать'}
                     </Button>
-                ) : (
+                ) : !disableLink ? (
                     <Link href={`/platform/${companyId}/crm/${client.id}`}>
                         <Button className={styles.action} variant='light'>
                             Открыть
                         </Button>
                     </Link>
-                )}
+                ) : null}
+                {actions?.map((action, index) => (
+                    <Button key={index} className={clsx(styles.action, action.className)} {...action} />
+                ))}
             </div>
         </>
     );
