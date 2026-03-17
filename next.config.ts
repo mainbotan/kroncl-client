@@ -1,4 +1,22 @@
 import type { NextConfig } from "next";
+import createMDX from '@next/mdx'
+import remarkGfm from 'remark-gfm'
+import rehypePrettyCode from 'rehype-pretty-code'
+
+/** @type {import('rehype-pretty-code').Options} */
+const prettyCodeOptions = {
+  theme: 'github-dark',
+  keepBackground: true,
+  defaultLang: 'typescript',
+}
+
+const withMDX = createMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+  },
+})
 
 const nextConfig: NextConfig = {
   typescript: {
@@ -7,23 +25,19 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true
   },
-  experimental: {
-    turbo: true, // Если используете Turbopack
-  },
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   
-  // Отключаем кэширование в development
   webpack: (config, { dev }) => {
     if (dev) {
       config.cache = false;
-      // Дополнительные настройки для сброса кэша
       config.snapshot = {
         ...config.snapshot,
-        managedPaths: [], // Не кэшировать node_modules
-        immutablePaths: [], // Полностью отключаем immutable кэш
+        managedPaths: [],
+        immutablePaths: [],
       };
     }
     return config;
   }
 };
 
-export default nextConfig;
+export default withMDX(nextConfig);
