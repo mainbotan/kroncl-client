@@ -15,7 +15,7 @@ export default function Layout({
             <DocsHeader className={styles.header} />
             <div className={styles.area}>
                 <DocsPanel navigation={navigationSections} className={styles.panel} />
-                <DocsContent className={styles.content}>
+                <DocsContent navigation={navigationSections} className={styles.content}>
                     {children}
                 </DocsContent>
             </div>

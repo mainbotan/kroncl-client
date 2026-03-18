@@ -21,3 +21,9 @@
     text-decoration-color: var(--color-text-hint);
     text-decoration-thickness: 2px;
 }
+
+.tag {
+    padding: 0 .4em;
+    border-radius: .4em;
+    border: 1px dashed var(--color-stroke-primary);
+}

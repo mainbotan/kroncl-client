@@ -2,17 +2,21 @@
 
 import clsx from 'clsx';
 import styles from './panel.module.scss';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, RefObject } from 'react';
+import { usePathname } from 'next/navigation';
 
 export interface DocsSidePanelProps {
     className?: string;
+    scrollContainerRef?: RefObject<HTMLElement | null>;
 }
 
 export function DocsSidePanel({
     className,
+    scrollContainerRef,
 }: DocsSidePanelProps) {
     const [headings, setHeadings] = useState<{ id: string; text: string }[]>([]);
     const [activeId, setActiveId] = useState<string>('');
+    const pathname = usePathname();
 
     // Функция для генерации ID из текста заголовка
     const generateId = (text: string): string => {
@@ -23,30 +27,39 @@ export function DocsSidePanel({
             .replace(/-+/g, '-');
     };
 
-    // Сбор всех заголовков h1, h2, h3
+    // Сбор заголовков при загрузке страницы и при смене pathname
     useEffect(() => {
-        const elements = Array.from(document.querySelectorAll('h1, h2, h3'));
-        
-        const items = elements.map((el) => {
-            const text = el.textContent || '';
-            const id = generateId(text);
+        // Даём время на рендер контента
+        const timeout = setTimeout(() => {
+            const elements = Array.from(document.querySelectorAll('h1, h2, h3'));
             
-            // Присваиваем ID элементу, если его нет
-            if (!el.id) {
-                el.id = id;
-            }
-            
-            return {
-                id: el.id,
-                text: text
-            };
-        });
+            const items = elements.map((el) => {
+                const text = el.textContent || '';
+                const id = generateId(text);
+                
+                if (!el.id) {
+                    el.id = id;
+                }
+                
+                return {
+                    id: el.id,
+                    text: text
+                };
+            });
 
-        setHeadings(items);
-    }, []);
+            setHeadings(items);
+            setActiveId(''); // Сбрасываем активный заголовок
+        }, 100);
+
+        return () => clearTimeout(timeout);
+    }, [pathname]); // Перезапускаем при смене пути
 
     // Отслеживание активного заголовка при скролле
     useEffect(() => {
+        if (!scrollContainerRef?.current) return;
+
+        const container = scrollContainerRef.current;
+        
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -56,6 +69,7 @@ export function DocsSidePanel({
                 });
             },
             {
+                root: container,
                 rootMargin: '0px 0px -70% 0px',
                 threshold: 0,
             }
@@ -66,22 +80,22 @@ export function DocsSidePanel({
         });
 
         return () => observer.disconnect();
-    }, []);
+    }, [pathname, scrollContainerRef]); // Перезапускаем при смене страницы
 
-    // Плавный скролл к заголовку
+    // Плавный скролл к заголовку внутри контейнера
     const scrollToHeading = useCallback((id: string) => {
         const element = document.getElementById(id);
-        if (element) {
+        const container = scrollContainerRef?.current;
+        
+        if (element && container) {
             const offset = 80;
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.scrollY - offset;
-
-            window.scrollTo({
-                top: offsetPosition,
+            const elementPosition = element.offsetTop;
+            container.scrollTo({
+                top: elementPosition - offset,
                 behavior: 'smooth',
             });
         }
-    }, []);
+    }, [scrollContainerRef]);
 
     if (headings.length === 0) {
         return null;
