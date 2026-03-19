@@ -38,7 +38,13 @@ export const navigationSections: DocsNavSectionProps[] = [
         childrens: [
             {
                 label: 'Доступы',
-                href: '/docs/companies/permissions'
+                href: '/docs/companies/accesses',
+                childrens: [
+                    {
+                        label: 'Разрешения',
+                        href: '/docs/companies/accesses/permissions'
+                    },
+                ]
             },
             {
                 label: 'Тарификация',
