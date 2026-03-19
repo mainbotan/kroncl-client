@@ -48,7 +48,7 @@ export const navigationSections: DocsNavSectionProps[] = [
             },
             {
                 label: 'Тарификация',
-                href: '/docs/companies/tariffs'
+                href: '/docs/companies/pricing'
             },
             {
                 label: 'Мониторинг действий',

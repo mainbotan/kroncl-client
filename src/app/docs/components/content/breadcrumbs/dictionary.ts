@@ -8,7 +8,8 @@ export const breadcrumbDictionary: Record<string, string> = {
     'companies': 'Организации',
     'modules': 'Модули',
     'accesses': 'Доступы',
-    'permissions': 'Разрешения'
+    'permissions': 'Разрешения',
+    'pricing': 'Тарификация'
 }
 
 export function getBreadcrumbName(pathSegment: string): string {
