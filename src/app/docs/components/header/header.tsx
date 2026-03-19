@@ -7,6 +7,7 @@ import Button from '@/assets/ui-kit/button/button';
 import Menu from '@/assets/ui-kit/icons/menu';
 import Close from '@/assets/ui-kit/icons/close';
 import { useDocsSidebar } from '../panel/context/context';
+import { ThemeSwitcher } from '@/app/(external)/components/footer/switcher/switcher';
 
 export interface DocsHeaderProps {
     className?: string;
@@ -24,6 +25,7 @@ export function DocsHeader({
                 <span className={styles.tag}>Клиентам</span>
             </Link>
             <div className={styles.actions}>
+                <ThemeSwitcher className={styles.switcher} />
                 <Button as='link' href='/sso/sign_in' className={styles.action}>Начать бесплатно</Button>
                 <div className={styles.burger}>
                     <button className={styles.button} onClick={toggle}>
