@@ -18,7 +18,7 @@
     text-decoration: underline;
     text-decoration-style: dashed;
     text-underline-offset: .3em;
-    text-decoration-color: var(--color-text-hint);
+    text-decoration-color: var(--color-text-primary);
     text-decoration-thickness: 2px;
 }
 
@@ -26,4 +26,8 @@
     padding: 0 .4em;
     border-radius: .4em;
     border: 1px dashed var(--color-stroke-primary);
+}
+
+.secondary {
+    color: var(--color-text-secondary);
 }
