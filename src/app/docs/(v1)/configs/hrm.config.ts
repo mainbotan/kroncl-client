@@ -3,14 +3,14 @@ import { DocsNavSectionProps } from "../../components/panel/components/nav-secti
 export const hrmSections: DocsNavSectionProps[] = [
     {
         label: 'Сотрудники',
-        href: '/'
+        href: '/docs/companies/modules/hrm/employees'
     },
     {
         label: 'Должности',
-        href: '/'
+        href: '/docs/companies/modules/hrm/positions'
     },
     {
         label: 'Рабочий график',
-        href: '/'
+        href: '/docs/companies/modules/hrm/shedule'
     }
 ]

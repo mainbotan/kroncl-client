@@ -1,0 +1,30 @@
+import Link from 'next/link';
+import styles from '@/assets/styles/mdx.module.scss';
+import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. «Управление персоналом»
+
+Модуль управления персоналом — функционал ведения индивидуальных карт сотрудников, 
+назначения на должности и составления рабочего графика всего коллектива на основе рабочих планов конкретных работников.
+
+Основные сущности модуля:
+
+- сотрудник
+- должность
+- рабочий график
+<br />
+
+# 2. До прочтения модуля
+
+В главах этого модуля используются перекрёстные ссылки и термины из следующих разделов документации:
+
+- <Link href='/docs/companies/accesses' className={styles.link}>Доступы</Link>: <span className={styles.secondary}>используется объяснённая система переопределения прав на основании должностей, сотрудников и конкретных аккаунтов.</span>
+<br />
+Рекомендуем начать чтение этого модуля после прочтения указанных глав.
+<br />
+
+# 3. Краткий обзор модуля
+
+<MDXImageBlock src='/images/docs/company-employees.png' label='Просмотр сотрудников.' />
+<MDXImageBlock src='/images/docs/company-create-employee.png' label='Создание сотрудника.' />
+<MDXImageBlock src='/images/docs/company-employee.png' label='Просмотр карты сотрудника.' />
