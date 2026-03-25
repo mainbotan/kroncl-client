@@ -1,3 +1,37 @@
 import Link from 'next/link';
 import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. Модули
+
+Ознакомившись с основным функционалом панели управления аккаунтом, а также базовыми концепциями администрации организаций, перейдём к изучению
+функционала модулей.
+
+В этой документации уже <Link href='/docs' className={styles.link}>упоминалось</Link> свойство <span className={styles.underline}>модульности</span> платформы Kroncl. 
+Это значит, что весь функционал в рамках конкретной организации разделён нами на предметные области, самодостаточные, но при этом тесно связанные.
+
+На разделении по модулям основывается <Link className={styles.link} href='/docs/companies/pricing'>тарифная сетка</Link> Kroncl, в этом же разделе подробно рассматривается
+функционал каждого отдельного модуля, объясняются примеры взаимодействия между ними.
+
+# 2. Основные модули
+
+Итак, модули Kroncl, образующие скелет малого бизнеса:
+
+- <Link href='/docs/companies/modules/hrm' className={styles.link}>«Управление персоналом»</Link> <span className={styles.secondary}>(HRM)</span>
+- <Link href='/docs/companies/modules/fm' className={styles.link}>«Финансы»</Link> <span className={styles.secondary}>(FM)</span>
+- <Link href='/docs/companies/modules/wm' className={styles.link}>«Каталог & Склад»</Link> <span className={styles.secondary}>(WM)</span>
+- <Link href='/docs/companies/modules/crm' className={styles.link}>«Клиентская база»</Link> <span className={styles.secondary}>(CRM)</span>
+- <Link href='/docs/companies/modules/dm' className={styles.link}>«Управление сделками»</Link> <span className={styles.secondary}>(DM)</span>
+<br />
+
+Как уже было сказано, каждый из этих модулей является самодостаточным. Однако трудно представить ситуацию, когда модуль клиентской базы оказывается
+нужным без модуля управления сделками — с этим нельзя не согласиться.
+
+Мы <span className={styles.accent}>настоятельно рекомендуем</span> ознакомиться с возможностями каждого модуля, независимо от текущего тарифного плана вашей организации.
+Исчерпывающее понимание всей системы — ключ к структуризации вашего дела.
+
+# 3. Порядок глав
+
+Мы намеренно расположили главы документации, посвящённые модулям Kroncl, соответственно разделению модулей по <Link href='/docs/companies/pricing' className={styles.link}>тарифным планам</Link> (от меньшего к большему).
+Таким образом, мы получаем возможность посвятить читателя в тонкости работы фундаментообразующих модулей (<span className={styles.secondary}>как например «Финансы»</span>), а затем использовать
+отработанные концепции в документации модулей с меньшим приоритетом.
