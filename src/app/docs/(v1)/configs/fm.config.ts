@@ -18,7 +18,7 @@ export const fmSections: DocsNavSectionProps[] = [
                 href: '/docs/companies/modules/fm/movement-of-funds/balance'
             },
             {
-                label: 'Анализ',
+                label: 'Анализ операций',
                 href: '/docs/companies/modules/fm/movement-of-funds/analysis'
             }
         ]
