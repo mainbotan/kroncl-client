@@ -1,0 +1,95 @@
+import Link from 'next/link';
+import styles from '@/assets/styles/mdx.module.scss';
+import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. Операции
+
+Операция - минимальный логический блок модуля «Финансы». В рамках Kroncl операция/транзакция = 
+факт дохода/расхода организации. 
+
+Каждую финансовую операцию характеризует несколько основных параметров:
+
+- дата совершения операции
+- направление (расход/доход)
+- сумма
+- валюта
+- ответственный сотрудник: <span className={styles.secondary}>связь с модулем <Link href='/docs/companies/modules/hrm' className={styles.link}>«Управление персоналом»</Link></span>
+- категория: <span className={styles.secondary}>подробнее в главе <Link href='/docs/companies/modules/fm/movement-of-funds/categories' className={styles.link}>«Категории»</Link></span>
+- комментарий <span className={styles.secondary}>(опционально)</span>
+<br />
+На основании ряда финансовых операций строится <span className={styles.underline}>финансовая история</span> организации, что дает возможность
+вычислять баланс предприятия в любой момент времени.
+
+Kroncl предоставляет полную свободу в создании операций на любые суммы, однако запрещает единственное действие с финансовой историей:
+
+- <span className={styles.underline}>удаление операций</span>
+<br />
+
+Данный подход не изобретение и де-факто является стандартом в сфере финансового аудита, 
+однако во многих самописных решениях организаций малого/среднего бизнеса остается без внимания.
+
+Подробнее о корректных способах отмены операции в этой главе.
+
+# 2. Просмотр операций
+
+На главной странице раздела <span className={styles.underline}>«Финансы»</span> доступен просмотр истории финансовых операций.
+Также на страницах конкретных категорий (подробнее <Link href='/docs/companies/modules/fm/movement-of-funds/categories' className={styles.link}>в главе «Категории»</Link>)
+доступны операции с разделением по соответствующим категориям.
+
+<MDXImageBlock src='/images/docs/company-transactions.png' label='Просмотр операций.' />
+
+Подробно рассмотрим карту конкретной операции.
+
+<MDXImageBlock src='/images/docs/company-transactions-cut.png' label='Просмотр операции.' />
+
+На изображении выделены области транзакции, несущие смысловую нагрузку:
+
+- сумма + валюта
+- категория <span className={styles.secondary}>(переход на страницу категории при клике)</span>
+- комментарий
+- ответственный сотрудник <span className={styles.secondary}>(переход на страницу сотрудника при клике)</span>
+- дата
+<br />
+При наведении на карту транзакции для соответствующей операции появится действие <span className={styles.accent}>«Отменить»</span>.
+
+# 3. Отмена операции
+
+В корпоративной среде нередки ситуации, когда та или иная финансовая операция оказывается ошибочной и требует отмены. Для этих
+случаев используется механизм <span className={styles.underline}>корректирующей операции</span>, являющейся по большому счету копией исходной транзакции, но с обратным направлением: доход станет расходом, а расход станет доходом.
+
+Для отмены операции нажмите на действие <span className={styles.underline}>«Отменить»</span> соответствующей операции и подтвердите действие.
+
+<MDXImageBlock src='/images/docs/company-reverse-transaction.png' label='Отмена операции.' />
+
+Сразу после подтверждения действия в историю операций добавится транзакция с противоположным направлением с пометкой
+<span className={styles.underline}>«Обратная операция»</span>.
+
+<MDXImageBlock src='/images/docs/company-init-and-reverse-transactions.png' label='Начальная и обратная операции.' />
+
+Важным ограничением Kroncl является создание <span className={styles.accent}>только одной обратной операции для каждой изначальной</span>. Сделано это специально
+во избежание хаоса из сотен обратных операций для одной единственной начальной. Однако обратные операции могут в свою очередь иметь обратные операции 2-го, 3-го и до ... уровней.
+
+# 4. Создание операции
+
+Для создания операции нажмите на соответствующее направление <span className={styles.underline}>«Расход»</span> или <span className={styles.underline}>«Доход»</span>
+в правом верхнем углу страницы просмотра финансовой истории.
+
+<MDXImageBlock src='/images/docs/company-create-transaction.png' label='Создание операции.' />
+
+Заполните базовые поля, описанные в первом пункте этой главы, включая сумму и валюту операции.
+
+## 4.1 Ответственный сотрудник
+
+Для создания операции <span className={styles.underline}>требуется</span> указать ответственного сотрудника. Подробнее о создании сотрудников читайте в главе
+<Link href='/docs/companies/modules/hrm/employees' className={styles.link}>«Сотрудники»</Link>. 
+
+<MDXImageBlock src='/images/docs/company-create-transaction-choose-employee.png' label='Выбор сотрудника.' />
+
+## 4.2 Категория
+
+В зависимости от направления операции (<span className={styles.underline}>«Расход»</span> или <span className={styles.underline}>«Доход»</span>) в секции категории появятся
+уже созданные категории (<Link href='/docs/companies/modules/fm/movement-of-funds/categories' className={styles.link}>подробнее о категориях</Link>).
+
+<MDXImageBlock src='/images/docs/company-create-transaction-choose-category.png' label='Выбор категории.' />
+
+После создания операции произойдет перенаправление на страницу просмотра финансовой истории с вновь пересчитанным балансом предприятия.

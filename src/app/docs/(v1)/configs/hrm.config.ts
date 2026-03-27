@@ -9,8 +9,8 @@ export const hrmSections: DocsNavSectionProps[] = [
         label: 'Должности',
         href: '/docs/companies/modules/hrm/positions'
     },
-    {
-        label: 'Рабочий график',
-        href: '/docs/companies/modules/hrm/shedule'
-    }
+    // {
+    //     label: 'Рабочий график',
+    //     href: '/docs/companies/modules/hrm/shedule'
+    // }
 ]

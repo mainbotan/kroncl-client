@@ -14,10 +14,21 @@ export const breadcrumbDictionary: Record<string, string> = {
     'storage': 'Хранилище',
     'backups': 'Резервные копии',
     'hrm': 'Управление персоналом',
+    'employees': 'Сотрудники',
+    'positions': 'Должности',
+    'shedule': 'Рабочий график',
     'fm': 'Финансы',
+    'movement-of-funds': 'Движение средств',
+    'operations': 'Операции',
+    'categories': 'Категории',
+    'balance': 'Баланс',
+    'debt-obligations': 'Долговые обязательства',
+    'credits-debts': 'Кредиты & Дебиты',
+    'counterparties': 'Контрагенты',
     'wm': 'Каталог & Склад',
     'crm': "Клиентская база",
-    'dm': 'Управление сделками'
+    'dm': 'Управление сделками',
+    'analysis': 'Анализ'
 }
 
 export function getBreadcrumbName(pathSegment: string): string {

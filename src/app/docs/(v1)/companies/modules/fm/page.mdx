@@ -1,0 +1,28 @@
+import Link from 'next/link';
+import styles from '@/assets/styles/mdx.module.scss';
+import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. «Финансы»
+
+Модуль «Финансы» предоставляет функционал для работы с двумя основообразующими 
+финансовыми подсистемами:
+
+- <Link href='/docs/companies/modules/fm/movement-of-funds' className={styles.link}>«Движение средств»</Link>
+- <Link href='/docs/companies/modules/fm/debt-obligations' className={styles.link}>«Долговые обязательства»</Link>
+<br />
+
+Управление финансами, включая две эти подсистемы, доступно в разделе <span className={styles.underline}>«Финансы»</span> (левая боковая панель пространства организации).
+
+# 2. До прочтения модуля
+
+В главах этого модуля используются перекрестные ссылки и термины из следующих разделов документации:
+
+- <Link href='/docs/companies/modules/hrm/employees' className={styles.link}>Сотрудники</Link>: <span className={styles.secondary}>записи сотрудников используются при назначении ответственных за финансовые операции.</span>
+<br />
+Рекомендуем начать чтение этого модуля после прочтения указанных глав.
+
+# 3. Краткий обзор модуля
+
+<MDXImageBlock src='/images/docs/company-transactions.png' label='Просмотр операций.' />
+<MDXImageBlock src='/images/docs/company-transactions-analysis.png' label='Аналитика операций.' />
+<MDXImageBlock src='/images/docs/company-debts.png' label='Долговые обязательства.' />
