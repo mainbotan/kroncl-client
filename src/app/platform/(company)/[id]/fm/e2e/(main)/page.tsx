@@ -11,6 +11,8 @@ import { AnalysisSummary, GetAnalysisParams, GroupedStats } from '@/apps/company
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { toRFC3339 } from '@/assets/utils/date-formatter';
 import { DailyChart } from '../components/daily-chart/chart';
+import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import WalletIcon from "@/assets/ui-kit/icons/wallet";
 
 export default function Page() {
     const fmModule = useFm();
@@ -19,6 +21,7 @@ export default function Page() {
     const [summary, setSummary] = useState<AnalysisSummary | null>(null);
     const [dailyData, setDailyData] = useState<GroupedStats[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         loadData();
@@ -26,6 +29,7 @@ export default function Page() {
 
     const loadData = async () => {
         setLoading(true);
+        setError(null);
         try {
             const params: { start_date?: string; end_date?: string } = {};
             const urlStartDate = searchParams.get('start_date');
@@ -42,20 +46,71 @@ export default function Page() {
                 } as GetAnalysisParams & { group_by: 'day' })
             ]);
             
-            if (summaryRes.status) setSummary(summaryRes.data);
+            if (summaryRes.status) {
+                setSummary(summaryRes.data);
+            }
+            
             if (dailyRes.status) {
-                // Сортируем по дате (от старых к новым)
-                const sorted = [...dailyRes.data].sort((a, b) => 
-                    a.group_key.localeCompare(b.group_key)
-                );
-                setDailyData(sorted);
+                // Проверяем, есть ли данные и не пустые ли они
+                if (dailyRes.data && dailyRes.data.length > 0) {
+                    // Сортируем по дате (от старых к новым)
+                    const sorted = [...dailyRes.data].sort((a, b) => 
+                        a.group_key.localeCompare(b.group_key)
+                    );
+                    setDailyData(sorted);
+                } else {
+                    setDailyData([]);
+                }
             }
         } catch (error) {
+            setError(error instanceof Error ? error.message : "Ошибка загрузки");
             console.error('Error loading analysis:', error);
         } finally {
             setLoading(false);
         }
     };
+
+    if (loading) return (
+        <div style={{
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            fontSize: ".7em", 
+            color: "var(--color-text-description)", 
+            minHeight: "10rem"
+        }}>
+            <Spinner />
+        </div>
+    );
+    
+    if (error) return (
+        <div style={{
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            fontSize: ".7em", 
+            color: "var(--color-text-description)", 
+            minHeight: "10rem"
+        }}>
+            {error}
+        </div>
+    );
+
+    // Проверяем, есть ли данные для отображения
+    const hasData = summary && (summary.net_balance !== 0 || 
+                                 summary.total_income !== 0 || 
+                                 summary.total_expense !== 0 ||
+                                 summary.transaction_count > 0 ||
+                                 dailyData.length > 0);
+
+    if (!hasData) {
+        return (
+            <PlatformEmptyCanvas 
+                title='Нет данных по финансам за выбранный период.'
+                icon={<Wallet />}
+            />
+        );
+    }
 
     return (
         <div className={styles.grid}>    

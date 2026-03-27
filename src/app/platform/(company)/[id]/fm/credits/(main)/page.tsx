@@ -12,6 +12,8 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useEffect, useState } from 'react';
 import { CreditsResponse, CreditDetail } from '@/apps/company/modules/fm/types';
 import { useFm } from '@/apps/company/modules';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import Wallet from '@/assets/ui-kit/icons/wallet';
 
 export default function Page() {
     const params = useParams();
@@ -143,16 +145,10 @@ export default function Page() {
                 }}
             />
             {credits.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem"
-                }}>
-                    Кредиты и займы не найдены
-                </div>
+                <PlatformEmptyCanvas
+                    title='Кредиты и займы не найдены.'
+                    icon={<Wallet />}
+                />
             ) : (
                 <>
                 <div className={styles.grid}>

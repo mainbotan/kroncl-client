@@ -12,6 +12,7 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useEffect, useState } from 'react';
 import { CounterpartiesResponse, Counterparty } from '@/apps/company/modules/fm/types';
 import { useFm } from '@/apps/company/modules';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
 
 export default function Page() {
     const params = useParams();
@@ -137,16 +138,9 @@ export default function Page() {
                 }}
             />
             {counterparties.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem"
-                }}>
-                    Контрагенты не найдены
-                </div>
+                <PlatformEmptyCanvas
+                    title='Контрагенты не найдены.'
+                />
             ) : (
                 <>
                 <div className={styles.grid}>

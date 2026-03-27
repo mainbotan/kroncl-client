@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { CategoriesResponse, TransactionCategory } from '@/apps/company/modules/fm/types';
 import { useFm } from "@/apps/company/modules";
 import { GroupChart } from "./components/group-chart/chart";
+import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
 
 export default function Page() {
     const params = useParams();
@@ -152,16 +153,9 @@ export default function Page() {
                 showSearch
             />
             {categories.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem"
-                }}>
-                    Категории не найдены
-                </div>
+                <PlatformEmptyCanvas
+                    title='Категорий пока нет.'
+                />
             ) : (
                 <>
                 <div className={styles.grid}>

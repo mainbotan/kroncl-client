@@ -11,9 +11,9 @@ export const sectionsList = (companyId: string): PlatformHeadSection[] => {
             label: 'Контрагенты',
             href: `/platform/${companyId}/fm/credits/counterparties`
         },
-        {
-            label: 'Оценка рисков',
-            href: `/platform/${companyId}/fm/credits/risks`
-        }
+        // {
+        //     label: 'Оценка рисков',
+        //     href: `/platform/${companyId}/fm/credits/risks`
+        // }
     ];
 }

@@ -104,7 +104,7 @@ export default function AnalysisPage() {
     if (!hasData) {
         return (
             <PlatformEmptyCanvas 
-                title='Нет данных за выбранный период'
+                title='Нет данных за выбранный период.'
                 icon={<Chart />}
             />
         );

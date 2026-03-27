@@ -93,7 +93,7 @@ export default function SourcesAnalysisPage() {
     if (!hasData) {
         return (
             <PlatformEmptyCanvas 
-                title='Нет данных по источникам за выбранный период'
+                title='Нет данных по источникам за выбранный период.'
                 icon={<Chart />}
             />
         );

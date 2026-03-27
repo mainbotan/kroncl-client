@@ -21,6 +21,7 @@ import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
 import { formatDate } from '@/assets/utils/date';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
 
 export default function Page() {
     const params = useParams();
@@ -296,55 +297,48 @@ export default function Page() {
                 </Link>
             </div>
 
-            <div className={styles.body} style={{ position: 'relative' }}>
-                <Timeline 
-                    onPositionChange={handleTimelinePositionChange}
-                    itemHeight={itemHeight}
+            {transactions.length === 0 ? (
+                <PlatformEmptyCanvas
+                    title='Операций пока нет.'
+                    icon={<Wallet />}
+                    className={styles.plug}
                 />
-                
-                {transactions.length === 0 ? (
-                    <div style={{
-                        display: "flex", 
-                        alignItems: "center", 
-                        justifyContent: "center", 
-                        fontSize: ".7em", 
-                        color: "var(--color-text-description)", 
-                        minHeight: "10rem",
-                        width: "100%"
-                    }}>
-                        Нет операций
-                    </div>
-                ) : (
-                    <>
-                        {transactions.map((transaction, index) => (
-                            <motion.div 
-                                key={transaction.id} 
-                                ref={index === 0 ? transactionRef : null}
-                                style={{
-                                    position: 'relative',
-                                    zIndex: splitIndex === index ? 5 : 1
-                                }}
-                                variants={transactionVariants}
-                                initial="hidden"
-                                animate="visible"
-                                custom={index}
-                            >
-                                <TransactionCard 
-                                    transaction={transaction}
-                                    className={clsx(styles.transaction, {
-                                        [styles.beforeSplit]: splitIndex !== -1 && index < splitIndex,
-                                        [styles.afterSplit]: splitIndex !== -1 && index >= splitIndex
-                                    })}
-                                    onReverse={() => setReverseModal({ 
-                                        isOpen: true, 
-                                        transactionId: transaction.id 
-                                    })}
-                                />
-                            </motion.div>
-                        ))}
-                    </>
-                )}
-            </div>
+            ) : (
+                <div className={styles.body} style={{ position: 'relative' }}>
+                    <Timeline 
+                        onPositionChange={handleTimelinePositionChange}
+                        itemHeight={itemHeight}
+                    />
+                        <>
+                            {transactions.map((transaction, index) => (
+                                <motion.div 
+                                    key={transaction.id} 
+                                    ref={index === 0 ? transactionRef : null}
+                                    style={{
+                                        position: 'relative',
+                                        zIndex: splitIndex === index ? 5 : 1
+                                    }}
+                                    variants={transactionVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    custom={index}
+                                >
+                                    <TransactionCard 
+                                        transaction={transaction}
+                                        className={clsx(styles.transaction, {
+                                            [styles.beforeSplit]: splitIndex !== -1 && index < splitIndex,
+                                            [styles.afterSplit]: splitIndex !== -1 && index >= splitIndex
+                                        })}
+                                        onReverse={() => setReverseModal({ 
+                                            isOpen: true, 
+                                            transactionId: transaction.id 
+                                        })}
+                                    />
+                                </motion.div>
+                            ))}
+                        </>
+                </div>
+            )}
             {pagination && pagination.pages > 1 && (
                 <div className={styles.pagination}>
                     <PlatformPagination
