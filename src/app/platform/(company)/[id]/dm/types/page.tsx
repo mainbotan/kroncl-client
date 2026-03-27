@@ -12,6 +12,7 @@ import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useDm } from "@/apps/company/modules";
 import { DealTypesResponse } from "@/apps/company/modules/dm/types";
+import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
 
 export default function Page() {
     const params = useParams();
@@ -129,16 +130,8 @@ export default function Page() {
                 showSearch
             />
             {dealTypes.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem"
-                }}>
-                    Типы не найдены
-                </div>
+                <PlatformEmptyCanvas
+                    title='Типы не найдены' />
             ) : (
                 <>
                     <div className={styles.grid}>
