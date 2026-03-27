@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { CompanyAccountsResponse } from '@/apps/company/modules/accounts/types';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import Team from '@/assets/ui-kit/icons/team';
 
 export default function Page() {
     const accountsModule = useAccounts();
@@ -99,16 +101,9 @@ export default function Page() {
     return (
         <>
             {accounts.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem"
-                }}>
-                    Участники не найдены
-                </div>
+                <PlatformEmptyCanvas
+                    title='Участники не найдены.'
+                    icon={<Team />} />
             ) : (
                 <>
                     {accounts.map((account) => (

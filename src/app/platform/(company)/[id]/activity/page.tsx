@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import { LogsResponse } from '@/apps/company/modules/logs/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import History from '@/assets/ui-kit/icons/history';
 
 export default function Page() {
     const params = useParams();
@@ -107,17 +109,9 @@ export default function Page() {
             
             <div className={styles.grid}>
                 {logs.length === 0 ? (
-                    <div style={{
-                        display: "flex", 
-                        alignItems: "center", 
-                        justifyContent: "center", 
-                        fontSize: ".7em", 
-                        color: "var(--color-text-description)", 
-                        minHeight: "10rem",
-                        width: "100%"
-                    }}>
-                        Нет записей
-                    </div>
+                    <PlatformEmptyCanvas
+                        title='Нет действий в организации.' 
+                        icon={<History />} />
                 ) : (
                     logs.map((log) => (
                         <LogCard className={styles.log} key={log.id} log={log} />

@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { CompanyInvitationsResponse } from '@/apps/company/modules/accounts/types';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import Invitations from '@/assets/ui-kit/icons/invitations';
 
 export default function Page() {
     const accountsModule = useAccounts();
@@ -86,16 +88,10 @@ export default function Page() {
     return (
         <>
             {invitations.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem"
-                }}>
-                    Приглашения не найдены
-                </div>
+                <PlatformEmptyCanvas
+                    title='Приглашения не найдены' 
+                    icon={<Invitations />}
+                    />
             ) : (
                 <>
                     {invitations.map((invitation) => (
