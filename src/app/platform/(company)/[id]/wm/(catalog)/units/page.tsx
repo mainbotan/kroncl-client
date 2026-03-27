@@ -14,6 +14,8 @@ import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import { useWm } from "@/apps/company/modules";
 import { UnitCard } from "../../components/unit-card/card";
 import clsx from "clsx";
+import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import TwoCards from "@/assets/ui-kit/icons/two-cards";
 
 export default function UnitsPage() {
     const params = useParams();
@@ -166,17 +168,9 @@ export default function UnitsPage() {
                 </div>
             )}
             {units.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem",
-                    gridColumn: "1 / -1"
-                }}>
-                    {categoryId ? 'В этой категории нет товарных позиций' : 'Товарных позиций пока нет'}
-                </div>
+                <PlatformEmptyCanvas
+                    title={categoryId ? 'В этой категории нет товарных позиций.' : 'Товарных позиций пока нет.'}
+                    icon={<TwoCards />} />
             ) : (
                 <>
                 <div className={styles.grid}>

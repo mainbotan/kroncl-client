@@ -14,6 +14,8 @@ import { PlatformPagination } from '@/app/platform/components/lib/pagination/pag
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import { useWm } from "@/apps/company/modules";
 import clsx from "clsx";
+import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import TwoCards from "@/assets/ui-kit/icons/two-cards";
 
 export default function CatalogPage() {
     const params = useParams();
@@ -173,17 +175,10 @@ export default function CatalogPage() {
                 </div>
             )}
             {categories.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem",
-                    gridColumn: "1 / -1"
-                }}>
-                    {categoryId ? 'В этой категории нет подкатегорий' : 'Категорий пока нет'}
-                </div>
+                <PlatformEmptyCanvas
+                    title={categoryId ? 'В этой категории нет подкатегорий.' : 'Категорий пока нет.'}
+                    icon={<TwoCards />}
+                />
             ) : (
                 <>
                 <div className={styles.grid}>

@@ -14,6 +14,8 @@ import { EmployeesResponse } from '@/apps/company/modules/hrm/types';
 import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Employee } from '@/apps/company/modules/hrm/types';
 import { sections } from "../_sections";
+import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import Team from "@/assets/ui-kit/icons/team";
 
 export default function Page() {
     const params = useParams();
@@ -131,17 +133,9 @@ export default function Page() {
                 showSearch
             />
             {employees.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem",
-                    gridColumn: "1 / -1"
-                }}>
-                    В штате сотрудников пусто
-                </div>
+                <PlatformEmptyCanvas
+                    title='В штате сотрудников пусто.'
+                    icon={<Team />} />
             ) : (
                 <>
                 <div className={styles.grid}>

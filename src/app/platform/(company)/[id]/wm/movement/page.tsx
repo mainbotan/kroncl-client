@@ -13,6 +13,8 @@ import { StockBatchesResponse } from '@/apps/company/modules/wm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
+import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import TwoCards from '@/assets/ui-kit/icons/two-cards';
 
 export default function MovementsPage() {
     const params = useParams();
@@ -142,17 +144,10 @@ export default function MovementsPage() {
             />
             
             {batches.length === 0 ? (
-                <div style={{
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center", 
-                    fontSize: ".7em", 
-                    color: "var(--color-text-description)", 
-                    minHeight: "10rem",
-                    gridColumn: "1 / -1"
-                }}>
-                    Документов движения пока нет
-                </div>
+                <PlatformEmptyCanvas
+                    title='Документов движения пока нет.'
+                    icon={<TwoCards />}
+                />
             ) : (
                 <>
                 <div className={styles.grid}>
