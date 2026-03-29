@@ -1,3 +1,4 @@
+import { DOCS_LINK_COMPANIES } from "@/app/docs/(v1)/internal.config";
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import Edit from "@/assets/ui-kit/icons/edit";
 import Plus from "@/assets/ui-kit/icons/plus";
@@ -51,6 +52,10 @@ export function CompaniesHeader({
         defaultValue: searchQuery,
         onSearch: onSearch,
         debounceMs: 500
+      }}
+      docsEscort={{
+          href: DOCS_LINK_COMPANIES,
+          title: 'Подробнее об организациях на платформе Kroncl.'
       }}
     />
   );

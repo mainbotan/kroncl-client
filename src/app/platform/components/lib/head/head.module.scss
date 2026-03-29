@@ -145,7 +145,7 @@
         display: block;
         overflow-x: scroll;
         @include no-scrollbar();
-        border-bottom: 3px solid var(--color-stroke-secondary);
+        border-bottom: 2px solid var(--color-stroke-secondary);
         overflow-y: visible;
 
         .grid {
@@ -182,7 +182,7 @@
     .search {
         display: flex;
         font-size: .77em;
-        padding: 0 0 1em 0;
+        padding: 1em 0;
         // background-color: var(--color-surface-elevated);
         flex-flow: row nowrap;
 

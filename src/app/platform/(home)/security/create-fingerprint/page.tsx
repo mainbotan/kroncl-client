@@ -12,6 +12,7 @@ import Copy from '@/assets/ui-kit/icons/copy';
 import styles from './page.module.scss';
 import { CreateFingerprintResponse } from '@/apps/account/fingerprints/types';
 import Input from '@/assets/ui-kit/input/input';
+import { DOCS_LINK_ACCOUNT_SECURITY } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const router = useRouter();
@@ -72,6 +73,10 @@ export default function Page() {
             <PlatformHead
                 title='Новый ключ доступа'
                 description='Создание нового отпечатка для входа по ключу'
+                docsEscort={{
+                    href: DOCS_LINK_ACCOUNT_SECURITY,
+                    title: 'Подробнее о ключах доступа.'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Срок действия'>

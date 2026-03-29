@@ -19,6 +19,8 @@ import { InvitationCard } from '../invitations/components/invitation-card';
 import { AccountInvitation } from '@/apps/account/invitations/types';
 import { invitationsApi } from '@/apps/account/invitations/api';
 import Empty from '@/assets/ui-kit/icons/empty';
+import { PlatformHead } from '../../components/lib/head/head';
+import { DOCS_LINK_ACCOUNT } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const [profile, setProfile] = useState<Account | null>(null);
@@ -105,66 +107,31 @@ export default function Page() {
             animate="visible"
             variants={fadeInUp}
         >
-            <motion.div className={styles.head} variants={staggerChildren}>
-                <motion.div className={styles.avatar} variants={staggerChildren}>
-                    {profile.avatar_url ? (
-                        <motion.span 
-                            className={styles.img} 
-                            style={{backgroundImage: `url('${profile.avatar_url}')`}}
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.2 }}
-                        />
-                    ) : (
-                        <motion.span 
-                            className={clsx(styles.img, styles.gradient)}
-                            style={{ background: getRandomGradient(profile) }}
-                            whileHover={{ scale: 1.05, rotate: 5 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            {profile.name.charAt(0).toUpperCase()}
-                        </motion.span>
-                    )}
-                </motion.div>
-                
-                <motion.div className={styles.info} variants={staggerChildren}>
-                    <motion.div className={styles.name} variants={fadeInUp}>
-                        {profile.name}
-                    </motion.div>
-                    <motion.div className={styles.description} variants={fadeInUp}>
-                        <ModalTooltip content={`${profile.email} - на эту почту поступают приглашения.`} side='bottom'>
-                            <span>{profile.email}</span>
-                        </ModalTooltip>
-                    </motion.div>
-                </motion.div>
-                
-                <motion.div className={styles.actions} variants={staggerChildren}>
-                    <motion.div className={styles.action} variants={fadeInUp}>
-                        <Button 
-                            icon={<Edit />} 
-                            as='link' 
-                            href='/platform/account/edit' 
-                            className={styles.action} 
-                            fullWidth 
-                            variant='light'
-                        >
-                            Редактировать
-                        </Button>
-                    </motion.div>
-                    <motion.div className={styles.action} variants={fadeInUp}>
-                        <ModalTooltip content="Выйти из аккаунта. Действие нельзя отменить." side='left'>
-                            <Button 
-                                icon={<Exit className={styles.icon} />} 
-                                className={styles.action} 
-                                fullWidth 
-                                onClick={handleLogout}
-                                loading={isLoggingOut}
-                                disabled={isLoggingOut}
-                                variant='default'
-                            />
-                        </ModalTooltip>
-                    </motion.div>
-                </motion.div>
-            </motion.div>
+            <PlatformHead
+                title='Управление аккаунтом.'
+                description='Настройки вашей учётной записи.'
+                actions={[
+                    {
+                        variant: 'accent',
+                        children: 'Редактировать',
+                        href: '/platform/account/edit',
+                        icon: <Edit />
+                    }, 
+                    {
+                        variant: 'empty',
+                        children: 'Выйти',
+                        icon: <Exit />,
+                        as: 'button',
+                        onClick: handleLogout,
+                        loading: isLoggingOut,
+                        disabled: isLoggingOut
+                    }
+                ]}
+                docsEscort={{
+                    href: DOCS_LINK_ACCOUNT,
+                    title: 'Подробнее о личной учётной записи.'
+                }}
+            />
             
             <div className={styles.body}>
                 <div className={styles.section}>

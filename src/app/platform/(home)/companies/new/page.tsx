@@ -15,6 +15,7 @@ import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { useRouter } from 'next/navigation';
 import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormStatus, PlatformFormUnify, PlatformFormVariants } from '@/app/platform/components/lib/form';
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
+import { DOCS_LINK_COMPANIES } from '@/app/docs/(v1)/internal.config';
 
 
 type FormData = {
@@ -405,6 +406,10 @@ switch (pageState) {
         <PlatformHead
             title="Создание компании"
             description='Создание пространства учётной системы для новой компании.'
+            docsEscort={{
+                href: DOCS_LINK_COMPANIES,
+                title: 'Подробнее об организациях на платформе Kroncl.'
+            }}
         />
         <PlatformFormBody>
           <PlatformFormSection title="Название компании">

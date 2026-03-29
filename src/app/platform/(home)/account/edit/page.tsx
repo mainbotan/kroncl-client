@@ -12,6 +12,7 @@ import { PlatformFormStatus } from '@/app/platform/components/lib/form';
 import SuccessStatus from '@/assets/ui-kit/icons/success-status';
 import ErrorStatus from '@/assets/ui-kit/icons/error-status';
 import { useRouter } from 'next/navigation';
+import { DOCS_LINK_ACCOUNT } from '@/app/docs/(v1)/internal.config';
 
 type FormData = {
     name: string;
@@ -177,6 +178,10 @@ export default function ProfileEditPage() {
             <PlatformHead
                 title="Редактирование аккаунта"
                 description="Изменение данных профиля."
+                docsEscort={{
+                    href: DOCS_LINK_ACCOUNT,
+                    title: 'Подробнее о личной учётной записи.'
+                }}
             />
             
             <PlatformFormBody>
