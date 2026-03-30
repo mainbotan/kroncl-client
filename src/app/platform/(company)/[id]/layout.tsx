@@ -7,7 +7,7 @@ import { CompanyProvider } from "@/apps/company/provider";
 import { notFound } from "next/navigation";
 import { companiesApiSSR } from "@/apps/account/companies/api-ssr";
 import { PlatformContentWrapper } from "../../components/lib/wrapper/wrapper";
-import { CompanyStorageWidget } from "./storage/widget/widget";
+import { StorageWidget } from "./storage/widgets/storage-widget/widget";
 import { ModalPageProvider } from "../../components/lib/modal-page/context";
 import { PlatformModalPage } from "../../components/lib/modal-page/modal";
 import { PlatformSideContent } from "../../components/side-content/content";
@@ -24,7 +24,7 @@ export type CompanyParams = {
   }
 }
 
-async function getCompanyData(companyId: string): Promise<AccountCompany | null> {
+export async function getCompanyData(companyId: string): Promise<AccountCompany | null> {
   return companiesApiSSR.getCompany(companyId);
 }
 
@@ -45,6 +45,12 @@ export default async function CompanyLayout({
   }
   
   const sections: PanelSection[] = [
+    {
+      name: 'Рабочее место',
+      href: `/platform/${companyId}`,
+      icon: 'home',
+      exact: true
+    },
     {
       name: 'Сделки',
       href: `/platform/${companyId}/dm`,
@@ -102,7 +108,7 @@ export default async function CompanyLayout({
     },
   ];
 
-  const storageWidget = <CompanyStorageWidget />;
+  const storageWidget = <StorageWidget variant="compact" />;
 
   const actions: PanelAction[] = [
     {

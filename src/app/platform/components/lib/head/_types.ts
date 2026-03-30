@@ -25,7 +25,7 @@ export interface PlatformHeadDocsEscort {
 }
 
 export interface PlatformHeadProps {
-  title: string;
+  title?: string;
   description?: string;
   actions?: PlatformHeadAction[];
   sections?: PlatformHeadSection[];
@@ -42,4 +42,5 @@ export interface PlatformHeadProps {
   notes?: PlatformHeadNote[];
   docsEscort?: PlatformHeadDocsEscort;
   children?: React.ReactNode;
+  childrenPosition?: 'top' | 'inside' | 'below'
 }

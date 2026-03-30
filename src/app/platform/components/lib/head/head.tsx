@@ -39,6 +39,7 @@ export function PlatformHead({
   showSearch = false,
   searchProps = {},
   children,
+  childrenPosition = 'inside',
   notes = [],
   docsEscort,
 }: PlatformHeadProps) {
@@ -56,13 +57,7 @@ export function PlatformHead({
   const activePath = getFullUrl();
   const [searchValue, setSearchValue] = useState(searchProps.defaultValue || '');
 
-  // ДЕБАГ - посмотрим что получаем
   useEffect(() => {
-    console.log('PlatformHead Debug:');
-    console.log('- pathname:', pathname);
-    console.log('- searchParams:', searchParams.toString());
-    console.log('- activePath (full URL):', activePath);
-    
     sections.forEach(section => {
       console.log(`  Section "${section.label}":`, {
         href: section.href,
@@ -121,10 +116,11 @@ export function PlatformHead({
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.info}>
-          <div className={styles.capture}>{title}</div>
+          {title && (<div className={styles.capture}>{title}</div>)}
           {description && (
             <div className={styles.description}>{description}</div>
           )}
+          {(children && (childrenPosition === 'top')) && (children)}
         </div>
         
         {(actions.length > 0 || docsEscort) && (
@@ -146,7 +142,7 @@ export function PlatformHead({
           </div>
         )}
       </div>
-      {children && (children)}
+      {(children && (childrenPosition === 'inside')) && (children)}
       {sections.length > 0 && (
         <div className={styles.sections}>
           <div className={styles.grid}>
@@ -227,6 +223,8 @@ export function PlatformHead({
           ))}
         </div>
       )}
+      
+      {(children && (childrenPosition === 'below')) && (children)}
     </div>
   );
 }
