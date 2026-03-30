@@ -13,6 +13,8 @@ export interface PlatformFormSectionProps {
   children: ReactNode;
   className?: string;
   actions?: ButtonProps[];
+  link?: string;
+  linkText?: string;
 }
 
 export interface PlatformFormInputProps {

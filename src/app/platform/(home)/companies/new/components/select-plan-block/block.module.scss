@@ -1,0 +1,13 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+
+    .item {
+        &.selected {
+            border: 2px solid var(--color-accent);
+        }
+    }
+}

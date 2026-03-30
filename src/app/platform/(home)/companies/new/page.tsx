@@ -15,7 +15,8 @@ import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { useRouter } from 'next/navigation';
 import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormStatus, PlatformFormUnify, PlatformFormVariants } from '@/app/platform/components/lib/form';
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
-import { DOCS_LINK_COMPANIES } from '@/app/docs/(v1)/internal.config';
+import { DOCS_LINK_COMPANIES, DOCS_LINK_COMPANIES_PRICING } from '@/app/docs/(v1)/internal.config';
+import { SelectPlanBlock } from './components/select-plan-block/block';
 
 
 type FormData = {
@@ -431,7 +432,7 @@ switch (pageState) {
             </PlatformFormUnify>
             {slugStatus !== 'idle' && (
               <PlatformFormStatus
-                type={statusInfo.type}  // Теперь type есть
+                type={statusInfo.type}
                 message={statusInfo.message}
                 icon={statusInfo.icon}
               />
@@ -484,6 +485,17 @@ switch (pageState) {
               onChange={handleRegionSelect}
               disabled={pageState !== 'form'}
             />
+          </PlatformFormSection>
+
+          {/** PRICING */}
+          
+          <PlatformFormSection
+            title="Тарификация"
+            description="После окончания тестового периода."
+            link={DOCS_LINK_COMPANIES_PRICING}
+            linkText='Подробнее о правилах тарификации организаций на платформе Kroncl.'
+          >
+            <SelectPlanBlock  />
           </PlatformFormSection>
 
           <section>

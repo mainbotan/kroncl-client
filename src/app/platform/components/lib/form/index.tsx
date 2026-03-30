@@ -12,6 +12,7 @@ import {
   PlatformFormBodyProps
 } from './_types';
 import Button from '@/assets/ui-kit/button/button';
+import Link from 'next/link';
 
 
 export function PlatformFormBody({
@@ -26,11 +27,13 @@ export function PlatformFormSection({
   description,
   children,
   className,
-  actions
+  actions,
+  link,
+  linkText
 }: Readonly<PlatformFormSectionProps>) {
   return (
     <div className={clsx(styles.section, className)}>
-      {(title || actions) && (
+      {(title || actions || link) && (
         <div className={styles.top}>
             {title && <div className={styles.capture}>{title}</div>}
             {actions && (
@@ -43,6 +46,10 @@ export function PlatformFormSection({
         </div>
       )}
       {description && <div className={styles.description}>{description}</div>}
+      {link && (
+        <Link href={link} target='_blank' className={styles.link}>{linkText || 'Читайте подробнее в базе знаний.'}</Link>
+      )}
+      <span className={styles.inter} />
       {children}
     </div>
   );
