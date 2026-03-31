@@ -1,5 +1,3 @@
-// apps/account/fingerprints/api.ts
-
 import { api } from '@/apps/shared/bridge/api';
 import { ApiResponse } from '@/apps/shared/bridge/types';
 import { 
