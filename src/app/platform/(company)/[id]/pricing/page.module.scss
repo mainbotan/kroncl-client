@@ -1,0 +1,14 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1em;
+    font-size: .7em;
+
+    .item {
+        &.selected {
+            border: 2px solid var(--color-accent);
+        }
+    }
+}

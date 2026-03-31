@@ -21,6 +21,8 @@
         margin-bottom: .1rem;
         font-size: .8em;
         color: var(--color-text-secondary);
+        line-height: 1.3;
+        text-align: center;
     }
     .title {
         display: block;
@@ -98,5 +100,9 @@
                 width: 100%;
             }
         }
+    }
+
+    @media (max-width: 720px) {
+        padding: 3rem .1rem;
     }
 }

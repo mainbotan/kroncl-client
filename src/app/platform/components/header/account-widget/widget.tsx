@@ -145,6 +145,9 @@ export function AccountWidget({
                             <span className={styles.icon}><Exit /></span>
                             <span className={styles.capture}>Выйти</span>
                         </a>
+                        <div className={styles.footer}>
+                            Управление <span className={styles.accent}>учётной записью</span> Kroncl.
+                        </div>
                     </div>
                 )}
             </div>
