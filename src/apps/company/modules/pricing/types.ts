@@ -2,10 +2,11 @@ import { PricingPlan } from "@/apps/pricing/types";
 import { CurrencyType } from "../wm/types";
 import { PaginationMeta } from "@/apps/shared/pagination/types";
 
-export interface CompanyPlan {
+export interface CompanyPricingPlan {
   is_trial: boolean;
   expires_at: string;
   days_left: number;
+  days_total: number;
   current_plan: PricingPlan;
   next_plan?: PricingPlan;
 }

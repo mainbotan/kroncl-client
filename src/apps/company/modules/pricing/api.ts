@@ -1,6 +1,6 @@
 import { PaginationParams } from "@/apps/shared/pagination/types";
 import { CompanyApi } from "../../api";
-import { CompanyPlan, MigratePlanRequest, PricingTransaction, PricingTransactionsResponse } from "./types";
+import { CompanyPricingPlan, MigratePlanRequest, PricingTransaction, PricingTransactionsResponse } from "./types";
 
 export const pricingModule = (companyApi: CompanyApi) => ({
     async getTransactions(
@@ -11,7 +11,7 @@ export const pricingModule = (companyApi: CompanyApi) => ({
         });
     },
     async getPlan() {
-        return companyApi.get<CompanyPlan>("/pricing")
+        return companyApi.get<CompanyPricingPlan>("/pricing")
     },
     async migrate(data: MigratePlanRequest) {
         return companyApi.post(`/pricing/migrate`, data);

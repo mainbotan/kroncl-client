@@ -22,5 +22,9 @@
             height: 100%;
             background-color: var(--color-accent);
         }
+
+        &.loading {
+            @include shimmer();
+        }
     }
 }

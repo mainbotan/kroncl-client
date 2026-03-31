@@ -5,6 +5,7 @@ import { fmModule } from "./fm/api";
 import { useCompanyModule } from "./hooks/useModule";
 import { hrmModule } from "./hrm/api";
 import { logsModule } from "./logs/api";
+import { pricingModule } from "./pricing/api";
 import { storageModule } from "./storage/api";
 import { wmModule } from "./wm/api";
 
@@ -16,3 +17,4 @@ export const useLogs = () => useCompanyModule(logsModule);
 export const useCrm = () => useCompanyModule(crmModule);
 export const useWm = () => useCompanyModule(wmModule);
 export const useDm = () => useCompanyModule(dmModule);
+export const usePricing = () => useCompanyModule(pricingModule);
