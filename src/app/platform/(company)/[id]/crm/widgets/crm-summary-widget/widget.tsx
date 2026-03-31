@@ -57,7 +57,7 @@ export function CRMSummaryWidget({
                     С виджетом <span className={styles.accent}>клиентов</span> что-то пошло не так...
                 </div>
             )}
-            {variant === 'default' && (
+            {variant === 'default' && !error && (
                 <>
                 <div className={styles.title}>
                     CRM

@@ -56,7 +56,7 @@ export function FMSummaryWidget({
                     С виджетом <span className={styles.accent}>финансов</span> что-то пошло не так...
                 </div>
             )}
-            {variant === 'default' && (
+            {variant === 'default' && !error && (
                 <>
                 <div className={styles.title}>
                     Финансы организации

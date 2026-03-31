@@ -41,7 +41,7 @@ export function HRMSummaryWidget({
                     С виджетом <span className={styles.accent}>сотрудников</span> что-то пошло не так...
                 </div>
             )}
-            {variant === 'default' && (
+            {variant === 'default' && !error && (
                 <>
                 <div className={styles.title}>
                     Штат сотрудников

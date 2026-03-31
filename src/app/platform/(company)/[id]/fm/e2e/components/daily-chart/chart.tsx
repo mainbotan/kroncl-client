@@ -13,13 +13,15 @@ import {
 import { GroupedStats } from '@/apps/company/modules/fm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import styles from './chart.module.scss';
+import clsx from 'clsx';
 
 interface DailyChartProps {
     data: GroupedStats[];
     loading?: boolean;
+    className?: string;
 }
 
-export function DailyChart({ data, loading }: DailyChartProps) {
+export function DailyChart({ data, loading, className }: DailyChartProps) {
     if (loading) {
         return (
             <div className={styles.loading}>
@@ -31,7 +33,7 @@ export function DailyChart({ data, loading }: DailyChartProps) {
     if (!data || data.length === 0) {
         return (
             <div className={styles.empty}>
-                Нет данных за выбранный период
+                <span>Нет данных за выбранный период</span>
             </div>
         );
     }
@@ -41,7 +43,7 @@ export function DailyChart({ data, loading }: DailyChartProps) {
     };
 
     return (
-        <div className={styles.chart}>
+        <div className={clsx(styles.chart, className)}>
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                     data={data}

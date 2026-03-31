@@ -39,6 +39,10 @@
         @include cursor(pointer);
         transition: background-color var(--transition);
 
+        &.large {
+            min-width: 20em;
+        }
+
         &:hover {
             background-color: var(--color-surface-elevated);
         }
