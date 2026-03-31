@@ -13,6 +13,7 @@ import { HRMSummaryWidget } from "../hrm/widgets/hrm-summary-widget/widget";
 import { CRMSummaryWidget } from "../crm/widgets/crm-summary-widget/widget";
 import { FMDynamicsWidget } from "../fm/widgets/fm-dymanics-widget/widget";
 import clsx from "clsx";
+import { CRMDynamicsWidget } from "../crm/widgets/crm-dynamics-widget/widget";
 
 export default function Page() {
     const params = useParams();
@@ -36,11 +37,12 @@ export default function Page() {
         </PlatformHead>
         <div className={styles.widgets}>
             <PricingWidget className={styles.item} />
-            <FMSummaryWidget className={styles.item} />
-            <CRMSummaryWidget className={styles.item} />
-            <HRMSummaryWidget className={styles.item} />
-            <FMDynamicsWidget className={clsx(styles.item, styles.large)} />
             <StorageWidget className={styles.item} />
+            <FMSummaryWidget className={styles.item} />
+            <FMDynamicsWidget className={clsx(styles.item, styles.large)} />
+            <CRMSummaryWidget className={styles.item} />
+            <CRMDynamicsWidget className={clsx(styles.item, styles.large)} />
+            <HRMSummaryWidget className={styles.item} />
         </div>
         </>
     )

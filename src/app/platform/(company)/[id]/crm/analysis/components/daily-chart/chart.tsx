@@ -11,13 +11,15 @@ import {
 import { GroupedClientsStats } from '@/apps/company/modules/crm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import styles from './chart.module.scss';
+import clsx from 'clsx';
 
 interface DailyChartProps {
     data: GroupedClientsStats[];
     loading?: boolean;
+    className?: string;
 }
 
-export function DailyChart({ data, loading }: DailyChartProps) {
+export function DailyChart({ data, loading, className }: DailyChartProps) {
     if (loading) {
         return (
             <div className={styles.loading}>
@@ -39,7 +41,7 @@ export function DailyChart({ data, loading }: DailyChartProps) {
     };
 
     return (
-        <div className={styles.chart}>
+        <div className={clsx(styles.chart, className)}>
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                     data={data}

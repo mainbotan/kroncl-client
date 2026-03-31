@@ -37,6 +37,7 @@ export function StorageWidget({
                 </div>
                 </>
             )}
+            <span className={styles.mark} />
         </Link>
     )
 }

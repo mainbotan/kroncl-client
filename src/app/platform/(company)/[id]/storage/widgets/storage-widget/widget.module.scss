@@ -3,6 +3,18 @@
 .widget {
     display: flex;
     flex-flow: column nowrap;
+    overflow: hidden;
+
+    .mark {
+        position: absolute;
+        z-index: 10;
+        top: -2.6em;
+        right: -2.6em;
+        width: 4em;
+        height: 4em;
+        background-color: var(--color-accent);
+        transform: rotate(45deg);
+    }
 
     &.default {
         gap: .6em;
