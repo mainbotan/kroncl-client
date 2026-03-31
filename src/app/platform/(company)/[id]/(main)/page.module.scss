@@ -42,5 +42,11 @@
         &:hover {
             background-color: var(--color-surface-elevated);
         }
+
+        @media (max-width: 720px) {
+            max-width: 100% !important;
+            width: 100% !important;
+            min-width: 100% !important;
+        }
     }
 }
