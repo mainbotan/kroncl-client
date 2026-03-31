@@ -15,3 +15,5 @@ export class PricingApi {
         return api.get<PricingPlan>(this.endpoints.plan(code));
     }
 }
+
+export const pricingApi = new PricingApi();

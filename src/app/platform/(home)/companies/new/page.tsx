@@ -18,12 +18,12 @@ import { PlatformHead } from '@/app/platform/components/lib/head/head';
 import { DOCS_LINK_COMPANIES, DOCS_LINK_COMPANIES_PRICING } from '@/app/docs/(v1)/internal.config';
 import { SelectPlanBlock } from './components/select-plan-block/block';
 
-
 type FormData = {
   companyName: string;
   slug: string;
   visibility: 'private' | 'public';
   region: 'ru' | 'kz';
+  planCode: string; // добавляем planCode
 };
 
 type SlugStatus = 'idle' | 'checking' | 'available' | 'not_available' | 'error';
@@ -43,7 +43,8 @@ export default function Page() {
     companyName: '',
     slug: '',
     visibility: 'private',
-    region: 'ru'
+    region: 'ru',
+    planCode: '' // инициализируем пустым
   });
 
   const [slugStatus, setSlugStatus] = useState<SlugStatus>('idle');
@@ -62,10 +63,9 @@ export default function Page() {
   const abortControllerRef = useRef<AbortController | null>(null);
   const provisioningIntervalRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Используем ref для текущего companyId, чтобы избежать замыкания
   const currentCompanyIdRef = useRef<string | null>(null);
 
-  // Функция проверки уникальности slug с дебаунсом
+  // Проверка уникальности slug
   const checkSlugUnique = async (slug: string) => {
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
@@ -117,7 +117,6 @@ export default function Page() {
     }, 500);
   };
 
-  // Обработчик изменения названия компании
   const handleCompanyNameChange = (value: string) => {
     const name = value;
     const newSlug = generateSlug(name);
@@ -131,7 +130,6 @@ export default function Page() {
     checkSlugUnique(newSlug);
   };
 
-  // Обработчик изменения slug (ручное редактирование)
   const handleSlugChange = (value: string) => {
     const input = value;
     const cleanedSlug = generateSlug(input);
@@ -144,7 +142,6 @@ export default function Page() {
     checkSlugUnique(cleanedSlug);
   };
 
-  // Обработчик выбора видимости
   const handleVisibilitySelect = (value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -152,7 +149,6 @@ export default function Page() {
     }));
   };
 
-  // Обработчик выбора региона
   const handleRegionSelect = (value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -160,7 +156,14 @@ export default function Page() {
     }));
   };
 
-  // Валидация формы
+  // Обработчик выбора плана
+  const handlePlanSelect = (planCode: string) => {
+    setFormData(prev => ({
+      ...prev,
+      planCode
+    }));
+  };
+
   const validateForm = (): boolean => {
     if (!formData.companyName.trim()) {
       setSlugStatus('error');
@@ -186,10 +189,14 @@ export default function Page() {
       return false;
     }
 
+    if (!formData.planCode) {
+      alert('Выберите тарифный план');
+      return false;
+    }
+
     return true;
   };
 
-  // Проверка статуса хранилища (используем useCallback для стабильной ссылки)
   const checkStorageStatus = useCallback(async (companyId: string) => {
     try {
       const response = await companyInitApi.getCompanyStorage(companyId);
@@ -200,39 +207,33 @@ export default function Page() {
         
         switch (storageStatus) {
           case 'active':
-            // Успешное развертывание
             clearProvisioningInterval();
             setPageState('success');
             break;
             
           case 'failed':
           case 'deprecated':
-            // Ошибка развертывания
             clearProvisioningInterval();
             setPageState('error');
             setProvisioningMessage(`Статус хранилища: ${storageStatus}`);
             break;
             
           case 'provisioning':
-            // Продолжаем проверять
             setProvisioningMessage(`Готовим экземпляр учётной системы. Процесс не займёт больше минуты.`);
             break;
             
           default:
-            // Неизвестный статус, продолжаем проверять
             setProvisioningMessage(`Статус: ${storageStatus}`);
         }
       } else {
-        // Ошибка при запросе статуса
         setProvisioningMessage(`Ошибка проверки статуса: ${response.message}`);
       }
     } catch (error) {
       console.error('Ошибка при проверке статуса хранилища:', error);
       setProvisioningMessage('Ошибка соединения');
     }
-  }, [provisioningAttempts]);
+  }, []);
 
-  // Очистка интервала проверки
   const clearProvisioningInterval = () => {
     if (provisioningIntervalRef.current) {
       clearInterval(provisioningIntervalRef.current);
@@ -240,7 +241,6 @@ export default function Page() {
     }
   };
 
-  // Обработчик создания компании
   const handleCreateCompany = async () => {
     if (!validateForm()) {
       return;
@@ -254,11 +254,11 @@ export default function Page() {
         slug: formData.slug,
         description: '',
         avatar_url: '',
-        is_public: formData.visibility === 'public'
+        is_public: formData.visibility === 'public',
+        plan_code: formData.planCode // передаём выбранный план
       });
 
       if (response.status) {
-        // Сохраняем данные компании
         const companyData = {
           id: response.data.id,
           name: response.data.name,
@@ -268,20 +268,15 @@ export default function Page() {
         setCreatedCompany(companyData);
         currentCompanyIdRef.current = response.data.id;
         
-        // Проверяем статус хранилища
         if (response.data.storage.status === 'active') {
-          // Если сразу active, показываем успех
           setPageState('success');
         } else {
-          // Иначе начинаем периодическую проверку
           setPageState('provisioning');
           setProvisioningAttempts(1);
           setProvisioningMessage('Начинаем проверку статуса развертывания...');
           
-          // Первая проверка сразу
           checkStorageStatus(response.data.id);
           
-          // Устанавливаем интервал проверки каждые 5 секунд
           provisioningIntervalRef.current = setInterval(() => {
             const companyId = currentCompanyIdRef.current;
             if (companyId) {
@@ -291,7 +286,6 @@ export default function Page() {
           }, 5000);
         }
       } else {
-        // Ошибка при создании
         setPageState('error');
       }
     } catch (error) {
@@ -300,7 +294,6 @@ export default function Page() {
     }
   };
 
-  // Очистка при размонтировании компонента
   useEffect(() => {
     return () => {
       if (debounceTimeoutRef.current) {
@@ -313,202 +306,194 @@ export default function Page() {
     };
   }, []);
 
-// Определяем статус для отображения
-const getStatusInfo = () => {
-  switch (slugStatus) {
-    case 'idle':
-      return {
-        type: 'info' as const,
-        icon: null,
-        message: slugMessage
-      };
-    case 'checking':
-      return {
-        type: 'info' as const,
-        icon: null,
-        message: slugMessage
-      };
-    case 'available':
-      return {
-        type: 'success' as const,
-        icon: <SuccessStatus />,
-        message: slugMessage
-      };
-    case 'not_available':
-    case 'error':
-      return {
-        type: 'error' as const,
-        icon: <ErrorStatus />,
-        message: slugMessage || 'Имя компании не доступно'
-      };
-    default:
-      return {
-        type: 'info' as const,
-        icon: null,
-        message: ''
-      };
-  }
-};
+  const getStatusInfo = () => {
+    switch (slugStatus) {
+      case 'idle':
+        return {
+          type: 'info' as const,
+          icon: null,
+          message: slugMessage
+        };
+      case 'checking':
+        return {
+          type: 'info' as const,
+          icon: null,
+          message: slugMessage
+        };
+      case 'available':
+        return {
+          type: 'success' as const,
+          icon: <SuccessStatus />,
+          message: slugMessage
+        };
+      case 'not_available':
+      case 'error':
+        return {
+          type: 'error' as const,
+          icon: <ErrorStatus />,
+          message: slugMessage || 'Имя компании не доступно'
+        };
+      default:
+        return {
+          type: 'info' as const,
+          icon: null,
+          message: ''
+        };
+    }
+  };
 
-// Определяем состояние страницы
-switch (pageState) {
-  case 'creating':
-    return (
-      <PlatformLoading capture="Создаём компанию..." />
-    );
-    
-  case 'provisioning':
-    return (
-      <PlatformLoading capture={provisioningMessage} />
-    );
-    
-  case 'success':
-    return (
-      <PlatformResult
-        title="Компания создана."
-        description={`Компания "${createdCompany?.name}" успешно создана и развернута. Теперь вы можете начать работу.`}
-        redirect={{
-          href: `/platform/${createdCompany?.id}`,
-          delay: 0,
-          label: 'Перенаправляем...'
-        }}
-        status="success"
-      />
-    );
-    
-  case 'error':
-    return (
-      <PlatformResult
-        title="Ошибка создания"
-        description="Не удалось создать компанию. Возможно, возникла ошибка при развертывании хранилища."
-        actions={[
-          {
-            label: 'Попробовать снова',
-            href: '/platform/companies/new',
-            variant: 'contrast' as const
-          },
-          {
-            label: 'Домой',
-            href: '/platform',
-            variant: 'default' as const
-          }
-        ]}
-        showIcon
-        status="error"
-      />
-    );
-    
-  case 'form':
-  default:
-    const statusInfo = getStatusInfo();
-    
-    return (
-      <>
-        <PlatformHead
+  switch (pageState) {
+    case 'creating':
+      return <PlatformLoading capture="Создаём компанию..." />;
+      
+    case 'provisioning':
+      return <PlatformLoading capture={provisioningMessage} />;
+      
+    case 'success':
+      return (
+        <PlatformResult
+          title="Компания создана."
+          description={`Компания "${createdCompany?.name}" успешно создана и развернута. Теперь вы можете начать работу.`}
+          redirect={{
+            href: `/platform/${createdCompany?.id}`,
+            delay: 0,
+            label: 'Перенаправляем...'
+          }}
+          status="success"
+        />
+      );
+      
+    case 'error':
+      return (
+        <PlatformResult
+          title="Ошибка создания"
+          description="Не удалось создать компанию. Возможно, возникла ошибка при развертывании хранилища."
+          actions={[
+            {
+              label: 'Попробовать снова',
+              href: '/platform/companies/new',
+              variant: 'contrast' as const
+            },
+            {
+              label: 'Домой',
+              href: '/platform',
+              variant: 'default' as const
+            }
+          ]}
+          showIcon
+          status="error"
+        />
+      );
+      
+    case 'form':
+    default:
+      const statusInfo = getStatusInfo();
+      
+      return (
+        <>
+          <PlatformHead
             title="Создание компании"
             description='Создание пространства учётной системы для новой компании.'
             docsEscort={{
-                href: DOCS_LINK_COMPANIES,
-                title: 'Подробнее об организациях на платформе Kroncl.'
+              href: DOCS_LINK_COMPANIES,
+              title: 'Подробнее об организациях на платформе Kroncl.'
             }}
-        />
-        <PlatformFormBody>
-          <PlatformFormSection title="Название компании">
-            <PlatformFormUnify>
-              <PlatformFormInput
-                value={formData.companyName}
-                onChange={handleCompanyNameChange}
-                placeholder="До 32 символов"
-                maxLength={32}
+          />
+          <PlatformFormBody>
+            <PlatformFormSection title="Название компании">
+              <PlatformFormUnify>
+                <PlatformFormInput
+                  value={formData.companyName}
+                  onChange={handleCompanyNameChange}
+                  placeholder="До 32 символов"
+                  maxLength={32}
+                  disabled={pageState !== 'form'}
+                />
+                <PlatformFormInput
+                  value={formData.slug}
+                  onChange={handleSlugChange}
+                  placeholder="@"
+                  variant="empty"
+                  readOnly={pageState !== 'form'}
+                />
+              </PlatformFormUnify>
+              {slugStatus !== 'idle' && (
+                <PlatformFormStatus
+                  type={statusInfo.type}
+                  message={statusInfo.message}
+                  icon={statusInfo.icon}
+                />
+              )}
+            </PlatformFormSection>
+
+            <PlatformFormSection
+              title="Видимость"
+              description="Настройки видимости позволяют регулировать кто из пользователей сможет видеть компанию в глобальном поиске."
+            >
+              <PlatformFormVariants
+                options={[
+                  {
+                    value: 'private',
+                    label: 'Приватная',
+                    description: 'Доступ только по приглашению. Скрыть из глобального поиска.',
+                    icon: <Guard />
+                  },
+                  {
+                    value: 'public',
+                    label: 'Публичная',
+                    description: 'Компания отображается в глобальном поиске.',
+                    icon: <Earth  />
+                  }
+                ]}
+                value={formData.visibility}
+                onChange={handleVisibilitySelect}
                 disabled={pageState !== 'form'}
               />
-              <PlatformFormInput
-                value={formData.slug}
-                onChange={handleSlugChange}
-                placeholder="@"
-                variant="empty"
-                readOnly={pageState !== 'form'}
-              />
-            </PlatformFormUnify>
-            {slugStatus !== 'idle' && (
-              <PlatformFormStatus
-                type={statusInfo.type}
-                message={statusInfo.message}
-                icon={statusInfo.icon}
-              />
-            )}
-          </PlatformFormSection>
+            </PlatformFormSection>
 
-          <PlatformFormSection
-            title="Видимость"
-            description="Настройки видимости позволяют регулировать кто из пользователей сможет видеть компанию в глобальном поиске."
-          >
-            <PlatformFormVariants
-              options={[
-                {
-                  value: 'private',
-                  label: 'Приватная',
-                  description: 'Доступ только по приглашению. Скрыть из глобального поиска.',
-                  icon: <Guard />
-                },
-                {
-                  value: 'public',
-                  label: 'Публичная',
-                  description: 'Компания отображается в глобальном поиске.',
-                  icon: <Earth  />
-                }
-              ]}
-              value={formData.visibility}
-              onChange={handleVisibilitySelect}
-              disabled={pageState !== 'form'}
-            />
-          </PlatformFormSection>
-
-          <PlatformFormSection
-            title="Регион"
-            description="Выбор рабочей валюты компании и другие региональные настройки."
-          >
-            <PlatformFormVariants
-              options={[
-                {
-                  value: 'ru',
-                  label: <>РФ</>,
-                  description: 'Расчёты системы в российских рублях.'
-                },
-                {
-                  value: 'kz',
-                  label: <>Казахстан</>,
-                  description: 'Расчёты системы в тенге.'
-                }
-              ]}
-              value={formData.region}
-              onChange={handleRegionSelect}
-              disabled={pageState !== 'form'}
-            />
-          </PlatformFormSection>
-
-          {/** PRICING */}
-          
-          <PlatformFormSection
-            title="Тарификация"
-            description="После окончания тестового периода."
-            link={DOCS_LINK_COMPANIES_PRICING}
-            linkText='Подробнее о правилах тарификации организаций на платформе Kroncl.'
-          >
-            <SelectPlanBlock  />
-          </PlatformFormSection>
-
-          <section>
-            <Button
-              variant="accent"
-              onClick={handleCreateCompany}
-              disabled={pageState !== 'form' || slugStatus !== 'available'}
+            <PlatformFormSection
+              title="Регион"
+              description="Выбор рабочей валюты компании и другие региональные настройки."
             >
-              Создать компанию
-            </Button>
-          </section>
-        </PlatformFormBody>
-      </>
-    );
+              <PlatformFormVariants
+                options={[
+                  {
+                    value: 'ru',
+                    label: <>РФ</>,
+                    description: 'Расчёты системы в российских рублях.'
+                  },
+                  {
+                    value: 'kz',
+                    label: <>Казахстан</>,
+                    description: 'Расчёты системы в тенге.'
+                  }
+                ]}
+                value={formData.region}
+                onChange={handleRegionSelect}
+                disabled={pageState !== 'form'}
+              />
+            </PlatformFormSection>
+
+            <PlatformFormSection
+              title="Тарификация"
+              description="После окончания тестового периода."
+              link={DOCS_LINK_COMPANIES_PRICING}
+              linkText='Подробнее о правилах тарификации организаций на платформе Kroncl.'
+            >
+              <SelectPlanBlock onSelect={handlePlanSelect} />
+            </PlatformFormSection>
+
+            <section>
+              <Button
+                variant="accent"
+                onClick={handleCreateCompany}
+                disabled={pageState !== 'form' || slugStatus !== 'available' || !formData.planCode}
+              >
+                Создать компанию
+              </Button>
+            </section>
+          </PlatformFormBody>
+        </>
+      );
   }
 }

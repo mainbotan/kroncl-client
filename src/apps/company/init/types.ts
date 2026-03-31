@@ -11,6 +11,7 @@ export interface CreateCompanyRequest {
   description?: string;
   avatar_url?: string;
   is_public: boolean;
+  plan_code: string;
 }
 
 export interface Storage {
