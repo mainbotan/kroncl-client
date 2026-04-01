@@ -22,6 +22,9 @@ import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
 import { formatDate } from '@/assets/utils/date';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { useCompany } from '@/apps/company/provider';
 
 export default function Page() {
     const params = useParams();
@@ -45,7 +48,6 @@ export default function Page() {
     const [loading, setLoading] = useState(true);
     const [summaryLoading, setSummaryLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
 
     const loadData = async () => {
         setLoading(true);

@@ -1,4 +1,3 @@
-// добавляем в page.tsx
 'use client';
 
 import PlatformContent from '@/app/platform/components/content/content';
@@ -13,12 +12,15 @@ import { useDm } from '@/apps/company/modules';
 import { DealGroup } from '@/apps/company/modules/dm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const dmModule = useDm();
     const { showMessage } = useMessage();
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM, {allowExpired: true});
     
     const [data, setData] = useState<DealGroup[] | null>(null);
     const [loading, setLoading] = useState(true);
@@ -146,7 +148,7 @@ export default function Page() {
     return (
         <>
         <PlatformHead
-            title='Сделки'
+            title={`Сделки ${ALLOW_PAGE.allowed ? '+' : '-'}`}
             description='Управление текущими сделками.'
             sections={sectionsList(companyId)}
             actions={[

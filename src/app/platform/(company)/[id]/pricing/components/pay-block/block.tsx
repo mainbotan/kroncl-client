@@ -122,7 +122,7 @@ export function PayBlock({
                         variant='accent'
                         onClick={handlePayment}
                         disabled={loading}
-                        children='Оплатить'
+                        children='Начать оплату'
                         loading={loading}
                     />
                 </div>
