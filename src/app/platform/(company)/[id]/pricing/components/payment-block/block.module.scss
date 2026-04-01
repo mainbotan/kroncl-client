@@ -1,0 +1,90 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    padding: .9em 1em;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1.5em;
+    transition: background-color var(--transition);
+    // @include cursor(pointer);
+    overflow: hidden;
+    position: relative;
+    @include shimmer(3s);
+
+    .icon {
+        display: inline-flex;
+        align-items: center;
+
+        .square {
+            border-radius: .2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 1.4em;
+                height: 1.4em;
+                fill: var(--color-icon-primary);
+            }
+        }
+    }
+    .info {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+        gap: .25em;
+        justify-content: center;
+
+        .title {
+            font-size: 1.1em;
+            font-weight: 600;
+            line-height: 1.3;
+            letter-spacing: .02em;
+        }
+
+        .meta {
+            font-size: .84em;
+            color: var(--color-text-ghost);
+            line-height: 1.3;
+        }
+    }
+
+    .actions {
+        font-size: .85em;
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+        align-items: center;
+        z-index: 2;
+
+        .action {
+            border-radius: .7em;
+            padding: 0 1.4em;
+            transition: transform var(--transition);
+
+            &.shimmer {
+                @include shimmer(3s);
+            }
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-glass-secondary);
+    }
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+
+        .actions {
+            flex-direction: column;
+        }
+        .actions .action {
+            display: flex;
+            width: 100%;
+        }
+    }
+}

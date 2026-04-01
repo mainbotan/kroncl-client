@@ -10,14 +10,14 @@ export interface PricingPlanProps {
     className?: string;
     plan: PricingPlan;
     onClick: () => void;
-    isTrial?: boolean;
+    label?: string;
 }
 
 export function PricingPlan({
     className,
     plan,
     onClick,
-    isTrial = false
+    label
 }: PricingPlanProps) {
     // Находим структуру модулей по lvl плана
     const structure = pricingPlansStructures.find(s => s.lvl === plan.lvl);
@@ -25,7 +25,7 @@ export function PricingPlan({
 
     return (
         <div className={clsx(styles.card, className)} onClick={onClick}>
-            {isTrial && (<div className={styles.trial}>Пробный период</div>)}
+            {label && (<div className={styles.trial}>{label}</div>)}
             <div className={styles.title}>{plan.name}</div>
             <div className={styles.description}>{plan.description}</div>
             <div className={styles.content}>

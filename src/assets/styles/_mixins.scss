@@ -120,7 +120,7 @@
     color: transparent;
     border-radius: .12rem;
 }
-@mixin shimmer() {
+@mixin shimmer($transition: 1.5s) {
     overflow: hidden;
 
     @keyframes diagonal-shimmer {
@@ -139,6 +139,7 @@
         left: 0;
         width: 100%;
         height: 100%;
+        z-index: 1;
         background: linear-gradient(
             105deg,
             transparent 0%,
@@ -147,6 +148,6 @@
             transparent 60%,
             transparent 100%
         );
-        animation: diagonal-shimmer 1.5s infinite;
+        animation: diagonal-shimmer $transition infinite;
     }
 }

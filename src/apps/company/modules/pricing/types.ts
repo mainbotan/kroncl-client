@@ -16,7 +16,7 @@ export interface MigratePlanRequest {
   period: "month" | "year";
 }
 
-export type TransactionStatus = "success" | "pending" | "unsuccess";
+export type TransactionStatus = "success" | "pending" | "unsuccess" | "revoked";
 
 export interface PricingTransaction {
   id: string;

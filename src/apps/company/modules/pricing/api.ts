@@ -14,6 +14,9 @@ export const pricingModule = (companyApi: CompanyApi) => ({
         return companyApi.get<CompanyPricingPlan>("/pricing")
     },
     async migrate(data: MigratePlanRequest) {
-        return companyApi.post(`/pricing/migrate`, data);
+        return companyApi.post<PricingTransaction>(`/pricing/migrate`, data);
+    },
+    async revokeTransaction(id: string) {
+        return companyApi.post(`/pricing/transactions/${id}/revoke`);
     },
 });
