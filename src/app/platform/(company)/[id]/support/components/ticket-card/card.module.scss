@@ -1,0 +1,64 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.card {
+    display: flex;
+    min-height: 4em;
+    @include cursor(pointer);
+    flex-flow: row nowrap;
+    gap: 0;
+
+    .indicator {
+        display: flex;
+        padding: 0 1.1em;
+        align-items: center;
+        justify-content: center;
+        transition: background-color var(--transition);
+        
+        .circle {
+            width: .6em;
+            min-width: .6em;
+            min-height: .6em;
+            height: .6em;
+            background-color: var(--color-surface-light);
+            border-radius: 50%;
+
+            &.accent {
+                background-color: var(--color-accent);
+            }
+        }
+
+        &:hover {
+            background-color: var(--color-leader);
+        }
+    }
+
+    .info {
+        display: flex;
+        padding: .8em 1.1em .8em .6em;
+        flex-flow: column nowrap;
+        gap: .4em;
+        justify-content: center;
+
+        .title {
+            @include text-ellipsis();
+        }
+        .text {
+            @include lines-ellipsis(2);
+            line-height: 1.3;
+            font-size: .9em;
+            color: var(--color-text-description);
+
+            &.fresh {
+                color: var(--color-text-ghost);
+            }
+        }
+        .date {
+            font-size: .9em;
+            color: var(--color-text-ghost);
+        }
+    }
+
+    &.fresh {
+        
+    }
+}

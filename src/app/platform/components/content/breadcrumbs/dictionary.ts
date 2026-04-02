@@ -4,6 +4,7 @@ export const breadcrumbDictionary: Record<string, string> = {
     'companies': "Организации",
     'company': "Компания",
     'settings': "Настройки",
+    'support': "Поддержка",
 
     'new': "Создание",
     'edit': "Редактирование",

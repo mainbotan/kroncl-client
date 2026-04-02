@@ -17,6 +17,7 @@ import { PlatformCompanyPanelHead } from "./components/panel-head/head";
 import { PLAN_MAX_LVL, sections } from "./components/injected-panel/sections.config";
 import ClientPanel from "../../components/panel/client-panel";
 import { PlatformInjectedPanel } from "./components/injected-panel/panel";
+import { PlatformDynamicContentWrapper } from "../../components/lib/wrapper/dynamic-wrapper";
 
 export interface CompanyLayoutProps extends CompanyParams {
   children: React.ReactNode;
@@ -55,14 +56,14 @@ export default async function CompanyLayout({
           <PlatformInjectedPanel />
 
           <PlatformContent>
-            <PlatformContentWrapper>
+            <PlatformDynamicContentWrapper>
               <AuthGuard>
                   <ModalPageProvider> {/** not used yet */}
                       {children}
                     <PlatformModalPage />
                   </ModalPageProvider>
               </AuthGuard>
-            </PlatformContentWrapper>
+            </PlatformDynamicContentWrapper>
           </PlatformContent>
 
           <PlatformSideContent />

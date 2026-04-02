@@ -4,5 +4,8 @@
     display: flex;
     flex-flow: column nowrap;
     flex: 1;
-    padding: .8rem;
+
+    &.padding {
+        padding: .8rem;
+    }
 }

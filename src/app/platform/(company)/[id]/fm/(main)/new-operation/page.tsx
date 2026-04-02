@@ -208,7 +208,7 @@ export default function Page() {
         <PlatformLoading />
     )
 
-    if (!ALLOW_PAGE.isLoading && ALLOW_PAGE.allowed) return (
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
         <PlatformNotAllowed permission={PERMISSIONS.FM_TRANSACTIONS_CREATE} />
     )
 

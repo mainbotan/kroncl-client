@@ -2,6 +2,7 @@
 
 .container {
     display: flex;
+    flex: 1;
     min-height: 100%;
     padding: 4rem .5rem;
     flex-flow: column nowrap;
