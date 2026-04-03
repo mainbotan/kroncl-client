@@ -14,8 +14,15 @@ import styles from './page.module.scss';
 import { CategoryCard } from "../../../components/category-card/card";
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { _units } from "./_units";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function NewUnitPage() {
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_CREATE)
+    
     const wmModule = useWm();
     const { showMessage } = useMessage();
     const router = useRouter();
@@ -279,6 +286,14 @@ export default function NewUnitPage() {
         
         return true;
     };
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.WM_CATALOG_UNITS_CREATE} />
+    )
 
     return (
         <>

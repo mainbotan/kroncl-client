@@ -14,11 +14,20 @@ import styles from './page.module.scss';
 import { CategoryCard } from "../../../../components/category-card/card";
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { _units } from "../../new/_units";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function EditUnitPage() {
     const params = useParams();
     const companyId = params.id as string;
     const unitId = params.unitId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_UPDATE)
+        
     const wmModule = useWm();
     const { showMessage } = useMessage();
     const router = useRouter();
@@ -326,35 +335,17 @@ export default function EditUnitPage() {
         return true;
     };
 
-    if (isFetching) {
-        return (
-            <div style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}>
-                <Spinner />
-            </div>
-        );
-    }
+    if (isFetching || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
 
-    if (error) {
-        return (
-            <div style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}>
-                {error}
-            </div>
-        );
-    }
+    if (error) return (
+        <PlatformError error={error} />
+    )
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.WM_CATALOG_UNITS_UPDATE} />
+    )
 
     return (
         <>

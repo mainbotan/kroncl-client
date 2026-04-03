@@ -17,11 +17,21 @@ import styles from './page.module.scss';
 import Link from "next/link";
 import clsx from "clsx";
 import { getTrackingDetailLabel, getTrackedTypeLabel } from "./_utils";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function UnitPage() {
     const params = useParams();
     const companyId = params.id as string;
     const unitId = params.unitId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS, {allowExpired: true})
+    const ALLOW_UNIT_UPDATE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_UPDATE)
+
     const wmModule = useWm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -132,56 +142,21 @@ export default function UnitPage() {
         }
     };
 
-    if (loading) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            <Spinner />
-        </motion.div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            {error}
-        </motion.div>
+        <PlatformError error={error} />
     );
 
     if (!unit) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            Не удалось загрузить позицию
-        </motion.div>
+        <PlatformError error='Не удалось загрузить позицию' />
     );
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.WM_CATALOG_UNITS} />
+    )
 
     const isActive = unit.status === 'active';
     const typeLabel = unit.type === 'product' ? 'Товар' : 'Услуга';
@@ -189,7 +164,7 @@ export default function UnitPage() {
     const trackingDetailLabel = unit.tracking_detail ? getTrackingDetailLabel(unit.tracking_detail) : null; // НОВОЕ
     const trackedLabel = unit.tracked_type ? getTrackedTypeLabel(unit.tracked_type) : null; // ИСПРАВЛЕНО
 
-    const actions = [
+    const actions = (!ALLOW_UNIT_UPDATE.isLoading && ALLOW_PAGE.allowed) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,
@@ -197,22 +172,24 @@ export default function UnitPage() {
             as: 'link' as const,
             href: `/platform/${companyId}/wm/units/${unitId}/edit`
         }
-    ];
+    ] : [];
 
-    if (isActive) {
-        actions.push({
-            children: 'Деактивировать',
-            icon: <Exit />,
-            variant: 'light',
-            onClick: () => setIsModalDeactivateOpen(true)
-        });
-    } else {
-        actions.push({
-            children: 'Активировать',
-            icon: <Exit />,
-            variant: 'accent',
-            onClick: () => setIsModalActivateOpen(true)
-        });
+    if (!ALLOW_UNIT_UPDATE.isLoading && ALLOW_UNIT_UPDATE.allowed) {
+        if (isActive) {
+            actions.push({
+                children: 'Деактивировать',
+                icon: <Exit />,
+                variant: 'light',
+                onClick: () => setIsModalDeactivateOpen(true)
+            });
+        } else {
+            actions.push({
+                children: 'Активировать',
+                icon: <Exit />,
+                variant: 'accent',
+                onClick: () => setIsModalActivateOpen(true)
+            });
+        }
     }
 
     return (
