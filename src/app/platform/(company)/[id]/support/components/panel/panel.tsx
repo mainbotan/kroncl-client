@@ -65,8 +65,16 @@ export function Panel({
         );
     };
 
-    if (loading) return <PlatformLoading />;
-    if (error) return <PlatformError error={error} />;
+    if (loading) return (
+        <div className={clsx(styles.container, className)}>
+            <PlatformLoading />
+        </div>
+    );
+    if (error) return (
+        <div className={clsx(styles.container, className)}>
+            <PlatformError error={error} />
+        </div>
+    );
 
     return (
         <div className={clsx(styles.container, className)}>
