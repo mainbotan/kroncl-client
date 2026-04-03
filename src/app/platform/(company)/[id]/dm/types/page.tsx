@@ -13,10 +13,20 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useDm } from "@/apps/company/modules";
 import { DealTypesResponse } from "@/apps/company/modules/dm/types";
 import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_TYPES, {allowExpired: true})
+    const ALLOW_TYPE_CREATE = usePermission(PERMISSIONS.DM_TYPES_CREATE)
+
     const dmModule = useDm();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -72,31 +82,17 @@ export default function Page() {
         }
     };
 
-    if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
+
+    if (!isAllowed(ALLOW_PAGE)) return (
+        <PlatformNotAllowed permission={PERMISSIONS.DM_TYPES} />
+    )
 
     const dealTypes = data?.deal_types || [];
     const pagination = data?.pagination;
@@ -113,7 +109,7 @@ export default function Page() {
                 title='Типы сделок'
                 description='Группировка сделок по типам.'
                 sections={sectionsList(companyId)}
-                actions={[
+                actions={isAllowed(ALLOW_TYPE_CREATE) ? [
                     {
                         children: 'Новый тип',
                         icon: <Plus />,
@@ -121,7 +117,7 @@ export default function Page() {
                         as: 'link',
                         href: `/platform/${companyId}/dm/types/new`
                     }
-                ]}
+                ] : undefined}
                 searchProps={{
                     placeholder: 'Поиск по типам',
                     defaultValue: searchParams.get('search') || '',

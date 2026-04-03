@@ -16,6 +16,10 @@ import { Employee } from '@/apps/company/modules/hrm/types';
 import { ClientDetail } from '@/apps/company/modules/crm/types';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 export default function Page() {
     const params = useParams();
@@ -23,7 +27,12 @@ export default function Page() {
     const companyId = params.id as string;
     const dealId = params.dealId as string;
     const section = searchParams.get('section');
-    
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS, {allowExpired: true})
+    const ALLOW_DEAL_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE)
+    const ALLOW_DEAL_DELETE = usePermission(PERMISSIONS.DM_DEALS_DELETE)
+
     const dmModule = useDm();
     const hrmModule = useHrm(); // Добавляем useHrm
     const crmModule = useCrm();
@@ -189,13 +198,13 @@ export default function Page() {
         }
     };
 
-    if (loading) {
-        return (
-            <div style={{ display: "flex", justifyContent: "center", padding: "2rem" }}>
-                <Spinner />
-            </div>
-        );
+    if (loading || ALLOW_PAGE.isLoading) {
+        <PlatformLoading />
     }
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.DM_DEALS} />
+    )
 
     // Определяем, какие блоки показывать
     const showEmployees = section === 'employees';

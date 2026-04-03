@@ -20,7 +20,7 @@ export const sectionsList = (companyId: string): PlatformHeadSection[] => {
         },
         {
             label: 'Анализ',
-            href: `/platform/${companyId}/wm/analysis`,
+            href: `/platform/${companyId}/dm/analysis`,
             strongParams: true,
         }
     ]);

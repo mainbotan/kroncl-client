@@ -10,6 +10,10 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDm } from '@/apps/company/modules';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 type NameStatus = 'idle' | 'valid' | 'invalid';
 
@@ -30,6 +34,10 @@ const DEFAULT_OPTIONS = [
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_STATUSES_CREATE)
+    
     const dmModule = useDm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -131,6 +139,14 @@ export default function Page() {
             setIsLoading(false);
         }
     };
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!isAllowed(ALLOW_PAGE)) return (
+        <PlatformNotAllowed permission={PERMISSIONS.DM_STATUSES_CREATE} />
+    )
 
     const getNameStatusInfo = () => {
         switch (nameStatus) {

@@ -14,11 +14,21 @@ import { PlatformModalConfirmation } from "@/app/platform/components/lib/modal/c
 import { useMessage } from "@/app/platform/components/lib/message/provider";
 import { motion } from 'framer-motion';
 import styles from './page.module.scss';
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformError } from "@/app/platform/components/lib/error/block";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const typeId = params.typeId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_TYPES, {allowExpired: true})
+    const ALLOW_TYPE_DELETE = usePermission(PERMISSIONS.DM_TYPES_DELETE)
+    const ALLOW_TYPE_UPDATE = usePermission(PERMISSIONS.DM_TYPES_UPDATE)
+
     const dmModule = useDm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -84,72 +94,32 @@ export default function Page() {
         }
     };
 
-    if (loading) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            <Spinner />
-        </motion.div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
-    if (error) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            {error}
-        </motion.div>
+    if (error || !type) return (
+        <PlatformError error={error || 'Не удалось загрузить тип'} />
     );
 
-    if (!type) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            Не удалось загрузить тип
-        </motion.div>
-    );
-
-    const actions = [
+    const actions = isAllowed(ALLOW_TYPE_UPDATE) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,
             variant: 'accent' as const,
             as: 'link' as const,
             href: `/platform/${companyId}/dm/types/${typeId}/edit`
-        },
-        {
+        }
+    ] : [];
+
+    if (isAllowed(ALLOW_TYPE_DELETE)) {
+        actions.push({
             children: 'Удалить',
             icon: <Exit />,
             variant: 'light' as const,
             onClick: () => setIsModalDeleteOpen(true)
-        }
-    ];
+        })
+    }
 
     return (
         <>

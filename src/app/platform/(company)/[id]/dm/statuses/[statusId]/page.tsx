@@ -14,11 +14,22 @@ import { useMessage } from "@/app/platform/components/lib/message/provider";
 import { motion } from 'framer-motion';
 import styles from './page.module.scss';
 import Exit from "@/assets/ui-kit/icons/exit";
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const statusId = params.statusId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_STATUSES, {allowExpired: true})
+    const ALLOW_STATUS_UPDATE = usePermission(PERMISSIONS.DM_STATUSES_UPDATE)
+    const ALLOW_STATUS_DELETE = usePermission(PERMISSIONS.DM_STATUSES_DELETE)
+
     const dmModule = useDm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -101,72 +112,36 @@ export default function Page() {
         }
     };
 
-    if (loading) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            <Spinner />
-        </motion.div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
-    if (error) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            {error}
-        </motion.div>
+    if (error || !status) return (
+        <PlatformError error={error || 'Не удалось загрузить статус'} />
     );
 
-    if (!status) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            Не удалось загрузить статус
-        </motion.div>
-    );
+    if (!isAllowed(ALLOW_PAGE)) return (
+        <PlatformNotAllowed permission={PERMISSIONS.DM_STATUSES} />
+    )
 
-    const actions = [
+    const actions = isAllowed(ALLOW_STATUS_UPDATE) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,
             variant: 'accent' as const,
             as: 'link' as const,
             href: `/platform/${companyId}/dm/statuses/${statusId}/edit`
-        },
-        {
+        }
+    ] : [];
+
+    if (isAllowed(ALLOW_STATUS_DELETE)) {
+        actions.push({
             children: 'Удалить',
             icon: <Exit />,
             variant: 'light' as const,
             onClick: () => setIsModalDeleteOpen(true)
-        }
-    ];
+        })
+    }
 
     return (
         <>

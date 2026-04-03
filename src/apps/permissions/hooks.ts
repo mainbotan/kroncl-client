@@ -22,11 +22,16 @@ export function usePermissions() {
     });
 }
 
+export interface Checker {
+    allowed: boolean;
+    isLoading: boolean;
+}
+
 // Хук для проверки конкретного разрешения
 export function usePermission(
     permissionCode: string,
     options?: { allowExpired?: boolean }
-) {
+): Checker {
     const { companyPlan } = useCompany();
     const { data: permissions = [], isLoading: isPermissionsLoading } = usePermissions();
     
@@ -56,4 +61,8 @@ export function usePermission(
     }
     
     return { allowed, isLoading: isPermissionsLoading };
+}
+
+export function isAllowed(checker: Checker): boolean {
+    return !checker.isLoading && checker.allowed;
 }

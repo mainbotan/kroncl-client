@@ -12,16 +12,23 @@ import { useDm } from '@/apps/company/modules';
 import { DealGroup } from '@/apps/company/modules/dm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
-import { usePermission } from '@/apps/permissions/hooks';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+    
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS, {allowExpired: true})
+    const ALLOW_DEAL_CREATE = usePermission(PERMISSIONS.DM_DEALS_CREATE)
+    const ALLOW_DEAL_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE)
+
     const dmModule = useDm();
     const { showMessage } = useMessage();
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM, {allowExpired: true});
-    
     const [data, setData] = useState<DealGroup[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -117,41 +124,27 @@ export default function Page() {
         }
     };
 
-    if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.DM_DEALS} />
+    )
 
     const sortedGroups = data?.sort((a, b) => a.sort_order - b.sort_order) || [];
 
     return (
         <>
         <PlatformHead
-            title={`Сделки ${ALLOW_PAGE.allowed ? '+' : '-'}`}
+            title={`Сделки`}
             description='Управление текущими сделками.'
             sections={sectionsList(companyId)}
-            actions={[
+            actions={(!ALLOW_DEAL_CREATE.isLoading && ALLOW_DEAL_CREATE.allowed) ? [
                 {
                     children: 'Новая сделка',
                     icon: <Plus />,
@@ -159,17 +152,18 @@ export default function Page() {
                     as: 'link',
                     href: `/platform/${companyId}/dm/new`
                 }
-            ]}
+            ] : undefined}
         />
         <div className={styles.canvas}>
             <div className={styles.grid}>
                 {sortedGroups.map((group) => (
                     <div 
                         key={group.status_id} 
+                        draggable={isAllowed(ALLOW_DEAL_UPDATE)}
                         className={`${styles.col} ${dragOverCol === group.status_id ? styles.dragOver : ''}`}
-                        onDragOver={(e) => handleDragOver(e, group.status_id)}
-                        onDragLeave={handleDragLeave}
-                        onDrop={(e) => handleDrop(e, group.status_id)}
+                        onDragOver={(!ALLOW_DEAL_UPDATE.isLoading && ALLOW_DEAL_UPDATE.allowed) ? ((e) => handleDragOver(e, group.status_id)) : undefined}
+                        onDragLeave={(!ALLOW_DEAL_UPDATE.isLoading && ALLOW_DEAL_UPDATE.allowed) ? (handleDragLeave) : undefined}
+                        onDrop={(!ALLOW_DEAL_UPDATE.isLoading && ALLOW_DEAL_UPDATE.allowed) ? ((e) => handleDrop(e, group.status_id)) : undefined}
                     >
                         <div className={styles.head}>
                             <span className={styles.title}>
