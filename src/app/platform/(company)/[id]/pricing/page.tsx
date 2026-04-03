@@ -17,6 +17,10 @@ import { Remained } from '@/assets/ui-kit/remained/remained';
 import { pluralizeDays } from '@/assets/utils/date';
 import { PayBlock } from './components/pay-block/block';
 import { PaymentBlock } from './components/payment-block/block';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 const blockVariants: Variants = {
     hidden: { opacity: 0, y: -20, height: 0, marginBottom: 0 },
@@ -27,6 +31,11 @@ const blockVariants: Variants = {
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.PRICING_MIGRATE, {allowExpired: true});
+    // похуй, пока одно разрешение на все операции с тарификацией
+    // по хорошему разделение на получение операций и отдельно миграция
 
     const pricingModule = usePricing();
 
@@ -181,6 +190,14 @@ export default function Page() {
     const showPaymentBlock = () => {
         return !!pendingTransaction;
     };
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.PRICING_MIGRATE} />
+    )
 
     return (
         <>
