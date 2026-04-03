@@ -12,11 +12,19 @@ import { useParams, useRouter } from 'next/navigation';
 import { SourceType, ClientSource } from "@/apps/company/modules/crm/types";
 import { sourceTypes } from "../../new/_types";
 import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const sourceId = params.sourceId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_SOURCES_UPDATE)
+ 
     const crmModule = useCrm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -157,20 +165,13 @@ export default function Page() {
         }
     };
 
-    if (initialLoading) {
-        return (
-            <div style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}>
-                <Spinner />
-            </div>
-        );
-    }
+    if (initialLoading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.CRM_SOURCES_UPDATE} />
+    )
 
     const isFormValid = validation.name.isValid;
     const hasChanges = formData.name !== source?.name ||

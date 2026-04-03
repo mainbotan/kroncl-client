@@ -11,10 +11,18 @@ import { useCrm } from '@/apps/company/modules';
 import { useParams, useRouter } from 'next/navigation';
 import { SourceType } from "@/apps/company/modules/crm/types";
 import { sourceTypes } from "./_types";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_CLIENTS_CREATE)
+    
     const crmModule = useCrm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -101,6 +109,14 @@ export default function Page() {
             setLoading(false);
         }
     };
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.CRM_SOURCES_CREATE} />
+    )
 
     const isFormValid = validation.name.isValid;
 

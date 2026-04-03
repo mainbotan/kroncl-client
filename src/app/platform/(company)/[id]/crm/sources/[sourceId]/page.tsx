@@ -19,12 +19,21 @@ import { ClientCard } from "../../components/client-card/card";
 import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import { ClientsResponse, ClientDetail } from '@/apps/company/modules/crm/types';
-import { sectionsList } from "../_sections";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const sourceId = params.sourceId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_SOURCES, {allowExpired: true})
+    const ALLOW_SOURCE_UPDATE = usePermission(PERMISSIONS.CRM_SOURCES_UPDATE)
+
     const crmModule = useCrm();
     const router = useRouter();
     const pathname = usePathname();
@@ -177,61 +186,22 @@ export default function Page() {
         }
     };
 
-    if (loading) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            <Spinner />
-        </motion.div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
-    if (error) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            {error}
-        </motion.div>
+    if (error || !source) return (
+        <PlatformError error={error || 'Не удалось загрузить источник'} />
     );
 
-    if (!source) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            Не удалось загрузить источник
-        </motion.div>
-    );
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.CRM_SOURCES} />
+    )
 
     const isActive = source.status === 'active';
     const typeLabel = getSourceTypeLabel(source.type);
 
-    const actions = [
+    const actions = (!ALLOW_SOURCE_UPDATE.isLoading && ALLOW_SOURCE_UPDATE.allowed) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,
@@ -239,22 +209,24 @@ export default function Page() {
             as: 'link' as const,
             href: `/platform/${companyId}/crm/sources/${sourceId}/edit`
         }
-    ];
+    ] : [];
 
-    if (isActive) {
-        actions.push({
-            children: 'Деактивировать',
-            icon: <Exit />,
-            variant: 'light',
-            onClick: () => setIsModalDeactivateOpen(true)
-        });
-    } else {
-        actions.push({
-            children: 'Активировать',
-            icon: <Exit />,
-            variant: 'accent',
-            onClick: () => setIsModalActivateOpen(true)
-        });
+    if (!ALLOW_SOURCE_UPDATE.isLoading && ALLOW_SOURCE_UPDATE.allowed) {
+        if (isActive) {
+            actions.push({
+                children: 'Деактивировать',
+                icon: <Exit />,
+                variant: 'light',
+                onClick: () => setIsModalDeactivateOpen(true)
+            });
+        } else {
+            actions.push({
+                children: 'Активировать',
+                icon: <Exit />,
+                variant: 'accent',
+                onClick: () => setIsModalActivateOpen(true)
+            });
+        }
     }
 
     const clients = clientsData?.clients || [];

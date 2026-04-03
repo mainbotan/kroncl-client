@@ -6,6 +6,10 @@ import Input from "@/assets/ui-kit/input/input";
 import { useParams, useSearchParams, usePathname, useRouter } from "next/navigation";
 import styles from './layout.module.scss';
 import { useEffect, useState } from "react";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 interface PlatformLayoutProps {
   children: React.ReactNode;
@@ -18,6 +22,9 @@ export default function AnalysisLayout({ children }: PlatformLayoutProps) {
     const router = useRouter();
     const pathname = usePathname();
 
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_ANALYSIS)
+    
     const [localStartDate, setLocalStartDate] = useState(searchParams.get('start_date') || '');
     const [localEndDate, setLocalEndDate] = useState(searchParams.get('end_date') || '');
 
@@ -40,6 +47,14 @@ export default function AnalysisLayout({ children }: PlatformLayoutProps) {
         }
         router.push(`${pathname}?${params.toString()}`);
     };
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.CRM_ANALYSIS} />
+    )
 
     return (
         <>
