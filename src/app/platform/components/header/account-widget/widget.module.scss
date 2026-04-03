@@ -12,7 +12,7 @@
         height: 1.47em;
         background-color: var(--color-stroke-tertiary);
         border-radius: 50%;
-        padding: 2px;
+        padding: .2px;
         @include cursor(pointer);
 
         .avatar {
@@ -28,7 +28,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid var(--color-stroke-secondary);
+            // border: 1px solid var(--color-stroke-secondary);
         }
     }
     .control {

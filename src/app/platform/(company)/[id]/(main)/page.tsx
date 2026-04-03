@@ -14,11 +14,16 @@ import { CRMSummaryWidget } from "../crm/widgets/crm-summary-widget/widget";
 import { FMDynamicsWidget } from "../fm/widgets/fm-dymanics-widget/widget";
 import clsx from "clsx";
 import { CRMDynamicsWidget } from "../crm/widgets/crm-dynamics-widget/widget";
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     
+    const ALLOW_FM_ANALYSIS = usePermission(PERMISSIONS.FM_ANALYSIS)
+    const ALLOW_CRM_ANALYSIS = usePermission(PERMISSIONS.CRM_ANALYSIS)
+    const ALLOW_HRM_ANALYSIS = usePermission(PERMISSIONS.HRM_ANALYSIS)
     const companyObject = useCompany();
 
     return (
@@ -37,11 +42,23 @@ export default function Page() {
         </PlatformHead>
         <div className={styles.widgets}>
             <PricingWidget className={styles.item} />
-            <FMSummaryWidget className={styles.item} />
-            <FMDynamicsWidget className={clsx(styles.item, styles.large)} />
-            <CRMSummaryWidget className={styles.item} />
-            <CRMDynamicsWidget className={clsx(styles.item, styles.large)} />
-            <HRMSummaryWidget className={styles.item} />
+            {isAllowed(ALLOW_FM_ANALYSIS) && (
+                <>
+                <FMSummaryWidget className={styles.item} />
+                <FMDynamicsWidget className={clsx(styles.item, styles.large)} />
+                </>
+            )}
+            {isAllowed(ALLOW_CRM_ANALYSIS) && (
+                <>
+                <CRMSummaryWidget className={styles.item} />
+                <CRMDynamicsWidget className={clsx(styles.item, styles.large)} />
+                </>
+            )}
+            {isAllowed(ALLOW_HRM_ANALYSIS) && (
+                <>
+                <HRMSummaryWidget className={styles.item} />
+                </>
+            )}
             <StorageWidget className={styles.item} />
         </div>
         </>

@@ -26,6 +26,7 @@ export const PERMISSIONS = {
     
     // HRM
     HRM: 'hrm',
+    HRM_ANALYSIS: 'hrm.analysis',
     HRM_EMPLOYEES: 'hrm.employees',
     HRM_EMPLOYEES_CREATE: 'hrm.employees.create',
     HRM_EMPLOYEES_UPDATE: 'hrm.employees.update',
