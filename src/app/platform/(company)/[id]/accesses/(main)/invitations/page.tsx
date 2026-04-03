@@ -11,8 +11,17 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
 import Invitations from '@/assets/ui-kit/icons/invitations';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 export default function Page() {
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS, {allowExpired: true})
+    const ALLOW_INVITATION_REVOKE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_REVOKE, {allowExpired: true})
+
     const accountsModule = useAccounts();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -52,31 +61,17 @@ export default function Page() {
         }
     };
 
-    if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.ACCOUNTS_INVITATIONS} />
+    )
 
     const invitations = data?.invitations || [];
     const pagination = data?.pagination;
@@ -85,6 +80,7 @@ export default function Page() {
     const limitParam = searchParams.get('limit');
     if (limitParam) queryParams.limit = limitParam;
 
+    
     return (
         <>
             {invitations.length === 0 ? (
@@ -95,7 +91,10 @@ export default function Page() {
             ) : (
                 <>
                     {invitations.map((invitation) => (
-                        <InvitationCard key={invitation.id} invitation={invitation} />
+                        <InvitationCard 
+                            key={invitation.id} 
+                            invitation={invitation} 
+                            canRevoke={!ALLOW_INVITATION_REVOKE.isLoading && ALLOW_INVITATION_REVOKE.allowed}/>
                     ))}
                     
                     {pagination && pagination.pages > 1 && (

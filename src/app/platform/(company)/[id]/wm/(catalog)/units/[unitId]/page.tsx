@@ -164,7 +164,7 @@ export default function UnitPage() {
     const trackingDetailLabel = unit.tracking_detail ? getTrackingDetailLabel(unit.tracking_detail) : null; // НОВОЕ
     const trackedLabel = unit.tracked_type ? getTrackedTypeLabel(unit.tracked_type) : null; // ИСПРАВЛЕНО
 
-    const actions = (!ALLOW_UNIT_UPDATE.isLoading && ALLOW_PAGE.allowed) ? [
+    const actions = (!ALLOW_UNIT_UPDATE.isLoading && ALLOW_UNIT_UPDATE.allowed) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,

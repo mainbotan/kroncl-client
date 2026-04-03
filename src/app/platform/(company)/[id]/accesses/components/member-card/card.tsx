@@ -23,13 +23,15 @@ interface MemberCardProps {
   className?: string;
   showDefaultActions?: boolean;
   actions?: ButtonProps[];
+  canKick?: boolean;
 }
 
 export function MemberCard({ 
   account, 
   showDefaultActions = true, 
   className, 
-  actions 
+  actions,
+  canKick = true 
 }: MemberCardProps) {
   const { user } = useAuth();
   const accountsModule = useAccounts();
@@ -57,7 +59,7 @@ export function MemberCard({
   
   const isOwner = account.role_code === 'owner';
   const isCurrentUser = user?.id === account.id;
-  const showKickButton = !isOwner;
+  const showKickButton = !isOwner && canKick;
 
   const avatarStyle = account.avatar_url
     ? { backgroundImage: `url(${account.avatar_url})` }

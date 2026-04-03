@@ -19,9 +19,10 @@ import Back from '@/assets/ui-kit/icons/back';
 
 interface InvitationCardProps {
     invitation: CompanyInvitation;
+    canRevoke?: boolean;
 }
 
-export function InvitationCard({ invitation }: InvitationCardProps) {
+export function InvitationCard({ invitation, canRevoke = true }: InvitationCardProps) {
     const accountsModule = useAccounts();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
@@ -89,7 +90,7 @@ export function InvitationCard({ invitation }: InvitationCardProps) {
                     </ModalTooltip>
                 </div>
                 <div className={styles.actions}>
-                    {isWaiting && (
+                    {(isWaiting && canRevoke) && (
                         <Button 
                             onClick={() => setIsModalOpen(true)} 
                             className={styles.action} 

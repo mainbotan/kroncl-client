@@ -9,8 +9,15 @@ import Button from "@/assets/ui-kit/button/button";
 import SuccessStatus from '@/assets/ui-kit/icons/success-status';
 import ErrorStatus from '@/assets/ui-kit/icons/error-status';
 import { useRouter } from 'next/navigation';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 export default function Page() {
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_CREATE, {allowExpired: true})
+    
     const accountsModule = useAccounts();
     const { showMessage } = useMessage();
     const [email, setEmail] = useState('');
@@ -60,6 +67,15 @@ export default function Page() {
             setIsLoading(false);
         }
     };
+
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.ACCOUNTS_INVITATIONS_CREATE} />
+    )
 
     const statusInfo = emailStatus === 'valid' ? {
         type: 'success' as const,
