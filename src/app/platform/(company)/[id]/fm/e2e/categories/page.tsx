@@ -12,6 +12,8 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { toRFC3339 } from '@/assets/utils/date-formatter';
 import { CategoriesChart } from '../components/categories-chart/chart';
 import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
 
 export default function Page() {
     const fmModule = useFm();

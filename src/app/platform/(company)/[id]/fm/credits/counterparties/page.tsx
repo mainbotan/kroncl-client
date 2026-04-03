@@ -13,10 +13,20 @@ import { useEffect, useState } from 'react';
 import { CounterpartiesResponse, Counterparty } from '@/apps/company/modules/fm/types';
 import { useFm } from '@/apps/company/modules';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_COUNTERPARTIES, {allowExpired: true});
+    const ALLOW_COUNTERPARTY_CREATE = usePermission(PERMISSIONS.FM_COUNTERPARTIES_CREATE);   
+
     const fmModule = useFm();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -86,31 +96,17 @@ export default function Page() {
     const statusParam = searchParams.get('status');
     if (statusParam) queryParams.status = statusParam;
 
-    if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.FM_COUNTERPARTIES} />
+    )
 
     const counterparties = data?.counterparties || [];
     const pagination = data?.pagination;
@@ -120,7 +116,7 @@ export default function Page() {
             <PlatformHead
                 title='Контрагенты'
                 description='Управление базой кредиторов/дебиторов.'
-                actions={[
+                actions={(!ALLOW_COUNTERPARTY_CREATE.isLoading && ALLOW_COUNTERPARTY_CREATE.allowed) ? [
                     {
                         icon: <Plus />,
                         variant: 'accent',
@@ -128,7 +124,7 @@ export default function Page() {
                         href: `/platform/${companyId}/fm/credits/counterparties/new`,
                         as: 'link'
                     }
-                ]}
+                ] : undefined}
                 sections={sectionsList(companyId)}
                 showSearch={true}
                 searchProps={{

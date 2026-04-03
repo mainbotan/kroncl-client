@@ -6,6 +6,10 @@ import Input from "@/assets/ui-kit/input/input";
 import { useParams, useSearchParams, usePathname, useRouter } from "next/navigation";
 import styles from './layout.module.scss';
 import { useEffect, useState } from "react";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 interface PlatformLayoutProps {
   children: React.ReactNode;
@@ -17,6 +21,9 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
     const searchParams = useSearchParams();
     const router = useRouter();
     const pathname = usePathname();
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_ANALYSIS);
 
     // Локальное состояние для полей ввода
     const [localStartDate, setLocalStartDate] = useState(searchParams.get('start_date') || '');
@@ -42,6 +49,14 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
         }
         router.push(`${pathname}?${params.toString()}`);
     };
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.FM_ANALYSIS} />
+    )
 
     return (
         <>

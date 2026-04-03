@@ -15,6 +15,10 @@ import { ChooseCounterpartyModal } from '../components/choose-countryparty-modal
 import { CounterpartyCard } from '../../counterparties/components/counterparty-card/card';
 import { useFm } from '@/apps/company/modules';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 type CreditType = 'debt' | 'credit';
 type AmountStatus = 'idle' | 'valid' | 'invalid';
@@ -24,6 +28,10 @@ export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const searchParams = useSearchParams();
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_CREDITS_CREATE);
+
     const fmModule = useFm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -256,6 +264,14 @@ export default function Page() {
     const interestStatusInfo = getInterestStatusInfo();
     const counterpartyStatusInfo = getCounterpartyStatusInfo();
 
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    );
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.FM_CREDITS_CREATE} />
+    )
+    
     return (
         <>
             <PlatformHead

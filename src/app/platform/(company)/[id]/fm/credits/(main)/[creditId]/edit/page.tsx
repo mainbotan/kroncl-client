@@ -15,6 +15,11 @@ import { CounterpartyCard } from '../../../counterparties/components/counterpart
 import { useFm } from '@/apps/company/modules';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 type CreditType = 'debt' | 'credit';
 type AmountStatus = 'idle' | 'valid' | 'invalid';
@@ -24,6 +29,10 @@ export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const creditId = params.creditId as string;
+    
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_CREDITS_UPDATE);   
+        
     const fmModule = useFm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -342,44 +351,21 @@ export default function Page() {
     const interestStatusInfo = getInterestStatusInfo();
     const counterpartyStatusInfo = getCounterpartyStatusInfo();
 
-    if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
 
     if (!credit) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            Кредит не найден
-        </div>
+        <PlatformError error='Кредит/займ не найден' />
     );
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.FM_CREDITS_UPDATE} />
+    )
 
     return (
         <>

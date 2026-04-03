@@ -10,12 +10,20 @@ import { useState } from 'react';
 import { useFm } from '@/apps/company/modules';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { CounterpartyType } from '@/apps/company/modules/fm/types';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 
 type FieldStatus = 'idle' | 'valid' | 'invalid';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_COUNTERPARTIES_CREATE);
+    
     const fmModule = useFm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -118,6 +126,14 @@ export default function Page() {
 
     const isFormValid = validation.name.isValid;
     const statusInfo = getStatusInfo();
+
+    if (ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.FM_COUNTERPARTIES_CREATE} />
+    )
 
     return (
         <>

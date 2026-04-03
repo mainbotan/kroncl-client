@@ -16,11 +16,21 @@ import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/c
 import Button from '@/assets/ui-kit/button/button';
 import { formatDate } from '@/assets/utils/date';
 import clsx from 'clsx';
+import { usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const counterpartyId = params.counterpartyId as string;
+
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_COUNTERPARTIES, {allowExpired: true});
+    const ALLOW_COUNTERPARTY_UPDATE = usePermission(PERMISSIONS.FM_COUNTERPARTIES_UPDATE);
+
     const fmModule = useFm();
     const router = useRouter();
     const { showMessage } = useMessage();
@@ -116,58 +126,23 @@ export default function Page() {
 
     const isActive = counterparty?.status === 'active';
 
-    if (loading) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            <Spinner />
-        </motion.div>
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
     );
     
     if (error) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            {error}
-        </motion.div>
+        <PlatformError error={error} />
     );
 
     if (!counterparty) return (
-        <motion.div 
-            style={{
-                display: "flex", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                fontSize: ".7em", 
-                color: "var(--color-text-description)", 
-                minHeight: "10rem"
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
-            Контрагент не найден
-        </motion.div>
+        <PlatformError error='Контрагент не найден' />
     );
 
-    const actions = [
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.FM_COUNTERPARTIES} />
+    )
+
+    const actions = (!ALLOW_COUNTERPARTY_UPDATE.isLoading && ALLOW_COUNTERPARTY_UPDATE.allowed) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,
@@ -175,22 +150,24 @@ export default function Page() {
             as: 'link' as const,
             href: `/platform/${companyId}/fm/credits/counterparties/${counterpartyId}/edit`
         }
-    ];
+    ] : [];
 
-    if (isActive) {
-        actions.push({
-            children: 'Деактивировать',
-            icon: <Exit />,
-            variant: 'accent',
-            onClick: () => setIsModalDropOpen(true)
-        });
-    } else {
-        actions.push({
-            children: 'Активировать',
-            icon: <Exit />,
-            variant: 'accent',
-            onClick: () => setIsModalActivateOpen(true)
-        });
+    if (!ALLOW_COUNTERPARTY_UPDATE.isLoading && ALLOW_COUNTERPARTY_UPDATE.allowed) {
+        if (isActive) {
+            actions.push({
+                children: 'Деактивировать',
+                icon: <Exit />,
+                variant: 'accent',
+                onClick: () => setIsModalDropOpen(true)
+            });
+        } else {
+            actions.push({
+                children: 'Активировать',
+                icon: <Exit />,
+                variant: 'accent',
+                onClick: () => setIsModalActivateOpen(true)
+            });
+        }
     }
 
     return (
