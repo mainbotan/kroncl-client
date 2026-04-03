@@ -8,8 +8,16 @@ import Spinner from "@/assets/ui-kit/spinner/spinner";
 import { ModalTooltip } from "@/app/components/tooltip/tooltip";
 import { motion } from 'framer-motion';
 import { containerVariants, progressBarVariants, statItemVariants } from "./_animations";
+import { usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_COMPANIES_STORAGE } from "@/app/docs/(v1)/internal.config";
 
 export default function StoragePage() {
+    // perms
+    const ALLOW_PAGE = usePermission(PERMISSIONS.STORAGE_SOURCES, {allowExpired: true});
+    
     const storage = useStorage();
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -35,16 +43,14 @@ export default function StoragePage() {
         }
     };
     
-    if (loading) return <div style={{
-            display: "flex",
-            flex: "1",
-            alignItems: "center",
-            justifyContent: "center",
-            minHeight: "100%"
-        }}>
-        <Spinner />
-    </div>;
-    
+    if (loading || ALLOW_PAGE.isLoading) return (
+        <PlatformLoading />
+    )
+
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+        <PlatformNotAllowed permission={PERMISSIONS.STORAGE_SOURCES} />
+    )
+
     // Рассчитываем процент использования для бара
     const storageUsagePercent = data && data.total_size_mb ? 
         Math.min(100, Math.round((data.total_size_mb / STORAGE_LIMIT_MB) * 100)) : 0;
@@ -54,6 +60,10 @@ export default function StoragePage() {
         <PlatformHead
            title='Ресурсы хранилища'
            description="Системная информация о ресурсах хранилища организации."
+           docsEscort={{
+            href: DOCS_LINK_COMPANIES_STORAGE,
+            title: 'Подробнее о хранилище организации'
+           }}
         />
         <div className={styles.head}>
             <motion.div 
