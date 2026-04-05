@@ -1,7 +1,7 @@
 import { StructureBlock } from './sections/structure/block';
 import { SecurityBlock } from './sections/security/block';
 
-export type TabId = 'modules' | 'security';
+export type TabId = 'modules' | 'security' | 'docs';
 
 export interface TabConfig {
     id: TabId;
@@ -18,6 +18,11 @@ export const tabs: TabConfig[] = [
     {
         id: 'security',
         label: 'Безопасность',
+        component: SecurityBlock
+    },
+    {
+        id: 'docs',
+        label: 'Руководство',
         component: SecurityBlock
     }
 ];

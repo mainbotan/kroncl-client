@@ -5,7 +5,7 @@ export const DOCS_LINK_COMPANIES = '/docs/companies';
 export const DOCS_LINK_COMPANIES_PRICING = '/docs/companies/pricing';
 export const DOCS_LINK_COMPANIES_ACCESSES = '/docs/companies/accesses';
 export const DOCS_LINK_COMPANIES_STORAGE = '/docs/companies/storage';
-
+export const DOCS_LINK_COMPANIES_LOGS = '/docs/companies/logs';
 
 export const DOCS_LINK_MODULES = '/docs/companies/modules';
 export const DOCS_LINK_FM = '/docs/companies/modules/fm';

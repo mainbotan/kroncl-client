@@ -25,11 +25,19 @@ export default function Page() {
             <div className={styles.grid}>
                 <StartBlock className={styles.block} />
                 {/* <PartnersBlock partners={partnersList} className={styles.block} /> */}
+                <div className={clsx(styles.overviewCanvas)}>
+                    <HeadBlock className={clsx(styles.block, styles.head)} 
+                        title='Место для вашей компании'
+                        description='Рабочее пространство для всех сотрудников. В браузере. Вне зависимости от размера компании.'
+                        variant='default'
+                        location='center'
+                        actions={[
+                            {children: 'Создать сейчас', href: authLinks.registration, variant: 'contrast'}
+                        ]}
+                    />
+                    <OverviewBlock className={styles.block} />
+                </div>
                 <SwitchableBlock />
-                
-                <div className={styles.interval} />
-                <OverviewBlock className={styles.block} />
-
 
                 <div className={styles.interval} />
                 <HeadBlock className={clsx(styles.block, styles.head)} 

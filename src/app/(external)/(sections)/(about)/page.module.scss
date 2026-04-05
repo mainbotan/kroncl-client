@@ -39,6 +39,18 @@
     }
 }
 
+// overview 1 gradient canvas
+.overviewCanvas {
+    display: flex;
+    flex-flow: column nowrap;
+    background: linear-gradient(90deg, #0028ba, #050e33);
+
+    .block {
+        background-color: transparent !important;
+        color: var(--color-accent-text-primary) !important;
+    }
+}
+
 // dynamics 2 sections grid
 .dynamicsGrid {
     display: flex;
