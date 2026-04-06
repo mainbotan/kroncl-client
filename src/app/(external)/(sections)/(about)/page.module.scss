@@ -63,6 +63,16 @@
     }
 }
 
+.multitenantCanvas {
+    display: flex;
+    flex-flow: column nowrap;
+    background: linear-gradient(0deg, transparent, var(--color-surface-glass));
+
+    .block {
+        background-color: transparent !important;
+    }
+}
+
 // dynamics 2 sections grid
 .dynamicsGrid {
     display: flex;
@@ -89,7 +99,13 @@
 .ecosystemGrid {
     display: flex;
     flex-flow: column nowrap;
-    background: conic-gradient(from 315deg, var(--color-purple), var(--color-green), var(--color-red), var(--color-orange), var(--color-yellow));
+    background: conic-gradient(from 315deg, 
+        var(--color-purple), 
+        var(--color-orange),
+        var(--color-red), 
+        var(--color-green),
+        var(--color-yellow)
+    );
     color: var(--color-accent-text-primary);
 
     .block {

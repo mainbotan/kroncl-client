@@ -14,15 +14,16 @@
 
         .item {
             display: inline-flex;
-            padding: 2em;
+            padding: 1em;
             width: 10em;
             height: 5em;
             align-items: center;
             justify-content: center;
 
-            img, svg {
+            .logo {
+                color: var(--color-text-ghost);
                 width: 100%;
-                color: var(--color-text-primary);
+                fill: var(--color-text-ghost);
             }
         }
     }

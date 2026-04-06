@@ -8,7 +8,7 @@ import { authLinks } from '@/config/links.config';
 import { EcosystemBlock } from './slides/ecosystem/block';
 import { TimeSavingBlock } from './slides/time-saving/block';
 import { SimpleUiBlock } from './slides/simple-ui/block';
-import { partnersList } from './content/_partners';
+import { partnersList } from './slides/partners/_partners';
 import { SwitchableBlock } from './slides/switchable/block';
 import { StatisticsBlock } from './slides/statistics/block';
 import { MultitenantBlock } from './slides/multitenant/block';
@@ -17,14 +17,19 @@ import { QuickLinksBlock } from '../../components/quick-links/quick-links';
 import { linksList } from './_links';
 import { ReadyToStartBlock } from '../(customers)/businessmans/blocks/ready-to-start/block';
 import { OverviewBlock } from './slides/overview/block';
+import { DOCS_LINK_COMPANIES } from '@/app/docs/(v1)/internal.config';
+import { Pin } from './pins/2026/pin';
 
 export default function Page() {
     return (
         <>
+        <Pin className={styles.pin} />
         <div className={styles.container}>
             <div className={styles.grid}>
                 <StartBlock className={styles.block} />
-                {/* <PartnersBlock partners={partnersList} className={styles.block} /> */}
+                
+                <PartnersBlock className={styles.block} />
+                
                 <div className={clsx(styles.overviewCanvas)}>
                     <HeadBlock className={clsx(styles.block, styles.head)} 
                         title='Место для вашей компании'
@@ -38,6 +43,26 @@ export default function Page() {
                     <OverviewBlock className={styles.block} />
                 </div>
                 <SwitchableBlock />
+
+                <div className={styles.intervalFlex}>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                </div>
+            
+                <div className={styles.multitenantCanvas}>
+                    <HeadBlock className={clsx(styles.block, styles.head)} 
+                        title='Один аккаунт - несколько организаций'
+                        description='Перемещайтесь между учётными системами организаций за миллисекунды.'
+                        variant='default'
+                        location='center'
+                        actions={[
+                            {as: 'link', children: 'Подробнее', href: DOCS_LINK_COMPANIES, variant: 'contrast'}
+                        ]}
+                    />
+                    <MultitenantBlock className={styles.block} />    
+                </div>
 
                 <div className={styles.intervalFlex}>
                     <span />

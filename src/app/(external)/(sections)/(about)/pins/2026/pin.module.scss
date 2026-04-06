@@ -1,0 +1,40 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    background: linear-gradient(90deg, var(--color-surface-glass), var(--color-surface-light));
+    @include slide();
+    @include cursor(pointer);
+
+    .grid {
+        display: flex;
+        @include focus();
+        height: 1.6rem;
+        flex-flow: row nowrap;
+        font-size: .65em;
+        align-items: center;
+        gap: .8em;
+        overflow: hidden;
+
+        .col {
+            &:nth-child(1) {
+                font-weight: 600;
+            }
+            &:nth-child(2) {
+                font-size: .75em;
+                flex: 1;
+                @include text-ellipsis();
+            }
+            &:nth-child(3) {
+                font-size: .6em;
+
+                @media (max-width: 720px) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 720px) {
+        font-size: .8em;
+    }
+}

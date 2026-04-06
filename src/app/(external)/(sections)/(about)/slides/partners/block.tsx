@@ -3,23 +3,20 @@ import clsx from "clsx";
 import styles from './block.module.scss';
 import Button from "@/assets/ui-kit/button/button";
 import React from "react";
+import { partnersList } from "./_partners";
 
 export type Partner = {
     name: string;
     logo: React.ReactNode;
 }
-interface PartnersBlockProps extends PageBlockProps {
-    partners: Partner[];
-}
 
 export function PartnersBlock({
-    className,
-    partners = []
-}: PartnersBlockProps) {
+    className
+}: PageBlockProps) {
     return (
         <div className={clsx(styles.block, className)}>
             <div className={styles.line}>
-                {partners.map((partner, index) => (
+                {partnersList.map((partner, index) => (
                     <section key={index} className={styles.item}>
                         {partner.logo}
                     </section>
