@@ -1,13 +1,10 @@
 import clsx from 'clsx';
 import styles from './page.module.scss';
-import { DynamicsBlock } from './slides/dynamics/block';
 import { HeadBlock } from './slides/head/block';
 import { PartnersBlock } from './slides/partners/block';
 import { StartBlock } from './slides/start/block';
 import { authLinks } from '@/config/links.config';
 import { EcosystemBlock } from './slides/ecosystem/block';
-import { TimeSavingBlock } from './slides/time-saving/block';
-import { SimpleUiBlock } from './slides/simple-ui/block';
 import { partnersList } from './slides/partners/_partners';
 import { SwitchableBlock } from './slides/switchable/block';
 import { StatisticsBlock } from './slides/statistics/block';
@@ -17,8 +14,15 @@ import { QuickLinksBlock } from '../../components/quick-links/quick-links';
 import { linksList } from './_links';
 import { ReadyToStartBlock } from '../(customers)/businessmans/blocks/ready-to-start/block';
 import { OverviewBlock } from './slides/overview/block';
-import { DOCS_LINK_COMPANIES } from '@/app/docs/(v1)/internal.config';
+import { DOCS_LINK_COMPANIES, DOCS_LINK_FM } from '@/app/docs/(v1)/internal.config';
 import { Pin } from './pins/2026/pin';
+import { TrialPeriodBlock } from '../(customers)/pricing/slides/trial/block';
+import { MiniBlock } from './slides/mini/block';
+import Kanban from '@/assets/ui-kit/icons/kanban';
+import Wallet from '@/assets/ui-kit/icons/wallet';
+import History from '@/assets/ui-kit/icons/history';
+import Clients from '@/assets/ui-kit/icons/clients';
+import { ChartsBlock } from './slides/charts/block';
 
 export default function Page() {
     return (
@@ -63,6 +67,46 @@ export default function Page() {
                     />
                     <MultitenantBlock className={styles.block} />    
                 </div>
+                
+                <div className={styles.miniBlocksGrid}>
+                    <MiniBlock 
+                        title='Сделки'
+                        description='Разделяйте заказы между сотрудниками, настраивайте типы работы и статусы, расчитывайте доход от сделок.'
+                        img='/images/promo/dark-company-deals-cut.png'
+                        icon={<Kanban />}
+                        className={styles.block} />
+                    <MiniBlock 
+                        title='Финансы'
+                        description='Контролируйте движение средств, назначайте ответственных сотрудников и следите за долговыми обязательствами.'
+                        img='/images/promo/dark-company-transactions-cut.png'
+                        icon={<Wallet />}
+                        className={styles.block} />
+                    <MiniBlock 
+                        title='История действий'
+                        description='Отслеживайте историю изменений данных компании, с точностью до браузера инициатора.'
+                        img='/images/promo/light-company-history-cut.png'
+                        icon={<History />}
+                        className={styles.block} />
+                    <MiniBlock 
+                        title='Клиентская база'
+                        description='Анализируйте трафик клиентов, выявляйте наиболее эффективные источники привлечения.'
+                        img='/images/promo/dark-company-clients-stat-cut.png'
+                        icon={<Clients />}
+                        className={styles.block} />
+                </div>
+                
+                <div className={styles.chartsGrid}>
+                    <HeadBlock className={clsx(styles.block, styles.head)} 
+                        title='От данных до графиков'
+                        description='Лучшая аналитика для владельцев организаций.'
+                        variant='default'
+                        location='center'
+                        actions={[
+                            {as: 'link', children: 'Подробнее', href: DOCS_LINK_FM, variant: 'contrast'}
+                        ]}
+                    />
+                    <ChartsBlock className={clsx(styles.block, styles.chartBlock)} />
+                </div>
 
                 <div className={styles.intervalFlex}>
                     <span />
@@ -88,13 +132,13 @@ export default function Page() {
                             className={styles.block} 
                             />
                         <StatisticsBlock 
-                            value='7+'
-                            legend='модулей учёта & аналитики'
+                            value='∞'
+                            legend='приглашений сотрудников'
                             className={styles.block} 
                             />
                         <StatisticsBlock 
-                            value='∞'
-                            legend='приглашений сотрудников'
+                            value='5'
+                            legend='модулей учёта & аналитики'
                             className={styles.block} 
                             />
                     </div>
@@ -102,7 +146,8 @@ export default function Page() {
                 </div>
 
                 <TariffsBlock className={clsx(styles.block, styles.tariffsBlock)} />
-                    
+                <TrialPeriodBlock className={styles.block} />
+
                 <QuickLinksBlock 
                     links={linksList} 
                     className={styles.block}

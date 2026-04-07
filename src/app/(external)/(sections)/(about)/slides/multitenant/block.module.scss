@@ -1,25 +1,23 @@
 @use '@/assets/styles/_mixins.scss' as *;
 
 .container {
-    min-height: 26rem;
+    min-height: 24rem;
     position: relative;
     overflow: hidden;
 
     .mockUp {
         position: absolute;
         z-index: 50;
-        height: 100%;
+        width: 90%;
         bottom: 0;
-        right: 0;
+        left: 5%;
     }
 
     @media (max-width: 720px) {
-        min-height: 13rem;
+        min-height: 9rem;
 
         .mockUp {
             height: auto;
-            width: 100%;
-            right: -10%;
         }
     }
 }

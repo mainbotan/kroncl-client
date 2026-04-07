@@ -1,0 +1,78 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    min-height: 20rem;
+    position: relative;
+    overflow: hidden;
+    transition: background-color var(--transition);
+    padding-top: 1.5rem !important;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .about {
+        display: flex;
+        overflow: hidden;
+        flex-flow: column nowrap;
+        gap: .4em;
+        height: 5rem;
+
+        .capture {
+            font-weight: 600;
+            font-size: 1.1em;
+            letter-spacing: .02em;
+            @include text-ellipsis();
+        }
+        .description {
+            font-size: .8em;
+            color: var(--color-text-ghost);
+            @include lines-ellipsis(3);
+            line-height: 1.3;
+        }
+    }
+    
+    .mockUp {
+        position: absolute;
+        z-index: 10;
+        right: 0;
+        bottom: 0;
+        width: 75%;
+        transition: bottom var(--transition), width var(--transition);
+    }
+
+    
+    .icon {
+        position: absolute;
+        z-index: 20;
+        width: 2em;
+        height: 2em;
+        bottom: 1rem;
+        left: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-icon-primary);
+        border-radius: .4em;
+        border: 1px solid var(--color-stroke-secondary);
+        box-shadow: 0 0 .1em var(--color-surface-light);
+        background-color: var(--color-surface-glass-secondary);
+        transition: color var(--transition);
+
+        svg {
+            width: 60%;
+            height: 60%;
+        }
+    }
+
+
+    @media (max-width: 720px) {
+        min-height: 17rem;
+    }
+
+    &:hover {
+        background-color: var(--color-surface-glass-secondary) !important;
+        
+        .icon {
+            color: var(--color-text-primary);
+        }
+    }
+}

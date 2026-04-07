@@ -12,7 +12,7 @@ export function Pin({className}: PageBlockProps) {
         <Link target="_blank" href={DOCS_LINK} className={clsx(styles.container, className)}>
             <div className={styles.grid}>
                 <div className={styles.col}>2026</div>
-                <div className={styles.col}>Организация учёта организации</div>
+                <div className={styles.col}>Организация учёта компании</div>
                 <div className={styles.col}>Подробнее</div>
             </div>
         </Link>

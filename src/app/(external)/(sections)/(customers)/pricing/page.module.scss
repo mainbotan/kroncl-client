@@ -23,7 +23,7 @@
         background-color: var(--color-leader);
         height: 5rem;
     }
-    
+
     .intervalFlex {
         display: flex;
         flex-flow: row nowrap;
@@ -45,4 +45,9 @@
             font-size: .55em;
         }
     }
+}
+
+.trial {
+    // background-color: var(--color-accent) !important;
+    // color: var(--color-accent-text-primary) !important
 }

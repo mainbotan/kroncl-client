@@ -6,6 +6,7 @@ import { TariffsBlock } from './slides/tariffs/block';
 import { linksList } from './_links';
 import { TrialPeriodBlock } from './slides/trial/block';
 import { ReadyToStartBlock } from '../businessmans/blocks/ready-to-start/block';
+import clsx from 'clsx';
 
 export default function Page() {
     return (
@@ -19,9 +20,9 @@ export default function Page() {
                     <span />
                     <span />
                 </div>
-                
+
+                <TrialPeriodBlock className={clsx(styles.block, styles.trial)} />
                 <TariffsBlock className={styles.block} />
-                <TrialPeriodBlock className={styles.block} />
                 <ForPartnersBlock className={styles.block} />
 
                 <div className={styles.intervalFlex}>

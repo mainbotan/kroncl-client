@@ -1,0 +1,17 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    padding: 0 !important;
+    overflow: hidden;
+
+    .chart {
+        min-height: 100%;
+        z-index: 1;
+        width: 103%;
+        padding-bottom: .6rem;
+        
+        @media (max-width: 720px) {
+            min-height: 5rem;
+        }
+    }
+}
