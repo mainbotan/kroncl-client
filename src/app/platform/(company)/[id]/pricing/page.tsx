@@ -7,7 +7,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import styles from './page.module.scss';
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import { DOCS_LINK_COMPANIES_PRICING } from "@/app/docs/(v1)/internal.config";
-import { PricingPlan as PricingPlanComponent } from "@/app/platform/(home)/companies/new/components/pricing-plan/card";
+import { PricingPlan as PricingPlanComponent } from "@/app/platform/(manage)/(home)/companies/new/components/pricing-plan/card";
 import { pricingApi } from '@/apps/pricing/api';
 import { usePricing } from '@/apps/company/modules';
 import type { PricingPlan } from '@/apps/pricing/types';
