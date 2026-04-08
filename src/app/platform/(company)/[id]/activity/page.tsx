@@ -18,6 +18,11 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { Calendar } from './components/calendar/block';
+import EyeOff from '@/assets/ui-kit/icons/eye-off';
+import { DOCS_LINK_COMPANIES_LOGS } from '@/app/docs/(v1)/internal.config';
+import Button from '@/assets/ui-kit/button/button';
+import Upload from '@/assets/ui-kit/icons/upload';
 
 export default function Page() {
     const params = useParams();
@@ -88,18 +93,31 @@ export default function Page() {
             <PlatformHead 
                 title='История действий'
                 description='Активность сотрудников в системе.'
-                actions={[
-                    {
-                        variant: 'accent',
-                        children: 'Скопировать лог',
-                        icon: <Copy />
-                    }
-                ]}
+                docsEscort={{
+                    href: DOCS_LINK_COMPANIES_LOGS,
+                    title: 'Подробнее о мониторинге действий'
+                }}
+                showSearch={true}
             >
-                {/* <div className={styles.control}>
-                    <span className={clsx(styles.tag, styles.accent)}>Все действия</span>
-                    <span className={styles.tag}>Только критичные</span>
-                </div> */}
+                {/** Activity calendar */}
+                <Calendar className={styles.calendar} />
+
+                <div className={styles.actions}>
+                    <Button 
+                        variant='accent'
+                        icon={<Upload />}
+                        children='Экспорт'
+                        className={styles.action} />
+                    <Button 
+                        variant='empty'
+                        icon={<EyeOff />}
+                        children='Скрыть календарь'
+                        className={styles.action} />
+                    <Button 
+                        variant='empty'
+                        children='Очистить историю'
+                        className={styles.action} />
+                </div>
             </PlatformHead>
             
             <div className={styles.grid}>

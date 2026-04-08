@@ -1,5 +1,32 @@
 @use '@/assets/styles/_mixins.scss' as *;
 
+.actions {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: .7em;
+    font-size: .74em;
+
+    .action {
+        transition: transform var(--transition);
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    @media (max-width: 720px) {
+        flex-direction: column;
+
+        .action {
+            width: 100%;
+        }
+    }
+}
+
+.calendar {
+    margin-bottom: .7rem;
+}
+
 .grid {
     display: flex;
     flex-flow: column nowrap;
