@@ -55,3 +55,17 @@ export interface InviteAccountResponse {
   updated_at: string;
 }
 
+// SETTINGS
+
+export interface CompanyAccountSettings {
+  account_id: string;
+  increase_permissions: string[] | null;
+  reduce_permissions: string[] | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UpdateCompanyAccountSettingsRequest {
+  increase_permissions?: string[] | null;
+  reduce_permissions?: string[] | null;
+}

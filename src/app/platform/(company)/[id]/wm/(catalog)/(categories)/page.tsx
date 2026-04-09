@@ -27,7 +27,7 @@ export default function CatalogPage() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_CATEGORIES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_CATEGORIES)
     const ALLOW_CATEGORY_CREATE = usePermission(PERMISSIONS.WM_CATALOG_CATEGORIES_CREATE);   
     
     const wmModule = useWm();

@@ -26,7 +26,7 @@ export default function Page() {
     const statusId = params.statusId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_STATUSES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_STATUSES)
     const ALLOW_STATUS_UPDATE = usePermission(PERMISSIONS.DM_STATUSES_UPDATE)
     const ALLOW_STATUS_DELETE = usePermission(PERMISSIONS.DM_STATUSES_DELETE)
 

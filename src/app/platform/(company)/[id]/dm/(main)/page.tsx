@@ -23,7 +23,7 @@ export default function Page() {
     const companyId = params.id as string;
     
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS)
     const ALLOW_DEAL_CREATE = usePermission(PERMISSIONS.DM_DEALS_CREATE)
     const ALLOW_DEAL_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE)
 

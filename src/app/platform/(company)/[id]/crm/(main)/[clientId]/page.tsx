@@ -32,7 +32,7 @@ export default function Page() {
     const clientId = params.clientId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_CLIENTS, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_CLIENTS)
     const ALLOW_CLIENT_UPDATE = usePermission(PERMISSIONS.CRM_CLIENTS_UPDATE)
 
     const crmModule = useCrm();

@@ -29,7 +29,7 @@ export default function Page() {
     const section = searchParams.get('section');
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS)
     const ALLOW_DEAL_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE)
     const ALLOW_DEAL_DELETE = usePermission(PERMISSIONS.DM_DEALS_DELETE)
 

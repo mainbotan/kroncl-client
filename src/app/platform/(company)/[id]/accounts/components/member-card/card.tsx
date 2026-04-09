@@ -24,15 +24,13 @@ interface MemberCardProps {
   className?: string;
   showDefaultActions?: boolean;
   actions?: ButtonProps[];
-  canKick?: boolean;
 }
 
 export function MemberCard({ 
   account, 
   showDefaultActions = true, 
   className, 
-  actions,
-  canKick = true 
+  actions
 }: MemberCardProps) {
   const params = useParams();
   const companyId = params.id as string;

@@ -31,7 +31,7 @@ export default function Page() {
     const sourceId = params.sourceId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_SOURCES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.CRM_SOURCES)
     const ALLOW_SOURCE_UPDATE = usePermission(PERMISSIONS.CRM_SOURCES_UPDATE)
 
     const crmModule = useCrm();

@@ -16,7 +16,7 @@ import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/bl
 
 export default function Page() {
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_CREATE, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_CREATE)
     
     const accountsModule = useAccounts();
     const { showMessage } = useMessage();
@@ -90,7 +90,7 @@ export default function Page() {
     return (
         <>
             <PlatformHead
-                title="Приглашение сотрудника"
+                title="Приглашение в компанию"
                 description='Если пользователь с указанной почтой ещё не был зарегистрирован в системе, мы вышлем письмо на указанную почту - все исходящие приглашения никуда не исчезнут.'
             />
             <PlatformFormBody>

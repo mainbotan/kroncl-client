@@ -1,6 +1,6 @@
 import { api } from '@/apps/shared/bridge/api';
 import { ApiResponse } from '@/apps/shared/bridge/types';
-import { AccountPermission, Permission } from './types';
+import { BasePermission, Permission } from './types';
 
 export class PermissionsApi {
     private endpoints = {
@@ -18,7 +18,7 @@ export class PermissionsApi {
     }
 
     // доступные аккаунту в компании
-    async getAccountPermissions(companyId: string, accountId: string): Promise<ApiResponse<AccountPermission[]>> {
+    async getAccountPermissions(companyId: string, accountId: string): Promise<ApiResponse<BasePermission[]>> {
         return api.get<Permission[]>(`/companies/${companyId}/modules/accounts/${accountId}/permissions`);
     }
 }

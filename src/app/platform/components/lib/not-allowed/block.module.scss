@@ -34,4 +34,18 @@
             max-width: 100%;
         }
     }
+    .about {
+        font-size: .7em;
+        color: var(--color-text-description);
+        text-align: center;
+        line-height: 1.3;
+
+        .accent {
+            color: var(--color-text-hint);
+        }
+
+        @media (max-width: 720px) {
+            max-width: 100%;
+        }
+    }
 }

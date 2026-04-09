@@ -2,7 +2,7 @@
 
 import { useQuery, useQueries } from '@tanstack/react-query';
 import { permissionsApi } from './api';
-import { Permission, AccountPermission } from './types';
+import { Permission, BasePermission } from './types';
 import { useCompany } from '../company/provider';
 import { useAuth } from '@/apps/account/auth/context/AuthContext';
 
@@ -48,7 +48,7 @@ export function useAccountPermissions() {
             if (response.status && response.data) {
                 return response.data;
             }
-            return [] as AccountPermission[];
+            return [] as BasePermission[];
         },
         enabled: !!companyId && !!accountId,
         staleTime: 5 * 60 * 1000, // 5 минут, права могут меняться чаще

@@ -26,7 +26,7 @@ export default function MovementsPage() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_STOCKS_BATCHES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_STOCKS_BATCHES)
     const ALLOW_BATCH_CREATE = usePermission(PERMISSIONS.WM_STOCKS_BATCHES_CREATE);   
     
     const wmModule = useWm();

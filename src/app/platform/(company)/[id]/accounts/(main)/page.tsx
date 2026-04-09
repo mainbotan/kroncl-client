@@ -11,7 +11,7 @@ import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
 import Team from '@/assets/ui-kit/icons/team';
-import { usePermission } from '@/apps/permissions/hooks';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
@@ -24,8 +24,7 @@ export default function Page() {
     const companyId = params.id as string;
     
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS, {allowExpired: true})
-    const ALLOW_ACCOUNT_KICK = usePermission(PERMISSIONS.ACCOUNTS_DELETE, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS)
 
     const accountsModule = useAccounts();
     const pathname = usePathname();
@@ -79,7 +78,7 @@ export default function Page() {
         <PlatformError error={error} />
     );
 
-    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+    if (!isAllowed(ALLOW_PAGE)) return (
         <PlatformNotAllowed permission={PERMISSIONS.ACCOUNTS} />
     )
 
@@ -115,7 +114,6 @@ export default function Page() {
                         <MemberCard 
                             key={account.id} 
                             account={account}
-                            canKick={!ALLOW_ACCOUNT_KICK.isLoading && ALLOW_ACCOUNT_KICK.allowed} 
                         />
                     ))}
                     

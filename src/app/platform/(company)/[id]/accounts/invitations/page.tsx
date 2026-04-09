@@ -11,7 +11,7 @@ import { useParams, usePathname, useSearchParams } from 'next/navigation';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
 import Invitations from '@/assets/ui-kit/icons/invitations';
-import { usePermission } from '@/apps/permissions/hooks';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
@@ -24,8 +24,9 @@ export default function Page() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS, {allowExpired: true})
-    const ALLOW_INVITATION_REVOKE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_REVOKE, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS)
+    const ALLOW_INVITATION_CREATE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_CREATE)
+    const ALLOW_INVITATION_REVOKE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_REVOKE)
 
     const accountsModule = useAccounts();
     const pathname = usePathname();
@@ -92,14 +93,12 @@ export default function Page() {
                 title='Приглашения'
                 description='Вступление аккаунтов в организацию.'
                 sections={sectionsList(companyId)}
-                actions={[
-                    {
-                        as: 'link',
-                        variant: 'accent',
-                        children: 'Пригласить',
-                        href: `/platform/${companyId}/accounts/invite`
-                    }
-                ]}
+                actions={isAllowed(ALLOW_INVITATION_CREATE) ? [{
+                    as: 'link',
+                    variant: 'accent',
+                    children: 'Пригласить',
+                    href: `/platform/${companyId}/accounts/invite`
+                }] : undefined}
             />
             {invitations.length === 0 ? (
                 <PlatformEmptyCanvas

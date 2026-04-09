@@ -27,7 +27,7 @@ export default function UnitsPage() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS)
     const ALLOW_UNIT_CREATE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_CREATE);   
     
     const wmModule = useWm();

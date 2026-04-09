@@ -1,0 +1,142 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+
+    .header {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        gap: 1em;
+
+        .info {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1em;
+            flex: 1;
+
+            .title {
+                font-size: 1.4em;
+                font-weight: 600;
+                letter-spacing: .02em;
+                color: var(--color-text-primary);
+                line-height: 1.2;
+            }
+        }
+        .actions {
+            display: inline-flex;
+            flex-flow: row nowrap;
+            gap: 1em;
+
+            .action {
+                border-radius: 2em;
+            }
+        }
+
+        @media (max-width: 720px) {
+            flex-direction: column;
+            align-items: start;
+
+            .actions {
+                display: flex;
+                flex: 1;
+                width: 100%;
+                flex-direction: column;
+
+                .action {
+                    width: 100%;
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    .result {
+        display: flex;
+        flex-flow: row wrap;
+        gap: .7em 1em;
+
+        .item {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: .5em;
+            align-items: center;
+            height: 2.55em;
+            padding: 0 0 0 1em;
+            border-radius: 2em;
+            @include cursor(pointer);
+            background-color: var(--color-surface-light);
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: border-color var(--transition);
+
+            .code {
+                @include text-ellipsis();
+            }
+            .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+                min-width: 2.55em;
+
+                .svg {
+                    width: 1.2em;
+                    height: 1.2em;
+                    fill: var(--color-icon-primary);
+                    transition: transform var(--transition),
+                                fill var(--transition);
+                }
+
+                &:hover {
+                    .svg {
+                        transform: scale(1.1);
+                        fill: var(--color-text-primary);
+                    }
+                }
+            }
+        }
+    }
+
+    
+    .search {
+        position: relative;
+
+        .input {
+            width: 100%;
+        }
+
+        .modal {
+            opacity: 0;
+            margin-top: 0;
+            height: 0;
+            border: 1px dashed var(--color-stroke-secondary);
+            border-radius: .7em;
+            background-color: var(--color-surface-glass-secondary);
+            backdrop-filter: blur(10px);
+            display: block;
+            overflow-y: scroll;
+            transition: opacity var(--transition),
+                        margin-top var(--transition),
+                        height var(--transition),
+                        padding var(--transition);
+
+            &.open {
+                margin-top: .9em;
+                opacity: 1;
+                height: 10em;
+                padding: .8em;
+
+                .result .item {
+                    padding: 0 1em;
+
+                    &:hover {
+                        border-color: var(--color-contrast);
+                    }
+                }
+            }
+        }
+    }
+}

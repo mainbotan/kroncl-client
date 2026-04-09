@@ -24,7 +24,7 @@ export default function Page() {
     const batchId = params.batchId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_STOCKS_BATCHES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_STOCKS_BATCHES)
 
     const wmModule = useWm();
     const { showMessage } = useMessage();

@@ -29,7 +29,7 @@ export default function Page() {
     const { showMessage } = useMessage();
 
     // perms
-    const ALLOW_UPDATE_STATUS = usePermission(PERMISSIONS.SUPPORT_TICKETS_UPDATE, { allowExpired: true });
+    const ALLOW_UPDATE_STATUS = usePermission(PERMISSIONS.SUPPORT_TICKETS_UPDATE);
 
     const [ticket, setTicket] = useState<Ticket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);

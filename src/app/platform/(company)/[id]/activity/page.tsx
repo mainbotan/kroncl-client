@@ -31,8 +31,8 @@ export default function Page() {
     const { showMessage } = useMessage();
     
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.LOGS, {allowExpired: true})
-    const ALLOW_ACTIVITY = usePermission(PERMISSIONS.LOGS_ACTIVITY, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.LOGS)
+    const ALLOW_ACTIVITY = usePermission(PERMISSIONS.LOGS_ACTIVITY)
     const ALLOW_OPTIMIZE = usePermission(PERMISSIONS.LOGS_OPTIMIZE)
     const ALLOW_CLEAR = usePermission(PERMISSIONS.LOGS_CLEAR)
 

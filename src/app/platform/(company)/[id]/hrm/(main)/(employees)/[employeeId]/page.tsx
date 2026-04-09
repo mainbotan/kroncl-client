@@ -36,7 +36,7 @@ export default function Page() {
     const employeeId = params.employeeId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.HRM_EMPLOYEES, { allowExpired: true });
+    const ALLOW_PAGE = usePermission(PERMISSIONS.HRM_EMPLOYEES);
     const ALLOW_UPDATE = usePermission(PERMISSIONS.HRM_EMPLOYEES_UPDATE);
 
     const hrmModule = useHrm();

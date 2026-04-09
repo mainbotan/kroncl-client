@@ -29,7 +29,7 @@ export default function CategoryPage() {
     const categoryId = params.categoryId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_CATEGORIES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_CATEGORIES)
     const ALLOW_CATEGORY_UPDATE = usePermission(PERMISSIONS.WM_CATALOG_CATEGORIES_UPDATE);   
 
     const wmModule = useWm();

@@ -29,7 +29,7 @@ export default function UnitPage() {
     const unitId = params.unitId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS)
     const ALLOW_UNIT_UPDATE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_UPDATE)
 
     const wmModule = useWm();

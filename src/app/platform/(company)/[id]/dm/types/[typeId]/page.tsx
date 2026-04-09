@@ -25,7 +25,7 @@ export default function Page() {
     const typeId = params.typeId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_TYPES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_TYPES)
     const ALLOW_TYPE_DELETE = usePermission(PERMISSIONS.DM_TYPES_DELETE)
     const ALLOW_TYPE_UPDATE = usePermission(PERMISSIONS.DM_TYPES_UPDATE)
 

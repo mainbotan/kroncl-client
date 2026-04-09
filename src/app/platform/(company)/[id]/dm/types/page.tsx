@@ -24,7 +24,7 @@ export default function Page() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_TYPES, {allowExpired: true})
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_TYPES)
     const ALLOW_TYPE_CREATE = usePermission(PERMISSIONS.DM_TYPES_CREATE)
 
     const dmModule = useDm();
