@@ -102,18 +102,16 @@ export default function Page() {
     const loadSummary = async () => {
         setSummaryLoading(true);
         try {
-            if (isAllowed(ALLOW_ANALYSIS)) {
-                const start_date = searchParams.get('start_date') || undefined;
-                const end_date = searchParams.get('end_date') || undefined;
+            const start_date = searchParams.get('start_date') || undefined;
+            const end_date = searchParams.get('end_date') || undefined;
 
-                const response = await fmModule.getAnalysisSummary({
-                    start_date,
-                    end_date
-                });
-                
-                if (response.status) {
-                    setSummary(response.data);
-                }
+            const response = await fmModule.getAnalysisSummary({
+                start_date,
+                end_date
+            });
+            
+            if (response.status) {
+                setSummary(response.data);
             }
         } catch (err) {
             console.error('Error loading summary:', err);
