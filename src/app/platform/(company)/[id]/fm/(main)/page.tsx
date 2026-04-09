@@ -22,7 +22,7 @@ import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
 import { formatDate } from '@/assets/utils/date';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
-import { usePermission } from '@/apps/permissions/hooks';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { useCompany } from '@/apps/company/provider';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
@@ -35,9 +35,10 @@ export default function Page() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.FM, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM);
     const ALLOW_TRANSACTION_REVERSE = usePermission(PERMISSIONS.FM_TRANSACTIONS_REVERSE);
     const ALLOW_TRANSACTION_CREATE = usePermission(PERMISSIONS.FM_TRANSACTIONS_CREATE);
+    const ALLOW_ANALYSIS = usePermission(PERMISSIONS.FM_ANALYSIS);
 
     const fmModule = useFm();
     const pathname = usePathname();
@@ -101,16 +102,18 @@ export default function Page() {
     const loadSummary = async () => {
         setSummaryLoading(true);
         try {
-            const start_date = searchParams.get('start_date') || undefined;
-            const end_date = searchParams.get('end_date') || undefined;
+            if (isAllowed(ALLOW_ANALYSIS)) {
+                const start_date = searchParams.get('start_date') || undefined;
+                const end_date = searchParams.get('end_date') || undefined;
 
-            const response = await fmModule.getAnalysisSummary({
-                start_date,
-                end_date
-            });
-            
-            if (response.status) {
-                setSummary(response.data);
+                const response = await fmModule.getAnalysisSummary({
+                    start_date,
+                    end_date
+                });
+                
+                if (response.status) {
+                    setSummary(response.data);
+                }
             }
         } catch (err) {
             console.error('Error loading summary:', err);
@@ -219,7 +222,7 @@ export default function Page() {
 
     return (
         <>
-            <div className={styles.head}>
+            {isAllowed(ALLOW_ANALYSIS) && (<div className={styles.head}>
                 <div className={styles.base}>
                     <div className={styles.metaLine}>
                         <div className={styles.grid}>
@@ -281,16 +284,19 @@ export default function Page() {
                 </div>
                 )}
             </div>
+            )}
             
             <div className={styles.cards}>
                 <Link href={`/platform/${companyId}/fm/categories`} className={clsx(styles.card, styles.accent)}>
                     <div className={styles.name}>Категории</div>
                     <div className={styles.description}>Категории расходов/доходов</div>
                 </Link>
-                <Link href={`/platform/${companyId}/fm/e2e`} className={styles.card}>
+                {isAllowed(ALLOW_ANALYSIS) && (
+                    <Link href={`/platform/${companyId}/fm/e2e`} className={styles.card}>
                     <div className={styles.name}>Сквозная аналитика</div>
                     <div className={styles.description}>E2E анализ финансов</div>
                 </Link>
+                )}
                 <Link href={`/platform/${companyId}/fm/credits`} className={styles.card}>
                     <div className={styles.name}>Долги</div>
                     <div className={styles.description}>Управление долговыми обязательствами</div>

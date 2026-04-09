@@ -25,7 +25,7 @@ export default function Page() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_CREDITS, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_CREDITS);
     const ALLOW_CREDIT_CREATE = usePermission(PERMISSIONS.FM_CREDITS_CREATE);   
 
     const fmModule = useFm();

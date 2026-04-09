@@ -18,8 +18,8 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.SUPPORT_TICKETS, {allowExpired: true});
-    const ALLOW_CREATE_TICKET = usePermission(PERMISSIONS.SUPPORT_TICKETS_CREATE, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.SUPPORT_TICKETS);
+    const ALLOW_CREATE_TICKET = usePermission(PERMISSIONS.SUPPORT_TICKETS_CREATE);
     
     if (ALLOW_PAGE.isLoading) return (
         <PlatformLoading />

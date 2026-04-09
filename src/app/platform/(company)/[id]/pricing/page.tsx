@@ -33,7 +33,7 @@ export default function Page() {
     const companyId = params.id as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.PRICING_MIGRATE, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.PRICING_MIGRATE);
     // похуй, пока одно разрешение на все операции с тарификацией
     // по хорошему разделение на получение операций и отдельно миграция
 

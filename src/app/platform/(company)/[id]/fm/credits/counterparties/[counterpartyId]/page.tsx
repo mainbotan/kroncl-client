@@ -28,7 +28,7 @@ export default function Page() {
     const counterpartyId = params.counterpartyId as string;
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_COUNTERPARTIES, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_COUNTERPARTIES);
     const ALLOW_COUNTERPARTY_UPDATE = usePermission(PERMISSIONS.FM_COUNTERPARTIES_UPDATE);
 
     const fmModule = useFm();

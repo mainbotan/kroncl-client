@@ -22,7 +22,7 @@ export function PlatformNotAllowed({
         <div className={clsx(styles.container, className)}>
             <div className={styles.code}>Доступ запрещён</div>   
             <div className={styles.capture}>
-                Не хватает прав для просмотра страницы. 
+                Не хватает прав для просмотра страницы. {permission} 
                 Такое бывает при окончании <Link href={`/platform/${companyId}/pricing`}>тарифного плана</Link>. Обратитесь к владельцу организации или в <Link href={`/platform/${companyId}/support`}>службу поддержки</Link>.
             </div>
      </div>

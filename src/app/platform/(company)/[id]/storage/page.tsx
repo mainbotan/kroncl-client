@@ -16,7 +16,7 @@ import { DOCS_LINK_COMPANIES_STORAGE } from "@/app/docs/(v1)/internal.config";
 
 export default function StoragePage() {
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.STORAGE_SOURCES, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.STORAGE_SOURCES);
     
     const storage = useStorage();
     const [data, setData] = useState<any>(null);

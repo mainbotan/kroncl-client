@@ -7,7 +7,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 
 export default function Page() {
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_CREDITS, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_CREDITS);
     const ALLOW_CREDIT_UPDATE = usePermission(PERMISSIONS.FM_CREDITS_UPDATE);   
     const ALLOW_CREDIT_PAY = usePermission(PERMISSIONS.FM_CREDITS_PAY); 
     const ALLOW_CREDIT_TRANSACTIONS = usePermission(PERMISSIONS.FM_CREDITS_TRANSACTIONS); 

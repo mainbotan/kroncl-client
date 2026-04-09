@@ -24,7 +24,7 @@ export default function Page() {
     const { showMessage } = useMessage();
     
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.SUPPORT_TICKETS_CREATE, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.SUPPORT_TICKETS_CREATE);
     
     // form state
     const [selectedTheme, setSelectedTheme] = useState('technical_issue');

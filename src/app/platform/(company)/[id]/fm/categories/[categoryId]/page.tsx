@@ -29,7 +29,7 @@ export default function Page() {
     const { showMessage } = useMessage();
 
     // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_TRANSACTIONS_CATEGORIES, {allowExpired: true});
+    const ALLOW_PAGE = usePermission(PERMISSIONS.FM_TRANSACTIONS_CATEGORIES);
     const ALLOW_CATEGORY_UPDATE = usePermission(PERMISSIONS.FM_TRANSACTIONS_CATEGORIES_UPDATE);
     const ALLOW_CATEGORY_DELETE = usePermission(PERMISSIONS.FM_TRANSACTIONS_CATEGORIES_DELETE);
 
