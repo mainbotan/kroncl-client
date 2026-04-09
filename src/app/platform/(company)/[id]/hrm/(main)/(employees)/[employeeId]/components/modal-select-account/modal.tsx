@@ -2,7 +2,7 @@
 
 import Input from '@/assets/ui-kit/input/input';
 import styles from './modal.module.scss';
-import { MemberCard } from '@/app/platform/(company)/[id]/accesses/components/member-card/card';
+import { MemberCard } from '@/app/platform/(company)/[id]/accounts/components/member-card/card';
 import PaperClip from '@/assets/ui-kit/icons/paper-clip';
 import { useParams } from 'next/navigation';
 import { useAccounts, useHrm } from '@/apps/company/modules';

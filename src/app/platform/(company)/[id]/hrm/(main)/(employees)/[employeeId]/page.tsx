@@ -19,7 +19,7 @@ import { PlatformModal } from "@/app/platform/components/lib/modal/modal";
 import { PlatformModalConfirmation } from "@/app/platform/components/lib/modal/confirmation/confirmation";
 import { useMessage } from "@/app/platform/components/lib/message/provider";
 import PaperClip from "@/assets/ui-kit/icons/paper-clip";
-import { MemberCard } from "../../../../accesses/components/member-card/card";
+import { MemberCard } from "../../../../accounts/components/member-card/card";
 import { CompanyAccount } from "@/apps/company/modules/accounts/types";
 import { ModalSelectAccount } from "./components/modal-select-account/modal";
 import { motion, AnimatePresence } from 'framer-motion';

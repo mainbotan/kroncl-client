@@ -8,6 +8,12 @@ import Link from 'next/link';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import clsx from 'clsx';
 
+export const roleName: Record<string, string> = {
+    owner: "Владелец",
+    guest: "Гость"
+};
+
+
 interface CompanyCardProps {
     company: AccountCompany;
     className?: string;
@@ -21,11 +27,6 @@ export function CompanyCard({ company, className = ''}: CompanyCardProps) {
     const statusTooltip = company.is_public 
         ? "Публичная компания - видна всем пользователям."
         : "Приватная компания - доступ только по приглашению.";
-
-    const roleName: Record<string, string> = {
-        owner: "Владелец",
-        guest: "Гость"
-    };
 
     const dateTooltip = `Вы присоединились к компании ${formatDate(company.joined_at)}`;
 

@@ -1,39 +1,45 @@
 export const PERMISSIONS = {
     // Support
-	SUPPORT_TICKETS: 'support.tickets',
-	SUPPORT_TICKETS_CREATE: 'support.tickets.create',
-	SUPPORT_TICKETS_UPDATE: 'support.tickets.update',
+    SUPPORT_TICKETS: 'support.tickets',
+    SUPPORT_TICKETS_CREATE: 'support.tickets.create',
+    SUPPORT_TICKETS_UPDATE: 'support.tickets.update',
 
     // Pricing
     PRICING_MIGRATE: 'pricing.migrate',
     PRICING_TRANSACTIONS: 'pricing.transactions',
-    
+
     // Company
     COMPANY_UPDATE: 'company.update',
-    
+
     // Storage
     STORAGE_SOURCES: 'storage.sources',
-    
+
     // Logs
     LOGS: 'logs',
+    LOGS_CLEAR: 'logs.clear',
     LOGS_OPTIMIZE: 'logs.optimize',
     LOGS_ACTIVITY: 'logs.activity',
-    LOGS_CLEAR: 'logs.clear',
-    
+
     // Accounts
     ACCOUNTS: 'accounts',
     ACCOUNTS_DELETE: 'accounts.delete',
+    ACCOUNTS_SETTINGS: 'accounts.settings',
+    ACCOUNTS_SETTINGS_UPDATE: 'accounts.settings.update',
     ACCOUNTS_INVITATIONS: 'accounts.invitations',
     ACCOUNTS_INVITATIONS_CREATE: 'accounts.invitations.create',
     ACCOUNTS_INVITATIONS_REVOKE: 'accounts.invitations.revoke',
-    
+
     // HRM
     HRM: 'hrm',
-    HRM_ANALYSIS: 'hrm.analysis',
     HRM_EMPLOYEES: 'hrm.employees',
     HRM_EMPLOYEES_CREATE: 'hrm.employees.create',
     HRM_EMPLOYEES_UPDATE: 'hrm.employees.update',
-    
+    HRM_POSITIONS: 'hrm.positions',
+    HRM_POSITIONS_CREATE: 'hrm.positions.create',
+    HRM_POSITIONS_UPDATE: 'hrm.positions.update',
+    HRM_POSITIONS_DELETE: 'hrm.positions.delete',
+    HRM_ANALYSIS: 'hrm.analysis',
+
     // FM
     FM: 'fm',
     FM_TRANSACTIONS: 'fm.transactions',
@@ -52,7 +58,7 @@ export const PERMISSIONS = {
     FM_CREDITS_UPDATE: 'fm.credits.update',
     FM_CREDITS_TRANSACTIONS: 'fm.credits.transactions',
     FM_CREDITS_PAY: 'fm.credits.pay',
-    
+
     // CRM
     CRM: 'crm',
     CRM_CLIENTS: 'crm.clients',
@@ -62,7 +68,7 @@ export const PERMISSIONS = {
     CRM_SOURCES_CREATE: 'crm.sources.create',
     CRM_SOURCES_UPDATE: 'crm.sources.update',
     CRM_ANALYSIS: 'crm.analysis',
-    
+
     // WM
     WM: 'wm',
     WM_CATALOG: 'wm.catalog',
@@ -76,7 +82,7 @@ export const PERMISSIONS = {
     WM_STOCKS_BATCHES: 'wm.stocks.batches',
     WM_STOCKS_BATCHES_CREATE: 'wm.stocks.batches.create',
     WM_STOCKS_POSITIONS: 'wm.stocks.positions',
-    
+
     // DM
     DM: 'dm',
     DM_TYPES: 'dm.types',
@@ -95,3 +101,14 @@ export const PERMISSIONS = {
 } as const;
 
 export type PermissionCode = typeof PERMISSIONS[keyof typeof PERMISSIONS];
+
+// --------
+// UTILS
+// --------
+
+/**
+ * Возвращает список всех существующих разрешений
+ */
+export const getAllPermissions = (): PermissionCode[] => {
+    return Object.values(PERMISSIONS);
+};

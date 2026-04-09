@@ -78,7 +78,7 @@ function allSections(companyId: string): Section[] {
     },
     {
         name: 'Доступы',
-        href: `/platform/${companyId}/accesses`,
+        href: `/platform/${companyId}/accounts`,
         icon: 'accesses',
         lvl: PLAN_MAX_LVL
     },

@@ -19,7 +19,6 @@
             height: 3em;
             background-color: var(--color-surface-secondary);
             border-radius: 50%;
-            border: 2px solid var(--color-stroke-primary);
             background-size: cover;
             background-position: center;
             align-items: center;
@@ -36,6 +35,7 @@
             font-size: .85em;
             padding: .8em 0;
             color: var(--color-text-primary);
+            overflow: hidden;
 
             .identy {
                 display: flex;
@@ -50,18 +50,24 @@
             }
             .tags {
                 display: flex;
-                font-size: .7em;
+                font-size: .9em;
                 display: flex wrap;
                 justify-content: start;
                 gap: .5em;
+                overflow: hidden;
 
                 .tag {
                     display: inline-flex;
-                    padding: .3em .6em;
-                    background-color: var(--color-surface-light);
-                    border-radius: 1em;
+                    padding: .7em .9em;
+                    background-color: var(--color-surface-glass);
+                    border: 2px solid var(--color-stroke-secondary);
+                    border-radius: 2em;
                     @include cursor(pointer);
-                    border: 1px solid var(--color-stroke-secondary);
+                    overflow: hidden;
+
+                    .text {
+                        @include text-ellipsis();
+                    }
                 }
             }
         }
@@ -69,7 +75,7 @@
             display: inline-flex;
             flex-flow: row wrap;
             gap: 1em;
-            font-size: .74em;
+            font-size: .84em;
 
             .action {
                 border-radius: 2em !important;
