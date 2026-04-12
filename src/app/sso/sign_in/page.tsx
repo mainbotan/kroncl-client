@@ -253,25 +253,6 @@ export default function LoginPage() {
                 </motion.section>
                 
                 <motion.section 
-                    className={styles.section}
-                    variants={itemVariants}
-                >
-                    <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        <Link href='/sso/fingerprint'><Button 
-                            className={styles.action} 
-                            variant='glass'
-                            disabled={isLoadingForm}
-                            fullWidth
-                        >
-                            <Keyhole className={styles.svg} /> Войти по ключу
-                        </Button></Link>
-                    </motion.div>
-                </motion.section>
-                
-                <motion.section 
                     className={styles.split}
                     variants={itemVariants}
                 >
@@ -280,15 +261,15 @@ export default function LoginPage() {
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                         >
-                            <Link href={authLinks.registration}>
-                                <Button 
-                                    className={styles.action} 
-                                    variant='accent'
-                                    disabled={isLoadingForm}
-                                >
-                                    Создать аккаунт
-                                </Button>
-                            </Link>
+                            <Button 
+                                className={styles.action} 
+                                variant='accent'
+                                disabled={isLoadingForm}
+                                as='link'
+                                href={authLinks.registration}
+                            >
+                                Создать аккаунт
+                            </Button>
                         </motion.div>
                     </section>
                     
@@ -301,14 +282,16 @@ export default function LoginPage() {
                                 className={styles.action} 
                                 variant='glass'
                                 disabled={isLoadingForm}
+                                href='/sso/fingerprint'
+                                as='link'
                             >
-                                Приглашение
+                                Вход по ключу
                             </Button>
                         </motion.div>
                     </section>
                 </motion.section>
             </div>
-            <External />
+            {/* <External /> */}
         </motion.div>
     );
 }

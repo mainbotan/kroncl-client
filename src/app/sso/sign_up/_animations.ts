@@ -1,4 +1,6 @@
-export const containerVariants = {
+import { Variants } from "framer-motion";
+
+export const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { 
         opacity: 1,
@@ -10,7 +12,7 @@ export const containerVariants = {
     }
 };
 
-export const itemVariants = {
+export const itemVariants: Variants = {
     hidden: { y: 20, opacity: 0 },
     visible: { 
         y: 0, 
@@ -19,7 +21,7 @@ export const itemVariants = {
     }
 };
 
-export const errorVariants = {
+export const errorVariants: Variants = {
     hidden: { 
         x: 50, 
         opacity: 0,
@@ -45,13 +47,13 @@ export const errorVariants = {
     }
 };
 
-export const buttonVariants = {
+export const buttonVariants: Variants = {
     initial: { scale: 1 },
     tap: { scale: 0.95 },
     hover: { scale: 1.02 }
 };
 
-export const loadingVariants = {
+export const loadingVariants: Variants = {
     animate: {
         rotate: 360,
         transition: {
@@ -62,7 +64,7 @@ export const loadingVariants = {
     }
 };
 
-export const slideDown = {
+export const slideDown: Variants = {
   hidden: { 
     y: -10, 
     opacity: 0,
@@ -76,7 +78,7 @@ export const slideDown = {
 };
 
 // Для переключения между формами
-export const formVariants = {
+export const formVariants: Variants = {
   hidden: { 
     opacity: 0,
     x: -20,
@@ -95,7 +97,7 @@ export const formVariants = {
 };
 
 // Для инпутов с ошибками
-export const inputErrorVariants = {
+export const inputErrorVariants: Variants = {
   error: {
     x: [0, -5, 5, -5, 5, 0],
     transition: { duration: 0.5 }

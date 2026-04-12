@@ -415,7 +415,7 @@ export default function RegisterPage() {
                 </motion.div>
                 </motion.section>
             </motion.div>
-            <External />
+            {/* <External /> */}
             </>
         ) : (
             <>

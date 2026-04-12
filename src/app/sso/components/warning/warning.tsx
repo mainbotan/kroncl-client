@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import styles from '../../layout.module.scss';
+import { PAPERS_LINK_PLATFORM_USAGE, PAPERS_LINK_POLICY_PRIVACY } from '@/app/(external)/(sections)/(customers)/(papers)/navigation.config';
 
 export function Warning() {
   return (
@@ -18,8 +19,8 @@ export function Warning() {
         transition: { duration: 0.2 }
       }}
     >
-      Совершая любые действия с аккаунтом Kroncl, вы принимаете{' '}
-      <Link href="/privacy-policy">
+      Совершая любые действия с аккаунтом Kroncl, включая вход и регистрацию, вы принимаете{' '}
+      <Link href={PAPERS_LINK_POLICY_PRIVACY}>
         <motion.span
           className={styles.link}
           whileHover={{ 
@@ -28,7 +29,20 @@ export function Warning() {
           }}
           transition={{ duration: 0.2 }}
         >
-          Политику конфиденциальности и условия использования платформы
+          Политику конфиденциальности
+        </motion.span>
+      </Link>
+      &nbsp; и &nbsp;
+      <Link href={PAPERS_LINK_PLATFORM_USAGE}>
+        <motion.span
+          className={styles.link}
+          whileHover={{ 
+            color: "#0070f3", // Или ваш брендовый цвет
+            textDecoration: "underline" 
+          }}
+          transition={{ duration: 0.2 }}
+        >
+          Правила использования платформы
         </motion.span>
       </Link>
       .
