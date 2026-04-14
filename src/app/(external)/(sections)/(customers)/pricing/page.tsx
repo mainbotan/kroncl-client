@@ -12,6 +12,8 @@ import { linksList } from './_links';
 import { TrialPeriodBlock } from './slides/trial/block';
 import { ReadyToStartBlock } from '../businessmans/blocks/ready-to-start/block';
 import clsx from 'clsx';
+import { HeadBlock } from '../../(about)/slides/head/block';
+import { TariffDetailsBlock } from './slides/tariff-details/block';
 
 export default function Page() {
     return (
@@ -19,17 +21,30 @@ export default function Page() {
             <div className={styles.grid}>
                 <StartBlock className={styles.block} />
                 
+                {/* <div className={styles.intervalFlex}>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                </div> */}
+
+                <TariffsBlock className={styles.block} />
+                <TrialPeriodBlock className={clsx(styles.block, styles.trial)} />
+                <ForPartnersBlock className={styles.block} />
+
                 <div className={styles.intervalFlex}>
                     <span />
                     <span />
                     <span />
                     <span />
                 </div>
-
-                <TrialPeriodBlock className={clsx(styles.block, styles.trial)} />
-                <TariffsBlock className={styles.block} />
-                <ForPartnersBlock className={styles.block} />
-
+                <HeadBlock 
+                    title='В составе тарифов'
+                    location='center'
+                    description='Действия, доступные в тарифных планах.'
+                    className={styles.block}
+                />
+                <TariffDetailsBlock className={styles.block} />
                 <div className={styles.intervalFlex}>
                     <span />
                     <span />

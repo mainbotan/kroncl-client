@@ -1,0 +1,70 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.block {
+    .grid {
+        display: flex;
+        flex-flow: column nowrap;
+        padding: 0 !important;
+        font-size: .5em !important;
+
+        .head {
+            background-color: var(--color-surface-glass-secondary);
+        }
+        
+        .row, .head {
+            display: flex;
+            flex-flow: row nowrap;
+            min-width: 100%;
+            padding: 1em;
+            font-size: .75em;
+            gap: 1em;
+            overflow: hidden;
+            
+            .section {
+                display: flex;
+                flex: 1;
+                overflow: hidden;
+
+                .text {
+                    @include text-ellipsis();
+                }
+
+                &:nth-child(1) {
+                    min-width: 8rem;
+                    max-width: 8rem;
+                    color: var(--color-text-ghost);
+                }
+                &:nth-child(2) {
+                    display: flex;
+                    flex: 1;
+                    text-align: none;
+                    min-width: 16rem;
+                }
+                &:nth-child(3), &:nth-child(4), &:nth-child(5) {
+                    max-width: 5rem;
+                    min-width: 5rem;
+                    justify-content: center;
+
+                    svg {
+                        width: 1.4em;
+                        height: 1.4em;
+                        fill: var(--color-text-hint);
+                    }
+                }
+            }
+        }
+        .row {
+            transition: background-color var(--transition);
+
+            &:hover {
+                background-color: var(--color-surface-elevated);
+            }
+        }
+    }
+
+    @media (max-width: 720px) {
+        display: block;
+        overflow-x: scroll;
+        width: 100vw;
+    }
+}
