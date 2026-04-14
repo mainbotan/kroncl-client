@@ -1,8 +1,15 @@
+// v.14.04.2026 [
+// - refresh_token
+// + expires_at timestamp
+
 import { Account } from "../types";
 
 export interface AuthTokens {
     access_token: string;
-    refresh_token: string;
+}
+
+export interface BaseAuthResponse extends AuthTokens {
+    expires_at: string;
 }
 
 export interface LoginRequest {
@@ -10,9 +17,7 @@ export interface LoginRequest {
     password: string;
 }
 
-export interface LoginResponse {
-    access_token: string;
-    refresh_token: string;
+export interface LoginResponse extends BaseAuthResponse {
     user: Account;
 }
 
@@ -22,9 +27,7 @@ export interface RegisterRequest {
     name: string;
 }
 
-export interface RegisterResponse {
-    access_token: string;
-    refresh_token: string;
+export interface RegisterResponse extends BaseAuthResponse {
     email_sent: boolean;
     user_id: string;
 }
@@ -44,16 +47,12 @@ export interface UpdateProfileRequest {
     avatar_url?: string;
 }
 
-// --------
-// FINGERPRINT
-// --------
-
 export interface FingerprintLoginRequest {
     key: string;
 }
 
-export interface FingerprintLoginResponse {
-    access_token: string;
-    refresh_token: string;
+export interface FingerprintLoginResponse extends BaseAuthResponse {
     user: Account;
 }
+
+export interface RefreshResponse extends BaseAuthResponse {}

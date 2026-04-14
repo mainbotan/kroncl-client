@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { authLinks } from '@/config/links.config';
 import { accountAuth } from '../api';
 import { AuthStorage } from '../storage';
@@ -14,21 +14,35 @@ interface AuthContextType {
     status: AuthStatus;
     login: (email: string, password: string) => Promise<boolean>;
     loginWithKey: (key: string) => Promise<boolean>;
-    register: (email: string, password: string, name: string) => Promise<{success: boolean, message?: string}>;
-    confirmEmail: (token: string) => Promise<boolean>;
+    register: (email: string, password: string, name: string) => Promise<{ success: boolean; message?: string }>;
+    confirmEmail: (code: string) => Promise<boolean>;
     resendConfirmation: (email: string) => Promise<boolean>;
     logout: () => Promise<void>;
+    logoutLocal: () => void;
+    refreshAuth: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
-    const pathname = usePathname();
     const [user, setUser] = useState<Account | null>(null);
     const [status, setStatus] = useState<AuthStatus>('loading');
 
-    // Восстановление авторизации при загрузке
+    const refreshAuth = useCallback(async (): Promise<boolean> => {
+        const refreshResult = await accountAuth.refreshTokens();
+        if (refreshResult?.status) {
+            const userData = AuthStorage.getUser();
+            if (userData) {
+                setUser(userData);
+                setStatus('authenticated');
+                return true;
+            }
+        }
+        setStatus('unauthenticated');
+        return false;
+    }, []);
+
     useEffect(() => {
         const initAuth = async () => {
             try {
@@ -38,112 +52,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 if (restored && userData) {
                     setUser(userData);
                     
-                    // Если пользователь не подтвержден - считаем unauthenticated
-                    if (userData.status === 'pending') {
+                    if (userData.status === 'waiting') {
                         setStatus('unauthenticated');
                     } else {
                         setStatus('authenticated');
-                        
-                        // Запрашиваем профиль ТОЛЬКО если данные устарели
-                        // Проверяем, когда последний раз обновлялся профиль
-                        const lastProfileUpdate = localStorage.getItem('last_profile_update');
-                        const now = Date.now();
-                        
-                        // Обновляем профиль раз в 5 минут или если его нет
-                        if (!lastProfileUpdate || (now - parseInt(lastProfileUpdate)) > 5 * 60 * 1000) {
-                            console.log('🔄 Запрашиваем свежий профиль...');
-                            const profileResponse = await accountAuth.getProfile();
-                            if (profileResponse.status && profileResponse.data) {
-                                setUser(profileResponse.data);
-                                localStorage.setItem('last_profile_update', now.toString());
-                            }
-                        }
                     }
-                    
-                    syncWithCookies();
                 } else {
                     setStatus('unauthenticated');
                 }
-            } catch (error) {
-                console.error('Auth init error:', error);
+            } catch {
                 setStatus('unauthenticated');
             }
         };
 
         initAuth();
     }, []);
-    
+
     useEffect(() => {
-        if (status === 'authenticated') {
-            // Проверяем токен каждые 5 минут
-            const interval = setInterval(async () => {
-                const token = AuthStorage.getAccessToken();
-                if (token) {
-                    try {
-                        // Простая проверка exp из JWT
-                        const parts = token.split('.');
-                        if (parts.length === 3) {
-                            const payload = JSON.parse(atob(parts[1]));
-                            const exp = payload.exp * 1000;
-                            const now = Date.now();
-                            const timeLeft = exp - now;
-                            
-                            // Если осталось меньше 10 минут, обновляем
-                            if (timeLeft < 10 * 60 * 1000) {
-                                console.log('🔄 Профилактическое обновление токена...');
-                                await accountAuth.refreshTokens();
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Token check error:', error);
-                    }
-                }
-            }, 5 * 60 * 1000); // 5 минут
-            
-            return () => clearInterval(interval);
-        }
-    }, [status]);
-    
-    // Синхронизируем localStorage с cookies
-    const syncWithCookies = () => {
-        if (typeof window === 'undefined') return;
-        
-        const token = AuthStorage.getAccessToken();
-        const userData = AuthStorage.getUser();
-        
-        if (token && userData) {
-            // Устанавливаем cookie для middleware
-            document.cookie = `auth_access_token=${token}; path=/; max-age=86400; SameSite=Lax`;
-            const refreshToken = AuthStorage.getRefreshToken();
-            if (refreshToken) {
-                document.cookie = `auth_refresh_token=${refreshToken}; path=/; max-age=2592000; SameSite=Lax`;
-            }
-        } else {
-            // Удаляем cookies
-            document.cookie = 'auth_access_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-            document.cookie = 'auth_refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-        }
-    };
+        if (status !== 'authenticated') return;
 
-    const loginWithKey = async (key: string): Promise<boolean> => {
-        try {
-            const response = await accountAuth.loginWithKey(key);
-            
-            if (response.status) {
-                setUser(response.data.user);
-                setStatus('authenticated');
-                return true;
+        const checkAndRefresh = async () => {
+            if (AuthStorage.isTokenExpired()) {
+                await refreshAuth();
             }
-            
-            setStatus('unauthenticated');
-            return false;
-        } catch (error) {
-            setStatus('unauthenticated');
-            return false;
-        }
-    };
+        };
 
-    // Логин
+        const interval = setInterval(checkAndRefresh, 60 * 1000);
+        return () => clearInterval(interval);
+    }, [status, refreshAuth]);
+
     const login = async (email: string, password: string): Promise<boolean> => {
         setStatus('loading');
         try {
@@ -151,94 +88,77 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             
             if (response.status && response.data) {
                 setUser(response.data.user);
-                syncWithCookies();
-                
-                // Проверяем статус пользователя
-                if (response.data.user.status === 'pending') {
-                    // Пользователь не подтвержден
-                    setStatus('unauthenticated');
-                    return false; // Не даем войти
-                } else {
-                    setStatus('authenticated');
-                    return true;
-                }
-            } else {
-                setStatus('unauthenticated');
-                return false;
+                setStatus('authenticated');
+                return true;
             }
-        } catch (error: any) {
-            console.error('Login error:', error);
+            
+            setStatus('unauthenticated');
+            return false;
+        } catch {
             setStatus('unauthenticated');
             return false;
         }
     };
 
-    // Регистрация
-    const register = async (email: string, password: string, name: string): Promise<{success: boolean, message?: string}> => {
+    const loginWithKey = async (key: string): Promise<boolean> => {
+        try {
+            const response = await accountAuth.loginWithKey(key);
+            
+            if (response.status && response.data) {
+                setUser(response.data.user);
+                setStatus('authenticated');
+                return true;
+            }
+            
+            setStatus('unauthenticated');
+            return false;
+        } catch {
+            setStatus('unauthenticated');
+            return false;
+        }
+    };
+
+    const register = async (email: string, password: string, name: string) => {
         setStatus('loading');
         
-        // Убираем try-catch, так как api.post не выбрасывает исключение
         const response = await accountAuth.register({ email, password, name });
         
-        console.log('Register API response:', response); // Для дебага
-        
         if (response.status && response.data) {
-            // Успешная регистрация
             const userData = AuthStorage.getUser();
             if (userData) {
                 setUser(userData);
-                syncWithCookies();
             }
             
-            // После регистрации пользователь НЕ аутентифицирован
             setStatus('unauthenticated');
             
             return {
                 success: true,
                 message: response.data.email_sent 
                     ? 'Код подтверждения отправлен на вашу почту' 
-                    : 'Регистрация успешна. Проверьте почту для подтверждения'
+                    : 'Регистрация успешна'
             };
         } else {
-            // Ошибка от сервера
             setStatus('unauthenticated');
             
-            // Вот здесь ошибка "email already exists" приходит в response.message
-            let errorMessage = response.message || 'Ошибка при регистрации';
-            
-            console.log('Server error message:', errorMessage); // Для дебага
-            
-            // Перевод ошибок с английского на русский
             const errorTranslations: Record<string, string> = {
                 'email already exists': 'Этот email уже используется',
                 'invalid email': 'Неверный формат email',
-                'invalid password': 'Пароль не соответствует требованиям',
                 'password too weak': 'Пароль слишком лёгкий',
-                'name is required': 'Введите имя',
-                'email is required': 'Введите email',
-                'password is required': 'Введите пароль'
             };
             
-            // Если ошибка есть в нашем словаре, переводим
-            if (errorMessage in errorTranslations) {
-                errorMessage = errorTranslations[errorMessage];
-            }
+            const message = response.message || 'Ошибка при регистрации';
             
             return {
                 success: false,
-                message: errorMessage
+                message: errorTranslations[message] || message
             };
         }
     };
 
-    // Подтверждение email
     const confirmEmail = async (code: string): Promise<boolean> => {
         try {
             const userData = AuthStorage.getUser();
-            if (!userData?.id) {
-                console.error('No user ID found for confirmation');
-                return false;
-            }
+            if (!userData?.id) return false;
             
             const response = await accountAuth.confirmEmail({ 
                 user_id: userData.id, 
@@ -246,38 +166,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             });
             
             if (response.status) {
-                // После подтверждения обновляем профиль
                 const profileResponse = await accountAuth.getProfile();
                 if (profileResponse.status && profileResponse.data) {
                     setUser(profileResponse.data);
-                    syncWithCookies();
                     setStatus('authenticated');
                 }
                 return true;
             }
             return false;
-        } catch (error) {
-            console.error('Confirm email error:', error);
+        } catch {
             return false;
         }
     };
 
-    // Повторная отправка кода подтверждения
     const resendConfirmation = async (email: string): Promise<boolean> => {
         try {
             const userData = AuthStorage.getUser();
-            if (!userData?.id) {
-                console.error('No user ID found for resend confirmation');
-                return false;
-            }
+            if (!userData?.id) return false;
             
             const response = await accountAuth.resendConfirmation({ 
                 user_id: userData.id,
                 email 
             });
             return response.status === true;
-        } catch (error) {
-            console.error('Resend confirmation error:', error);
+        } catch {
             return false;
         }
     };
@@ -289,15 +201,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             } else {
                 accountAuth.logoutLocal();
             }
-        } catch (error) {
-            console.error('Logout error:', error);
+        } catch {
             accountAuth.logoutLocal();
         } finally {
             AuthStorage.clear();
             accountAuth.clearToken();
             setUser(null);
             setStatus('unauthenticated');
-            syncWithCookies();
             router.push(authLinks.login);
         }
     };
@@ -311,7 +221,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         resendConfirmation,
         logout: () => logout(false),
         logoutLocal: () => logout(true),
-        loginWithKey
+        loginWithKey,
+        refreshAuth,
     };
 
     return (
