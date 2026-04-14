@@ -1,6 +1,6 @@
 import { PaginationParams } from "@/apps/shared/pagination/types";
 import { CompanyApi } from "../../api";
-import { CreateEmployeeRequest, Employee, EmployeesResponse } from "./types";
+import { AnalysisParams, CreateEmployeeRequest, Employee, EmployeesResponse, EmployeesSummary, GroupedAnalysisParams, GroupedStats } from "./types";
 
 export const hrmModule = (companyApi: CompanyApi) => ({
     async getEmployees(
@@ -30,5 +30,30 @@ export const hrmModule = (companyApi: CompanyApi) => ({
     },
     async unlinkAccountFromEmployee(employeeId: string) {
         return companyApi.post<Employee>(`/modules/hrm/employees/${employeeId}/unlink-account`);
+    },
+
+
+    // ANALYSIS
+
+    async getAnalysisSummary(params?: AnalysisParams) {
+        const queryParams: Record<string, string> = {};
+        if (params?.start_date) queryParams.start_date = params.start_date;
+        if (params?.end_date) queryParams.end_date = params.end_date;
+
+        return companyApi.get<EmployeesSummary>("/modules/hrm/analysis/summary", {
+            params: queryParams as Record<string, string | number | boolean | undefined>,
+        });
+    },
+
+    async getAnalysisGrouped(params: GroupedAnalysisParams) {
+        const queryParams: Record<string, string> = {
+            group_by: params.group_by,
+        };
+        if (params.start_date) queryParams.start_date = params.start_date;
+        if (params.end_date) queryParams.end_date = params.end_date;
+
+        return companyApi.get<GroupedStats[]>("/modules/hrm/analysis/grouped", {
+            params: queryParams as Record<string, string | number | boolean | undefined>,
+        });
     },
 })

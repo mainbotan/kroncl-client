@@ -25,3 +25,34 @@ export interface CreateEmployeeRequest {
     email?: string;
     phone?: string;
 }
+
+// --------
+// ANALYSIS
+// --------
+
+export type GroupBy = "day" | "month" | "year";
+
+export interface GroupedStats {
+    group_key: string;
+    group_name: string;
+    employees_count: number;
+    active_count: number;
+    inactive_count: number;
+}
+
+export interface EmployeesSummary {
+    total_positions: number;
+    total_employees: number;
+    active_employees: number;
+    inactive_employees: number;
+    new_employees: number;
+}
+
+export interface AnalysisParams {
+    start_date?: string;
+    end_date?: string;
+}
+
+export interface GroupedAnalysisParams extends AnalysisParams {
+    group_by: GroupBy;
+}
