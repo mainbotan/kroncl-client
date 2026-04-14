@@ -14,7 +14,7 @@ function allActions(companyId: string): Action[] {
     return ([
         {
             children: "Доход",
-            href: `/platform/${companyId}/fm/new-operation`,
+            href: `/platform/${companyId}/fm/new-operation?direction=income`,
             variant: 'contrast',
             as: 'link',
             lvl: PLAN_MAX_LVL

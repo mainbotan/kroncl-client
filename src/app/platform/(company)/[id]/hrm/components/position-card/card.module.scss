@@ -2,25 +2,120 @@
 
 .card {
     display: flex;
-    flex-flow: row nowrap;
-    padding: 1em 0;
-    border-top: 1px solid var(--color-stroke-secondary);
-    display: none;
+    flex-flow: column nowrap;
+    gap: 1em;
+    color: var(--color-text-primary);
+    padding: 1em;
+    width: 15em;
+    min-height: 9em;
+    border-radius: .64em;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--color-stroke-secondary);
+    background-color: var(--color-surface-glass);
+    transition: background-color var(--transition);
 
     .info {
         display: flex;
-        flex: 1;
         flex-flow: column nowrap;
+        gap: .2em;
+        flex: 1;
 
         .name {
-            line-height: 1.2;
-            color: var(--color-text-ghost);
-            font-size: .9em;
+            font-size: 1em;
+            font-weight: 600;
+            letter-spacing: .02em;
+            line-height: 1.3;
+            @include lines-ellipsis(2);
         }
         .description {
             font-size: .8em;
             line-height: 1.3;
-            color: var(--color-text-description);
+            @include lines-ellipsis(4);
+            color: var(--color-text-ghost);
+        }
+    }
+    .actions {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .8em;
+        font-size: .7em;
+        opacity: 0;
+        margin-bottom: 1em;
+        transition: opacity var(--transition), margin-bottom var(--transition);
+
+        .action {
+            border-radius: 2em;
+            display: flex;
+            width: 100%;
+        }
+    }
+
+    &.default {
+        .flag {
+            position: absolute;
+            z-index: 10;
+            width: 3em;
+            height: 3em;
+            background-color: var(--color-surface-glass-secondary);
+            top: -1.6em;
+            right: -1.6em;
+            transform: rotate(-45deg);
+            transition: transform var(--transition);
+            border-radius: .4em;
+        }
+        .code {
+            position: absolute;
+            z-index: 10;
+            left: 1.4em;
+            font-size: .6em;
+            color: var(--color-text-secondary);
+            padding: .6em .7em;
+            display: inline-block;
+            border: 1px solid var(--color-stroke-secondary);
+            border-top-left-radius: .3em;
+            border-top-right-radius: .3em;
+            bottom: -1px;
+            background-color: var(--color-surface-glass-secondary);
+            @include text-ellipsis();
+            width: fit-content;
+            max-width: calc(100% - 3em);
+            transition: opacity var(--transition), margin-bottom var(--transition)
+        }
+    }
+
+    &.compact {
+        width: 100%;
+        flex-direction: row;
+        min-height: 4em;
+
+        .info {
+            justify-content: center;
+        }
+
+        .flag, .code {
+            display: none;
+        }
+        .actions {
+            font-size: .8em;
+            opacity: 1;
+            margin-bottom: 0;
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-elevated);
+
+        .actions {
+            opacity: 1;
+            margin-bottom: 0;
+        }
+        .flag {
+            transform: rotate(-30deg);
+        }
+        .code {
+            opacity: 0;
+            margin-bottom: -2em;
         }
     }
 }

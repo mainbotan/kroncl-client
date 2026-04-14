@@ -3,6 +3,9 @@
 .grid {
     display: flex;
     gap: 1em;
-    flex-flow: column wrap;
+    flex-flow: row wrap;
     padding: .1em 0;
+
+    .item {
+    }
 }

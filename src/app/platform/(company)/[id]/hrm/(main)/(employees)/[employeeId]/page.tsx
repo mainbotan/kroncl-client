@@ -2,14 +2,13 @@
 
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import { useAccounts, useHrm } from "@/apps/company/modules";
-import { Employee } from "@/apps/company/modules/hrm/types";
+import { Employee, Position } from "@/apps/company/modules/hrm/types";
 import Edit from "@/assets/ui-kit/icons/edit";
 import Exit from "@/assets/ui-kit/icons/exit";
 import Spinner from "@/assets/ui-kit/spinner/spinner";
-import { getGradientFromString } from "@/assets/utils/avatars";
 import { formatDate } from "@/assets/utils/date";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import styles from './page.module.scss';
 import Button from "@/assets/ui-kit/button/button";
 import { EmployeeWidget } from "./components/widget/widget";
@@ -22,9 +21,11 @@ import PaperClip from "@/assets/ui-kit/icons/paper-clip";
 import { MemberCard } from "../../../../accounts/components/member-card/card";
 import { CompanyAccount } from "@/apps/company/modules/accounts/types";
 import { ModalSelectAccount } from "./components/modal-select-account/modal";
+import { ModalSelectPosition } from "./components/modal-select-position/modal";
+import { PositionCard } from "../../../components/position-card/card";
 import { motion, AnimatePresence } from 'framer-motion';
 import { sectionVariants, widgetVariants, accountCardVariants } from "./_animations";
-import { usePermission } from "@/apps/permissions/hooks";
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
@@ -35,7 +36,6 @@ export default function Page() {
     const companyId = params.id as string;
     const employeeId = params.employeeId as string;
 
-    // perms
     const ALLOW_PAGE = usePermission(PERMISSIONS.HRM_EMPLOYEES);
     const ALLOW_UPDATE = usePermission(PERMISSIONS.HRM_EMPLOYEES_UPDATE);
 
@@ -49,13 +49,12 @@ export default function Page() {
     const [isModalDropOpen, setIsModalDropOpen] = useState(false);
     const [isModalActivateOpen, setIsModalActivateOpen] = useState(false);
     const [isModalSelectAccountOpen, setIsModalSelectAccountOpen] = useState(false);
+    const [isModalSelectPositionOpen, setIsModalSelectPositionOpen] = useState(false);
     const { showMessage } = useMessage();
 
-    // привязанный аккаунт
     const [account, setAccount] = useState<CompanyAccount | null>(null);
     const [accountLoading, setAccountLoading] = useState(false);
 
-    // первоначальная загрузка карты
     useEffect(() => {
         let isMounted = true;
         
@@ -93,7 +92,6 @@ export default function Page() {
         };
     }, [employeeId]);
 
-    // Добавить useEffect для загрузки аккаунта
     useEffect(() => {
         const fetchAccount = async () => {
             if (employee?.account_id) {
@@ -118,7 +116,6 @@ export default function Page() {
         }
     }, [employee]);
 
-    // функции обработки
     const handleDeactivate = async () => {
         try {
             await hrmModule.deactivateEmployee(employee!.id);
@@ -127,7 +124,6 @@ export default function Page() {
                 variant: 'success'
             });
             setIsModalDropOpen(false);
-            // Обновляем данные сотрудника
             const response = await hrmModule.getEmployee(employeeId);
             if (response.status) {
                 setEmployee(response.data);
@@ -150,7 +146,6 @@ export default function Page() {
                 variant: 'success'
             });
             setIsModalActivateOpen(false);
-            // Обновляем данные сотрудника
             const response = await hrmModule.getEmployee(employeeId);
             if (response.status) {
                 setEmployee(response.data);
@@ -166,6 +161,7 @@ export default function Page() {
     };
 
     const handleUnlinkAccount = async () => {
+        if (!isAllowed(ALLOW_UPDATE)) return;
         try {
             const response = await hrmModule.unlinkAccountFromEmployee(employeeId);
             if (response.status) {
@@ -185,7 +181,64 @@ export default function Page() {
         }
     };
 
-    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
+    const handleUnlinkPosition = async (positionId: string) => {
+        if (!isAllowed(ALLOW_UPDATE)) return;
+        try {
+            const response = await hrmModule.unlinkPositionFromEmployee(employeeId, positionId);
+            if (response.status) {
+                setEmployee(prev => prev ? {
+                    ...prev,
+                    positions: prev.positions?.filter(p => p.id !== positionId) || []
+                } : null);
+                showMessage({
+                    label: 'Должность отвязана',
+                    variant: 'success'
+                });
+            }
+        } catch (error: any) {
+            showMessage({
+                label: 'Не удалось отвязать должность',
+                variant: 'error',
+                about: error.message
+            });
+        }
+    };
+
+    const handleSelectAccount = async (accountId: string) => {
+        if (!isAllowed(ALLOW_UPDATE)) return;
+        setEmployee(prev => prev ? {
+            ...prev,
+            account_id: accountId,
+            is_account_linked: true
+        } : null);
+        setIsModalSelectAccountOpen(false);
+        
+        accountsModule.getAccount(accountId).then(response => {
+            if (response.status) {
+                setAccount(response.data);
+            }
+        });
+    };
+
+    const handleSelectPosition = async (positionId: string) => {
+        if (!isAllowed(ALLOW_UPDATE)) return;
+        hrmModule.getPosition(positionId).then(response => {
+            if (response.status) {
+                setEmployee(prev => prev ? {
+                    ...prev,
+                    positions: [...(prev.positions || []), response.data]
+                } : null);
+            }
+        });
+        setIsModalSelectPositionOpen(false);
+        
+        showMessage({
+            label: 'Должность добавлена',
+            variant: 'success'
+        });
+    };
+
+    if (!isAllowed(ALLOW_PAGE)) return (
         <PlatformNotAllowed permission={PERMISSIONS.HRM_EMPLOYEES} />
     );
 
@@ -202,8 +255,6 @@ export default function Page() {
     );
 
     const fullName = `${employee.first_name} ${employee.last_name ? employee.last_name : ''}`;
-    const initials = `${employee.first_name[0]}${employee.last_name ? employee.last_name[0] : ''}`;
-    const avatarGradient = getGradientFromString(fullName);
     const isActive = employee.status === 'active';
 
     const widgets = [
@@ -212,7 +263,7 @@ export default function Page() {
         ...(employee.email ? [{ value: employee.email, legend: "Корпоративная почта", variant: "default" as const }] : [])
     ];
 
-    const actions = (ALLOW_UPDATE.allowed && !ALLOW_UPDATE.isLoading) ? [
+    const actions = isAllowed(ALLOW_UPDATE) ? [
         {
             children: 'Редактировать',
             icon: <Edit />,
@@ -222,23 +273,25 @@ export default function Page() {
         }
     ] : [];
 
-    if (!ALLOW_UPDATE.isLoading && ALLOW_UPDATE.allowed) {
+    if (isAllowed(ALLOW_UPDATE)) {
         if (isActive) {
             actions.push({
                 children: 'Деактивировать',
                 icon: <Exit />,
-                variant: 'accent',
+                variant: 'accent' as const,
                 onClick: () => setIsModalDropOpen(true)
             })
         } else {
             actions.push({
                 children: 'Активировать',
                 icon: <Exit />,
-                variant: 'accent',
+                variant: 'accent' as const,
                 onClick: () => setIsModalActivateOpen(true)
             });
         }
     }
+
+    const positions = employee.positions || [];
 
     return (
         <>
@@ -284,7 +337,7 @@ export default function Page() {
                 >
                     <div className={styles.unify}>
                         <div className={styles.capture}>Аккаунт</div>
-                        {(!ALLOW_UPDATE.isLoading && ALLOW_UPDATE.allowed) && (
+                        {isAllowed(ALLOW_UPDATE) && (
                             <Button 
                                 onClick={() => setIsModalSelectAccountOpen(true)} 
                                 icon={<PaperClip />} 
@@ -322,13 +375,13 @@ export default function Page() {
                                     className={styles.account} 
                                     account={account} 
                                     showDefaultActions={false}
-                                    actions={[
+                                    actions={isAllowed(ALLOW_UPDATE) ? [
                                         {
                                             children: 'Отвязать',
                                             variant: 'light',
                                             onClick: handleUnlinkAccount
                                         }
-                                    ]}
+                                    ] : []}
                                 />
                             </motion.div>
                         )}
@@ -336,13 +389,67 @@ export default function Page() {
                     
                     <div className={styles.note}>
                         <div className={styles.description}>
-                            <Question /> У сотрудника может не быть аккаунта в системе - это нормально для организаций, в которых централизованный учёт ведут менеджеры.
+                            У сотрудника может не быть аккаунта в системе - это нормально для организаций, в которых централизованный учёт ведут менеджеры.
+                        </div>
+                    </div>
+                </motion.section>
+
+                <motion.section 
+                    className={styles.section}
+                    variants={sectionVariants}
+                >
+                    <div className={styles.unify}>
+                        <div className={styles.capture}>Должности</div>
+                        {isAllowed(ALLOW_UPDATE) && (
+                            <Button 
+                                onClick={() => setIsModalSelectPositionOpen(true)} 
+                                icon={<PaperClip />} 
+                                className={styles.action} 
+                                variant="light"
+                            >
+                                Добавить
+                            </Button>)
+                        }
+                    </div>
+                    
+                    <AnimatePresence mode="wait">
+                        {positions.length > 0 && (
+                            <motion.div
+                                key="positions-list"
+                                variants={accountCardVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                layout
+                                className={styles.positionsList}
+                            >
+                                {positions.map((position) => (
+                                    <PositionCard 
+                                        key={position.id}
+                                        position={position}
+                                        className={styles.positionCard}
+                                        showDefaultActions={false}
+                                        actions={isAllowed(ALLOW_UPDATE) ? [
+                                            {
+                                                children: 'Отвязать',
+                                                variant: 'light',
+                                                onClick: () => handleUnlinkPosition(position.id)
+                                            }
+                                        ] : []}
+                                    />
+                                ))}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                    
+                    <div className={styles.note}>
+                        <div className={styles.description}>
+                            Сотрудник может занимать несколько должностей одновременно.
                         </div>
                     </div>
                 </motion.section>
             </motion.div>
 
-            {/* modal deactivate */}
             <PlatformModal
                 isOpen={isModalDropOpen}
                 onClose={() => setIsModalDropOpen(false)}
@@ -366,7 +473,6 @@ export default function Page() {
                 />
             </PlatformModal>
 
-            {/* modal activate */}
             <PlatformModal
                 isOpen={isModalActivateOpen}
                 onClose={() => setIsModalActivateOpen(false)}
@@ -390,27 +496,22 @@ export default function Page() {
                 />
             </PlatformModal>
 
-            {/* modal select account */}
             <PlatformModal
                 isOpen={isModalSelectAccountOpen}
                 onClose={() => setIsModalSelectAccountOpen(false)}
                 className={styles.modal}
             >
-                <ModalSelectAccount 
-                    onSelectAccount={(accountId) => {
-                        setEmployee(prev => prev ? {
-                            ...prev,
-                            account_id: accountId,
-                            is_account_linked: true
-                        } : null);
-                        setIsModalSelectAccountOpen(false);
-                        
-                        accountsModule.getAccount(accountId).then(response => {
-                            if (response.status) {
-                                setAccount(response.data);
-                            }
-                        });
-                    }}
+                <ModalSelectAccount onSelectAccount={handleSelectAccount} />
+            </PlatformModal>
+
+            <PlatformModal
+                isOpen={isModalSelectPositionOpen}
+                onClose={() => setIsModalSelectPositionOpen(false)}
+                className={styles.modal}
+            >
+                <ModalSelectPosition 
+                    employeeId={employeeId}
+                    onSelectPosition={handleSelectPosition}
                 />
             </PlatformModal>
         </>

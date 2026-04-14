@@ -14,6 +14,10 @@ export interface Employee {
     updated_at: string;
 }
 
+export interface EmployeeDetail extends Employee {
+    positions: Position[] | null;
+}
+
 export interface EmployeesResponse {
     employees: Employee[];
     pagination: PaginationMeta;
@@ -26,9 +30,31 @@ export interface CreateEmployeeRequest {
     phone?: string;
 }
 
-// --------
-// ANALYSIS
-// --------
+export interface Position {
+    id: string;
+    name: string;
+    description: string | null;
+    permissions: string[];
+    created_at: string;
+    updated_at: string;
+}
+
+export interface PositionsResponse {
+    positions: Position[];
+    pagination: PaginationMeta;
+}
+
+export interface CreatePositionRequest {
+    name: string;
+    description?: string | null;
+    permissions?: string[];
+}
+
+export interface UpdatePositionRequest {
+    name?: string;
+    description?: string | null;
+    permissions?: string[];
+}
 
 export type GroupBy = "day" | "month" | "year";
 
