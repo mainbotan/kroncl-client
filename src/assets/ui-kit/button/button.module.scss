@@ -69,6 +69,15 @@
     background-color: var(--color-accent);
     color: var(--color-accent-text-primary);
   }
+  &.red, &.green {
+    color: var(--color-accent-text-primary);
+  }
+  &.red {
+    background-color: var(--color-red);
+  }
+  &.green {
+    background-color: var(--color-green);
+  }
   &.light {
     background-color: var(--color-surface-light);
   }

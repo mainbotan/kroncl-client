@@ -252,6 +252,12 @@ export default function LoginPage() {
                     </motion.div>
                 </motion.section>
                 
+                <div className={styles.line}>
+                    <span className={styles.part} />
+                    <span className={styles.word}>или</span>
+                    <span className={styles.part} />
+                </div>
+                
                 <motion.section 
                     className={styles.split}
                     variants={itemVariants}
