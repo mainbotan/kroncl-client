@@ -2,8 +2,6 @@
 
 import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import styles from './page.module.scss';
-import { getRandomGradient } from '@/assets/utils/avatars';
-import Button from '@/assets/ui-kit/button/button';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -15,10 +13,6 @@ import Edit from '@/assets/ui-kit/icons/edit';
 import Exit from '@/assets/ui-kit/icons/exit';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
-import { InvitationCard } from '../invitations/components/invitation-card';
-import { AccountInvitation } from '@/apps/account/invitations/types';
-import { invitationsApi } from '@/apps/account/invitations/api';
-import Empty from '@/assets/ui-kit/icons/empty';
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
 import { DOCS_LINK_ACCOUNT } from '@/app/docs/(v1)/internal.config';
 
@@ -28,8 +22,6 @@ export default function Page() {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const router = useRouter();
     const { logoutLocal } = useAuth();
-    const [invitations, setInvitations] = useState<AccountInvitation[]>([]);
-    const [loadingInvitations, setLoadingInvitations] = useState(false);
     
     useEffect(() => {
         const loadProfile = async () => {
@@ -52,29 +44,6 @@ export default function Page() {
         loadProfile();
     }, []);
 
-    useEffect(() => {
-    const loadInvitations = async () => {
-        try {
-        setLoadingInvitations(true);
-        const response = await invitationsApi.getInvitations({
-            limit: 5,
-            page: 1
-        });
-        
-        if (response.status && response.data) {
-            setInvitations(response.data.invitations);
-        }
-        } catch (error) {
-        console.error('Ошибка при загрузке приглашений:', error);
-        } finally {
-        setLoadingInvitations(false);
-        }
-    };
-
-    loadInvitations();
-    }, []);
-
-    
     const handleLogout = async () => {
         if (isLoggingOut) return;
         
@@ -186,28 +155,6 @@ export default function Page() {
                         </motion.div>
                     </motion.div>
                 </div>
-                <div className={clsx(styles.section, styles.invitations)}>
-                    <div className={styles.start}>
-                        Приглашения <span className={styles.secondary}>{invitations !== null ? invitations.length : 0}</span>
-                    </div>
-                    <div className={styles.content}>
-                        {loadingInvitations ? (
-                            <div></div>
-                        ) : invitations !== null ? (
-                        invitations.map(invitation => (
-                            <InvitationCard 
-                            key={invitation.id} 
-                            invitation={invitation} 
-                            />
-                        ))
-                        ) : (
-                        <div className={styles.empty}>
-                            <div className={styles.icon}><Empty /></div>
-                            <div className={styles.text}>Нет активных приглашений</div>
-                        </div>
-                        )}
-                    </div>
-                    </div>
             </div>
         </motion.div>
     );
