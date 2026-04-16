@@ -129,14 +129,6 @@ export function AccountWidget({
                             <span className={styles.icon}><Keyhole /></span>
                             <span className={styles.capture}>Безопасность</span>
                         </Link>
-                        <Link 
-                            href='/platform/activity' 
-                            className={styles.section}
-                            onClick={handleSectionClick}
-                        >
-                            <span className={styles.icon}><History /></span>
-                            <span className={styles.capture}>Активность</span>
-                        </Link>
                         <a 
                             href='#'
                             className={styles.section}

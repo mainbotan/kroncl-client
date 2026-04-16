@@ -10,11 +10,4 @@ export interface PanelSection {
   exact?: boolean;
 }
 
-export interface CompanySection {
-  name: string;
-  href?: string;
-  avatar?: string;
-  icon?: string;
-}
-
 export type PanelAction = ButtonProps;

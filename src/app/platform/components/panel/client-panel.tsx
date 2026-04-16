@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styles from './panel.module.scss';
 import React, { ComponentType, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { CompanySection, PanelAction, PanelSection } from './_types';
+import { PanelAction, PanelSection } from './_types';
 import { isSectionActive } from '@/assets/utils/sections';
 import CollapseLeft from '@/assets/ui-kit/icons/collapse-left';
 
@@ -33,12 +33,14 @@ import Folder from '@/assets/ui-kit/icons/folder';
 import Invitations from '@/assets/ui-kit/icons/invitations';
 import Book from '@/assets/ui-kit/icons/book';
 import Home from '@/assets/ui-kit/icons/home';
+import { AccountCompany } from '@/apps/account/companies/types';
+import { APP_VERSION } from '@/config/version.config';
 
 interface PlatformPanelProps {
   className?: string;
   title?: string;
   sections?: PanelSection[];
-  companies?: CompanySection[];
+  companies?: AccountCompany[];
   initialCollapsed?: boolean;
   actions?: PanelAction[];
   children?: React.ReactNode;
@@ -227,18 +229,18 @@ export default function ClientPanel({
             {companies.map((company, index) => (
               <a 
                 key={index}
-                href={company.href || '#'}
+                href='/'
                 className={styles.company}
               >
                 <span className={styles.icon}>
-                  {company.avatar ? (
+                  {company.avatar_url ? (
                     <img 
-                      src={company.avatar} 
+                      src={company.avatar_url} 
                       alt={company.name} 
                       className={styles.avatar}
                     />
-                  ) : company.icon ? (
-                    renderIcon(company.icon)
+                  ) : company.avatar_url ? (
+                    renderIcon(company.avatar_url)
                   ) : (
                     <span className={styles.avatar} />
                   )}
@@ -253,6 +255,11 @@ export default function ClientPanel({
 
         <div className={styles.children}>
           {children}
+        </div>
+
+        <div className={styles.afterWord}>
+          Операционная система управления предприятием. 
+          <div className={styles.accent}>Сборка {APP_VERSION}</div>
         </div>
       </div>
       

@@ -11,6 +11,7 @@ import Package from '@/assets/ui-kit/icons/package';
 import Book from '@/assets/ui-kit/icons/book';
 import Dev from '@/assets/ui-kit/icons/dev';
 import { DivorceSection } from '@/app/platform/components/lib/divorce/_types';
+import Business from '@/assets/ui-kit/icons/business';
 
 export default function Page() {
     const { user } = useAuth();
@@ -19,7 +20,7 @@ export default function Page() {
         {
             title: "Создать компанию",
             description: "Создание пространства для новой компании. Новый настройки тарификации.",
-            icon: Package,
+            icon: Business,
             accent: true,
             href: "/platform/companies/new",
             // img: '/images/docs/company-logs.png'

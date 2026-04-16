@@ -1,13 +1,14 @@
 import { cookies } from 'next/headers';
-import { CompanySection, PanelAction, PanelSection } from './_types';
+import { PanelAction, PanelSection } from './_types';
 import ClientPanel from './client-panel';
 import React from 'react';
+import { AccountCompany } from '@/apps/account/companies/types';
 
 interface ServerPanelProps {
   className?: string;
   title?: string;
   sections?: PanelSection[];
-  companies?: CompanySection[];
+  companies?: AccountCompany[];
   actions?: PanelAction[];
   children?: React.ReactNode;
   head?: React.ReactNode;

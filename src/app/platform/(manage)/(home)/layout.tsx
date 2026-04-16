@@ -9,6 +9,9 @@ import Plus from "@/assets/ui-kit/icons/plus";
 import Package from "@/assets/ui-kit/icons/package";
 import Edit from "@/assets/ui-kit/icons/edit";
 import Collection from "@/assets/ui-kit/icons/collection";
+import { sectionsList } from "./sections.config";
+import { actionsList } from "./actions.config";
+import { useCompanies } from "@/apps/account/companies/hooks/useCompanies";
 
 export default function Layout({
   children
@@ -16,54 +19,13 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const title = "Рабочая область";
-  const sections: PanelSection[] = [
-    {
-      name: 'Главная',
-      href: '/platform',
-      icon: 'home',
-      exact: true
-    },
-    {
-      name: 'Аккаунт',
-      href: '/platform/account',
-      icon: 'account'
-    },
-    {
-      name: 'Организации',
-      href: '/platform/companies',
-      icon: 'collection'
-    },
-    {
-      name: 'Приглашения',
-      href: '/platform/invitations',
-      icon: 'invitations'
-    },
-    {
-      name: 'Безопасность',
-      href: '/platform/security',
-      icon: 'keyhole'
-    },
-    {
-      name: 'Активность',
-      href: '/platform/activity',
-      icon: 'history'
-    },
-  ];
-  const actions: PanelAction[] = [
-    {
-      children: "Создать",
-      href: "/platform/companies/new",
-      variant: "contrast",
-      as: 'link',
-      // icon: <Collection />
-    }
-  ];
+  
   return (
     <>
       <PlatformPanel 
-        actions={actions}
-        sections={sections} 
-        title={title} 
+        actions={actionsList()}
+        sections={sectionsList()} 
+        title={title}
       />
       <PlatformContent>
         <PlatformContentWrapper>
