@@ -20,6 +20,8 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import SuccessStatus from '@/assets/ui-kit/icons/success-status';
+import { StructureBlock } from './components/structure-block/block';
 
 export default function Page() {
     const params = useParams();
@@ -209,6 +211,7 @@ export default function Page() {
     // Определяем, какие блоки показывать
     const showEmployees = section === 'employees';
     const showClient = section === 'client';
+    const showStructure = section === 'structure';
 
     return (
         <>
@@ -217,7 +220,7 @@ export default function Page() {
                 description='Ведение сделки/заказа.'
                 sections={[
                     {
-                        label: 'Вся информация',
+                        label: 'Обзор',
                         href: `/platform/${companyId}/dm/${dealId}`,
                         exact: true,
                         strongParams: true
@@ -234,15 +237,15 @@ export default function Page() {
                     },
                     {
                         label: 'Состав',
-                        href: `/platform/${companyId}/dm/${dealId}?section=positions`,
+                        href: `/platform/${companyId}/dm/${dealId}?section=structure`,
                         strongParams: true
                     }
                 ]}
                 actions={[
                     {
-                        icon: <Upload />,
+                        icon: <SuccessStatus />,
                         variant: 'accent',
-                        children: saving ? 'Сохранение...' : 'Сохранить',
+                        children: saving ? 'Сохранение...' : 'Сохранить изменения',
                         onClick: handleSave,
                         disabled: saving
                     }
@@ -265,6 +268,11 @@ export default function Page() {
                         onSelect={handleClientSelect}
                         client={client}
                         disabled={saving}
+                    />
+                )}
+                {showStructure && (
+                    <StructureBlock
+                        className={styles.block}
                     />
                 )}
             </div>

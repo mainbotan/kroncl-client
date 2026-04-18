@@ -3,7 +3,7 @@
 import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormVariants } from "@/app/platform/components/lib/form";
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import Button from "@/assets/ui-kit/button/button";
-import { useState, useEffect, useMemo } from 'react'; // Добавить useMemo
+import { useState, useEffect, useMemo } from 'react';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { useWm } from '@/apps/company/modules';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -20,7 +20,6 @@ import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 
 export default function NewUnitPage() {
-    // perms
     const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_CREATE)
     
     const wmModule = useWm();
@@ -47,22 +46,35 @@ export default function NewUnitPage() {
         currency: 'RUB' as const
     });
 
-    // Фильтруем единицы измерения
     const unitOptions = useMemo(() => {
+        if (formData.type === 'service') {
+            return _units.filter(unit => unit.value === 'pcs');
+        }
         if (formData.tracking_detail === 'serial') {
             return _units.filter(unit => unit.value === 'pcs');
         }
         return _units;
-    }, [formData.tracking_detail]);
+    }, [formData.type, formData.tracking_detail]);
 
-    // Автоматически ставим 'pcs' для serial
+    useEffect(() => {
+        if (formData.type === 'service') {
+            setFormData(prev => ({ 
+                ...prev, 
+                unit: 'pcs',
+                inventory_type: 'untracked',
+                tracking_detail: undefined,
+                tracked_type: undefined,
+                purchase_price: ''
+            }));
+        }
+    }, [formData.type]);
+
     useEffect(() => {
         if (formData.tracking_detail === 'serial' && formData.unit !== 'pcs') {
             setFormData(prev => ({ ...prev, unit: 'pcs' }));
         }
     }, [formData.tracking_detail]);
 
-    // Загружаем категорию если есть category_id
     useEffect(() => {
         if (categoryId) {
             loadCategory(categoryId);
@@ -92,15 +104,10 @@ export default function NewUnitPage() {
     };
 
     const handleTypeChange = (value: string) => {
-        const newType = value as UnitType;
         setFormData(prev => ({ 
             ...prev, 
-            type: newType,
-            // Сбрасываем inventory_type при смене типа
-            inventory_type: newType === 'service' ? 'untracked' : prev.inventory_type,
-            // Для услуги убираем purchase_price и tracking_detail
-            purchase_price: newType === 'service' ? '' : prev.purchase_price,
-            tracking_detail: newType === 'service' ? undefined : prev.tracking_detail
+            type: value as UnitType,
+            unit: value === 'service' ? 'pcs' : prev.unit
         }));
     };
 
@@ -109,13 +116,11 @@ export default function NewUnitPage() {
         setFormData(prev => ({ 
             ...prev, 
             inventory_type: newInventoryType,
-            // Если выбрали untracked, убираем tracked_type, purchase_price и tracking_detail
             ...(newInventoryType === 'untracked' ? { 
                 tracked_type: undefined,
                 purchase_price: '',
                 tracking_detail: undefined
             } : {
-                // Если tracked, ставим tracking_detail по умолчанию И tracked_type для batch
                 tracking_detail: 'batch',
                 tracked_type: 'fifo'
             })
@@ -127,12 +132,10 @@ export default function NewUnitPage() {
         setFormData(prev => ({ 
             ...prev, 
             tracking_detail: newTrackingDetail,
-            // Если выбрали serial, убираем tracked_type и ставим unit='pcs'
             ...(newTrackingDetail === 'serial' ? { 
                 tracked_type: undefined,
                 unit: 'pcs'
             } : {
-                // Если batch, ставим tracked_type по умолчанию
                 tracked_type: 'fifo'
             })
         }));
@@ -166,7 +169,6 @@ export default function NewUnitPage() {
     };
 
     const handleSubmit = async () => {
-        // Валидация
         if (!formData.name.trim()) {
             showMessage({ label: 'Название обязательно', variant: 'error' });
             return;
@@ -184,14 +186,13 @@ export default function NewUnitPage() {
 
         const salePrice = parseFloat(formData.sale_price);
         if (isNaN(salePrice) || salePrice < 0) {
-            showMessage({ label: 'Укажите корректную цену продажи', variant: 'error' });
+            showMessage({ label: 'Укажите корректную цену', variant: 'error' });
             return;
         }
 
-        // Для tracked товаров проверяем все поля
         if (formData.inventory_type === 'tracked') {
             if (!formData.tracking_detail) {
-                showMessage({ label: 'Укажите детализацию учета (batch/serial)', variant: 'error' });
+                showMessage({ label: 'Укажите детализацию учета', variant: 'error' });
                 return;
             }
 
@@ -201,23 +202,10 @@ export default function NewUnitPage() {
                 return;
             }
 
-            // Для batch-учета проверяем tracked_type
             if (formData.tracking_detail === 'batch' && !formData.tracked_type) {
-                showMessage({ label: 'Укажите метод учета (FIFO/LIFO)', variant: 'error' });
+                showMessage({ label: 'Укажите метод учета', variant: 'error' });
                 return;
             }
-
-            // Для serial-учета проверяем что tracked_type не указан
-            if (formData.tracking_detail === 'serial' && formData.tracked_type) {
-                showMessage({ label: 'Для поштучного учета метод списания не применяется', variant: 'error' });
-                return;
-            }
-        }
-
-        // Для услуги проверяем что inventory_type = untracked
-        if (formData.type === 'service' && formData.inventory_type !== 'untracked') {
-            showMessage({ label: 'Услуги не могут быть tracked', variant: 'error' });
-            return;
         }
 
         setIsLoading(true);
@@ -234,7 +222,6 @@ export default function NewUnitPage() {
                 status: 'active'
             };
 
-            // Добавляем поля для tracked товаров
             if (formData.inventory_type === 'tracked') {
                 request.tracking_detail = formData.tracking_detail;
                 request.purchase_price = parseFloat(formData.purchase_price);
@@ -248,7 +235,7 @@ export default function NewUnitPage() {
 
             if (response.status) {
                 showMessage({
-                    label: 'Товарная позиция успешно создана',
+                    label: 'Позиция успешно создана',
                     variant: 'success'
                 });
                 router.back();
@@ -282,18 +269,11 @@ export default function NewUnitPage() {
             if (formData.tracking_detail === 'batch' && !formData.tracked_type) return false;
         }
         
-        if (formData.type === 'service' && formData.inventory_type !== 'untracked') return false;
-        
         return true;
     };
 
-    if (ALLOW_PAGE.isLoading) return (
-        <PlatformLoading />
-    )
-
-    if (!ALLOW_PAGE.allowed) return (
-        <PlatformNotAllowed permission={PERMISSIONS.WM_CATALOG_UNITS_CREATE} />
-    )
+    if (ALLOW_PAGE.isLoading) return <PlatformLoading />;
+    if (!ALLOW_PAGE.allowed) return <PlatformNotAllowed permission={PERMISSIONS.WM_CATALOG_UNITS_CREATE} />;
 
     return (
         <>
@@ -360,42 +340,27 @@ export default function NewUnitPage() {
                     />
                 </PlatformFormSection>
 
-                <PlatformFormSection title='Тип учета'>
-                    <PlatformFormVariants
-                        options={[
-                            { 
-                                value: 'tracked', 
-                                label: 'Складской учет',
-                                description: 'Отслеживание остатков на складе',
-                                disabled: formData.type === 'service' 
-                            },
-                            { 
-                                value: 'untracked', 
-                                label: 'Без учета',
-                                description: 'Позиция не учитывается на складе (цифровые товары, услуги)'
-                            }
-                        ]}
-                        value={formData.inventory_type}
-                        onChange={handleInventoryTypeChange}
-                        disabled={isLoading || formData.type === 'service'}
-                    />
-                </PlatformFormSection>
+                {formData.type !== 'service' && (
+                    <PlatformFormSection title='Тип учета'>
+                        <PlatformFormVariants
+                            options={[
+                                { value: 'tracked', label: 'Складской учет' },
+                                { value: 'untracked', label: 'Без учета' }
+                            ]}
+                            value={formData.inventory_type}
+                            onChange={handleInventoryTypeChange}
+                            disabled={isLoading}
+                        />
+                    </PlatformFormSection>
+                )}
 
-                {formData.inventory_type === 'tracked' && (
+                {formData.inventory_type === 'tracked' && formData.type !== 'service' && (
                     <>
                         <PlatformFormSection title='Детализация учета'>
                             <PlatformFormVariants
                                 options={[
-                                    { 
-                                        value: 'batch', 
-                                        label: 'Партионный учет',
-                                        description: 'Учет по партиям с FIFO/LIFO. Подходит для массовых товаров.'
-                                    },
-                                    { 
-                                        value: 'serial', 
-                                        label: 'Поштучный учет',
-                                        description: 'Каждый экземпляр учитывается отдельно. Для уникальных товаров.'
-                                    }
+                                    { value: 'batch', label: 'Партионный учет' },
+                                    { value: 'serial', label: 'Поштучный учет' }
                                 ]}
                                 value={formData.tracking_detail || 'batch'}
                                 onChange={handleTrackingDetailChange}
@@ -407,16 +372,8 @@ export default function NewUnitPage() {
                             <PlatformFormSection title='Метод учета партий'>
                                 <PlatformFormVariants
                                     options={[
-                                        { 
-                                            value: 'fifo', 
-                                            label: 'FIFO',
-                                            description: 'Первым пришел — первым ушел (First In, First Out).'
-                                        },
-                                        { 
-                                            value: 'lifo', 
-                                            label: 'LIFO',
-                                            description: 'Последним пришел — первым ушел (Last In, First Out).'
-                                        }
+                                        { value: 'fifo', label: 'FIFO' },
+                                        { value: 'lifo', label: 'LIFO' }
                                     ]}
                                     value={formData.tracked_type || 'fifo'}
                                     onChange={handleTrackedTypeChange}
@@ -432,13 +389,15 @@ export default function NewUnitPage() {
                         options={unitOptions}
                         value={formData.unit}
                         onChange={handleUnitChange}
-                        disabled={isLoading || (formData.tracking_detail === 'serial' && formData.unit === 'pcs')}
+                        disabled={isLoading || formData.type === 'service' || formData.tracking_detail === 'serial'}
                     />
-                    {formData.tracking_detail === 'serial' && (
-                        <div style={{  
-                            color: 'var(--color-text-hint)', 
-                            marginTop: '0.2em' 
-                        }}>
+                    {formData.type === 'service' && (
+                        <div style={{ color: 'var(--color-text-hint)', marginTop: '0.2em' }}>
+                            Для услуг доступна только единица "Штука (pcs)"
+                        </div>
+                    )}
+                    {formData.tracking_detail === 'serial' && formData.type !== 'service' && (
+                        <div style={{ color: 'var(--color-text-hint)', marginTop: '0.2em' }}>
                             Для поштучного учета доступна только единица "Штука (pcs)"
                         </div>
                     )}
@@ -454,7 +413,7 @@ export default function NewUnitPage() {
                     />
                 </PlatformFormSection>
 
-                {formData.inventory_type === 'tracked' && (
+                {formData.inventory_type === 'tracked' && formData.type !== 'service' && (
                     <PlatformFormSection title='Цена закупки (₽)'>
                         <PlatformFormInput
                             placeholder="0.00"
@@ -486,7 +445,6 @@ export default function NewUnitPage() {
                 </section>
             </PlatformFormBody>
 
-            {/* выбор категории */}
             <PlatformModal
                 isOpen={isModalChooseCategoryOpen}
                 onClose={() => setIsModalChooseCategoryOpen(false)}
