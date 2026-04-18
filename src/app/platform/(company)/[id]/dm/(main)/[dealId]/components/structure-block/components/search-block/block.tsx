@@ -137,7 +137,7 @@ export function SearchBlock({
                     disabled={disabled}
                 />
                 <Button
-                    variant="light"
+                    variant="accent"
                     onClick={toggleMode}
                     disabled={disabled}
                     className={styles.modeToggle}

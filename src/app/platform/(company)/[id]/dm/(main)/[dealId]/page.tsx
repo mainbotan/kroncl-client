@@ -246,6 +246,11 @@ export default function Page() {
                         strongParams: true
                     },
                     {
+                        label: 'Состав',
+                        href: `/platform/${companyId}/dm/${dealId}?section=structure`,
+                        strongParams: true
+                    },
+                    {
                         label: 'Ответственные',
                         href: `/platform/${companyId}/dm/${dealId}?section=employees`,
                         strongParams: true
@@ -254,16 +259,10 @@ export default function Page() {
                         label: 'Клиент',
                         href: `/platform/${companyId}/dm/${dealId}?section=client`,
                         strongParams: true
-                    },
-                    {
-                        label: 'Состав',
-                        href: `/platform/${companyId}/dm/${dealId}?section=structure`,
-                        strongParams: true
                     }
                 ]}
                 actions={[
                     {
-                        icon: <SuccessStatus />,
                         variant: 'accent',
                         children: saving ? 'Сохранение...' : 'Сохранить изменения',
                         onClick: handleSave,
