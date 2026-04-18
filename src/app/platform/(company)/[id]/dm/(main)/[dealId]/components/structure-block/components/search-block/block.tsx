@@ -8,6 +8,7 @@ import { useWm } from '@/apps/company/modules';
 import { CatalogUnit, PositionWithUnit } from '@/apps/company/modules/wm/types';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import Button from '@/assets/ui-kit/button/button';
+import { getUnitRu } from '@/app/platform/(company)/[id]/wm/(catalog)/units/new/_units';
 
 export type SearchMode = 'catalog' | 'stock';
 
@@ -164,7 +165,7 @@ export function SearchBlock({
                                         {unit.category_id || 'Без категории'}
                                     </span>
                                     <span className={styles.price}>
-                                        {unit.sale_price} ₽ / {unit.unit}
+                                        {unit.sale_price} ₽ / {getUnitRu(unit.unit)}
                                     </span>
                                 </div>
                             ))}
@@ -180,7 +181,7 @@ export function SearchBlock({
                                     <span className={styles.name}>{position.unit?.name || 'Без названия'}</span>
                                     <span className={styles.stockInfo}>
                                         Партия: {position.batch_id?.slice(0, 8) || '—'} | 
-                                        Кол-во: {position.quantity} {position.unit?.unit}
+                                        Кол-во: {position.quantity} {getUnitRu(position.unit?.unit) || undefined}
                                     </span>
                                 </div>
                             ))}

@@ -8,6 +8,7 @@ import Close from '@/assets/ui-kit/icons/close';
 import { CatalogUnit, PositionWithUnit } from '@/apps/company/modules/wm/types';
 import { DealPosition } from '@/apps/company/modules/dm/types';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import { getUnitRu } from '@/app/platform/(company)/[id]/wm/(catalog)/units/new/_units';
 
 export interface StructureBlockProps {
     className?: string;
@@ -112,7 +113,7 @@ export function StructureBlock({ className, positions, onChange, disabled }: Str
                                         }}
                                         disabled={disabled}
                                     />
-                                    <span className={styles.hint}>&#8381; / {pos.unit}</span>
+                                    <span className={styles.hint}>&#8381; / {getUnitRu(pos.unit)}</span>
                                 </div>
                                 <div className={styles.col}>
                                     <Input 
@@ -125,7 +126,7 @@ export function StructureBlock({ className, positions, onChange, disabled }: Str
                                         }}
                                         disabled={disabled}
                                     />
-                                    <span className={styles.hint}>{pos.unit}</span>
+                                    <span className={styles.hint}>{getUnitRu(pos.unit)}</span>
                                 </div>
                                 <div className={styles.col}>
                                     {(pos.price * pos.quantity).toFixed(2)} &#8381;
