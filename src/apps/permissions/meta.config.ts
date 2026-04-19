@@ -569,6 +569,20 @@ export const PERMISSIONS_META: Record<PermissionCode, PermissionMeta> = {
         module: 'dm',
         category: 'analysis',
     },
+    [PERMISSIONS.DM_DEALS_TRANSACTIONS]: {
+        code: PERMISSIONS.DM_DEALS_TRANSACTIONS,
+        title: 'Финансовые операции сделки',
+        description: 'Доступ к финансовой истории ведения сделки',
+        module: 'dm',
+        category: 'deals',
+    },
+    [PERMISSIONS.DM_DEALS_CALCULATE]: {
+        code: PERMISSIONS.DM_DEALS_CALCULATE,
+        title: 'Расчёт сделки',
+        description: 'Сведение итогов сделки',
+        module: 'dm',
+        category: 'deals',
+    },
 };
 
 export const getPermissionMeta = (code: PermissionCode): PermissionMeta | undefined => {

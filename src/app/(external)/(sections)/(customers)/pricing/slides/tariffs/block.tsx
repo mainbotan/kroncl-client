@@ -60,7 +60,7 @@ export function TariffsBlock({
                     variant={billingPeriod === 'annual' ? 'accent' : 'glass'}
                     onClick={() => handlePeriodChange('annual')}
                 >
-                    Год
+                    Год -10%
                 </Button>
             </div>
             <div className={styles.wrap}>

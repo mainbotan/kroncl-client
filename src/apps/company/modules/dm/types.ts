@@ -176,3 +176,12 @@ export interface DealGroup {
     deals: Deal[];
     count: number;
 }
+
+export interface DealTransactionsSummary {
+    total_amount: number;
+    income_amount: number;
+    expense_amount: number;
+    income_count: number;
+    expense_count: number;
+    total_count: number;
+}

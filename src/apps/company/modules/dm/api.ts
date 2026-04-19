@@ -1,4 +1,5 @@
 import { CompanyApi } from "../../api";
+import { CreateTransactionRequest, GetTransactionsParams, TransactionDetail, TransactionsResponse } from "../fm/types";
 import {
     // Deal Types
     DealType,
@@ -20,6 +21,7 @@ import {
     UpdateDealRequest,
     GetDealsParams,
     DealGroup,
+    DealTransactionsSummary,
 } from "./types";
 
 export const dmModule = (companyApi: CompanyApi) => ({
@@ -148,5 +150,26 @@ export const dmModule = (companyApi: CompanyApi) => ({
     
     async deleteDeal(id: string) {
         return companyApi.delete<{ deal_id: string; deleted: boolean }>(`/modules/dm/deals/${id}`);
+    },
+
+    // --------
+    // DEAL TRANSACTIONS
+    // --------
+    
+    async getDealTransactions(
+        dealId: string,
+        params?: GetTransactionsParams
+    ) {
+        return companyApi.get<TransactionsResponse>(`/modules/dm/deals/${dealId}/transactions`, {
+            params: params as Record<string, string | number | boolean | undefined>
+        });
+    },
+    
+    async createDealTransaction(dealId: string, data: CreateTransactionRequest) {
+        return companyApi.post<TransactionDetail>(`/modules/dm/deals/${dealId}/transactions`, data);
+    },
+
+    async getDealTransactionsSummary(dealId: string) {
+        return companyApi.get<DealTransactionsSummary>(`/modules/dm/deals/${dealId}/transactions/summary`);
     },
 });

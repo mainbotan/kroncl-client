@@ -98,6 +98,8 @@ export const PERMISSIONS = {
     DM_DEALS_UPDATE: 'dm.deals.update',
     DM_DEALS_DELETE: 'dm.deals.delete',
     DM_ANALYSIS: 'dm.analysis',
+    DM_DEALS_TRANSACTIONS: 'dm.deals.transactions',
+    DM_DEALS_CALCULATE: 'dm.deals.calculate',
 } as const;
 
 export type PermissionCode = typeof PERMISSIONS[keyof typeof PERMISSIONS];

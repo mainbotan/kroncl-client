@@ -21,8 +21,10 @@
     max-height: fit-content;
     max-width: calc(100vw - 18rem);
     max-height: calc(100vh - 6rem);
-    border-radius: .5rem;
+    border-radius: .3rem;
     background-color: var(--color-surface-elevated);
+    box-shadow: 0 0 .2em var(--color-leader);
+    border: 1px solid var(--color-stroke-secondary);
     font-size: .6rem;
 
     @media (max-width: 720px) {
