@@ -12,6 +12,7 @@ export interface CreateCompanyRequest {
   avatar_url?: string;
   is_public: boolean;
   plan_code: string;
+  region?: string;
 }
 
 export interface Storage {
@@ -35,6 +36,10 @@ export interface Company {
   storage: Storage;
   created_at: string;
   updated_at: string;
+  region: string;
+  site: string;
+  email: string;
+  metadata: any;
 }
 
 export interface CheckSlugUniqueRequest {

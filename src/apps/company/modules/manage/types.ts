@@ -1,6 +1,10 @@
 export interface UpdateCompanyRequest {
     name?: string;
     description?: string;
+    region?: string;
+    is_public?: boolean;
+    site?: string;
+    email?: string;
 }
 
 export interface Company {

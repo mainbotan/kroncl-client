@@ -7,6 +7,7 @@ import { CompanyPricingPlan } from './modules/pricing/types';
 
 interface CompanyContextType {
   company: AccountCompany;
+  setCompany: (company: AccountCompany) => void;
   api: CompanyApi;
   companyPlan: CompanyPricingPlan | null;
   setCompanyPlan: (plan: CompanyPricingPlan | null) => void;
@@ -22,9 +23,10 @@ interface CompanyProviderProps {
 }
 
 export function CompanyProvider({ 
-  company, 
+  company: initialCompany, 
   children 
 }: CompanyProviderProps) {
+  const [company, setCompany] = useState<AccountCompany>(initialCompany);
   const api = new CompanyApi(company.id);
   const [companyPlan, setCompanyPlan] = useState<CompanyPricingPlan | null>(null);
   const [isLoadingPlan, setIsLoadingPlan] = useState(true);
@@ -43,13 +45,13 @@ export function CompanyProvider({
     }
   };
   
-  // Загружаем план при монтировании
   useEffect(() => {
     refreshCompanyPlan();
   }, [company.id]);
   
   const contextValue: CompanyContextType = {
     company,
+    setCompany,
     api,
     companyPlan,
     setCompanyPlan,

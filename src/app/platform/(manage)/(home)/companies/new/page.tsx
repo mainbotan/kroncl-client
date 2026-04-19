@@ -22,7 +22,7 @@ type FormData = {
   companyName: string;
   slug: string;
   visibility: 'private' | 'public';
-  region: 'ru' | 'kz';
+  region: 'ru-RU' | 'kz-KZ';
   planCode: string; // добавляем planCode
 };
 
@@ -43,8 +43,8 @@ export default function Page() {
     companyName: '',
     slug: '',
     visibility: 'private',
-    region: 'ru',
-    planCode: '' // инициализируем пустым
+    region: 'ru-RU',
+    planCode: ''
   });
 
   const [slugStatus, setSlugStatus] = useState<SlugStatus>('idle');
@@ -152,7 +152,7 @@ export default function Page() {
   const handleRegionSelect = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      region: value as 'ru' | 'kz'
+      region: value as 'ru-RU' | 'kz-KZ'
     }));
   };
 
@@ -255,7 +255,8 @@ export default function Page() {
         description: '',
         avatar_url: '',
         is_public: formData.visibility === 'public',
-        plan_code: formData.planCode // передаём выбранный план
+        plan_code: formData.planCode,
+        region: formData.region
       });
 
       if (response.status) {
@@ -458,12 +459,12 @@ export default function Page() {
               <PlatformFormVariants
                 options={[
                   {
-                    value: 'ru',
+                    value: 'ru-RU',
                     label: <>РФ</>,
                     description: 'Расчёты системы в российских рублях.'
                   },
                   {
-                    value: 'kz',
+                    value: 'kz-KZ',
                     label: <>Казахстан</>,
                     description: 'Расчёты системы в тенге.'
                   }
