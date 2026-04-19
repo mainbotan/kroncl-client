@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const isProduction = process.env.ENV === 'production' || process.env.NODE_ENV === 'production';
+const isProduction = process.env.ENV === 'production'; // || process.env.NODE_ENV === 'production';
 
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
