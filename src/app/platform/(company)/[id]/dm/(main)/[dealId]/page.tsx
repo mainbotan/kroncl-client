@@ -1,94 +1,141 @@
 'use client';
 
-{/**
-    это не оптимизированный пиздец
-    с кучей n+1, молимся серверу на го    
-*/}
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
 import styles from './page.module.scss';
-import Upload from '@/assets/ui-kit/icons/upload';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { EmployeesBlock } from './components/employees-block/block';
 import { ClientBlock } from './components/client-block/block';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDm, useHrm, useCrm } from '@/apps/company/modules';
 import { Employee } from '@/apps/company/modules/hrm/types';
 import { ClientDetail } from '@/apps/company/modules/crm/types';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
-import Spinner from '@/assets/ui-kit/spinner/spinner';
-import { usePermission } from '@/apps/permissions/hooks';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
-import SuccessStatus from '@/assets/ui-kit/icons/success-status';
 import { StructureBlock } from './components/structure-block/block';
-import { DealPosition } from '@/apps/company/modules/dm/types';
+import { Deal, DealPosition, DealStatus, DealType } from '@/apps/company/modules/dm/types';
+import { OverviewBlock } from './components/overview-block/block';
 
 export default function Page() {
     const params = useParams();
     const searchParams = useSearchParams();
+    const router = useRouter();
     const companyId = params.id as string;
     const dealId = params.dealId as string;
     const section = searchParams.get('section');
 
-    // perms
-    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS)
-    const ALLOW_DEAL_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE)
-    const ALLOW_DEAL_DELETE = usePermission(PERMISSIONS.DM_DEALS_DELETE)
+    const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS);
+    const ALLOW_DEAL_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE);
 
     const dmModule = useDm();
-    const hrmModule = useHrm(); // Добавляем useHrm
+    const hrmModule = useHrm();
     const crmModule = useCrm();
     const { showMessage } = useMessage();
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [deal, setDeal] = useState<any>(null);
-    
-    // Для сотрудников - ДВА стейта: ID и объекты
+    const [deal, setDeal] = useState<Deal | null>(null);
+    const [hasChanges, setHasChanges] = useState(false);
+
+    const initialDataRef = useRef<{
+        statusId: string | null;
+        typeId: string | null;
+        comment: string | null;
+        employeeIds: string[];
+        clientId: string | null;
+        positions: DealPosition[];
+    } | null>(null);
+
+    const [currentStatus, setCurrentStatus] = useState<DealStatus | null>(null);
+    const [currentType, setCurrentType] = useState<DealType | null>(null);
+    const [currentComment, setCurrentComment] = useState<string | null>(null);
+    const [statuses, setStatuses] = useState<DealStatus[]>([]);
+    const [types, setTypes] = useState<DealType[]>([]);
+
     const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
-    const [employees, setEmployees] = useState<Employee[]>([]); // <- отдельный стейт для объектов
-    
-    // Для клиента
+    const [employees, setEmployees] = useState<Employee[]>([]);
+
     const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
     const [client, setClient] = useState<ClientDetail | null>(null);
 
-    // Для позиций
     const [positions, setPositions] = useState<DealPosition[]>([]);
 
-    // Загружаем сделку
+    const checkChanges = useCallback(() => {
+        if (!initialDataRef.current) return false;
+
+        const initial = initialDataRef.current;
+        const currentPositionIds = positions.map(p => p.id).sort().join(',');
+        const initialPositionIds = initial.positions.map(p => p.id).sort().join(',');
+
+        return (
+            currentStatus?.id !== initial.statusId ||
+            currentType?.id !== initial.typeId ||
+            currentComment !== initial.comment ||
+            selectedEmployeeIds.sort().join(',') !== initial.employeeIds.sort().join(',') ||
+            selectedClientId !== initial.clientId ||
+            currentPositionIds !== initialPositionIds
+        );
+    }, [currentStatus, currentType, currentComment, selectedEmployeeIds, selectedClientId, positions]);
+
+    useEffect(() => {
+        setHasChanges(checkChanges());
+    }, [checkChanges]);
+
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (hasChanges) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [hasChanges]);
+
     useEffect(() => {
         const loadDeal = async () => {
             setLoading(true);
             try {
                 const response = await dmModule.getDeal(dealId);
-                
+
                 if (response.status) {
-                    setDeal(response.data);
-                    
-                    // Устанавливаем сотрудников из сделки
-                    if (response.data.employees) {
-                        const employeeList = response.data.employees;
-                        setSelectedEmployeeIds(employeeList.map((e: Employee) => e.id));
-                        setEmployees(employeeList); // <- сохраняем объекты
-                    } else {
-                        setSelectedEmployeeIds([]);
-                        setEmployees([]);
-                    }
-                    
-                    // Устанавливаем клиента из сделки
-                    if (response.data.client) {
-                        setSelectedClientId(response.data.client.id);
-                        setClient(response.data.client);
+                    const dealData = response.data;
+                    setDeal(dealData);
+
+                    const employeeList = dealData.employees || [];
+                    setSelectedEmployeeIds(employeeList.map((e: Employee) => e.id));
+                    setEmployees(employeeList);
+
+                    if (dealData.client) {
+                        setSelectedClientId(dealData.client.id);
+                        setClient(dealData.client);
                     } else {
                         setSelectedClientId(null);
                         setClient(null);
                     }
 
-                    // Позиции
-                    if (response.data.positions) {
-                        setPositions(response.data.positions);
-                    }
+                    const positionsList = dealData.positions || [];
+                    setPositions(positionsList);
+
+                    const status = dealData.status || null;
+                    const type = dealData.type || null;
+                    const comment = dealData.comment || null;
+
+                    setCurrentStatus(status);
+                    setCurrentType(type);
+                    setCurrentComment(comment);
+
+                    initialDataRef.current = {
+                        statusId: status?.id || null,
+                        typeId: type?.id || null,
+                        comment: comment,
+                        employeeIds: employeeList.map((e: Employee) => e.id),
+                        clientId: dealData.client?.id || null,
+                        positions: positionsList
+                    };
                 }
             } catch (error) {
                 showMessage({ label: 'Ошибка загрузки данных', variant: 'error' });
@@ -96,11 +143,30 @@ export default function Page() {
                 setLoading(false);
             }
         };
-        
+
+        const loadMeta = async () => {
+            try {
+                const [statusesRes, typesRes] = await Promise.all([
+                    dmModule.getDealStatuses({ limit: 100 }),
+                    dmModule.getDealTypes({ limit: 100 })
+                ]);
+
+                if (statusesRes.status) {
+                    setStatuses(statusesRes.data.statuses.sort((a, b) => a.sort_order - b.sort_order));
+                }
+
+                if (typesRes.status) {
+                    setTypes(typesRes.data.deal_types);
+                }
+            } catch (error) {
+                console.error('Error loading meta:', error);
+            }
+        };
+
         loadDeal();
+        loadMeta();
     }, [dealId]);
 
-    // Функция загрузки сотрудников по ID
     const loadEmployeesByIds = async (employeeIds: string[]) => {
         if (employeeIds.length === 0) {
             setEmployees([]);
@@ -108,21 +174,19 @@ export default function Page() {
         }
 
         try {
-            // Загружаем всех сотрудников по IDs
             const employeePromises = employeeIds.map(id => hrmModule.getEmployee(id));
             const responses = await Promise.all(employeePromises);
-            
+
             const validEmployees = responses
                 .filter(res => res.status && res.data)
                 .map(res => res.data!);
-            
+
             setEmployees(validEmployees);
         } catch (error) {
             console.error('Error loading employees:', error);
         }
     };
 
-    // Функция загрузки клиента по ID
     const loadClientById = async (clientId: string) => {
         try {
             const response = await crmModule.getClient(clientId);
@@ -134,28 +198,40 @@ export default function Page() {
         }
     };
 
-    // Обработчик выбора сотрудников
     const handleEmployeesSelect = (newEmployeeIds: string[]) => {
         setSelectedEmployeeIds(newEmployeeIds);
-        
+
         if (newEmployeeIds.length > 0) {
-            // Загружаем данные выбранных сотрудников
             loadEmployeesByIds(newEmployeeIds);
         } else {
-            // Если никого не выбрали - очищаем
             setEmployees([]);
         }
     };
 
-    // Обработчик выбора клиента
     const handleClientSelect = (clientId: string | null) => {
         setSelectedClientId(clientId);
-        
+
         if (clientId) {
             loadClientById(clientId);
         } else {
             setClient(null);
         }
+    };
+
+    const handleStatusChange = (statusId: string) => {
+        const newStatus = statuses.find(s => s.id === statusId);
+        if (newStatus) {
+            setCurrentStatus(newStatus);
+        }
+    };
+
+    const handleTypeChange = (typeId: string | null) => {
+        const newType = types.find(t => t.id === typeId);
+        setCurrentType(newType || null);
+    };
+
+    const handleCommentChange = (comment: string) => {
+        setCurrentComment(comment);
     };
 
     const handleSave = async () => {
@@ -172,6 +248,9 @@ export default function Page() {
             }));
 
             const response = await dmModule.updateDeal(dealId, {
+                status_id: currentStatus?.id,
+                type_id: currentType?.id || null,
+                comment: currentComment,
                 employees: selectedEmployeeIds,
                 client_id: selectedClientId,
                 positions: positionUpdates
@@ -182,30 +261,44 @@ export default function Page() {
                     label: 'Сделка обновлена',
                     variant: 'success'
                 });
-                
-                // Перезагружаем сделку чтобы получить актуальные данные
+
                 const refreshedDeal = await dmModule.getDeal(dealId);
                 if (refreshedDeal.status) {
-                    setDeal(refreshedDeal.data);
-                    
-                    // Обновляем клиента из свежих данных
-                    if (refreshedDeal.data.client) {
-                        setSelectedClientId(refreshedDeal.data.client.id);
-                        setClient(refreshedDeal.data.client);
+                    const dealData = refreshedDeal.data;
+                    setDeal(dealData);
+
+                    if (dealData.client) {
+                        setSelectedClientId(dealData.client.id);
+                        setClient(dealData.client);
                     } else {
                         setSelectedClientId(null);
                         setClient(null);
                     }
-                    
-                    // Обновляем сотрудников
-                    if (refreshedDeal.data.employees) {
-                        const employeeList = refreshedDeal.data.employees;
-                        setSelectedEmployeeIds(employeeList.map((e: Employee) => e.id));
-                        setEmployees(employeeList);
-                    } else {
-                        setSelectedEmployeeIds([]);
-                        setEmployees([]);
-                    }
+
+                    const employeeList = dealData.employees || [];
+                    setSelectedEmployeeIds(employeeList.map((e: Employee) => e.id));
+                    setEmployees(employeeList);
+
+                    const status = dealData.status || null;
+                    const type = dealData.type || null;
+                    const comment = dealData.comment || null;
+                    const positionsList = dealData.positions || [];
+
+                    setCurrentStatus(status);
+                    setCurrentType(type);
+                    setCurrentComment(comment);
+                    setPositions(positionsList);
+
+                    initialDataRef.current = {
+                        statusId: status?.id || null,
+                        typeId: type?.id || null,
+                        comment: comment,
+                        employeeIds: employeeList.map((e: Employee) => e.id),
+                        clientId: dealData.client?.id || null,
+                        positions: positionsList
+                    };
+
+                    setHasChanges(false);
                 }
             } else {
                 throw new Error(response.message || 'Ошибка обновления');
@@ -220,18 +313,31 @@ export default function Page() {
         }
     };
 
+    const handleCancel = () => {
+        if (initialDataRef.current) {
+            const initial = initialDataRef.current;
+            setCurrentStatus(statuses.find(s => s.id === initial.statusId) || null);
+            setCurrentType(types.find(t => t.id === initial.typeId) || null);
+            setCurrentComment(initial.comment);
+            setSelectedEmployeeIds(initial.employeeIds);
+            setSelectedClientId(initial.clientId);
+            setPositions(initial.positions);
+            setHasChanges(false);
+        }
+    };
+
     if (loading || ALLOW_PAGE.isLoading) {
-        <PlatformLoading />
+        return <PlatformLoading />;
     }
 
-    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
-        <PlatformNotAllowed permission={PERMISSIONS.DM_DEALS} />
-    )
+    if (!isAllowed(ALLOW_PAGE)) {
+        return <PlatformNotAllowed permission={PERMISSIONS.DM_DEALS} />;
+    }
 
-    // Определяем, какие блоки показывать
     const showEmployees = section === 'employees';
     const showClient = section === 'client';
     const showStructure = section === 'structure';
+    const showOverview = section === null;
 
     return (
         <>
@@ -261,27 +367,54 @@ export default function Page() {
                         strongParams: true
                     }
                 ]}
-                actions={[
+                actions={isAllowed(ALLOW_DEAL_UPDATE) ? [
+                    ...(hasChanges ? [{
+                        variant: 'light' as const,
+                        children: 'Отменить',
+                        onClick: handleCancel,
+                        disabled: saving
+                    }] : []),
                     {
-                        variant: 'accent',
+                        variant: 'accent' as const,
                         children: saving ? 'Сохранение...' : 'Сохранить изменения',
                         onClick: handleSave,
-                        disabled: saving
+                        disabled: saving || !hasChanges
                     }
-                ]}
-            />
+                ] : undefined}
+            >
+                {hasChanges && (
+                    <div className={styles.nonSaved}>
+                        Информация о сделке была обновлена. Сохраните изменения, чтобы не потерять новые данные.
+                    </div>
+                )}
+            </PlatformHead>
             <div className={styles.body}>
+                {showOverview && (
+                    <OverviewBlock
+                        className={styles.block}
+                        dealId={dealId}
+                        currentStatus={currentStatus}
+                        currentType={currentType}
+                        currentComment={currentComment}
+                        onStatusChange={handleStatusChange}
+                        onTypeChange={handleTypeChange}
+                        onCommentChange={handleCommentChange}
+                        disabled={saving}
+                        created_at={deal?.created_at}
+                        updated_at={deal?.updated_at}
+                    />
+                )}
                 {showEmployees && (
-                    <EmployeesBlock 
+                    <EmployeesBlock
                         className={styles.block}
                         selectedIds={selectedEmployeeIds}
-                        onSelect={handleEmployeesSelect} // <- используем новый обработчик
-                        employees={employees} // <- передаём отдельный стейт с объектами
+                        onSelect={handleEmployeesSelect}
+                        employees={employees}
                         disabled={saving}
                     />
                 )}
                 {showClient && (
-                    <ClientBlock 
+                    <ClientBlock
                         className={styles.block}
                         selectedId={selectedClientId}
                         onSelect={handleClientSelect}

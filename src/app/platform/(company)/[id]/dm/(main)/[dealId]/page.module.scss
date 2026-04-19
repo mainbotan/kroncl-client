@@ -1,3 +1,16 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.nonSaved {
+    display: flex;
+    border: 2px solid var(--color-accent);
+    max-width: 27rem;
+    padding: .8em;
+    font-size: .8em;
+    border-radius: .74em;
+    line-height: 1.3;
+    margin-bottom: 1em;
+    background-color: var(--color-surface-glass);
+}
 .body {
     display: flex;
     flex-flow: column nowrap;

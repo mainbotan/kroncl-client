@@ -1,0 +1,133 @@
+'use client';
+
+import clsx from 'clsx';
+import { DealBlock } from '../block/block';
+import styles from './block.module.scss';
+import { StatusBlock } from './components/status-block/block';
+import { PlatformFormBody, PlatformFormSection, PlatformFormTextarea, PlatformFormVariants } from '@/app/platform/components/lib/form';
+import { DealStatus, DealType } from '@/apps/company/modules/dm/types';
+import { useEffect, useState } from 'react';
+import { useDm } from '@/apps/company/modules';
+import { isAllowed, usePermission } from '@/apps/permissions/hooks';
+import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import Spinner from '@/assets/ui-kit/spinner/spinner';
+import { formatDate } from '@/assets/utils/date';
+
+export interface OverviewBlockProps {
+    className?: string;
+    dealId: string;
+    currentStatus: DealStatus | null;
+    currentType: DealType | null;
+    currentComment: string | null;
+    onStatusChange: (statusId: string) => void;
+    onTypeChange: (typeId: string | null) => void;
+    onCommentChange: (comment: string) => void;
+    disabled?: boolean;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export function OverviewBlock({
+    className,
+    dealId,
+    currentStatus,
+    currentType,
+    currentComment,
+    onStatusChange,
+    onTypeChange,
+    onCommentChange,
+    disabled,
+    created_at,
+    updated_at
+}: OverviewBlockProps) {
+    const dmModule = useDm();
+    const ALLOW_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE);
+    const canEdit = isAllowed(ALLOW_UPDATE) && !disabled;
+
+    const [statuses, setStatuses] = useState<DealStatus[]>([]);
+    const [types, setTypes] = useState<DealType[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadData = async () => {
+            setLoading(true);
+            try {
+                const [statusesRes, typesRes] = await Promise.all([
+                    dmModule.getDealStatuses({ limit: 100 }),
+                    dmModule.getDealTypes({ limit: 100 })
+                ]);
+
+                if (statusesRes.status) {
+                    const sorted = statusesRes.data.statuses?.sort((a, b) => a.sort_order - b.sort_order);
+                    setStatuses(sorted);
+                }
+
+                if (typesRes.status) {
+                    setTypes(typesRes.data.deal_types || []);
+                }
+            } catch (error) {
+                console.error('Error loading overview data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadData();
+    }, []);
+
+    const typeOptions = [
+        { value: '', label: 'Без типа', description: 'Сделка не привязана к типу' },
+        ...types.map(t => ({
+            value: t.id,
+            label: t.name,
+            description: t.comment || undefined
+        }))
+    ];
+
+    const currentTypeValue = currentType?.id || '';
+
+    if (loading) {
+        return (
+            <DealBlock title='Обзор сделки' description='Основная информация о заказе.' className={className}>
+                <div className={styles.loading}><Spinner /></div>
+            </DealBlock>
+        );
+    }
+
+    return (
+        <DealBlock
+            title='Обзор сделки'
+            description='Основная информация о заказе.'
+            className={className}
+        >
+            <div className={styles.container}>
+                <StatusBlock
+                    className={styles.block}
+                    statuses={statuses}
+                    currentStatusId={currentStatus?.id || null}
+                    onStatusChange={canEdit ? onStatusChange : undefined}
+                />
+                <PlatformFormBody className={clsx(styles.block, styles.form)}>
+                    <PlatformFormSection title='Тип' description='Классификация заказов'>
+                        <PlatformFormVariants
+                            value={currentTypeValue}
+                            options={typeOptions}
+                            onChange={(value) => onTypeChange(value || null)}
+                            disabled={!canEdit}
+                        />
+                    </PlatformFormSection>
+                    <PlatformFormSection title='Комментарий' description='Дополнительная информация по заказу'>
+                        <PlatformFormTextarea
+                            value={currentComment || ''}
+                            onChange={onCommentChange}
+                            disabled={!canEdit}
+                            placeholder="Комментарий к сделке..."
+                        />
+                    </PlatformFormSection>
+                    {updated_at && (<PlatformFormSection title='Последнее обновление' description={formatDate(updated_at)} children={undefined}/>)}
+                    {created_at && (<PlatformFormSection title='Создание' description={formatDate(created_at)} children={undefined}/>)}
+                </PlatformFormBody>
+            </div>
+        </DealBlock>
+    )
+}
