@@ -66,17 +66,50 @@ export default function Page() {
         if (!initialDataRef.current) return false;
 
         const initial = initialDataRef.current;
-        const currentPositionIds = positions.map(p => p.id).sort().join(',');
-        const initialPositionIds = initial.positions.map(p => p.id).sort().join(',');
 
-        return (
-            currentStatus?.id !== initial.statusId ||
-            currentType?.id !== initial.typeId ||
-            currentComment !== initial.comment ||
-            selectedEmployeeIds.sort().join(',') !== initial.employeeIds.sort().join(',') ||
-            selectedClientId !== initial.clientId ||
-            currentPositionIds !== initialPositionIds
-        );
+        // Статус
+        if (currentStatus?.id !== initial.statusId) return true;
+
+        // Тип
+        if (currentType?.id !== initial.typeId) return true;
+
+        // Комментарий
+        if (currentComment !== initial.comment) return true;
+
+        // Сотрудники
+        const currentEmployeeIdsSorted = [...selectedEmployeeIds].sort();
+        const initialEmployeeIdsSorted = [...initial.employeeIds].sort();
+        if (currentEmployeeIdsSorted.join(',') !== initialEmployeeIdsSorted.join(',')) return true;
+
+        // Клиент
+        if (selectedClientId !== initial.clientId) return true;
+
+        // Позиции — сравниваем по содержимому, а не только по ID
+        const currentPositionsNormalized = positions.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            quantity: p.quantity,
+            unit: p.unit,
+            unit_id: p.unit_id,
+            position_id: p.position_id
+        }));
+        const initialPositionsNormalized = initial.positions.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: p.price,
+            quantity: p.quantity,
+            unit: p.unit,
+            unit_id: p.unit_id,
+            position_id: p.position_id
+        }));
+
+        const currentPositionsJson = JSON.stringify(currentPositionsNormalized.sort((a, b) => a.id.localeCompare(b.id)));
+        const initialPositionsJson = JSON.stringify(initialPositionsNormalized.sort((a, b) => a.id.localeCompare(b.id)));
+
+        if (currentPositionsJson !== initialPositionsJson) return true;
+
+        return false;
     }, [currentStatus, currentType, currentComment, selectedEmployeeIds, selectedClientId, positions]);
 
     useEffect(() => {
@@ -384,7 +417,7 @@ export default function Page() {
             >
                 {hasChanges && (
                     <div className={styles.nonSaved}>
-                        Информация о сделке была обновлена. Сохраните изменения, чтобы не потерять новые данные.
+                        После изменения данных о сделке не забывайте сохранять изменения.
                     </div>
                 )}
             </PlatformHead>
