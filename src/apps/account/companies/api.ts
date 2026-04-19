@@ -1,6 +1,7 @@
 import { api } from '@/apps/shared/bridge/api';
 import { ApiResponse } from '@/apps/shared/bridge/types';
 import { AccountCompaniesResponse, GetAccountCompaniesParams, AccountCompany } from './types';
+import { Company } from '@/apps/company/init/types';
 
 export class CompaniesApi {
     private endpoints = {
@@ -24,6 +25,10 @@ export class CompaniesApi {
 
     async getCompany(companyId: string): Promise<ApiResponse<AccountCompany>> {
         return api.get<AccountCompany>(`/companies/${companyId}`);
+    }
+    
+    async getVisitCard(slug: string): Promise<ApiResponse<Company>> {
+        return api.get<Company>(`/visit-cards/${slug}`);
     }
 }
 

@@ -205,7 +205,7 @@ export default function Page() {
                             variant: 'accent',
                             children: 'Скопировать',
                             onClick: () => {
-                                navigator.clipboard.writeText(companyId);
+                                navigator.clipboard.writeText(company.slug);
                                 showMessage({
                                     label: 'ID скопирован',
                                     variant: 'success'
@@ -214,10 +214,10 @@ export default function Page() {
                         }
                     ]}
                     title='Идентификатор компании' 
-                    description='ID компании - статичное значение, не изменяющееся при обновлении имени или другой информации.'
+                    description='Cтатичное значение, не изменяющееся при обновлении имени или другой информации.'
                 >
                     <PlatformFormInput
-                        value={companyId}
+                        value={company.slug}
                         readOnly
                     />
                 </PlatformFormSection>

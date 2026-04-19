@@ -1,0 +1,7 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    height: 2rem;
+    padding: 0 !important;
+    background-color: var(--color-surface-glass-secondary);
+}

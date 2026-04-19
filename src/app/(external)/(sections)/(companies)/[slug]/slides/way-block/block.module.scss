@@ -1,0 +1,85 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .7em;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+
+    .section {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: .4em;
+        
+        .col {
+            display: flex;
+
+            &:nth-child(1) {
+                display: inline-flex;
+                align-items: start;
+                border-left: 1px dashed var(--color-stroke-primary);
+
+                .svg, svg {
+                    min-width: 1.3em;
+                    max-width: 1.3em;
+                    width: 1.3em;
+                    height: 1.3em;
+                    fill: var(--color-icon-primary);
+                    margin: .4em;
+                }
+            }
+            &:nth-child(2) {
+                flex-flow: column nowrap;
+                flex: 1;
+                padding: .4em 0;
+                gap: 1em;
+            }
+        }
+    }
+
+    .capture {
+        font-weight: 600;
+        letter-spacing: .02em;
+        font-size: .9em;
+        line-height: 1.15;
+    }
+    
+    .items {
+        display: flex;
+        flex-flow: row wrap;
+        gap: 1em;
+        font-size: .75em;
+
+        .item {
+            display: flex;
+            flex-flow: column nowrap;
+            padding: 1em;
+            border: 1px dashed var(--color-stroke-primary);
+            background-color: var(--color-surface-glass-secondary);
+            border-radius: .6em;
+            gap: .5em;
+            min-height: 6em;
+            max-width: 12rem;
+            transition: background-color var(--transition)
+                        box-shadow var(--transition),
+                        border-color var(--transition);
+
+            .name {
+                font-weight: 600;
+                letter-spacing: .02em;
+                line-height: 1.15;
+            }
+            .about {
+                font-size: .9em;
+                color: var(--color-text-ghost);
+                line-height: 1.3;
+            }
+
+            &:hover {
+                background-color: var(--color-surface-elevated);
+                border-color: var(--color-contrast);
+            }
+        }
+    }
+}
