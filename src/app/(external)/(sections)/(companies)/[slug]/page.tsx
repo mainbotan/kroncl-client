@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
     if (!company) {
         return {
-            title: 'Компания не найдена | Kroncl',
-            description: 'Публичная компания с указанным идентификатором не найдена или была удалена.',
+            title: 'Kroncl | Страница не найдена',
+            description: 'Страница не найдена.',
         };
     }
 
