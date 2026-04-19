@@ -67,7 +67,7 @@ export interface CreateTransactionRequest {
     base_amount: number;
     currency: CurrencyType;
     direction: TransactionDirection;
-    employee_id: string;
+    employee_id?: string;
     comment?: string;
     category_id?: string;
     status?: string;

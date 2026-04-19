@@ -23,14 +23,12 @@ import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 
 type Direction = 'income' | 'expense';
 type AmountStatus = 'idle' | 'valid' | 'invalid';
-type EmployeeStatus = 'idle' | 'valid' | 'invalid';
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
     const searchParams = useSearchParams();
 
-    // perms
     const ALLOW_PAGE = usePermission(PERMISSIONS.FM_TRANSACTIONS_CREATE);
     
     const fmModule = useFm();
@@ -49,10 +47,8 @@ export default function Page() {
 
     const [amountStatus, setAmountStatus] = useState<AmountStatus>('idle');
     const [amountMessage, setAmountMessage] = useState('');
-    const [employeeStatus, setEmployeeStatus] = useState<EmployeeStatus>('idle');
     const [isModalChooseEmployeeOpen, setIsModalChooseEmployeeOpen] = useState(false);
 
-    // Инициализация из URL параметра
     useEffect(() => {
         const directionParam = searchParams.get('direction');
         if (directionParam === 'income' || directionParam === 'expense') {
@@ -69,13 +65,6 @@ export default function Page() {
             return { status: 'invalid', message: 'Введите корректную сумму больше 0' };
         }
         return { status: 'valid', message: 'Сумма корректна' };
-    };
-
-    const validateEmployee = (employee: Employee | null): { status: EmployeeStatus; message: string } => {
-        if (!employee) {
-            return { status: 'invalid', message: 'Выберите ответственного сотрудника' };
-        }
-        return { status: 'valid', message: 'Сотрудник выбран' };
     };
 
     const handleAmountChange = (value: string) => {
@@ -104,8 +93,11 @@ export default function Page() {
 
     const handleEmployeeSelect = (employee: Employee) => {
         setFormData(prev => ({ ...prev, employee }));
-        setEmployeeStatus(validateEmployee(employee).status);
         setIsModalChooseEmployeeOpen(false);
+    };
+
+    const handleClearEmployee = () => {
+        setFormData(prev => ({ ...prev, employee: null }));
     };
 
     const handleCommentChange = (value: string) => {
@@ -113,10 +105,7 @@ export default function Page() {
     };
 
     const handleSubmit = async () => {
-        const employeeValidation = validateEmployee(formData.employee);
-        setEmployeeStatus(employeeValidation.status);
-
-        if (amountStatus !== 'valid' || employeeValidation.status !== 'valid' || isLoading) {
+        if (amountStatus !== 'valid' || isLoading) {
             showMessage({
                 label: 'Проверьте правильность заполнения полей',
                 variant: 'error'
@@ -130,7 +119,7 @@ export default function Page() {
                 base_amount: parseFloat(formData.amount),
                 currency: formData.currency,
                 direction: formData.direction,
-                employee_id: formData.employee!.id,
+                employee_id: formData.employee?.id,
                 comment: formData.comment || undefined,
                 category_id: formData.categoryId || undefined
             });
@@ -177,40 +166,14 @@ export default function Page() {
         }
     };
 
-    const getEmployeeStatusInfo = () => {
-        switch (employeeStatus) {
-            case 'valid':
-                return {
-                    type: 'success' as const,
-                    icon: <SuccessStatus />,
-                    message: 'Сотрудник выбран'
-                };
-            case 'invalid':
-                return {
-                    type: 'error' as const,
-                    icon: <ErrorStatus />,
-                    message: 'Выберите ответственного сотрудника'
-                };
-            default:
-                return {
-                    type: 'info' as const,
-                    icon: null,
-                    message: ''
-                };
-        }
-    };
-
-    const isFormValid = amountStatus === 'valid' && employeeStatus === 'valid';
+    const isFormValid = amountStatus === 'valid';
     const amountStatusInfo = getAmountStatusInfo();
-    const employeeStatusInfo = getEmployeeStatusInfo();
 
-    if (ALLOW_PAGE.isLoading) return (
-        <PlatformLoading />
-    )
+    if (ALLOW_PAGE.isLoading) return <PlatformLoading />;
 
-    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) return (
-        <PlatformNotAllowed permission={PERMISSIONS.FM_TRANSACTIONS_CREATE} />
-    )
+    if (!ALLOW_PAGE.isLoading && !ALLOW_PAGE.allowed) {
+        return <PlatformNotAllowed permission={PERMISSIONS.FM_TRANSACTIONS_CREATE} />;
+    }
 
     return (
         <>
@@ -239,14 +202,8 @@ export default function Page() {
                 <PlatformFormSection title='Тип операции'>
                     <PlatformFormVariants
                         options={[
-                            {
-                                value: 'expense',
-                                label: 'Расход',
-                            },
-                            {
-                                value: 'income',
-                                label: 'Доход',
-                            }
+                            { value: 'expense', label: 'Расход' },
+                            { value: 'income', label: 'Доход' }
                         ]}
                         value={formData.direction}
                         onChange={handleDirectionChange}
@@ -266,7 +223,7 @@ export default function Page() {
                 </PlatformFormSection>
 
                 <PlatformFormSection 
-                    title='Ответственный сотрудник'
+                    title='Ответственный сотрудник (опционально)'
                     actions={[
                         {
                             children: formData.employee ? 'Изменить' : 'Выбрать',
@@ -281,19 +238,21 @@ export default function Page() {
                             <EmployeeCard 
                                 employee={formData.employee}
                                 variant='default'
+                                showDefaultActions={false}
+                                actions={[
+                                    {
+                                        children: 'Убрать',
+                                        variant: 'light',
+                                        onClick: handleClearEmployee,
+                                        disabled: isLoading
+                                    }
+                                ]}
                             />
                         </div>
                     ) : (
                         <div className={styles.emptyEmployee}>
                             Сотрудник не выбран
                         </div>
-                    )}
-                    {employeeStatus !== 'idle' && (
-                        <PlatformFormStatus
-                            type={employeeStatusInfo.type}
-                            message={employeeStatusInfo.message}
-                            icon={employeeStatusInfo.icon}
-                        />
                     )}
                 </PlatformFormSection>
                 
@@ -326,7 +285,6 @@ export default function Page() {
                 </section>
             </PlatformFormBody>
 
-            {/* выбор сотрудника */}
             <PlatformModal
                 isOpen={isModalChooseEmployeeOpen}
                 onClose={() => setIsModalChooseEmployeeOpen(false)}
