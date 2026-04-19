@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
 import { companiesApi } from '@/apps/account/companies/api';
 import { useManage } from '@/apps/company/modules';
+import { PlatformDangerZone } from '@/app/platform/components/lib/danger-zone/block';
 
 export default function Page() {
     const params = useParams();
@@ -140,43 +141,23 @@ export default function Page() {
                 </PlatformFormSection>
             </PlatformFormBody>
             
-            <div className={styles.dangerZone}>
-                <div className={styles.head}>
-                    <div className={styles.title}>Красная зона</div>
-                    <div className={styles.description}>Данные действия влияют на состояние организации.</div>
-                </div>
-                <div className={styles.sections}>
-                    <div className={styles.section}>
-                        <div className={styles.info}>
-                            <div className={styles.name}>Сменить статус видимости</div>
-                            <div className={styles.description}>Сделать публичной.</div>
-                        </div>
-                        <div className={styles.actions}>
-                            <Button 
-                                children='Сделать публичной'
-                                variant='red'
-                                className={styles.action}
-                                disabled
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.info}>
-                            <div className={styles.name}>Удаление организации</div>
-                            <div className={styles.description}>Безвозвратное удаление пространства организации.</div>
-                        </div>
-                        <div className={styles.actions}>
-                            <Button 
-                                children='Удалить'
-                                variant='red'
-                                className={styles.action}
-                                disabled
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.footer}>Будьте осторожны, действия могут быть необратимы.</div>
-            </div>
+            <PlatformDangerZone
+                className={styles.dangerZone}
+                title='Красная зона'
+                description='Данные действия влияют на состояние организации.'
+                items={[
+                    {
+                        title: 'Сменить статус видимости',
+                        description: 'Сделать публичной',
+                        actions: [
+                            {
+                                variant: 'red',
+                                children: 'Сделать публичной'
+                            }
+                        ]
+                    }
+                ]}
+            />
         </>
     )
 }

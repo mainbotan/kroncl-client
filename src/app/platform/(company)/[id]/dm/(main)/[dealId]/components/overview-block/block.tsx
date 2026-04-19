@@ -12,6 +12,11 @@ import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { formatDate } from '@/assets/utils/date';
+import { PlatformDangerZone } from '@/app/platform/components/lib/danger-zone/block';
+import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
+import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
+import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { useRouter, useParams } from 'next/navigation';
 
 export interface OverviewBlockProps {
     className?: string;
@@ -41,12 +46,21 @@ export function OverviewBlock({
     updated_at
 }: OverviewBlockProps) {
     const dmModule = useDm();
+    const router = useRouter();
+    const params = useParams();
+    const companyId = params.id as string;
+    const { showMessage } = useMessage();
+
     const ALLOW_UPDATE = usePermission(PERMISSIONS.DM_DEALS_UPDATE);
+    const ALLOW_DELETE = usePermission(PERMISSIONS.DM_DEALS_DELETE);
     const canEdit = isAllowed(ALLOW_UPDATE) && !disabled;
+    const canDelete = isAllowed(ALLOW_DELETE) && !disabled;
 
     const [statuses, setStatuses] = useState<DealStatus[]>([]);
     const [types, setTypes] = useState<DealType[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
@@ -86,6 +100,46 @@ export function OverviewBlock({
 
     const currentTypeValue = currentType?.id || '';
 
+    const handleDelete = async () => {
+        setIsDeleting(true);
+        try {
+            const response = await dmModule.deleteDeal(dealId);
+            if (response.status) {
+                showMessage({
+                    label: 'Сделка удалена',
+                    variant: 'success'
+                });
+                router.push(`/platform/${companyId}/dm`);
+            } else {
+                throw new Error(response.message || 'Ошибка удаления');
+            }
+        } catch (error: any) {
+            showMessage({
+                label: error.message || 'Не удалось удалить сделку',
+                variant: 'error'
+            });
+        } finally {
+            setIsDeleting(false);
+            setIsDeleteModalOpen(false);
+        }
+    };
+
+    const dangerZoneItems = [];
+
+    if (canDelete) {
+        dangerZoneItems.push({
+            title: 'Удалить сделку',
+            description: 'Безвозвратное удаление всей информации о сделке.',
+            actions: [
+                {
+                    variant: 'red' as const,
+                    children: 'Удалить навсегда',
+                    onClick: () => setIsDeleteModalOpen(true)
+                }
+            ]
+        });
+    }
+
     if (loading) {
         return (
             <DealBlock title='Обзор сделки' description='Основная информация о заказе.' className={className}>
@@ -95,39 +149,73 @@ export function OverviewBlock({
     }
 
     return (
-        <DealBlock
-            title='Обзор сделки'
-            description='Основная информация о заказе.'
-            className={className}
-        >
-            <div className={styles.container}>
-                <StatusBlock
-                    className={styles.block}
-                    statuses={statuses}
-                    currentStatusId={currentStatus?.id || null}
-                    onStatusChange={canEdit ? onStatusChange : undefined}
+        <>
+            <DealBlock
+                title='Обзор сделки'
+                description='Основная информация о заказе.'
+                className={className}
+            >
+                <div className={styles.container}>
+                    <StatusBlock
+                        className={styles.block}
+                        statuses={statuses}
+                        currentStatusId={currentStatus?.id || null}
+                        onStatusChange={canEdit ? onStatusChange : undefined}
+                    />
+                    <PlatformFormBody className={clsx(styles.block, styles.form)}>
+                        <PlatformFormSection title='Тип' description='Классификация заказов'>
+                            <PlatformFormVariants
+                                value={currentTypeValue}
+                                options={typeOptions}
+                                onChange={(value) => onTypeChange(value || null)}
+                                disabled={!canEdit}
+                            />
+                        </PlatformFormSection>
+                        <PlatformFormSection title='Комментарий' description='Дополнительная информация по заказу'>
+                            <PlatformFormTextarea
+                                value={currentComment || ''}
+                                onChange={onCommentChange}
+                                disabled={!canEdit}
+                                placeholder="Комментарий к сделке..."
+                            />
+                        </PlatformFormSection>
+                        {updated_at && (<PlatformFormSection title='Последнее обновление' description={formatDate(updated_at)} children={undefined}/>)}
+                        {created_at && (<PlatformFormSection title='Создание' description={formatDate(created_at)} children={undefined}/>)}
+                    </PlatformFormBody>
+
+                    {dangerZoneItems.length > 0 && (
+                        <PlatformDangerZone
+                            className={styles.dangerZone}
+                            description='Эти действия могут быть необратимыми.'
+                            items={dangerZoneItems}
+                        />
+                    )}
+                </div>
+            </DealBlock>
+
+            <PlatformModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+            >
+                <PlatformModalConfirmation
+                    title='Удалить сделку?'
+                    description='Сделка будет безвозвратно удалена. Все связи с объектами модулей (позиции, ответственные, клиент...) будут потеряны.'
+                    actions={[
+                        {
+                            children: 'Отмена',
+                            variant: 'light',
+                            onClick: () => setIsDeleteModalOpen(false),
+                            disabled: isDeleting
+                        },
+                        {
+                            variant: 'red',
+                            onClick: handleDelete,
+                            children: isDeleting ? 'Удаление...' : 'Удалить',
+                            disabled: isDeleting
+                        }
+                    ]}
                 />
-                <PlatformFormBody className={clsx(styles.block, styles.form)}>
-                    <PlatformFormSection title='Тип' description='Классификация заказов'>
-                        <PlatformFormVariants
-                            value={currentTypeValue}
-                            options={typeOptions}
-                            onChange={(value) => onTypeChange(value || null)}
-                            disabled={!canEdit}
-                        />
-                    </PlatformFormSection>
-                    <PlatformFormSection title='Комментарий' description='Дополнительная информация по заказу'>
-                        <PlatformFormTextarea
-                            value={currentComment || ''}
-                            onChange={onCommentChange}
-                            disabled={!canEdit}
-                            placeholder="Комментарий к сделке..."
-                        />
-                    </PlatformFormSection>
-                    {updated_at && (<PlatformFormSection title='Последнее обновление' description={formatDate(updated_at)} children={undefined}/>)}
-                    {created_at && (<PlatformFormSection title='Создание' description={formatDate(created_at)} children={undefined}/>)}
-                </PlatformFormBody>
-            </div>
-        </DealBlock>
+            </PlatformModal>
+        </>
     )
 }
