@@ -224,7 +224,7 @@ export function FinanceBlock({ className, dealId }: FinanceBlockProps) {
                         </div>
                     )}
 
-                    {transactions.length === 0 ? (
+                    {transactions === null ? (
                         <PlatformEmptyCanvas title='Для сделки не найдено операций.' />
                     ) : (
                         <>
