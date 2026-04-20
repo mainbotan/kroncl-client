@@ -22,6 +22,10 @@ import {
     GetDealsParams,
     DealGroup,
     DealTransactionsSummary,
+    AnalysisParams,
+    DealAnalysisSummary,
+    GroupedAnalysisParams,
+    GroupedStats,
 } from "./types";
 
 export const dmModule = (companyApi: CompanyApi) => ({
@@ -124,7 +128,6 @@ export const dmModule = (companyApi: CompanyApi) => ({
             if (params.group_by !== undefined) queryParams.group_by = params.group_by;
         }
         
-        // Если group_by=status, ответ будет DealsGroupedResponse, иначе DealsResponse
         if (params?.group_by === 'status') {
             return companyApi.get<DealGroup[]>("/modules/dm/deals", {
                 params: queryParams
@@ -171,5 +174,49 @@ export const dmModule = (companyApi: CompanyApi) => ({
 
     async getDealTransactionsSummary(dealId: string) {
         return companyApi.get<DealTransactionsSummary>(`/modules/dm/deals/${dealId}/transactions/summary`);
+    },
+
+    // ----------
+    // ANALYSIS
+    // ----------
+
+    async getAnalysisSummary(params?: AnalysisParams) {
+        const queryParams: Record<string, string> = {};
+        if (params?.start_date) queryParams.start_date = params.start_date;
+        if (params?.end_date) queryParams.end_date = params.end_date;
+        if (params?.type_id) queryParams.type_id = params.type_id;
+        if (params?.status_id) queryParams.status_id = params.status_id;
+        if (params?.client_id) queryParams.client_id = params.client_id;
+        if (params?.employee_id) queryParams.employee_id = params.employee_id;
+
+        return companyApi.get<DealAnalysisSummary>("/modules/dm/analysis/summary", {
+            params: queryParams as Record<string, string | number | boolean | undefined>,
+        });
+    },
+
+    async getAnalysisGrouped(params: GroupedAnalysisParams) {
+        const queryParams: Record<string, string> = {
+            group_by: params.group_by,
+        };
+        if (params.start_date) queryParams.start_date = params.start_date;
+        if (params.end_date) queryParams.end_date = params.end_date;
+        if (params.type_id) queryParams.type_id = params.type_id;
+        if (params.status_id) queryParams.status_id = params.status_id;
+        if (params.client_id) queryParams.client_id = params.client_id;
+        if (params.employee_id) queryParams.employee_id = params.employee_id;
+
+        return companyApi.get<GroupedStats[]>("/modules/dm/analysis/grouped", {
+            params: queryParams as Record<string, string | number | boolean | undefined>,
+        });
+    },
+
+    async getFinancialSummary(params?: AnalysisParams) {
+        const queryParams: Record<string, string> = {};
+        if (params?.start_date) queryParams.start_date = params.start_date;
+        if (params?.end_date) queryParams.end_date = params.end_date;
+
+        return companyApi.get<DealTransactionsSummary>("/modules/dm/analysis/financial-summary", {
+            params: queryParams as Record<string, string | number | boolean | undefined>,
+        });
     },
 });

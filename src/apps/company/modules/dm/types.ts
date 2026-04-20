@@ -185,3 +185,34 @@ export interface DealTransactionsSummary {
     expense_count: number;
     total_count: number;
 }
+
+// ----------
+// ANALYSIS
+// ----------
+
+export interface AnalysisParams {
+    start_date?: string;
+    end_date?: string;
+    type_id?: string;
+    status_id?: string;
+    client_id?: string;
+    employee_id?: string;
+}
+
+export interface GroupedAnalysisParams extends AnalysisParams {
+    group_by: 'type' | 'status' | 'employee' | 'client' | 'day' | 'month' | 'year';
+}
+
+export interface DealAnalysisSummary {
+    total_deals: number;
+    default_status_id: string | null;
+    default_status_name: string | null;
+    deals_in_default: number;
+    avg_deal_amount: number | null;
+}
+
+export interface GroupedStats {
+    group_key: string;
+    group_name: string;
+    count: number;
+}
