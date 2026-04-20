@@ -17,6 +17,7 @@ import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/bl
 import { StructureBlock } from './components/structure-block/block';
 import { Deal, DealPosition, DealStatus, DealType } from '@/apps/company/modules/dm/types';
 import { OverviewBlock } from './components/overview-block/block';
+import { FinanceBlock } from './components/finance-block/block';
 
 export default function Page() {
     const params = useParams();
@@ -370,6 +371,7 @@ export default function Page() {
     const showEmployees = section === 'employees';
     const showClient = section === 'client';
     const showStructure = section === 'structure';
+    const showFinance = section === 'finance';
     const showOverview = section === null;
 
     return (
@@ -397,6 +399,11 @@ export default function Page() {
                     {
                         label: 'Клиент',
                         href: `/platform/${companyId}/dm/${dealId}?section=client`,
+                        strongParams: true
+                    },
+                    {
+                        label: 'Финансы',
+                        href: `/platform/${companyId}/dm/${dealId}?section=finance`,
                         strongParams: true
                     }
                 ]}
@@ -461,6 +468,12 @@ export default function Page() {
                         positions={positions}
                         onChange={setPositions}
                         disabled={saving}
+                    />
+                )}
+                {showFinance && (
+                    <FinanceBlock
+                        className={styles.block}
+                        dealId={dealId}
                     />
                 )}
             </div>

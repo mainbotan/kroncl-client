@@ -20,6 +20,7 @@ import { PlatformInjectedPanel } from "./components/injected-panel/panel";
 import { PlatformDynamicContentWrapper } from "../../components/lib/wrapper/dynamic-wrapper";
 import styles from './../../layout.module.scss';
 import { Header } from "../../components/header/header";
+import { PlatformError } from "../../components/lib/error/block";
 
 export interface CompanyLayoutProps extends CompanyParams {
   children: React.ReactNode;
@@ -40,15 +41,15 @@ export default async function CompanyLayout({
 }: CompanyLayoutProps) {
   const companyId = params.id as string;
   
-  if (!companyId) {
-    notFound();
-  }
+  if (!companyId) return (
+    <PlatformError error={'Forbidden'} code={403} className={styles.forbidden} />
+  )
   
   const company = await getCompanyData(companyId);
   
-  if (!company) {
-    notFound();
-  }
+  if (!company) return (
+    <PlatformError error={'Forbidden'} code={403} className={styles.forbidden} />
+  )
 
   return (
     <>

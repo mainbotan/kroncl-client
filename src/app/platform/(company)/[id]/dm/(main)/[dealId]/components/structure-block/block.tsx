@@ -118,6 +118,28 @@ export function StructureBlock({ className, positions, onChange, disabled }: Str
                     onSelectStock={handleAddStockPosition}
                     disabled={disabled}
                 />
+
+                
+                <div className={styles.final}>
+                    <section className={styles.section}>
+                        <div className={styles.value}>{formatCurrency(stats.totalSum)} &#8381;</div>
+                        <div className={styles.name}>Итог</div>
+                    </section>
+                    <section className={styles.section}>
+                        <div className={styles.value}>{stats.servicesCount}</div>
+                        <div className={styles.name}>Услуг</div>
+                    </section>
+                    <section className={styles.section}>
+                        <div className={styles.value}>{stats.productsCount}</div>
+                        <div className={styles.name}>Товаров</div>
+                    </section>
+                    <section className={styles.section}>
+                        <div className={clsx(styles.value, stats.difference < 0 && styles.negative, stats.difference > 0 && styles.positive)}>
+                            {stats.difference > 0 ? '+' : ''}{formatCurrency(stats.difference)} &#8381;
+                        </div>
+                        <div className={styles.name}>Отличие от номинала</div>
+                    </section>
+                </div>
                 
                 {positions.length === 0 ? (
                     <PlatformEmptyCanvas 
@@ -178,27 +200,6 @@ export function StructureBlock({ className, positions, onChange, disabled }: Str
                         ))}
                     </div>
                 )}
-
-                <div className={styles.final}>
-                    <section className={styles.section}>
-                        <div className={styles.value}>{formatCurrency(stats.totalSum)} &#8381;</div>
-                        <div className={styles.name}>Итог</div>
-                    </section>
-                    <section className={styles.section}>
-                        <div className={styles.value}>{stats.servicesCount}</div>
-                        <div className={styles.name}>Услуг</div>
-                    </section>
-                    <section className={styles.section}>
-                        <div className={styles.value}>{stats.productsCount}</div>
-                        <div className={styles.name}>Товаров</div>
-                    </section>
-                    <section className={styles.section}>
-                        <div className={clsx(styles.value, stats.difference < 0 && styles.negative, stats.difference > 0 && styles.positive)}>
-                            {stats.difference > 0 ? '+' : ''}{formatCurrency(stats.difference)} &#8381;
-                        </div>
-                        <div className={styles.name}>Отличие от номинала</div>
-                    </section>
-                </div>
             </div>
         </DealBlock>
     )

@@ -576,10 +576,17 @@ export const PERMISSIONS_META: Record<PermissionCode, PermissionMeta> = {
         module: 'dm',
         category: 'deals',
     },
-    [PERMISSIONS.DM_DEALS_CALCULATE]: {
-        code: PERMISSIONS.DM_DEALS_CALCULATE,
-        title: 'Расчёт сделки',
-        description: 'Сведение итогов сделки',
+    [PERMISSIONS.DM_DEALS_TRANSACTIONS_CREATE]: {
+        code: PERMISSIONS.DM_DEALS_TRANSACTIONS_CREATE,
+        title: 'Создание финансовых операций сделки',
+        description: 'Финансовая история сделки',
+        module: 'dm',
+        category: 'deals',
+    },
+    [PERMISSIONS.DM_DEALS_TRANSACTIONS_SUMMARY]: {
+        code: PERMISSIONS.DM_DEALS_TRANSACTIONS_SUMMARY,
+        title: 'Финансовый итог сделки',
+        description: 'Получение сводки финансов по сделке',
         module: 'dm',
         category: 'deals',
     },
