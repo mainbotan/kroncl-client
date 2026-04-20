@@ -12,6 +12,8 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { toRFC3339 } from '@/assets/utils/date-formatter';
 import { EmployeesChart } from '../components/employees-chart/chart';
 import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
 
 export default function Page() {
     const fmModule = useFm();
@@ -66,29 +68,11 @@ export default function Page() {
     };
 
     if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
 
     // Проверяем, есть ли данные для отображения
@@ -104,64 +88,7 @@ export default function Page() {
     }
 
     return (
-        <div className={styles.grid}>    
-            {/* <section className={clsx(styles.section, styles.counters)}>
-                <IndicatorWidget
-                    value={summary ? {
-                        amount: summary.net_balance,
-                        unit: '₽',
-                        icon: <Wallet />
-                    } : undefined}
-                    legend='Баланс к концу периода'
-                    about='Сведённый баланс за выбранный период'
-                    variant='accent'
-                    className={styles.indicator}
-                    loading={loading}
-                />
-                <IndicatorWidget
-                    value={summary ? {
-                        amount: summary.total_income,
-                        unit: '₽'
-                    } : undefined}
-                    legend='Доходы'
-                    about='Общая сумма доходов за период'
-                    size='sm'
-                    className={styles.indicator}
-                    loading={loading}
-                />
-                <IndicatorWidget
-                    value={summary ? {
-                        amount: summary.total_expense,
-                        unit: '₽',
-                    } : undefined}
-                    legend='Расходы'
-                    about='Общая сумма расходов за период'
-                    size='sm'
-                    className={styles.indicator}
-                    loading={loading}
-                />
-                <IndicatorWidget
-                    value={summary ? {
-                        amount: summary.transaction_count,
-                    } : undefined}
-                    legend='Операций'
-                    about='Количество операций за период'
-                    size='sm'
-                    className={styles.indicator}
-                    loading={loading}
-                />
-                <IndicatorWidget
-                    value={summary ? {
-                        amount: Math.round(summary.avg_transaction),
-                        unit: '₽'
-                    } : undefined}
-                    legend='Средний чек за период'
-                    about='Средняя сумма операции'
-                    size='sm'
-                    className={styles.indicator}
-                    loading={loading}
-                />
-            </section> */}
+        <div className={styles.grid}>
             <section className={clsx(styles.section, styles.graph)}>
                 <EmployeesChart data={employeesData} loading={loading} />
             </section>

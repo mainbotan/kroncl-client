@@ -14,16 +14,16 @@
         display: inline-flex;
         flex-flow: column nowrap;
         min-height: 3em;
-        gap: .2em;
         
         .name {
             font-weight: 600;
             letter-spacing: .02em;
             color: var(--color-text-primary);
             @include lines-ellipsis(2);
-            line-height: 1.3;
+            line-height: 1.15;
         }
         .comment {
+            margin-top: .7em;
             font-size: .7em;
             color: var(--color-text-secondary);
             @include lines-ellipsis(2);

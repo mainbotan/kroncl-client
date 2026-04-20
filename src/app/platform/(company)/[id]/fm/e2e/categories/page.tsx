@@ -14,6 +14,8 @@ import { CategoriesChart } from '../components/categories-chart/chart';
 import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
 import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
+import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { PlatformError } from '@/app/platform/components/lib/error/block';
 
 export default function Page() {
     const fmModule = useFm();
@@ -68,29 +70,11 @@ export default function Page() {
     };
 
     if (loading) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            <Spinner />
-        </div>
+        <PlatformLoading />
     );
     
     if (error) return (
-        <div style={{
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            fontSize: ".7em", 
-            color: "var(--color-text-description)", 
-            minHeight: "10rem"
-        }}>
-            {error}
-        </div>
+        <PlatformError error={error} />
     );
 
     // Проверяем, есть ли данные для отображения
