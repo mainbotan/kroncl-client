@@ -1,5 +1,31 @@
 @use '@/assets/styles/_mixins.scss' as *;
 
+.page {
+    position: relative;
+
+    .createTransactionAction {
+        position: absolute;
+        z-index: 10;
+        top: 1em;
+        right: 1em;
+        font-size: .84em;
+        transition: transform var(--transition);
+
+        &:hover {
+            transform: scale(1.02);
+        }
+
+        @media (max-width: 720px) {
+            position: relative;
+            display: flex;
+            right: 0;
+            top: 0;
+            min-height: auto;
+            margin-bottom: 1em;
+        }
+    }
+}
+
 .grid {
     display: flex;
     padding: 1em 0;
@@ -48,4 +74,67 @@
     display: flex;
     flex-flow: column nowrap;
     font-size: .8em;
+}
+
+.createTransactionModal {
+    // @include no-scrollbar();
+}
+.createTransactionContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 1.2em;
+    padding: 1.2em;
+    max-width: 22rem;
+    min-width: 22rem;
+
+    .head {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .3em;
+
+        .title {
+            font-size: 1.45em;
+            font-weight: 600;
+            letter-spacing: .02em;
+            line-height: 1.3;
+        }
+        .description {
+            color: var(--color-text-ghost);
+            line-height: 1.3;
+        }
+    }
+
+    .formWrap {
+        display: flex;
+        flex-flow: column nowrap;
+        margin-left: -1.2em;
+        margin-right: -1.2em;
+        border-top: 1px solid var(--color-stroke-secondary);
+        border-bottom: 1px solid var(--color-stroke-secondary);
+        min-height: 5em;
+        padding: 1.2em;
+        gap: 1em;
+        background-color: var(--color-surface-glass);
+
+        .form {
+            font-size: 1em;
+        }
+    }
+
+    .actions {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+
+        .action {
+            display: flex;
+            flex: 1;
+            max-width: 50%;
+            border-radius: 2em;
+        }
+    }
+
+    @media (max-width: 720px) {
+        min-width: 10rem;
+    }
 }

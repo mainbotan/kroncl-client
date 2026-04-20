@@ -20,6 +20,11 @@ import Spinner from '@/assets/ui-kit/spinner/spinner';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
+import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormTextarea, PlatformFormVariants } from '@/app/platform/components/lib/form';
+import Button from '@/assets/ui-kit/button/button';
+import clsx from 'clsx';
+
+type TransactionDirection = 'income' | 'expense';
 
 export interface FinanceBlockProps {
     className?: string;
@@ -37,12 +42,21 @@ export function FinanceBlock({ className, dealId }: FinanceBlockProps) {
     const ALLOW_PAGE = usePermission(PERMISSIONS.DM_DEALS_TRANSACTIONS);
     const ALLOW_SUMMARY = usePermission(PERMISSIONS.DM_DEALS_TRANSACTIONS_SUMMARY);
     const ALLOW_REVERSE = usePermission(PERMISSIONS.FM_TRANSACTIONS_REVERSE);
+    const ALLOW_CREATE = usePermission(PERMISSIONS.DM_DEALS_TRANSACTIONS_CREATE);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [transactions, setTransactions] = useState<TransactionDetail[]>([]);
     const [summary, setSummary] = useState<DealTransactionsSummary | null>(null);
     const [pagination, setPagination] = useState<any>(null);
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
+    const [formData, setFormData] = useState({
+        amount: '',
+        direction: 'expense' as TransactionDirection,
+        comment: ''
+    });
 
     const [reverseModal, setReverseModal] = useState<{
         isOpen: boolean;
@@ -112,6 +126,55 @@ export function FinanceBlock({ className, dealId }: FinanceBlockProps) {
         }
     };
 
+    const handleAmountChange = (value: string) => {
+        const cleaned = value.replace(/[^\d.]/g, '');
+        const parts = cleaned.split('.');
+        if (parts.length > 2) return;
+        if (parts[1] && parts[1].length > 2) return;
+        
+        const num = parseFloat(cleaned);
+        if (!isNaN(num) && num < 0) return;
+        
+        setFormData(prev => ({ ...prev, amount: cleaned }));
+    };
+
+    const handleCreateTransaction = async () => {
+        const amount = parseFloat(formData.amount);
+        if (isNaN(amount) || amount <= 0) {
+            showMessage({ label: 'Введите корректную сумму', variant: 'error' });
+            return;
+        }
+
+        setIsCreating(true);
+        try {
+            const response = await dmModule.createDealTransaction(dealId, {
+                base_amount: amount,
+                currency: 'RUB',
+                direction: formData.direction,
+                comment: formData.comment.trim() || undefined
+            });
+
+            if (response.status) {
+                showMessage({
+                    label: 'Операция создана',
+                    variant: 'success'
+                });
+                setIsCreateModalOpen(false);
+                setFormData({ amount: '', direction: 'expense', comment: '' });
+                loadData();
+            } else {
+                throw new Error(response.message || 'Ошибка создания операции');
+            }
+        } catch (error: any) {
+            showMessage({
+                label: error.message || 'Не удалось создать операцию',
+                variant: 'error'
+            });
+        } finally {
+            setIsCreating(false);
+        }
+    };
+
     const formatCurrency = (value: number): string => {
         return value.toLocaleString('ru-RU');
     };
@@ -130,8 +193,16 @@ export function FinanceBlock({ className, dealId }: FinanceBlockProps) {
 
     return (
         <>
-            <DealBlock className={className} title='Финансы сделки' description='История трат/доходов в процессе заключения сделки.'>
+            <DealBlock className={clsx(styles.page, className)} title='Финансы сделки' description='История трат/доходов в процессе заключения сделки.'>
                 <div className={styles.grid}>
+                    {isAllowed(ALLOW_CREATE) && (
+                        <Button 
+                            children='Новая операция'
+                            variant='accent'
+                            className={styles.createTransactionAction}
+                            onClick={() => setIsCreateModalOpen(true)}
+                        />
+                    )}
                     {isAllowed(ALLOW_SUMMARY) && summary && (
                         <div className={styles.final}>
                             <section className={styles.section}>
@@ -153,7 +224,7 @@ export function FinanceBlock({ className, dealId }: FinanceBlockProps) {
                         </div>
                     )}
 
-                    {transactions === null ? (
+                    {transactions.length === 0 ? (
                         <PlatformEmptyCanvas title='Для сделки не найдено операций.' />
                     ) : (
                         <>
@@ -183,6 +254,74 @@ export function FinanceBlock({ className, dealId }: FinanceBlockProps) {
                     )}
                 </div>
             </DealBlock>
+
+            <PlatformModal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                className={styles.createTransactionModal}
+            >
+                <div className={styles.createTransactionContainer}>
+                    <div className={styles.head}>
+                        <div className={styles.title}>Новая операция</div>
+                        <div className={styles.description}>Создание траты/дохода для сделки</div>
+                    </div>
+                    <div className={styles.formWrap}>
+                        <PlatformFormBody className={styles.form}>
+                            <PlatformFormSection title='Сумма операции'>
+                                <PlatformFormInput
+                                    value={formData.amount}
+                                    onChange={handleAmountChange}
+                                    placeholder='0.00'
+                                    disabled={isCreating}
+                                />
+                            </PlatformFormSection>
+                            <PlatformFormSection title='Тип'>
+                                <PlatformFormVariants
+                                    value={formData.direction}
+                                    onChange={(v) => setFormData(prev => ({ ...prev, direction: v as TransactionDirection }))}
+                                    disabled={isCreating}
+                                    options={[
+                                        {
+                                            label: 'Доход',
+                                            value: 'income',
+                                            description: 'Приход в процессе реализации сделки.'
+                                        },
+                                        {
+                                            label: 'Расход',
+                                            value: 'expense',
+                                            description: 'Дополнительные траты в процессе реализации сделки.'
+                                        }
+                                    ]}
+                                />
+                            </PlatformFormSection>
+                            <PlatformFormSection title='Комментарий'>
+                                <PlatformFormTextarea
+                                    value={formData.comment}
+                                    onChange={(v) => setFormData(prev => ({ ...prev, comment: v }))}
+                                    disabled={isCreating}
+                                    placeholder='Дополнительная информация...'
+                                />
+                            </PlatformFormSection>
+                        </PlatformFormBody>
+                    </div>
+                    <div className={styles.actions}>
+                        <Button 
+                            children='Отменить'
+                            variant='light'
+                            className={styles.action}
+                            onClick={() => setIsCreateModalOpen(false)}
+                            disabled={isCreating}
+                        />
+                        <Button 
+                            children={isCreating ? 'Создание...' : 'Создать'}
+                            variant='accent'
+                            className={styles.action}
+                            onClick={handleCreateTransaction}
+                            disabled={isCreating || !formData.amount}
+                        />
+                    </div>
+                </div>
+            </PlatformModal>
 
             <PlatformModal
                 isOpen={reverseModal.isOpen}

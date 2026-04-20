@@ -79,4 +79,8 @@
   &.resizeVertical {
     resize: vertical;
   }
+  
+  &:focus {
+    border: 2px solid var(--color-accent);
+  }
 }
