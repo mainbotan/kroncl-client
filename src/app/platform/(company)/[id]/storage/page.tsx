@@ -16,6 +16,7 @@ import { StorageSources } from "@/apps/company/modules/storage/types";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Button from "@/assets/ui-kit/button/button";
 
 export default function StoragePage() {
     const params = useParams();
@@ -78,14 +79,15 @@ export default function StoragePage() {
     }
     
     const limitDbMb = companyContext.companyPlan?.current_plan.limit_db_mb || 0;
-    const usedMb = data?.total_size_mb || 0;
+    const usedDbMb = data?.total_size_mb || 0;
+    const isExceedLimitDb = limitDbMb < usedDbMb;
     
-    const limitSize = getSizeUnit(limitDbMb);
-    const usedSize = limitDbMb >= 1024 * 1024 ? usedMb / (1024 * 1024) 
-        : limitDbMb >= 1024 ? usedMb / 1024 
-        : usedMb;
+    const limitDbSize = getSizeUnit(limitDbMb);
+    const usedDbSize = limitDbMb >= 1024 * 1024 ? usedDbMb / (1024 * 1024) 
+        : limitDbMb >= 1024 ? usedDbMb / 1024 
+        : usedDbMb;
     
-    const usagePercent = limitDbMb > 0 ? (usedMb / limitDbMb) * 100 : 0;
+    const usagePercent = limitDbMb > 0 ? (usedDbMb / limitDbMb) * 100 : 0;
     
     return (
         <>
@@ -98,15 +100,38 @@ export default function StoragePage() {
                 }}
             />
             <div className={styles.grid}>
+                <div className={styles.head}>
+                    <div className={styles.title}>Данные</div>
+                    <div className={styles.description}>Хранилище данных (база данных организации) используется для хранения текстовых данных модулей.</div>
+                </div>
                 {limitDbMb > 0 && (
                     <Remained 
                         className={styles.remained} 
                         value={usagePercent} 
                         limit={100}
                     >
-                        {formatSize(usedSize, limitSize.unit)} {limitSize.label} из {formatSize(limitSize.value, limitSize.unit)} {limitSize.label}{' '}
+                        {formatSize(usedDbSize, limitDbSize.unit)} {limitDbSize.label} из {formatSize(limitDbSize.value, limitDbSize.unit)} {limitDbSize.label}{' '}
                         <Link href={`/platform/${companyId}/pricing`} className={styles.hint}>лимит текущего тарифа</Link>
                     </Remained>
+                )}
+
+                {isExceedLimitDb && (
+                    <div className={styles.exceed}>
+                        <div className={styles.info}>
+                            <div className={styles.title}>Превышение лимита</div>
+                            <div className={styles.description}>Превышение лимита хранилища данных организации. Для предотвращения блокировки организации рекомендуем выполнить одно из предложенных действий.</div>
+                            <Link href={`/platform/${companyId}/activity`} className={styles.item}>Оптимизируйте логи действий</Link>
+                            <Link href={`/platform/${companyId}/pricing`} className={styles.item}>Улучшите тарифный план</Link>
+                        </div>
+                        <div className={styles.actions}>
+                            <Button
+                                href={`/platform/${companyId}/pricing`}
+                                as='link'
+                                variant="accent" 
+                                children='Сменить тариф'
+                                className={styles.action} />
+                        </div>
+                    </div>
                 )}
                 
                 <div className={styles.counters}>
