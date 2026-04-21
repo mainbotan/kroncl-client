@@ -5,6 +5,7 @@ import styles from './card.module.scss';
 import type { PricingPlan } from '@/apps/pricing/types';
 import { pricingPlansStructures } from './plans.config';
 import Link from 'next/link';
+import { formatSize } from '@/assets/utils/size';
 
 export interface PricingPlanProps {
     className?: string;
@@ -19,7 +20,6 @@ export function PricingPlan({
     onClick,
     label
 }: PricingPlanProps) {
-    // Находим структуру модулей по lvl плана
     const structure = pricingPlansStructures.find(s => s.lvl === plan.lvl);
     const modules = structure?.modules || [];
 
@@ -41,11 +41,11 @@ export function PricingPlan({
                 <div className={styles.features}>
                     <div className={styles.item}>
                         <span className={styles.name}>Хранилище данных</span>
-                        <span className={styles.value}>{plan.limit_db_mb / 1024} ГБ</span>
+                        <span className={styles.value}>{formatSize(plan.limit_db_mb)}</span>
                     </div>
                     <div className={styles.item}>
                         <span className={styles.name}>Хранилище файлов/медиа</span>
-                        <span className={styles.value}>{plan.limit_objects_mb / 1024} ГБ</span>
+                        <span className={styles.value}>{formatSize(plan.limit_objects_mb)}</span>
                     </div>
                     <div className={styles.item}>
                         <span className={styles.name}>Макс. файлов</span>

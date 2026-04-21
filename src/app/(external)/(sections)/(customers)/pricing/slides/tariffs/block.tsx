@@ -9,6 +9,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { pricingApi } from '@/apps/pricing/api';
 import { PricingPlan } from '@/apps/pricing/types';
 import { getThesesByLvl } from './_meta';
+import { formatSize } from '@/assets/utils/size';
 
 export type BillingPeriod = 'monthly' | 'annual';
 
@@ -76,8 +77,8 @@ export function TariffsBlock({
                         const isMinLvl = plan.lvl === minLvl;
                         const theses = getThesesByLvl(plan.lvl, true);
                         theses.push(
-                            {about: `${plan.limit_db_mb / 1024}ГБ хранилища данных`},
-                            {about: `${plan.limit_objects_mb / 1024}ГБ хранилища файлов`},
+                            {about: `${formatSize(plan.limit_db_mb)} хранилища данных`},
+                            {about: `${formatSize(plan.limit_objects_mb)} хранилища файлов`},
                             {about: `До ${plan.limit_objects_count.toLocaleString('ru-RU')} файлов`}
                         );
                         return (
