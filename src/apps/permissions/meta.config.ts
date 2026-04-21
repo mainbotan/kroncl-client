@@ -49,6 +49,13 @@ export const PERMISSIONS_META: Record<PermissionCode, PermissionMeta> = {
         module: 'company',
         category: 'settings',
     },
+    [PERMISSIONS.COMPANY_DELETE]: {
+        code: PERMISSIONS.COMPANY_DELETE,
+        title: 'Удаление компании',
+        description: 'Безвозвратное удаление всех данных компании',
+        module: 'company',
+        category: 'settings',
+    },
 
     // Storage
     [PERMISSIONS.STORAGE_SOURCES]: {

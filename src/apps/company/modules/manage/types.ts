@@ -17,3 +17,8 @@ export interface Company {
     is_public: boolean;
     slug: string;
 }
+
+export interface CompanyDeleteResponse {
+    company_id: string;
+    dropped: boolean;
+}

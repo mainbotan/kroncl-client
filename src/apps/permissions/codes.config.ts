@@ -10,6 +10,7 @@ export const PERMISSIONS = {
 
     // Company
     COMPANY_UPDATE: 'company.update',
+    COMPANY_DELETE: 'company.delete',
 
     // Storage
     STORAGE_SOURCES: 'storage.sources',
