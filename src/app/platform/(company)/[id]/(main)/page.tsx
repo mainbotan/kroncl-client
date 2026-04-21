@@ -16,6 +16,8 @@ import clsx from "clsx";
 import { CRMDynamicsWidget } from "../crm/widgets/crm-dynamics-widget/widget";
 import { isAllowed, usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { DMSummaryWidget } from "../dm/widgets/dm-summary-widget/widget";
+import { DMDynamicsWidget } from "../dm/widgets/dm-dynamics-widget/widget";
 
 export default function Page() {
     const params = useParams();
@@ -24,6 +26,7 @@ export default function Page() {
     const ALLOW_FM_ANALYSIS = usePermission(PERMISSIONS.FM_ANALYSIS)
     const ALLOW_CRM_ANALYSIS = usePermission(PERMISSIONS.CRM_ANALYSIS)
     const ALLOW_HRM_ANALYSIS = usePermission(PERMISSIONS.HRM_ANALYSIS)
+    const ALLOW_DM_ANALYSIS = usePermission(PERMISSIONS.DM_ANALYSIS)
     const companyObject = useCompany();
 
     return (
@@ -46,6 +49,12 @@ export default function Page() {
                 <>
                 <FMSummaryWidget className={styles.item} />
                 <FMDynamicsWidget className={clsx(styles.item, styles.large)} />
+                </>
+            )}
+            {isAllowed(ALLOW_DM_ANALYSIS) && (
+                <>
+                <DMSummaryWidget className={styles.item} />
+                <DMDynamicsWidget className={clsx(styles.item, styles.large)} />
                 </>
             )}
             {isAllowed(ALLOW_CRM_ANALYSIS) && (
