@@ -15,6 +15,8 @@ import History from '@/assets/ui-kit/icons/history';
 import { PlatformModal } from '@/app/platform/components/lib/modal/modal';
 import { PlatformModalConfirmation } from '@/app/platform/components/lib/modal/confirmation/confirmation';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
+import Collection from '@/assets/ui-kit/icons/collection';
+import Mail from '@/assets/ui-kit/icons/mail';
 
 export interface AccountWidgetProps {
     className?: string;
@@ -120,7 +122,7 @@ export function AccountWidget({
                             onClick={handleSectionClick}
                         >
                             <span className={styles.icon}><Settings /></span>
-                            <span className={styles.capture}>Настройки</span>
+                            <span className={styles.capture}>Окружение</span>
                         </Link>
                         <Link 
                             href='/platform/security' 
@@ -129,6 +131,14 @@ export function AccountWidget({
                         >
                             <span className={styles.icon}><Keyhole /></span>
                             <span className={styles.capture}>Безопасность</span>
+                        </Link>
+                        <Link 
+                            href='/platform/invitations' 
+                            className={styles.section}
+                            onClick={handleSectionClick}
+                        >
+                            <span className={styles.icon}><Mail /></span>
+                            <span className={styles.capture}>Приглашения</span>
                         </Link>
                         <a 
                             href='#'
