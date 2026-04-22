@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { Log } from '@/apps/company/modules/logs/types';
 import History from '@/assets/ui-kit/icons/history';
+import { formatDate } from '@/assets/utils/date';
 
 interface LogCardProps {
     className?: string;
@@ -48,7 +49,7 @@ export function LogCard({ log, className }: LogCardProps) {
                         {log.account_id.slice(0, 8)}...
                     </Link>
                 </ModalTooltip>
-                <span className={styles.timestamp}>{log.created_at}</span>
+                <span className={styles.timestamp}>{formatDate(log.created_at)}</span>
             </div>
             
             {isOpen && (

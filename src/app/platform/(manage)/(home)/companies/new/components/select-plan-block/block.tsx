@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, memo, useRef } from 'react';
 import clsx from 'clsx';
 import styles from './block.module.scss';
 import { PricingPlan as PricingPlanComponent } from '../pricing-plan/card';
@@ -13,12 +13,14 @@ export interface SelectPlanBlockProps {
     className?: string;
     onSelect?: (planCode: string) => void;
     initialPlanCode?: string;
+    disabled?: boolean;
 }
 
-export function SelectPlanBlock({
+export const SelectPlanBlock = memo(function SelectPlanBlock({
     className,
     onSelect,
-    initialPlanCode
+    initialPlanCode,
+    disabled
 }: SelectPlanBlockProps) {
     const [plans, setPlans] = useState<PricingPlan[]>([]);
     const [selectedCode, setSelectedCode] = useState<string | null>(null);
@@ -26,7 +28,16 @@ export function SelectPlanBlock({
     
     const searchParams = useSearchParams();
     const urlPlanCode = searchParams.get('plan');
+    
+    // Используем ref для onSelect, чтобы не вызывать эффект при его изменении
+    const onSelectRef = useRef(onSelect);
+    useEffect(() => {
+        onSelectRef.current = onSelect;
+    }, [onSelect]);
 
+    // Отдельный эффект для выбора начального плана (один раз)
+    const [initialized, setInitialized] = useState(false);
+    
     useEffect(() => {
         const fetchPlans = async () => {
             try {
@@ -35,23 +46,23 @@ export function SelectPlanBlock({
                     const plansData = response.data.plans;
                     setPlans(plansData);
                     
-                    // Приоритет выбора плана:
-                    // 1. URL параметр code
-                    // 2. initialPlanCode из пропсов
-                    // 3. Первый план в списке
-                    let planToSelect = null;
-                    
-                    if (urlPlanCode && plansData.some((plan: PricingPlan) => plan.code === urlPlanCode)) {
-                        planToSelect = urlPlanCode;
-                    } else if (initialPlanCode && plansData.some((plan: PricingPlan) => plan.code === initialPlanCode)) {
-                        planToSelect = initialPlanCode;
-                    } else if (plansData.length > 0) {
-                        planToSelect = plansData[0].code;
-                    }
-                    
-                    if (planToSelect) {
-                        setSelectedCode(planToSelect);
-                        onSelect?.(planToSelect);
+                    // Выбираем план только один раз при загрузке
+                    if (!initialized && plansData.length > 0) {
+                        let planToSelect: string | null = null;
+                        
+                        if (urlPlanCode && plansData.some((plan: PricingPlan) => plan.code === urlPlanCode)) {
+                            planToSelect = urlPlanCode;
+                        } else if (initialPlanCode && plansData.some((plan: PricingPlan) => plan.code === initialPlanCode)) {
+                            planToSelect = initialPlanCode;
+                        } else {
+                            planToSelect = plansData[0].code;
+                        }
+                        
+                        if (planToSelect) {
+                            setSelectedCode(planToSelect);
+                            onSelectRef.current?.(planToSelect);
+                            setInitialized(true);
+                        }
                     }
                 }
             } catch (error) {
@@ -62,20 +73,26 @@ export function SelectPlanBlock({
         };
 
         fetchPlans();
-    }, [urlPlanCode, initialPlanCode, onSelect]);
+    }, [urlPlanCode, initialPlanCode, initialized]);
 
-    const handleSelect = (code: string) => {
-        setSelectedCode(code);
-        onSelect?.(code);
+    const handleSelect = useCallback((code: string) => {
+        if (disabled) return;
         
-        // Опционально: обновляем URL без перезагрузки страницы
+        setSelectedCode(code);
+        onSelectRef.current?.(code);
+        
+        // Обновляем URL без перезагрузки страницы
         const url = new URL(window.location.href);
         url.searchParams.set('plan', code);
         window.history.pushState({}, '', url.toString());
-    };
+    }, [disabled]);
 
     if (loading) {
         return <div className={clsx(styles.empty, className)}><Spinner variant='accent' /></div>;
+    }
+
+    if (plans.length === 0) {
+        return null;
     }
 
     return (
@@ -86,11 +103,12 @@ export function SelectPlanBlock({
                     plan={plan}
                     className={clsx(
                         styles.item,
-                        selectedCode === plan.code && styles.selected
+                        selectedCode === plan.code && styles.selected,
+                        disabled && styles.disabled
                     )}
                     onClick={() => handleSelect(plan.code)}
                 />
             ))}
         </div>
     );
-}
+});
