@@ -27,6 +27,7 @@ export default function Page() {
     const ALLOW_CRM_ANALYSIS = usePermission(PERMISSIONS.CRM_ANALYSIS)
     const ALLOW_HRM_ANALYSIS = usePermission(PERMISSIONS.HRM_ANALYSIS)
     const ALLOW_DM_ANALYSIS = usePermission(PERMISSIONS.DM_ANALYSIS)
+    const ALLOW_STORAGE_SOURCES = usePermission(PERMISSIONS.STORAGE_SOURCES)
     const companyObject = useCompany();
 
     return (
@@ -68,7 +69,9 @@ export default function Page() {
                 <HRMSummaryWidget className={styles.item} />
                 </>
             )}
-            <StorageWidget className={styles.item} />
+            {isAllowed(ALLOW_STORAGE_SOURCES) && (
+                <StorageWidget className={styles.item} />
+            )}
         </div>
         </>
     )

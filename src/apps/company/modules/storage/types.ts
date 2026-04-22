@@ -20,3 +20,37 @@ export interface StorageSources {
     updated_at: string | null;
     view_count: number;
 }
+
+// ----------------
+// MODULES ANALYSIS
+// ----------------
+
+export interface ModuleTable {
+    exists: boolean;
+    row_count: number;
+    table_name: string;
+    total_bytes: number;
+    total_size_mb: number;
+}
+
+export interface ModuleStats {
+    module: string;
+    row_count: number;
+    table_count: number;
+    tables: ModuleTable[];
+    total_bytes: number;
+    total_size_mb: number;
+}
+
+export interface TotalStats {
+    module: 'total';
+    row_count: number;
+    table_count: number;
+    total_bytes: number;
+    total_size_mb: number;
+}
+
+export interface StorageModulesData {
+    modules: Record<string, ModuleStats>;
+    total: TotalStats;
+}

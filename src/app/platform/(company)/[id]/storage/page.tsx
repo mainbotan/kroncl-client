@@ -4,7 +4,7 @@ import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import { useStorage } from "@/apps/company/modules";
 import { useEffect, useState } from 'react';
 import styles from './page.module.scss';
-import { usePermission } from "@/apps/permissions/hooks";
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
@@ -12,11 +12,12 @@ import { DOCS_LINK_COMPANIES_STORAGE } from "@/app/docs/(v1)/internal.config";
 import { useCompany } from "@/apps/company/provider";
 import { Remained } from "@/assets/ui-kit/remained/remained";
 import clsx from "clsx";
-import { StorageSources } from "@/apps/company/modules/storage/types";
+import { StorageSources, StorageModulesData } from "@/apps/company/modules/storage/types";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import Button from "@/assets/ui-kit/button/button";
+import { ModulesChart } from "./components/modules-chart/chart";
 
 export default function StoragePage() {
     const params = useParams();
@@ -26,7 +27,8 @@ export default function StoragePage() {
     const storage = useStorage();
     const companyContext = useCompany();
     
-    const [data, setData] = useState<StorageSources | null>(null);
+    const [sources, setSources] = useState<StorageSources | null>(null);
+    const [modules, setModules] = useState<StorageModulesData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     
@@ -38,15 +40,27 @@ export default function StoragePage() {
         setLoading(true);
         setError(null);
         try {
-            const response = await storage.getSources();
-            if (response.status) {
-                setData(response.data);
+            const [sourcesRes, modulesRes] = await Promise.all([
+                storage.getSources(),
+                storage.getSourcesByModules()
+            ]);
+            
+            if (sourcesRes.status) {
+                setSources(sourcesRes.data);
             } else {
-                setError(response.message || 'Ошибка загрузки');
+                setError(sourcesRes.message || 'Ошибка загрузки');
+                return;
+            }
+            
+            if (modulesRes.status) {
+                setModules(modulesRes.data);
+            } else {
+                setError(modulesRes.message || 'Ошибка загрузки аналитики');
+                return;
             }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Ошибка загрузки');
-            console.error('Error loading storage sources:', err);
+            console.error('Error loading storage data:', err);
         } finally {
             setLoading(false);
         }
@@ -74,12 +88,12 @@ export default function StoragePage() {
         return <PlatformError error={error} />;
     }
 
-    if (!ALLOW_PAGE.allowed) {
+    if (!isAllowed(ALLOW_PAGE)) {
         return <PlatformNotAllowed permission={PERMISSIONS.STORAGE_SOURCES} />;
     }
     
     const limitDbMb = companyContext.companyPlan?.current_plan.limit_db_mb || 0;
-    const usedDbMb = data?.total_size_mb || 0;
+    const usedDbMb = sources?.total_size_mb || 0;
     const isExceedLimitDb = limitDbMb < usedDbMb;
     
     const limitDbSize = getSizeUnit(limitDbMb);
@@ -88,6 +102,8 @@ export default function StoragePage() {
         : usedDbMb;
     
     const usagePercent = limitDbMb > 0 ? (usedDbMb / limitDbMb) * 100 : 0;
+    
+    const modulesList = modules?.modules ? Object.values(modules.modules) : [];
     
     return (
         <>
@@ -137,58 +153,69 @@ export default function StoragePage() {
                 <div className={styles.counters}>
                     <section className={clsx(styles.item, styles.lg)}>
                         <div className={styles.value}>
-                            {data?.total_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
+                            {sources?.total_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
                         </div>
                         <div className={styles.label}>Общий размер базы данных</div>
                     </section>
                     <section className={clsx(styles.item)}>
                         <div className={styles.value}>
-                            {data?.table_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
+                            {sources?.table_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
                         </div>
                         <div className={styles.label}>Данные таблиц</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.index_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
+                            {sources?.index_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
                         </div>
                         <div className={styles.label}>Индексы</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.toast_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
+                            {sources?.toast_size_mb.toFixed(2)} <span className={styles.secondary}>МБ</span>
                         </div>
                         <div className={styles.label}>TOAST</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.total_rows.toLocaleString('ru-RU')}
+                            {sources?.total_rows.toLocaleString('ru-RU')}
                         </div>
                         <div className={styles.label}>Всего строк</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.dead_rows.toLocaleString('ru-RU')}
+                            {sources?.dead_rows.toLocaleString('ru-RU')}
                         </div>
                         <div className={styles.label}>Мёртвых строк</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.table_count}
+                            {sources?.table_count}
                         </div>
                         <div className={styles.label}>Таблиц</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.index_count}
+                            {sources?.index_count}
                         </div>
                         <div className={styles.label}>Индексов</div>
                     </section>
                     <section className={styles.item}>
                         <div className={styles.value}>
-                            {data?.active_connections}
+                            {sources?.active_connections}
                         </div>
                         <div className={styles.label}>Активных соединений</div>
                     </section>
+                </div>
+
+                <div className={styles.head}>
+                    <div className={styles.title}>Использование хранилища данных по модулям</div>
+                    <div className={styles.description}>Распределение хранилища между модулями платформы.</div>
+                </div>
+
+                <div className={styles.chart}>
+                    <div className={styles.container}>
+                        <ModulesChart modules={modulesList} />
+                    </div>
                 </div>
             </div>
         </>

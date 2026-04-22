@@ -140,4 +140,17 @@
             }
         }
     }
+
+    .chart {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 1em;
+
+        .container {
+            border: 1px solid var(--color-stroke-secondary);
+            border-radius: .8em;
+            background-color: var(--color-surface-glass);
+            height: 400px;
+        }
+    }
 }
