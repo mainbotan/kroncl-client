@@ -9,10 +9,16 @@ import styles from './panel.module.scss';
 import Home from "@/assets/ui-kit/icons/home";
 import Settings from "@/assets/ui-kit/icons/settings";
 import Link from "next/link";
+import { isAllowed, usePermission } from "@/apps/permissions/hooks";
+import { PERMISSIONS } from "@/apps/permissions/codes.config";
+import { StorageWidget } from "../../storage/widgets/storage-widget/widget";
 
 export function PlatformInjectedPanel() {
     const params = useParams();
     const companyId = params.id as string;
+
+    const ALLOW_SOURCES = usePermission(PERMISSIONS.STORAGE_SOURCES);
+
     const company = useCompany().company;
     const companyPlan = useCompany().companyPlan;
     const companyCurrentPlan = companyPlan?.current_plan;
@@ -35,6 +41,10 @@ export function PlatformInjectedPanel() {
                     icon: 'settings'
                 }
             ]}
-            />
+            >
+            {isAllowed(ALLOW_SOURCES) && (
+                <StorageWidget className={styles.widget} variant="compact" />
+            )}
+        </ClientPanel>
     )
 }

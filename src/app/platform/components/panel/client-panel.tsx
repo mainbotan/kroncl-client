@@ -166,6 +166,10 @@ export default function ClientPanel({
         })}
       </div>)}
       <div className={styles.scroll}>
+        
+        <div className={styles.children}>
+          {children}
+        </div>
         {actions.length > 0 && (
           <div className={styles.actions}>
             {actions.map((action, index) => {
@@ -262,10 +266,6 @@ export default function ClientPanel({
             ))}
           </div>
         )}
-
-        <div className={styles.children}>
-          {children}
-        </div>
 
         <div className={styles.afterWord}>
           Операционная система управления предприятием. 

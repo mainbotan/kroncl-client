@@ -6,9 +6,8 @@ import { Remained } from '@/assets/ui-kit/remained/remained';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useStorage } from '@/apps/company/modules';
-import { useEffect, useState } from 'react';
-import { StorageSources } from '@/apps/company/modules/storage/types';
 import { formatSize } from '@/assets/utils/size';
+import { useCompany } from '@/apps/company/provider';
 
 export interface StorageWidgetProps {
     className?: string;
@@ -22,29 +21,12 @@ export function StorageWidget({
     const params = useParams();
     const companyId = params.id as string;
     const storage = useStorage();
+    const companyContext = useCompany();
     
-    const [sources, setSources] = useState<StorageSources | null>(null);
-    const [loading, setLoading] = useState(true);
+    const { data: sourcesData, isLoading: loading } = storage.useSources(companyId);
+    const sources = sourcesData?.status ? sourcesData.data : null;
     
-    useEffect(() => {
-        const loadData = async () => {
-            setLoading(true);
-            try {
-                const response = await storage.getSources();
-                if (response.status) {
-                    setSources(response.data);
-                }
-            } catch (err) {
-                console.error('Error loading storage sources:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        
-        loadData();
-    }, [storage]);
-    
-    const limitDbMb = 40960;
+    const limitDbMb = companyContext.companyPlan?.current_plan.limit_db_mb || 0;
     const usedDbMb = sources?.total_size_mb || 0;
     const isExceedLimitDb = limitDbMb < usedDbMb;
     const usagePercent = (usedDbMb / limitDbMb) * 100;
@@ -83,10 +65,10 @@ export function StorageWidget({
             )}
             {variant === 'compact' && (
                 <>
-                {isExceedLimitDb && (<div className={styles.exceed}>Превышение лимита</div>)}
-                <Remained value={usagePercent} limit={100}>
-                    {loading ? '-- из -- ГБ' : `Хранилище данных (${formatSize(usedDbMb)} / ${formatSize(limitDbMb)})`}
-                </Remained>
+                    {isExceedLimitDb && (<div className={styles.exceed}>Превышение лимита</div>)}
+                    <Remained value={usagePercent} limit={100} loading={loading}>
+                        {loading ? '-- из -- ГБ' : `Диск ${formatSize(usedDbMb)} из ${formatSize(limitDbMb)}`}
+                    </Remained>
                 </>
             )}
         </Link>
