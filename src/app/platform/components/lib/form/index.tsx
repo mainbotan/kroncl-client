@@ -72,7 +72,7 @@ export function PlatformFormInput({
     <Input
       type={type}
       value={value}
-      onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} // Исправляем здесь
+      onChange={(e) => onChange?.(e.target.value)} // Исправляем здесь
       placeholder={placeholder}
       maxLength={maxLength}
       disabled={disabled}

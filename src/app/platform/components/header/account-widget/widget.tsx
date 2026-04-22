@@ -101,7 +101,8 @@ export function AccountWidget({
                     className={styles.overlay}
                     onMouseDown={handleOverlayClick}
                 >
-                    <div className={styles.avatar} style={{background: userGradient}}>{userInitials}</div>
+                    {user.avatar_url ? (<div className={styles.avatar} style={{backgroundImage: `url(${user.avatar_url})`}} />) :
+                    (<div className={styles.avatar} style={{background: userGradient}}>{userInitials}</div>)}
                 </div>
                 {isOpen && (
                     <div className={styles.control}>
@@ -111,7 +112,7 @@ export function AccountWidget({
                             onClick={handleSectionClick}
                         >
                             <span className={styles.icon}><Account /></span>
-                            <span className={styles.capture}>Управление</span>
+                            <span className={styles.capture}>{user.description || 'Управление'}</span>
                         </Link>
                         <Link 
                             href='/platform/settings' 

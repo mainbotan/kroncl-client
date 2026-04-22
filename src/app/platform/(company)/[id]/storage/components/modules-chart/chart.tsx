@@ -15,7 +15,7 @@ import styles from './chart.module.scss';
 import { formatSize } from '@/assets/utils/size';
 import clsx from 'clsx';
 
-const getModuleName = (id: string): string => {
+export const getModuleName = (id: string): string => {
     const names: Record<string, string> = {
         hrm: 'Управление персоналом',
         fm: 'Финансы',

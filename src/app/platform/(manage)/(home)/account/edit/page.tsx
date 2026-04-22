@@ -1,40 +1,46 @@
 'use client';
 
-import { PlatformHead } from '@/app/platform/components/lib/head/head';
+import { useAuth } from '@/apps/account/auth/context/AuthContext';
 import styles from './page.module.scss';
-import { PlatformFormBody, PlatformFormSection, PlatformFormInput } from '@/app/platform/components/lib/form';
-import Button from '@/assets/ui-kit/button/button';
-import { useState, useEffect, useCallback } from 'react';
-import { accountAuth } from '@/apps/account/auth/api';
+import { ModalTooltip } from '@/app/components/tooltip/tooltip';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Account } from '@/apps/account/types';
-import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
-import { PlatformFormStatus } from '@/app/platform/components/lib/form';
-import SuccessStatus from '@/assets/ui-kit/icons/success-status';
-import ErrorStatus from '@/assets/ui-kit/icons/error-status';
+import { accountAuth } from '@/apps/account/auth/api';
+import Edit from '@/assets/ui-kit/icons/edit';
+import Exit from '@/assets/ui-kit/icons/exit';
 import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
+import { PlatformHead } from '@/app/platform/components/lib/head/head';
 import { DOCS_LINK_ACCOUNT } from '@/app/docs/(v1)/internal.config';
+import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormUnify, PlatformFormVariants } from '@/app/platform/components/lib/form';
+import { formatDate } from '@/assets/utils/date';
+import { generateSlug } from '@/assets/utils/slug';
 
-type FormData = {
-    name: string;
+export const getAuthMethodName = (id: string): string => {
+    const names: Record<string, string> = {
+        password: 'по паролю',
+        yandex: 'Яндекс ID',
+        google: 'Google',
+        github: 'Github',
+    };
+    return names[id] || id;
 };
 
-type FormStatus = {
-    type: 'idle' | 'success' | 'error' | 'loading';
-    message: string;
-};
-
-export default function ProfileEditPage() {
-    const router = useRouter();
+export default function Page() {
     const [profile, setProfile] = useState<Account | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [formData, setFormData] = useState<FormData>({ name: '' });
-    const [formStatus, setFormStatus] = useState<FormStatus>({
-        type: 'idle',
-        message: ''
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        type: ''
     });
-    const [redirectTimer, setRedirectTimer] = useState<NodeJS.Timeout | null>(null);
-
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const router = useRouter();
+    const { logoutLocal } = useAuth();
+    
     useEffect(() => {
         const loadProfile = async () => {
             try {
@@ -44,7 +50,9 @@ export default function ProfileEditPage() {
                 if (response.status && response.data) {
                     setProfile(response.data);
                     setFormData({
-                        name: response.data.name || ''
+                        name: response.data.name || '',
+                        description: response.data.description || '',
+                        type: response.data.type || ''
                     });
                 } else {
                     console.error('Не удалось загрузить профиль:', response.message);
@@ -59,164 +67,164 @@ export default function ProfileEditPage() {
         loadProfile();
     }, []);
 
-    // Очистка таймера при размонтировании
-    useEffect(() => {
-        return () => {
-            if (redirectTimer) {
-                clearTimeout(redirectTimer);
-            }
-        };
-    }, [redirectTimer]);
-
-    // Обработчик изменения имени
-    const handleNameChange = useCallback((value: string) => {
-        setFormData(prev => ({
-            ...prev,
-            name: value
-        }));
-        
-        // Сбрасываем статус при изменении
-        if (formStatus.type !== 'idle') {
-            setFormStatus({ type: 'idle', message: '' });
-        }
-    }, [formStatus.type]);
-
     const handleSave = async () => {
         if (!formData.name.trim()) {
-            setFormStatus({
-                type: 'error',
-                message: 'Имя не может быть пустым'
-            });
             return;
         }
 
-        if (formData.name === profile?.name) {
-            setFormStatus({
-                type: 'error',
-                message: 'Имя не изменилось'
-            });
+        if (formData.name === profile?.name && formData.description === profile?.description && formData.type === profile?.type) {
             return;
         }
 
         try {
             setSaving(true);
-            setFormStatus({ type: 'loading', message: 'Сохранение...' });
-
-            const response = await accountAuth.updateProfile({
-                name: formData.name
-            });
-
+            
+            const updateData: any = {};
+            if (formData.name !== profile?.name) {
+                updateData.name = formData.name;
+            }
+            if (formData.description !== profile?.description) {
+                updateData.description = formData.description;
+            }
+            if (formData.type !== profile?.type) {
+                updateData.type = formData.type;
+            }
+            
+            const response = await accountAuth.updateProfile(updateData);
+            
             if (response.status && response.data) {
                 setProfile(response.data);
-                setFormStatus({
-                    type: 'success',
-                    message: 'Профиль успешно обновлен.'
-                });
-                
-                // Устанавливаем таймер для редиректа
-                const timer = setTimeout(() => {
-                    router.push('/platform/account');
-                }, 3000);
-                
-                setRedirectTimer(timer);
-                
             } else {
-                setFormStatus({
-                    type: 'error',
-                    message: response.message || 'Ошибка при обновлении профиля'
-                });
+                console.error('Ошибка при сохранении:', response.message);
             }
         } catch (error) {
             console.error('Ошибка при сохранении профиля:', error);
-            setFormStatus({
-                type: 'error',
-                message: 'Неизвестная ошибка при сохранении'
-            });
         } finally {
             setSaving(false);
         }
     };
-
-    const getStatusInfo = () => {
-        switch (formStatus.type) {
-            case 'success':
-                return {
-                    type: 'success' as const,
-                    icon: <SuccessStatus />,
-                    message: formStatus.message
-                };
-            case 'error':
-                return {
-                    type: 'error' as const,
-                    icon: <ErrorStatus />,
-                    message: formStatus.message
-                };
-            case 'loading':
-                return {
-                    type: 'info' as const,
-                    icon: null,
-                    message: formStatus.message
-                };
-            case 'idle':
-            default:
-                return {
-                    type: 'info' as const,
-                    icon: null,
-                    message: ''
-                };
-        }
-    };
-
+    
     if (loading) {
-        return <PlatformLoading capture="Загружаем профиль..." />;
+        return <div className={styles.loading} />;
     }
-
-    const statusInfo = getStatusInfo();
-
+    
+    if (!profile) {
+        return null;
+    }
+    
+    const slug = generateSlug(formData.name || profile.name);
+    
     return (
         <>
             <PlatformHead
-                title="Редактирование аккаунта"
-                description="Изменение данных профиля."
+                title='Управление аккаунтом.'
+                description='Настройки вашей учётной записи.'
+                actions={[
+                    {
+                        variant: 'accent',
+                        children: saving ? 'Сохранение...' : 'Сохранить изменения',
+                        icon: <Edit />,
+                        onClick: handleSave,
+                        disabled: saving || (!formData.name.trim()) || (formData.name === profile.name && formData.description === profile.description && formData.type === profile.type)
+                    }
+                ]}
                 docsEscort={{
                     href: DOCS_LINK_ACCOUNT,
                     title: 'Подробнее о личной учётной записи.'
                 }}
             />
-            
             <PlatformFormBody>
-                <PlatformFormSection
-                    title="Имя"
-                    description="Это имя видно вашим коллегам по организациям."
-                >
-                    <PlatformFormInput
-                        value={formData.name}
-                        onChange={handleNameChange}
-                        placeholder="Введите ваше имя"
-                        maxLength={50}
-                        disabled={saving}
-                    />
-                    
-                    {/* Отображаем статус формы */}
-                    {formStatus.type !== 'idle' && (
-                        <PlatformFormStatus
-                            type={statusInfo.type}
-                            message={statusInfo.message}
-                            icon={statusInfo.icon}
+                <PlatformFormSection title='Имя аккаунта'>
+                    <PlatformFormUnify>
+                        <PlatformFormInput 
+                            value={formData.name}
+                            onChange={(val) => setFormData(prev => ({ ...prev, name: val }))}
+                            placeholder='Ваше имя'
                         />
-                    )}
+                        <PlatformFormInput 
+                            value={slug}
+                            variant='glass'
+                            placeholder='@'
+                            readOnly
+                        />
+                    </PlatformFormUnify>
+                </PlatformFormSection>
+                <PlatformFormSection 
+                    title='Почта' 
+                    description={(
+                        <>
+                        Почта аккаунта статична и определяется один раз при создании аккаунта. 
+                        <br />
+                        Именно на неё приходят <span className={styles.hint}>приглашения от организаций</span>.
+                        </>
+                    )}>
+                    <PlatformFormInput
+                        value={profile.email}
+                        readOnly
+                    />
                 </PlatformFormSection>
 
-                <section className={styles.actions}>
-                    <Button
-                        variant="accent"
-                        onClick={handleSave}
-                        disabled={saving || !formData.name.trim() || formData.name === profile?.name}
-                    >
-                        {saving ? 'Сохранение...' : 'Сохранить изменения'}
-                    </Button>
-                </section>
+                <PlatformFormSection 
+                    title='Описание' 
+                    description='Краткая информация о вас. Будет отображаться в карточке аккаунта.'>
+                    <PlatformFormInput
+                        value={formData.description}
+                        onChange={(val) => setFormData(prev => ({ ...prev, description: val }))}
+                        placeholder='Разработчик, предприниматель...'
+                        maxLength={100}
+                    />
+                </PlatformFormSection>
+
+                <PlatformFormSection 
+                    title='Кто вы?' 
+                    description='Эта информация может помочь специалистам поддержки при общении с вами.'>
+                    <PlatformFormVariants
+                        value={formData.type}
+                        onChange={(val) => setFormData(prev => ({ ...prev, type: val }))}
+                        options={[
+                            {
+                                value: 'owner',
+                                label: 'Владелец организации',
+                                description: 'Владеете одной/несколькими организациями.'
+                            },
+                            {
+                                value: 'employee',
+                                label: 'Сотрудник',
+                                description: 'Штатный сотрудник организации. Принимаете участие в ведениии учета.'
+                            },
+                            {
+                                value: 'admin',
+                                label: 'Администратор',
+                                description: 'Технический администратор организации. Настройка пространства, отслеживание лимитов диска, мониторинг активности.'
+                            },
+                            {
+                                value: 'outsourcing',
+                                label: 'Аутсорс-финансист',
+                                description: 'Используете платформу для организации учёта компаний-заказчиков.'
+                            },
+                            {
+                                value: 'tech',
+                                label: 'Разработчик',
+                                description: 'Используете платформу в целях баг-хантинга / изучения функционала.'
+                            }
+                        ]}
+                    />
+                </PlatformFormSection>
             </PlatformFormBody>
-        </>
+            <div className={styles.footer}>
+                <div className={styles.section}>
+                    <div className={styles.line} />
+                    <div className={styles.info}>Метод авторизации: <span className={styles.hint}>{getAuthMethodName(profile.auth_type)}</span></div>
+                </div>
+                <div className={styles.section}>
+                    <div className={styles.line} />
+                    <div className={styles.info}>Последнее обновление <span className={styles.hint}>{formatDate(profile.updated_at)}</span></div>
+                </div>
+                <div className={styles.section}>
+                    <div className={styles.line} />
+                    <div className={styles.info}>Аккаунт создан <span className={styles.hint}>{formatDate(profile.created_at)}</span></div>
+                </div>
+            </div>
+        </>  
     );
 }

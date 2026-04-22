@@ -21,7 +21,7 @@ export interface PlatformFormSectionProps {
 export interface PlatformFormInputProps {
   type?: 'text' | 'password' | 'email' | 'number' | 'color';
   value: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   placeholder?: string;
   maxLength?: number;
   disabled?: boolean;
