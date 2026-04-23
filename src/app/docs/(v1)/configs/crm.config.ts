@@ -1,16 +1,17 @@
 import { DocsNavSectionProps } from "../../components/panel/components/nav-section/section";
+import { DOCS_LINK_CRM_ANALYSIS, DOCS_LINK_CRM_CLIENTS, DOCS_LINK_CRM_SOURCES } from "../internal.config";
 
 export const crmSections: DocsNavSectionProps[] = [
     {
-        label: 'Клиенты',
-        href: '/'
+        label: 'Источники',
+        href: DOCS_LINK_CRM_SOURCES
     },
     {
-        label: 'Источники',
-        href: '/'
+        label: 'Клиенты',
+        href: DOCS_LINK_CRM_CLIENTS
     },
     {
         label: 'Анализ',
-        href: '/'
+        href: DOCS_LINK_CRM_ANALYSIS
     }
 ]

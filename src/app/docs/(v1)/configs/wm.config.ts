@@ -1,46 +1,47 @@
 import { DocsNavSectionProps } from "../../components/panel/components/nav-section/section";
+import { DOCS_LINK_WM_CATALOG, DOCS_LINK_WM_MOVEMENT } from "../internal.config";
 
 export const wmSections: DocsNavSectionProps[] = [
     {
         label: 'Каталог',
-        href: '/',
+        href: DOCS_LINK_WM_CATALOG,
         childrens: [
             {
                 label: 'Категории',
-                href: '/'
+                href: DOCS_LINK_WM_CATALOG + '/categories'
             },
             {
                 label: 'Товарные позиции',
-                href: '/'
+                href: DOCS_LINK_WM_CATALOG + '/positions'
             }
         ]
     },
     {
         label: 'Движение товаров',
-        href: '/',
+        href: DOCS_LINK_WM_MOVEMENT,
         childrens: [
             {
-                label: 'Поставки & Отгрузки',
-                href: '/'
+                label: 'Типы складского учёта',
+                href: DOCS_LINK_WM_MOVEMENT + '/types'
             },
             {
-                label: 'Типы складского учёта',
-                href: '/'
+                label: 'Поставки & Отгрузки',
+                href: DOCS_LINK_WM_MOVEMENT + '/batches'
             }
         ]
     },
-    {
-        label: 'Анализ',
-        href: '/',
-        childrens: [
-            {
-                label: 'Анализ остатков',
-                href: '/'
-            },
-            {
-                label: 'Анализ каталога',
-                href: '/'
-            }
-        ]
-    }
+    // {
+    //     label: 'Анализ',
+    //     href: '/',
+    //     childrens: [
+    //         {
+    //             label: 'Анализ остатков',
+    //             href: '/'
+    //         },
+    //         {
+    //             label: 'Анализ каталога',
+    //             href: '/'
+    //         }
+    //     ]
+    // }
 ]

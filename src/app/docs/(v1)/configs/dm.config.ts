@@ -1,30 +1,35 @@
 import { DocsNavSectionProps } from "../../components/panel/components/nav-section/section";
+import { DOCS_LINK_DM_ANALYSIS, DOCS_LINK_DM_DEALS, DOCS_LINK_DM_STATUSES, DOCS_LINK_DM_TYPES } from "../internal.config";
 
 export const dmSections: DocsNavSectionProps[] = [
     {
-        label: 'Канбан',
-        href: '/'
-    },
-    {
-        label: 'Сделка',
-        href: '/',
+        label: 'Сделки',
+        href: DOCS_LINK_DM_DEALS,
         childrens: [
             {
                 label: 'Создание',
-                href: '/'
+                href: DOCS_LINK_DM_DEALS + '/kanban'
             },
             {
-                label: 'Расчёт',
-                href: '/'
+                label: 'Управление',
+                href: DOCS_LINK_DM_DEALS + '/manage'
+            },
+            {
+                label: 'Финансы',
+                href: DOCS_LINK_DM_DEALS + '/finance'
             }
         ]
     },
     {
         label: 'Статусы сделок',
-        href: '/'
+        href: DOCS_LINK_DM_STATUSES
     },
     {
         label: 'Типы сделок',
-        href: '/'
+        href: DOCS_LINK_DM_TYPES
+    },
+    {
+        label: 'Анализ',
+        href: DOCS_LINK_DM_ANALYSIS
     }
 ]
