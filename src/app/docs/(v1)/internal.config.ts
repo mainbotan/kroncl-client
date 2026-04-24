@@ -39,7 +39,7 @@ export const DOCS_LINK_CRM_ANALYSIS = DOCS_LINK_CRM + '/analysis';
 // WM
 export const DOCS_LINK_WM_CATALOG = DOCS_LINK_WM + '/catalog';
 export const DOCS_LINK_WM_CATALOG_UNITS = DOCS_LINK_WM_CATALOG + '/units';
-export const DOCS_LINK_WM_MOVEMENT = DOCS_LINK_WM + '/movement';
+export const DOCS_LINK_WM_MOVEMENT = DOCS_LINK_WM + '/movement-products';
 export const DOCS_LINK_WM_ANALYSIS = DOCS_LINK_WM + '/analysis';
 
 // DM

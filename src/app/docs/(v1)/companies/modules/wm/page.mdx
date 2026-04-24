@@ -2,4 +2,19 @@ import Link from 'next/link';
 import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
 
-# 1. 
+# 1. Каталог и Склад
+
+<span className={styles.underline}>«Каталог и Склад»</span> — модуль Kroncl, объединяющий функционал сразу двух подсистем:
+
+- <Link href='/docs/companies/modules/wm/catalog' className={styles.link}>«Каталог»</Link> — в аналогичных системах является отдельным модулем ведения номенклатуры;
+- <Link href='/docs/companies/modules/wm/movement-products' className={styles.link}>«Движение товаров»</Link> — в аналогичных системах часто представляется модулем складского учёта.
+
+<br />
+
+Kroncl не является специализированной системой продвинутого складского учёта для крупного бизнеса и не построен на ордерной системе. Однако этот факт является основной причиной, по которой работать с каталогом и складом в рамках Kroncl удобно именно малому бизнесу.
+
+# 2. Краткий обзор модуля
+
+<MDXImageBlock src='/images/docs/company-wm-catalog-create-unit.png' label='Создание товарной позиции.' />
+<MDXImageBlock src='/images/docs/company-wm-catalog-categories.png' label='Просмотр категорий.' />
+<MDXImageBlock src='/images/docs/company-wm-batches-create.png' label='Регистрация поставки.' />
