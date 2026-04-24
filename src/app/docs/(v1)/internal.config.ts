@@ -41,7 +41,6 @@ export const DOCS_LINK_WM_CATALOG = DOCS_LINK_WM + '/catalog';
 export const DOCS_LINK_WM_CATALOG_UNITS = DOCS_LINK_WM_CATALOG + '/products';
 export const DOCS_LINK_WM_CATALOG_CATEGORIES = DOCS_LINK_WM_CATALOG + '/categories';
 export const DOCS_LINK_WM_MOVEMENT = DOCS_LINK_WM + '/movement-products';
-export const DOCS_LINK_WM_MOVEMENT_TYPES = DOCS_LINK_WM_MOVEMENT + '/types';
 export const DOCS_LINK_WM_MOVEMENT_BATCHES = DOCS_LINK_WM_MOVEMENT + '/batches';
 // export const DOCS_LINK_WM_ANALYSIS = DOCS_LINK_WM + '/analysis';
 
