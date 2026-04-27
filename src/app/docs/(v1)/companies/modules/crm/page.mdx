@@ -2,4 +2,25 @@ import Link from 'next/link';
 import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
 
-# 1. 
+# 1. Клиентская база (CRM)
+
+<span className={styles.underline}>«Клиентская база»</span> - модуль платформы, обеспечивающий базовые возможности управления
+базой покупателей. Мы осмысленно разделили привычную многим модель CRM на два разных модуля - отделили клиентскую базу от <Link className={styles.link} href='/docs/companies/modules/dm'>«Сделок»</Link>.
+Это намеренное архитектурное решение, позволяющее не смешивать две связанные, но тем или менее сомостоятельные бизнес-области.
+
+В клиентскую базу включены функции:
+
+- <Link className={styles.link} href='/docs/companies/modules/crm/sources'>управления источниками привлечения</Link>
+- <Link className={styles.link} href='/docs/companies/modules/crm/clients'>управления клиентами</Link>
+- <Link className={styles.link} href='/docs/companies/modules/crm/analysis'>анализа трафика</Link>
+<br />
+
+# 2. Где это?
+
+Управление клиентской базой объединено в разделе <span className={styles.underline}>«Клиенты»</span>  (левая боковая панель управления организацией).
+
+# 3. Краткий обзор модуля
+
+<MDXImageBlock src='/images/docs/company-crm-analysis-sources.png' label='Анализ по ресурсам.' />
+<MDXImageBlock src='/images/docs/company-crm-create-client.png' label='Создание клиента.' />
+<MDXImageBlock src='/images/docs/company-crm-source.png' label='Просмотр ресурсы привлечения.' />

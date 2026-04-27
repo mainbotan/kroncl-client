@@ -3,7 +3,7 @@ import { DOCS_LINK_CRM_ANALYSIS, DOCS_LINK_CRM_CLIENTS, DOCS_LINK_CRM_SOURCES } 
 
 export const crmSections: DocsNavSectionProps[] = [
     {
-        label: 'Источники',
+        label: 'Ресурсы привлечения',
         href: DOCS_LINK_CRM_SOURCES
     },
     {
