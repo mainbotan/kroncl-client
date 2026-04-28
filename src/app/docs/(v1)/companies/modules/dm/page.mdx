@@ -2,4 +2,38 @@ import Link from 'next/link';
 import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
 
-# 1. 
+# 1. «Управление сделками»
+
+<span className={styles.underline}>«Управление сделками»</span> — ключевой модуль платформы, переиспользующий функции большинства других модулей.
+
+С помощью этого модуля руководство организации или ответственные менеджеры получают полное представление о текущих заказах/сделках организации, загруженности сотрудников,
+категоризации по типам. Модуль управления сделками тесно связан как с <Link href='/docs/companies/modules/crm' className={styles.link}>«Клиентской базой»</Link>, так и с 
+<Link href='/docs/companies/modules/fm' className={styles.link}>«Финансами»</Link>.
+
+Модуль управления сделками включает функционал:
+
+- <Link href='/docs/companies/modules/dm/types' className={styles.link}>управления типами сделок</Link>
+- <Link href='/docs/companies/modules/dm/statuses' className={styles.link}>управления статусами воронки</Link>
+- <Link href='/docs/companies/modules/dm/deals' className={styles.link}>управления сделками</Link>
+- <Link href='/docs/companies/modules/dm/analysis' className={styles.link}>анализа сделок</Link>
+<br />
+# 2. Где это?
+
+Управление сделками объединено в разделе <span className={styles.underline}>«Сделки»</span> (левая боковая панель управления организацией).
+
+# 3. До прочтения модуля
+
+В главах этого модуля используются перекрестные ссылки и термины из следующих разделов документации:
+
+- <Link href='/docs/companies/modules/fm' className={styles.link}>Финансы</Link>: <span className={styles.secondary}>сделка предполагает историю финансовых операций (например, сопутствующих в процессе выполнения трат), интегрированную с базой операций организации; траты/доходы со сделок автоматически попадают в анализ модуля финансов;</span>
+- <Link href='/docs/companies/modules/hrm' className={styles.link}>Сотрудники</Link>: <span className={styles.secondary}>назначение ответственных;</span>
+- <Link href='/docs/companies/modules/crm' className={styles.link}>Клиенты</Link>: <span className={styles.secondary}>связь с картой клиента;</span>
+- <Link href='/docs/companies/modules/wm' className={styles.link}>Каталог & Склад</Link>: <span className={styles.secondary}>состав заказа предполагает использование товарных позиций и конкретных товаров из каталога/наличия.</span>
+<br />
+Рекомендуем начать чтение этого модуля после прочтения указанных глав.
+
+# 4. Краткий обзор модуля
+
+<MDXImageBlock src='/images/docs/company-dm-kanban.png' label='Канбан сделок.' />
+<MDXImageBlock src='/images/docs/company-dm-analysis-employees.png' label='Анализ сделок по сотрудникам.' />
+<MDXImageBlock src='/images/docs/company-dm-deal-positions.png' label='Состав сделки.' />

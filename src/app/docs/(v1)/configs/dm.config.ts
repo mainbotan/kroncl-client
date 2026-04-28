@@ -3,6 +3,14 @@ import { DOCS_LINK_DM_ANALYSIS, DOCS_LINK_DM_DEALS, DOCS_LINK_DM_STATUSES, DOCS_
 
 export const dmSections: DocsNavSectionProps[] = [
     {
+        label: 'Статусы',
+        href: DOCS_LINK_DM_STATUSES
+    },
+    {
+        label: 'Типы',
+        href: DOCS_LINK_DM_TYPES
+    },
+    {
         label: 'Сделки',
         href: DOCS_LINK_DM_DEALS,
         childrens: [
@@ -19,14 +27,6 @@ export const dmSections: DocsNavSectionProps[] = [
                 href: DOCS_LINK_DM_DEALS + '/finance'
             }
         ]
-    },
-    {
-        label: 'Статусы сделок',
-        href: DOCS_LINK_DM_STATUSES
-    },
-    {
-        label: 'Типы сделок',
-        href: DOCS_LINK_DM_TYPES
     },
     {
         label: 'Анализ',

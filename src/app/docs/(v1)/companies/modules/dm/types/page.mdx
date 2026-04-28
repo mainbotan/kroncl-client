@@ -1,0 +1,33 @@
+import Link from 'next/link';
+import styles from '@/assets/styles/mdx.module.scss';
+import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. Типы сделок
+
+<span className={styles.underline}>Типы сделок</span> помогают классифицировать весь объём поступающих заказов. Таким образом
+вы можете параллельно вести заказы разных направлений организации, быстро ориентируясь в общем канбане.
+
+# 2. Просмотр типов
+
+Для просмотра всех существующих типов перейдите на вкладку <span className={styles.underline}>«Типы»</span> раздела сделок.
+
+<MDXImageBlock src='/images/docs/company-dm-types.png' label='Просмотр типов.' />
+
+# 3. Создание типа
+
+Для создания нового типа сделки нажмите на соответствующую кнопку на странице просмотра всех записей. 
+Укажите наименование и опциональный комментарий, после чего произойдёт перенаправление на страницу только что созданного типа.
+
+<MDXImageBlock src='/images/docs/company-dm-create-type.png' label='Создание нового типа сделки.' />
+
+# 4. Просмотр типа
+
+На странице просмотра доступны действия <span className={styles.accent}>редактирования</span> и <span className={styles.accent}>удаления</span>.
+
+<MDXImageBlock src='/images/docs/company-dm-type.png' label='Просмотр типа.' />
+
+# 5. Удаление
+
+Для удаления нажмите на соответствующую кнопку, затем подтвердите действие. Сделки с уже указанным типом удалены не будут.
+
+<MDXImageBlock src='/images/docs/company-dm-delete-type.png' label='Удаление типа.' />
