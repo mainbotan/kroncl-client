@@ -3,3 +3,14 @@ import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
 
 # 1. Сотрудники
+
+Действия назначения и снятия сотрудников со сделки (или сделок) доступны на вкладке 
+<span className={styles.underline}>«Ответственные»</span> страницы заказа.
+
+При выборе нового сотрудника появится модальное окно с базой активных сотрудников из модуля <Link className={styles.link} href='/docs/companies/modules/hrm'>«Управление персоналом»</Link>.
+
+Для снятия ответственного с заказа достаточно нажать на соответствующее действие в карточке сотрудника.
+
+<MDXImageBlock src='/images/docs/company-dm-deal-employees.png' label='Ответственные сотрудники.' />
+
+После изменения данных об ответственных за заказ не забывайте <span className={styles.accent}>сохранять изменения</span> (кнопка в правом верхнем углу страницы).
