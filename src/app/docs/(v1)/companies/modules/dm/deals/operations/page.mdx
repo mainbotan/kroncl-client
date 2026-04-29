@@ -2,4 +2,31 @@ import Link from 'next/link';
 import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
 
-# 1. Финансовые операции
+# 1. Финансовые операции сделки
+
+Модуль управления сделками тесно интегрирован с модулем <Link className={styles.link} href='/docs/companies/modules/fm'>«Финансы»</Link>. Интеграция 
+включает возможность привязки конкретных финансовых операций к сделке. Это особенно полезно при дополнительных тратах в процессе 
+реализации заказа и для финального расчёта сделки.
+
+Для просмотра финансового итога сделки перейдите на вкладку <span className={styles.underline}>«Финансы»</span> страницы заказа.
+
+<MDXImageBlock src='/images/docs/company-dm-deal-operations.png' label='Финансовые операции сделки.' />
+
+# 2. Создание операции
+
+Для создания новой траты/дохода для сделки нажмите на соответствующую кнопку в теле страницы. 
+
+Укажите <span className={styles.accent}>сумму</span>, <span className={styles.accent}>направление</span> (доход/расход) и опциональный комментарий для операции.
+
+Все созданные из сделки операции автоматически получают категорию расхода/дохода по сделкам. 
+<Link href='/docs/companies/modules/fm/movement-of-funds/categories' className={styles.link}>Подробнее о категориях</Link>.
+
+<MDXImageBlock src='/images/docs/company-dm-deal-create-operations.png' label='Создание операции.' />
+
+# 3. Отмена операции
+
+В соответствии с основным принципом финансового аудита платформы удаление операции напрямую невозможно. Даже при удалении
+самой сделки все финансовые операции сохранятся. 
+
+Для отмены операции воспользуйтесь функцией <span className={styles.underline}>сторнирования операции</span>. Подробнее читайте в главе 
+<Link href='/docs/companies/modules/fm/movement-of-funds/operations' className={styles.link}>«Финансовые операции»</Link>.
