@@ -26,7 +26,7 @@ export function DocsHeader({
             </div>
             <div className={styles.actions}>
                 <ThemeSwitcher className={styles.switcher} />
-                <Button as='link' href='/sso/sign_in' className={styles.action}>Начать бесплатно</Button>
+                <Button variant='contrast' as='link' href='/sso/sign_in' className={styles.action}>Начать бесплатно</Button>
                 <div className={styles.burger}>
                     <button className={styles.button} onClick={toggle}>
                         {isOpen ? <Close /> : <Menu />}

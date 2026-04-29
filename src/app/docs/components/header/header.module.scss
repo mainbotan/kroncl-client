@@ -22,10 +22,10 @@
         font-size: .66em;
 
         .tag {
-            font-size: .7em;
+            font-size: .76em;
             padding: .4em .6em;
-            background-color: #e4e4e4af;
-            color: #020202;
+            background-color: #fdfdfd;
+            color: #000000;
             border-radius: 2em;
         }
     }
@@ -47,13 +47,10 @@
             }
         }
         .action {
-            background-color: #fff;
-            color: #222222;
-            font-weight: 600;
-            border: none;
-            height: 2.4em;
+            font-size: 1.2em;
             transition: transform var(--transition);
-            box-shadow: 0 0 .3em #eee;
+            border: none;
+            border-radius: 2em;
 
             &:hover {
                 transform: scale(1.02);
