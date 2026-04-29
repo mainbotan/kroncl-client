@@ -1,0 +1,12 @@
+import Link from 'next/link';
+import styles from '@/assets/styles/mdx.module.scss';
+import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. Клиент
+
+Для привязки клиента к сделке перейдите на вкладку <span className={styles.underline}>«Клиент»</span> страницы заказа. 
+Для выбора будут доступны все активные записи из контактной базы модуля <Link href='/docs/companies/modules/crm' className={styles.link}>«Клиентская база»</Link>.
+
+<MDXImageBlock src='/images/docs/company-dm-deal-client.png' label='Клиент сделки.' />
+
+После изменения данных о клиенте сделки не забывайте <span className={styles.accent}>сохранять изменения</span> (кнопка в правом верхнем углу страницы).

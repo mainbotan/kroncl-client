@@ -3,3 +3,63 @@ import styles from '@/assets/styles/mdx.module.scss';
 import { MDXImageBlock } from '@/assets/mdx/image-block';
 
 # 1. Сделки
+
+<span className={styles.underline}>Сделка</span> (заказ) — центральная сущность модуля. Функционал построен
+вокруг обеспечения удобства работы в первую очередь со сделками.
+
+Для просмотра всех сделок с распределением по <Link href='/docs/companies/modules/dm/statuses' className={styles.link}>статусам</Link> используйте
+<span className={styles.underline}>канбан</span> (главная страница раздела «Сделки»).
+
+Для перемещения сделки между статусами достаточно перетянуть карточку на нужную позицию.
+
+<MDXImageBlock src='/images/docs/company-dm-kanban-move.png' label='Перемещение сделки в канбане.' />
+
+# 2. Создание сделки
+
+Для создания сделки нажмите на соответствующую кнопку на странице просмотра канбана.
+Для первоначальной инициализации сделки/заказа достаточно 
+<span className={styles.accent}>комментария</span> <span className={styles.secondary}>(опционально)</span> и 
+<span className={styles.accent}>типа сделки</span> <span className={styles.secondary}>(опционально)</span>.
+
+Сразу после создания сделке будет присвоен идентификатор вида <span className={styles.underline}>СД-01C60886</span>, после чего она попадёт в начальный статус (доступно <Link href='/docs/companies/modules/dm/statuses' className={styles.link}>переопределение</Link>).
+
+<MDXImageBlock src='/images/docs/company-dm-create-deal.png' label='Создание сделки.' />
+
+# 3. Просмотр и редактирование
+
+Для просмотра и редактирования сделки нажмите на соответствующую кнопку в карточке сделки в канбане.
+
+Действия редактирования и просмотра сделки представлены несколькими вкладками, каждая из которых отвечает за свою область. 
+В числе вкладок:
+
+- <span className={styles.accent}>обзор</span> — базовые действия со сделкой
+- <Link href='/docs/companies/modules/dm/deals/order-structure' className={styles.link}>состав</Link> — просмотр и редактирование состава сделки
+- <Link href='/docs/companies/modules/dm/deals/employees' className={styles.link}>ответственные</Link> — сотрудники
+- <Link href='/docs/companies/modules/dm/deals/client' className={styles.link}>клиент</Link>
+- <Link href='/docs/companies/modules/dm/deals/operations' className={styles.link}>финансы</Link> — операции в процессе реализации сделки
+<br />
+
+В этой главе документации разберём только <span className={styles.underline}>базовые действия</span>, для ознакомления с другими вкладками читайте следующие главы.
+
+# 3.1 Обзор
+
+На вкладке обзора сделки доступен просмотр и изменение базовой информации, включая:
+
+- текущий статус
+- тип
+- комментарий
+- дата последнего обновления
+- дата создания
+- <span className={styles.accent}>удаление</span>
+
+<MDXImageBlock src='/images/docs/company-dm-deal.png' label='Обзор сделки.' />
+
+# 3.2 Удаление сделки
+
+Действие удаления сделки доступно в <span className={styles.underline}>«Красной зоне»</span> (вкладка обзора сделки).
+
+<MDXImageBlock src='/images/docs/company-dm-deal-red-zone.png' label='Красная зона.' />
+
+После удаления <span className={styles.accent}>все данные сделки будут безвозвратно удалены</span> (кроме данных финансовых операций).
+
+<MDXImageBlock src='/images/docs/company-dm-delete-deal.png' label='Удаление сделки.' />
