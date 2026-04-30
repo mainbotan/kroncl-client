@@ -115,7 +115,7 @@ export default function Page() {
                     <span />
                 </div>
 
-                <div className={styles.ecosystemGrid}>
+                {/* <div className={styles.ecosystemGrid}>
                     <HeadBlock className={clsx(styles.block, styles.head)} 
                         title='Больше чем бизнес'
                         description='Для тех, кто живёт делом.'
@@ -143,7 +143,7 @@ export default function Page() {
                             />
                     </div>
                     <EcosystemBlock className={styles.block} />
-                </div>
+                </div> */}
 
                 <TariffsBlock className={clsx(styles.block, styles.tariffsBlock)} />
                 <TrialPeriodBlock className={styles.block} />
