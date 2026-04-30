@@ -20,6 +20,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { DOCS_LINK_HRM } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     // meta
@@ -126,6 +127,10 @@ export default function Page() {
                     onSearch: handleSearch
                 }}
                 showSearch
+                docsEscort={{
+                    href: DOCS_LINK_HRM,
+                    title: 'Подробнее об управлении персоналом'
+                }}
             />
             {employees.length === 0 ? (
                 <PlatformEmptyCanvas

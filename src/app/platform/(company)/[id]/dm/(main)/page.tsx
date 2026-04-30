@@ -17,6 +17,7 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_DM, DOCS_LINK_DM_DEALS } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -153,6 +154,10 @@ export default function Page() {
                     href: `/platform/${companyId}/dm/new`
                 }
             ] : undefined}
+            docsEscort={{
+                href: DOCS_LINK_DM,
+                title: 'Подробнее об управлении сделками'
+            }}
         />
         <div className={styles.canvas}>
             <div className={styles.grid}>

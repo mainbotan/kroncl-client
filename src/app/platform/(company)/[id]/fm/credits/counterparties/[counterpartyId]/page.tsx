@@ -21,6 +21,7 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
+import { DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -176,6 +177,10 @@ export default function Page() {
                 title={counterparty.name}
                 description={`${typeLabels[counterparty.type]}. Контрагент ${counterparty.id}. Статус: ${isActive ? 'активен' : 'неактивен'}.`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES,
+                    title: 'Подробнее о контрагентах'
+                }}
             />
             
             {/* <div className={styles.body}>

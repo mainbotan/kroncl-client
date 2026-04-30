@@ -18,6 +18,7 @@ import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
 import { sectionsList } from '../_sections';
+import { DOCS_LINK_COMPANIES_ACCESSES } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -103,6 +104,10 @@ export default function Page() {
                 title='Аккаунты'
                 description='Пользователи, имеющие доступ к организации. Управление разрешениями, удаление из компании.'
                 sections={sectionsList(companyId)}
+                docsEscort={{
+                    href: DOCS_LINK_COMPANIES_ACCESSES,
+                    title: 'Подробнее о доступах в организацию'
+                }}
             />
             {accounts.length === 0 ? (
                 <PlatformEmptyCanvas

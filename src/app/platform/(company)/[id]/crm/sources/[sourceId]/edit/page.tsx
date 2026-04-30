@@ -16,6 +16,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_CRM_SOURCES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -184,6 +185,10 @@ export default function Page() {
             <PlatformHead
                 title='Редактирование источника'
                 description='Изменение параметров источника трафика.'
+                docsEscort={{
+                    href: DOCS_LINK_CRM_SOURCES,
+                    title: 'Подробнее о ресурсах привлечения'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название источника'>

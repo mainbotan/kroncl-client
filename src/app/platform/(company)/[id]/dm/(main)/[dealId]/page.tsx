@@ -18,6 +18,7 @@ import { StructureBlock } from './components/structure-block/block';
 import { Deal, DealPosition, DealStatus, DealType } from '@/apps/company/modules/dm/types';
 import { OverviewBlock } from './components/overview-block/block';
 import { FinanceBlock } from './components/finance-block/block';
+import { DOCS_LINK_DM_DEALS } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -421,6 +422,10 @@ export default function Page() {
                         disabled: saving || !hasChanges
                     }
                 ] : undefined}
+                docsEscort={{
+                    href: DOCS_LINK_DM_DEALS,
+                    title: 'Подробнее о сделках'
+                }}
             >
                 {hasChanges && (
                     <div className={styles.nonSaved}>

@@ -72,25 +72,25 @@ export default function Page() {
                     <MiniBlock 
                         title='Сделки'
                         description='Разделяйте заказы между сотрудниками, настраивайте типы работы и статусы, расчитывайте доход от сделок.'
-                        img='/images/promo/dark-company-deals-cut.png'
+                        img='/images/mock-ups/company-dm-cut.png'
                         icon={<Kanban />}
                         className={styles.block} />
                     <MiniBlock 
                         title='Финансы'
                         description='Контролируйте движение средств, назначайте ответственных сотрудников и следите за долговыми обязательствами.'
-                        img='/images/promo/dark-company-transactions-cut.png'
+                        img='/images/mock-ups/company-fm-cut.png'
                         icon={<Wallet />}
                         className={styles.block} />
                     <MiniBlock 
                         title='История действий'
                         description='Отслеживайте историю изменений данных компании, с точностью до браузера инициатора.'
-                        img='/images/promo/light-company-history-cut.png'
+                        img='/images/mock-ups/company-activity-cut.png'
                         icon={<History />}
                         className={styles.block} />
                     <MiniBlock 
                         title='Клиентская база'
                         description='Анализируйте трафик клиентов, выявляйте наиболее эффективные источники привлечения.'
-                        img='/images/promo/dark-company-clients-stat-cut.png'
+                        img='/images/mock-ups/company-crm-analysis-cut.png'
                         icon={<Clients />}
                         className={styles.block} />
                 </div>

@@ -21,6 +21,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM } from "@/app/docs/(v1)/internal.config";
 
 export default function CatalogPage() {
     const params = useParams();
@@ -145,6 +146,10 @@ export default function CatalogPage() {
                     onSearch: handleSearch
                 }}
                 showSearch={true}
+                docsEscort={{
+                    href: DOCS_LINK_WM,
+                    title: 'Подробнее о каталоге & складе'
+                }}
             />
             {categoryId && (
                 <div className={styles.control}>

@@ -28,8 +28,13 @@ export const DOCS_LINK_HRM_POSITIONS = DOCS_LINK_HRM + '/positions';
 // FM
 export const DOCS_LINK_FM_MOVEMENT = DOCS_LINK_FM + '/movement-of-funds';
 export const DOCS_LINK_FM_OPERATIONS = DOCS_LINK_FM_MOVEMENT + '/operations';
+export const DOCS_LINK_FM_CATEGORIES = DOCS_LINK_FM_MOVEMENT + '/categories';
 export const DOCS_LINK_FM_BALANCE = DOCS_LINK_FM_MOVEMENT + '/balance';
 export const DOCS_LINK_FM_ANALYSIS = DOCS_LINK_FM_MOVEMENT + '/analysis';
+
+export const DOCS_LINK_FM_DEBT_OBLIGATIONS = DOCS_LINK_FM + '/debt-obligations';
+export const DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES = DOCS_LINK_FM_DEBT_OBLIGATIONS + '/counterparties';
+export const DOCS_LINK_FM_DEBT_OBLIGATIONS_CREDITS_DEBTS = DOCS_LINK_FM_DEBT_OBLIGATIONS + '/credits-debts';
 
 // CRM
 export const DOCS_LINK_CRM_CLIENTS = DOCS_LINK_CRM + '/clients';

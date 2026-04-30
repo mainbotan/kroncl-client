@@ -13,6 +13,7 @@ import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_DM_TYPES } from '@/app/docs/(v1)/internal.config';
 
 type NameStatus = 'idle' | 'valid' | 'invalid';
 
@@ -140,6 +141,10 @@ export default function Page() {
             <PlatformHead
                 title='Новый тип'
                 description='Создание нового типа сделки'
+                docsEscort={{
+                    href: DOCS_LINK_DM_TYPES,
+                    title: 'Подробнее о типах сделок'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название'>

@@ -13,6 +13,7 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_COMPANIES_ACCESSES } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     // perms
@@ -92,6 +93,10 @@ export default function Page() {
             <PlatformHead
                 title="Приглашение в компанию"
                 description='Если пользователь с указанной почтой ещё не был зарегистрирован в системе, мы вышлем письмо на указанную почту - все исходящие приглашения никуда не исчезнут.'
+                docsEscort={{
+                    href: DOCS_LINK_COMPANIES_ACCESSES,
+                    title: 'Подробнее о доступах в организацию'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title="Почта сотрудника">

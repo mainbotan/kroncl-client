@@ -1,4 +1,3 @@
-// app/platform/[id]/wm/movement/new/page.tsx
 'use client';
 
 import { PlatformFormBody, PlatformFormInput, PlatformFormSection } from '@/app/platform/components/lib/form';
@@ -15,6 +14,7 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_WM_MOVEMENT } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -98,6 +98,10 @@ export default function Page() {
             <PlatformHead
                 title={title}
                 description={description}
+                docsEscort={{
+                    href: DOCS_LINK_WM_MOVEMENT,
+                    title: 'Подробнее о поставках & отгрузках'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Состав'>

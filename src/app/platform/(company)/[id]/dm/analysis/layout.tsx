@@ -10,6 +10,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_DM_ANALYSIS } from "@/app/docs/(v1)/internal.config";
 
 interface PlatformLayoutProps {
   children: React.ReactNode;
@@ -92,6 +93,10 @@ export default function AnalysisLayout({ children }: PlatformLayoutProps) {
                         href: buildSectionLink(`/platform/${companyId}/dm/analysis/clients`)
                     }
                 ]}
+                docsEscort={{
+                    href: DOCS_LINK_DM_ANALYSIS,
+                    title: 'Подробнее об анализе сделок'
+                }}
             >
                 <div className={styles.control}>
                     <Input

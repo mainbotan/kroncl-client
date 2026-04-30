@@ -19,6 +19,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM_CATALOG_UNITS } from "@/app/docs/(v1)/internal.config";
 
 export default function EditUnitPage() {
     const params = useParams();
@@ -352,6 +353,10 @@ export default function EditUnitPage() {
             <PlatformHead
                 title='Редактирование позиции'
                 description="Изменение параметров товарной позиции."
+                docsEscort={{
+                    href: DOCS_LINK_WM_CATALOG_UNITS,
+                    title: 'Подробнее о товарных позициях'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection 

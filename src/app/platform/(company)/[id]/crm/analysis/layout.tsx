@@ -10,6 +10,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_CRM_ANALYSIS } from "@/app/docs/(v1)/internal.config";
 
 interface PlatformLayoutProps {
   children: React.ReactNode;
@@ -72,6 +73,10 @@ export default function AnalysisLayout({ children }: PlatformLayoutProps) {
                         href: `/platform/${companyId}/crm/analysis/sources`
                     }
                 ]}
+                docsEscort={{
+                    href: DOCS_LINK_CRM_ANALYSIS,
+                    title: 'Подробнее об анализе клиентов'
+                }}
             >
                 <div className={styles.control}>
                     <Input

@@ -17,6 +17,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_DM_STATUSES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -158,6 +159,10 @@ export default function Page() {
                         href: `/platform/${companyId}/dm/statuses/new`
                     }
                 ] : undefined }
+                docsEscort={{
+                    href: DOCS_LINK_DM_STATUSES,
+                    title: 'Подробнее о статусах сделок'
+                }}
             />
             <div className={styles.grid}>
                 {statuses.map((status, index) => (

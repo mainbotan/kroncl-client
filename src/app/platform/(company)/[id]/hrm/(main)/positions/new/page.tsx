@@ -13,6 +13,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { DOCS_LINK_HRM_POSITIONS } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -100,6 +101,10 @@ export default function Page() {
             <PlatformHead
                 title='Новая должность'
                 description="Создание новой должности в организации."
+                docsEscort={{
+                    href: DOCS_LINK_HRM_POSITIONS,
+                    title: 'Подробнее о должностях'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название должности'>

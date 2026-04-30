@@ -21,6 +21,7 @@ import { useAuth } from "@/apps/account/auth/context/AuthContext";
 import { PlatformModal } from "@/app/platform/components/lib/modal/modal";
 import { PlatformModalConfirmation } from "@/app/platform/components/lib/modal/confirmation/confirmation";
 import { useMessage } from "@/app/platform/components/lib/message/provider";
+import { DOCS_LINK_COMPANIES_ACCESSES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -138,6 +139,10 @@ export default function Page() {
                         onClick: () => setIsDeleteModalOpen(true)
                     }
                 ] : undefined}
+                docsEscort={{
+                    href: DOCS_LINK_COMPANIES_ACCESSES,
+                    title: 'Подробнее о доступах в организацию'
+                }}
             />
             <div className={styles.grid}>
                 {isAllowed(ALLOW_SETTINGS) && (

@@ -22,6 +22,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM_CATALOG_UNITS } from "@/app/docs/(v1)/internal.config";
 
 export default function UnitPage() {
     const params = useParams();
@@ -198,6 +199,10 @@ export default function UnitPage() {
                 title={unit.name}
                 description={`Карточка товарной позиции. Создана ${formatDate(unit.created_at)}. Статус: ${isActive ? 'активна' : 'неактивна'}.`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_WM_CATALOG_UNITS,
+                    title: 'Подробнее о товарных позициях'
+                }}
             />
 
             <div className={styles.body}>

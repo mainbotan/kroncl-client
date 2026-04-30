@@ -13,6 +13,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
+import { DOCS_LINK_HRM_EMPLOYEES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const hrmModule = useHrm();
@@ -148,6 +149,10 @@ export default function Page() {
             <PlatformHead
                 title='Новый сотрудник'
                 description="Инициализация карты нового сотрудника организации."
+                docsEscort={{
+                    href: DOCS_LINK_HRM_EMPLOYEES,
+                    title: 'Подробнее о сотрудниках'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Имя, фамилия сотрудника'>

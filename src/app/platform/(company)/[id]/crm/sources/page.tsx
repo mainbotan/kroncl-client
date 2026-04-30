@@ -18,6 +18,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_CRM_SOURCES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -162,6 +163,10 @@ export default function Page() {
                     onSearch: handleSearch
                 }}
                 showSearch
+                docsEscort={{
+                    href: DOCS_LINK_CRM_SOURCES,
+                    title: 'Подробнее о ресурсах привлечения'
+                }}
             />
             {sources.length === 0 ? (
                 <PlatformEmptyCanvas
