@@ -17,6 +17,7 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES } from '@/app/docs/(v1)/internal.config';
 
 type FieldStatus = 'idle' | 'valid' | 'invalid';
 
@@ -209,6 +210,10 @@ export default function Page() {
             <PlatformHead
                 title='Редактирование контрагента'
                 description={`${counterparty.name}`}
+                docsEscort={{
+                    href: DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES,
+                    title: 'Подробнее о контрагентах'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название контрагента'>

@@ -10,6 +10,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_FM_ANALYSIS } from "@/app/docs/(v1)/internal.config";
 
 interface PlatformLayoutProps {
   children: React.ReactNode;
@@ -78,6 +79,10 @@ export default function PlatformLayout({ children }: PlatformLayoutProps) {
                         href: `/platform/${companyId}/fm/e2e/categories`
                     },
                 ]}
+                docsEscort={{
+                    href: DOCS_LINK_FM_ANALYSIS,
+                    title: 'Подробнее об анализе'
+                }}
             >
                 <div className={styles.control}>
                     <Input

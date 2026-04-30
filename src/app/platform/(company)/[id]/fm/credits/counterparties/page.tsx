@@ -18,6 +18,7 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -131,6 +132,10 @@ export default function Page() {
                     placeholder: 'Поиск по контрагентам',
                     defaultValue: searchParams.get('search') || '',
                     onSearch: handleSearch
+                }}
+                docsEscort={{
+                    href: DOCS_LINK_FM_DEBT_OBLIGATIONS_COUNTERPARTIES,
+                    title: 'Подробнее о контрагентах'
                 }}
             />
             {counterparties.length === 0 ? (

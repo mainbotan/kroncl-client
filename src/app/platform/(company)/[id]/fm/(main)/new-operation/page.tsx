@@ -20,6 +20,7 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
+import { DOCS_LINK_FM_OPERATIONS } from '@/app/docs/(v1)/internal.config';
 
 type Direction = 'income' | 'expense';
 type AmountStatus = 'idle' | 'valid' | 'invalid';
@@ -180,6 +181,10 @@ export default function Page() {
             <PlatformHead
                 title='Новая операция'
                 description={formData.direction === 'income' ? 'Доход' : 'Расход'}
+                docsEscort={{
+                    href: DOCS_LINK_FM_OPERATIONS,
+                    title: 'Подробнее об операциях'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Сумма'>

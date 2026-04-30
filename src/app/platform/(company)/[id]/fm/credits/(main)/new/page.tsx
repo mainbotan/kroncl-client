@@ -1,4 +1,3 @@
-// new/page.tsx
 'use client';
 
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
@@ -19,6 +18,7 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_FM_DEBT_OBLIGATIONS_CREDITS_DEBTS } from '@/app/docs/(v1)/internal.config';
 
 type CreditType = 'debt' | 'credit';
 type AmountStatus = 'idle' | 'valid' | 'invalid';
@@ -277,6 +277,10 @@ export default function Page() {
             <PlatformHead
                 title={formData.type === 'debt' ? 'Взять в долг' : 'Дать в долг'}
                 description={formData.type === 'debt' ? 'Оформление заёмных средств' : 'Оформление выданного кредита'}
+                docsEscort={{
+                    href: DOCS_LINK_FM_DEBT_OBLIGATIONS_CREDITS_DEBTS,
+                    title: 'Подробнее о кредитах и дебетах'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название (опционально)'>

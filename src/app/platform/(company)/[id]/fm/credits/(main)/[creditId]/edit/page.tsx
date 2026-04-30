@@ -20,6 +20,7 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_FM_DEBT_OBLIGATIONS_CREDITS_DEBTS } from '@/app/docs/(v1)/internal.config';
 
 type CreditType = 'debt' | 'credit';
 type AmountStatus = 'idle' | 'valid' | 'invalid';
@@ -372,6 +373,10 @@ export default function Page() {
             <PlatformHead
                 title={`Редактирование: ${credit.name}`}
                 description='Изменение параметров кредита или займа'
+                docsEscort={{
+                    href: DOCS_LINK_FM_DEBT_OBLIGATIONS_CREDITS_DEBTS,
+                    title: 'Подробнее о кредитах и дебетах'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название (опционально)'>
