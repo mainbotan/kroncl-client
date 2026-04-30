@@ -18,6 +18,7 @@ import { isAllowed, usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
+import { DOCS_LINK_DM_TYPES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -127,6 +128,10 @@ export default function Page() {
                 title={type.name}
                 description={`Тип сделки. Создан ${formatDate(type.created_at)}.`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_DM_TYPES,
+                    title: 'Подробнее о типах сделок'
+                }}
             />
 
             <div className={styles.body}>

@@ -16,6 +16,7 @@ import { isAllowed, usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_DM_STATUSES } from '@/app/docs/(v1)/internal.config';
 
 type NameStatus = 'idle' | 'valid' | 'invalid';
 
@@ -225,6 +226,10 @@ export default function Page() {
             <PlatformHead
                 title='Редактирование статуса'
                 description={`Редактирование статуса "${formData.name}"`}
+                docsEscort={{
+                    href: DOCS_LINK_DM_STATUSES,
+                    title: 'Подробнее о статусах сделок'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Название'>

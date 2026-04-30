@@ -12,6 +12,7 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_DM_DEALS } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -69,6 +70,10 @@ export default function Page() {
             <PlatformHead
                 title='Новая сделка'
                 description='Инициализация новой сделки/заказа.'
+                docsEscort={{
+                    href: DOCS_LINK_DM_DEALS,
+                    title: 'Подробнее о сделках.'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Комментарий (опционально)'>

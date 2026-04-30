@@ -19,6 +19,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_DM_STATUSES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -149,6 +150,10 @@ export default function Page() {
                 title={status.name}
                 description={`Статус сделки. Создан ${formatDate(status.created_at)} Порядок: ${status.sort_order}.`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_DM_STATUSES,
+                    title: 'Подробнее о статусах сделок'
+                }}
             />
 
             <div className={styles.body}>
