@@ -32,6 +32,33 @@
             flex-flow: row wrap;
             gap: 1em;
             font-size: .73em;
+
+            .action {
+                padding: 0 1.56em;
+                height: 3.1em;
+                font-weight: 600;
+                border-width: 0px;
+                letter-spacing: .02em;
+                transition: transform var(--transition);
+                box-shadow: 0 0 5px var(--color-stroke-secondary);
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
+
+            @media (max-width: 720px) {
+                gap: .5em;
+                flex-direction: column;
+
+                .action {
+                    width: 100%;
+                    display: flex;
+                    height: 3.3em;
+                    border-width: 0;
+                    border-radius: .8em;
+                }
+            }
         }
     }
     .shadow {

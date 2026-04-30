@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { authLinks } from '@/config/links.config';
 import { PageBlockProps } from '@/app/(external)/_types';
 import ArtGrid from '../../components/art-grid/grid';
+import Entry from '@/assets/ui-kit/icons/entry';
 
 export function StartBlock({className}: PageBlockProps) {
     return (
@@ -20,8 +21,8 @@ export function StartBlock({className}: PageBlockProps) {
                     Мы всей душой ненавидим 1с и Битрикс24 и показываем как <span className={styles.brand}>малый</span> и <span className={styles.brand}>средний</span> бизнес может вести учёт и планирование в России.
                 </div>
                 <div className={styles.actions}>
-                    <Link href={authLinks.registration} className={styles.link}><Button className={styles.action} variant='accent'>Начать бесплатно</Button></Link>
-                    <Link href={authLinks.login} className={styles.link}><Button className={styles.action} variant='glass'>Войти</Button></Link>
+                    <Button as='link' href={authLinks.registration} className={styles.action} variant='accent'>Начать бесплатно</Button>
+                    <Button as='link' href={authLinks.login} className={styles.action} variant='contrast' icon={<Entry />}>Уже есть аккаунт?</Button>
                 </div>
             </div>
             <span className={styles.shadow} />
