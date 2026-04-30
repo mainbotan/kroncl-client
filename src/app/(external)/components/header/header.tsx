@@ -22,6 +22,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { slideDown } from './_animations';
 import { getRandomGradient } from '@/assets/utils/avatars';
 import Arrow from '@/assets/ui-kit/icons/arrow';
+import { DivorceBlock } from './divorce/block';
 
 export function Header() {
     const pathname = usePathname();
@@ -86,28 +87,12 @@ export function Header() {
         if (item.subItems) {
             return (
                 <div 
-                    className={clsx(styles.section)}
+                    className={clsx(styles.section, styles.divorceSection)}
                     key={itemIndex}
                 >
                     <span className={styles.name}>{item.name}</span>
                     <span className={styles.icon}><Arrow className={clsx(styles.svg, styles.rotate)} /></span>
-                    
-                    <div className={styles.divorce}>
-                        {item.subItems.map((subItem, index) => (
-                            <Link href={subItem.href} key={index} className={styles.subItem}>
-                                {subItem.icon && (<span className={styles.miniIcon}>{subItem.icon}</span>)}
-                                <span className={styles.info}>
-                                    <div className={styles.capture}>{subItem.name}</div>
-                                    <div className={styles.description}>{subItem.description || 'Открыть страницу'}</div>
-                                </span>
-                            </Link>
-                        ))}
-                        <div className={styles.subAction}>
-                            <Button href={authLinks.registration} as='link' variant='contrast' className={styles.act}>
-                                Начать сейчас
-                            </Button>
-                        </div>
-                    </div>
+                    <DivorceBlock className={styles.divorce} items={item.subItems} />
                 </div>
             )
         }
@@ -308,28 +293,12 @@ export function Header() {
                                 return (
                                     <div 
                                         key={itemIndex}
-                                        className={clsx(clsx(styles.section, styles.divorceSection))}
+                                        className={clsx(clsx(styles.section))}
                                     >
                                         <div className={styles.wrap}>
                                             <span className={styles.name}>{item.name}</span>
-                                            <span className={styles.icon}><Arrow className={clsx(styles.svg, styles.rotate)} /></span>
                                         </div>
-                                        <div className={styles.divorce}>
-                                            {item.subItems.map((subItem, index) => (
-                                                <Link href={subItem.href} key={index} className={styles.subItem} onClick={closeMenu}>
-                                                    {subItem.icon && (<span className={styles.miniIcon}>{subItem.icon}</span>)}
-                                                    <span className={styles.info}>
-                                                        <div className={styles.capture}>{subItem.name}</div>
-                                                        <div className={styles.description}>{subItem.description || 'Открыть страницу'}</div>
-                                                    </span>
-                                                </Link>
-                                            ))}
-                                            <div className={styles.subAction}>
-                                                <Button href={authLinks.registration} as='link' variant='contrast' className={styles.act}>
-                                                    Начать сейчас
-                                                </Button>
-                                            </div>
-                                        </div>
+                                        <DivorceBlock className={styles.divorce} items={item.subItems} />
                                     </div>
                                 )
                             }

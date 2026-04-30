@@ -1,8 +1,11 @@
 import Clients from "@/assets/ui-kit/icons/clients";
+import Code from "@/assets/ui-kit/icons/code";
 import History from "@/assets/ui-kit/icons/history";
 import Kanban from "@/assets/ui-kit/icons/kanban";
+import Keyhole from "@/assets/ui-kit/icons/keyhole";
 import Team from "@/assets/ui-kit/icons/team";
 import TwoCards from "@/assets/ui-kit/icons/two-cards";
+import Upload from "@/assets/ui-kit/icons/upload";
 import Wallet from "@/assets/ui-kit/icons/wallet";
 import { NavigationSection } from "@/assets/utils/sections";
 
@@ -32,6 +35,9 @@ export const navigationConfig: NavigationItem[] = [
             { name: 'CRM', href: '/crm', icon: <Clients /> },
             { name: 'Сотрудники', href: '/hrm', icon: <Team /> },
             { name: 'Каталог & Склад', href: '/wm', icon: <TwoCards /> },
+            { name: 'Активность', href: '/activity', icon: <History /> },
+            { name: 'Хранилище', href: '/storage', icon: <Upload /> },
+            { name: 'Безопасность', href: '/security', icon: <Keyhole /> },
         ]
     },
     {
