@@ -17,6 +17,7 @@ import { usePermission } from '@/apps/permissions/hooks';
 import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
+import { DOCS_LINK_CRM_CLIENTS } from '@/app/docs/(v1)/internal.config';
 
 type NameStatus = 'idle' | 'valid' | 'invalid';
 type SourceStatus = 'idle' | 'valid' | 'invalid';
@@ -219,6 +220,10 @@ export default function Page() {
             <PlatformHead
                 title='Новый клиент'
                 description={formData.type === 'individual' ? 'Физическое лицо' : 'Юридическое лицо'}
+                docsEscort={{
+                    href: DOCS_LINK_CRM_CLIENTS,
+                    title: 'Подробнее о клиентах'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Имя'>

@@ -25,6 +25,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_CRM_CLIENTS } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -181,6 +182,10 @@ export default function Page() {
                 title={fullName}
                 description={`Карточка клиента. Создан ${formatDate(client.created_at)} Статус: ${isActive ? 'активен' : 'неактивен'}.`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_CRM_CLIENTS,
+                    title: 'Подробнее о клиентах'
+                }}
             />
 
             <div className={styles.body}>
