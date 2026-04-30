@@ -16,6 +16,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_HRM_EMPLOYEES } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -227,6 +228,10 @@ export default function Page() {
             <PlatformHead
                 title='Обновление карты сотрудника'
                 description={`Номер карты: ${employee.id}`}
+                docsEscort={{
+                    href: DOCS_LINK_HRM_EMPLOYEES,
+                    title: 'Подробнее о сотрудниках'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection title='Имя, фамилия сотрудника'>

@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import { PlatformPagination } from '@/app/platform/components/lib/pagination/pagination';
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
 import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/canvas';
+import { DOCS_LINK_HRM_POSITIONS } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
     const params = useParams();
@@ -117,6 +118,10 @@ export default function Page() {
                     onSearch: handleSearch
                 }}
                 showSearch={true}
+                docsEscort={{
+                    href: DOCS_LINK_HRM_POSITIONS,
+                    title: 'Подробнее о должностях'
+                }}
             />
             {positions.length === 0 ? (
                 <PlatformEmptyCanvas

@@ -21,6 +21,7 @@ import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
 import Exit from "@/assets/ui-kit/icons/exit";
 import { PositionPermissionsWizard } from "./components/permissions-wizard/wizard";
+import { DOCS_LINK_HRM_POSITIONS } from "@/app/docs/(v1)/internal.config";
 
 export default function Page() {
     const params = useParams();
@@ -150,6 +151,10 @@ export default function Page() {
                 title={position.name}
                 description={`Должность создана ${formatDate(position.created_at)}. ${position.description ? position.description : ''}`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_HRM_POSITIONS,
+                    title: 'Подробнее о должностях'
+                }}
             />
 
             <div className={styles.grid}>
