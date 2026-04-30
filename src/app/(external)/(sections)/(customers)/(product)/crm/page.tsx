@@ -20,7 +20,7 @@ export default function Page() {
                 <br />
                 Ведите индивидуальную историю клиентов, используйте инструменты повторого привлечения для повышения показателей удержания клиента.
             </>}
-            img='/images/promo/dark-company-clients-stat-cut.png'
+            img='/images/mock-ups/company-crm-analysis-cut.png'
             className={styles.overview} />
         <div className={styles.container}>
             <div className={styles.grid}>
