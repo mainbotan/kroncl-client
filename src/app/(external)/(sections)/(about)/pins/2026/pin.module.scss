@@ -5,6 +5,7 @@
     @include slide();
     @include cursor(pointer);
     background: var(--color-accent);
+    z-index: 10;
     color: var(--color-accent-text-primary);
 
     .grid {

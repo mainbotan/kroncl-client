@@ -20,7 +20,7 @@ export default function Page() {
                 <br />
                 Настраивайте сезонные скидки, акции и рассылки о предложениях.
             </>}
-            img='/images/promo/dark-company-create-unit-cut.png'
+            img='/images/mock-ups/company-wm-cut.png'
             className={styles.overview} />
         <div className={styles.container}>
             <div className={styles.grid}>

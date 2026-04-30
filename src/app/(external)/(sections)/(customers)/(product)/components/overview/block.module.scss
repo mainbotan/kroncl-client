@@ -6,12 +6,42 @@
     min-height: 21rem;
     position: relative;
     // background: linear-gradient(90deg, #0028ba, #050e33);
-    // color: var(--color-accent-text-primary);
+    background-color: var(--color-accent);
+    color: var(--color-accent-text-primary);
+    overflow: hidden;
+
+    
+    .labels {
+        position: absolute;
+        z-index: 11;
+        top: 1em;
+        // left: 2em;
+        display: flex;
+        flex-flow: row nowrap;
+        font-size: .75em;
+        gap: 1em;
+
+        .box {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: .3em;
+
+            .value {
+                font-size: 1.2em;
+                font-weight: 600;
+                letter-spacing: .02em;
+            }
+            .legend {
+                font-size: .8em;
+            }
+        }
+    }
 
     .focus {
         @include focus();
         z-index: 10;
         flex: 1;
+        position: relative;
 
         .area {
             display: flex;
@@ -26,6 +56,10 @@
                 font-size: 2em;
                 font-weight: 600;
                 letter-spacing: .02em;
+
+                &.increased {
+                    font-size: 2.9em;
+                }
             }
             .description {
                 font-size: .8em;
@@ -41,7 +75,7 @@
                 background-color: var(--color-contrast);
                 padding: .2em;
                 border-radius: 2em;
-                border: 2px solid var(--color-stroke-secondary);
+                // border: 2px solid var(--color-stroke-secondary);
 
                 .action {
                     border-radius: 2em;
@@ -67,18 +101,37 @@
         height: 95%;
     }
 
+    .art {
+        position: absolute;
+        z-index: 2;
+        bottom: -23vw;
+        right: 14%;
+        width: 89%;
+
+        path {
+            fill: #eee !important;
+        }
+    }
+
     @media (max-width: 720px) {
-        min-height: 27rem;
+        min-height: 29rem;
 
         .focus .area {
             justify-content: start;
             max-width: 100%;
+            padding-top: 3.5em;
         }
 
         .mockUp {
             height: auto;
             width: 90%;
             right: -1%;
+        }
+
+        .art {
+            width: 160%;
+            right: -14%;
+            bottom: -54vw;
         }
     }
 }

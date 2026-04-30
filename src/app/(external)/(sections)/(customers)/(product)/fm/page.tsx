@@ -15,7 +15,7 @@ export default function Page() {
                 <br />
                 Планируйте выплату кредитных обязательств, сокращайте кассовые разрывы и контролируйте выплаты сотрудникам.
             </>}
-            img='/images/promo/dark-company-transactions-cut.png'
+            img='/images/mock-ups/company-fm-cut.png'
             className={styles.overview} />
         <div className={styles.container}>
             <div className={styles.grid}>

@@ -20,7 +20,7 @@ export default function Page() {
                 <br />
                 Гибкое планирование будущих продаж, интеграция с модулем финансов.
             </>}
-            img='/images/promo/dark-company-deals-cut.png'
+            img='/images/mock-ups/company-dm-cut.png'
             className={styles.overview} />
         <div className={styles.container}>
             <div className={styles.grid}>

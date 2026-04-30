@@ -20,7 +20,7 @@ export default function Page() {
                 <br />
                 Стройте графики рабочих часов, отслеживайте активность сотрудников, планируйте зарплатные выплаты и поощрения за выполненную работу.
             </>}
-            img='/images/promo/dark-company-employees-cut.png'
+            img='/images/mock-ups/company-account-cut.png'
             className={styles.overview} />
         <div className={styles.container}>
             <div className={styles.grid}>

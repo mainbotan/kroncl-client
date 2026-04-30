@@ -68,7 +68,8 @@
                 width: 1em;
                 height: 1em;
                 fill: grey;
-                transition: fill var(--transition);
+                transition: fill var(--transition),
+                            transform var(--transition);
 
                 &.rotate {
                     transform: rotate(90deg);
@@ -80,118 +81,22 @@
                 overflow: hidden;
             }
 
-        
-            // divorce section
-            .divorce {
-                position: absolute;
-                z-index: 1000;
-                top: calc(var(--header-height));
-                left: -1rem;
-                width: 18rem;
-                min-height: 7rem;
-                background-color: var(--color-leader);
-                border-radius: .5rem;
-                box-shadow: 0 0 .4rem var(--color-surface-light);
-                overflow: hidden;
-                display: flex;
-                flex-flow: row wrap;
-                padding: .7rem;
-                gap: .7rem .7rem;
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity var(--transition);
-
-                .subItem {
-                    display: flex;
-                    min-width: calc(50% - .7rem);
-                    max-width: calc(50% - .7rem);
-                    flex-flow: row nowrap;
-                    gap: .8em;
-                    padding: .1em .2em;
-                    border-radius: .2em;
-                    overflow: hidden;
-                    align-items: center;
-
-                    .miniIcon {
-                        width: 2.6em;
-                        min-width: 2.6em;
-                        height: 2.6em;
-                        font-size: .8em;
-                        border: 1px solid var(--color-stroke-secondary);
-                        border-radius: .4em;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: var(--color-icon-primary);
-                        background-color: var(--color-surface-glass-secondary);
-                        transition: color var(--transition),
-                                    background-color var(--transition);
-
-                        svg {
-                            width: 60%;
-                            height: 60%;
-                        }
-                    }
-                    .info {
-                        display: flex;
-                        flex: 1;
-                        flex-flow: column nowrap;
-                        width: 50%;
-                        gap: .3em;
-                        font-size: .96em;
-
-                        .capture {
-                            transition: color var(--transition);
-                            color: var(--color-text-primary);
-                        }
-                        .description {
-                            color: var(--color-text-description);
-                            font-size: .95em;
-                            transition: color var(--transition);
-                        }
-
-                        .capture, .description {
-                            @include text-ellipsis();
-                        }
-                    }
-
-                    &:hover {
-                        .miniIcon {
-                            background-color: var(--color-contrast);
-                            color: var(--color-leader);
-                        }
-                        .info .description {
-                            color: var(--color-text-primary);
-                        }
-                    }
-                }
-
-                .subAction {
-                    display: flex;
-                    flex: 1;
-                    justify-content: end;
-                    align-items: end;
-                    font-size: .95em;
-                    padding: 0 .1rem .1rem 0;
-
-                    .act {
-                        border-radius: 2em;
-                        width: 100%;
-                        transition: transform var(--transition);
-
-                        &:hover {
-                            transform: scale(1.02);
-                        }
-                    }
-                }
-            }
-
             &:hover {
                 color: var(--color-text-hint);
 
                 .divorce {
                     opacity: 1;
                     pointer-events: auto;
+                    left: -4rem;
+                }
+            }
+            &.divorceSection {
+                &:hover {
+                    color: var(--color-text-primary);
+
+                    .icon .svg {
+                        transform: rotate(-90deg);
+                    }
                 }
             }
             &.active {
@@ -452,128 +357,15 @@
                 }   
             }
 
-            &.divorceSection {
-                flex-direction: column;
-                align-items: auto;
-                
-                .wrap {
-                    display: flex;
-                    flex: 1;
-                    width: 100%;
-                    flex-flow: row nowrap;
-                    min-height: 3em;
-                    align-items: center;
-                    transition: color var(--transition);
-                    gap: .5em;
-                }
-
-                .icon .svg {
-                    display: none;
-                }
-            }
-            
-            // divorce section
-            .divorce {
-                min-height: 7rem;
-                background-color: var(--color-leader);
-                border-radius: .4em;
-                overflow: hidden;
-                display: flex;
-                flex-flow: row wrap;
-                padding: 0;
-                gap: .7rem .7rem;
-                transition: opacity var(--transition);
-
-                .subItem {
-                    display: flex;
-                    min-width: calc(50% - .7rem);
-                    max-width: calc(50% - .7rem);
-                    flex-flow: row nowrap;
-                    gap: .8em;
-                    padding: .1em .2em;
-                    border-radius: .2em;
-                    overflow: hidden;
-                    align-items: center;
-
-                    .miniIcon {
-                        width: 2.6em;
-                        min-width: 2.6em;
-                        height: 2.6em;
-                        font-size: .8em;
-                        border: 1px solid var(--color-stroke-secondary);
-                        border-radius: .4em;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: var(--color-icon-primary);
-                        background-color: var(--color-surface-glass-secondary);
-                        transition: color var(--transition),
-                                    background-color var(--transition);
-
-                        svg {
-                            width: 60%;
-                            height: 60%;
-                        }
-                    }
-                    .info {
-                        display: flex;
-                        flex: 1;
-                        flex-flow: column nowrap;
-                        width: 50%;
-                        gap: .3em;
-                        font-size: .96em;
-
-                        .capture {
-                            transition: color var(--transition);
-                            color: var(--color-text-primary);
-                        }
-                        .description {
-                            color: var(--color-text-description);
-                            font-size: .95em;
-                        }
-
-                        .capture, .description {
-                            @include text-ellipsis();
-                        }
-                    }
-
-                    &:hover {
-                        .miniIcon {
-                            background-color: var(--color-contrast);
-                            color: var(--color-leader);
-                        }
-                    }
-                }
-
-                .subAction {
-                    display: flex;
-                    flex: 1;
-                    justify-content: end;
-                    align-items: end;
-                    font-size: .95em;
-                    padding: 0 .1rem .1rem 0;
-
-                    .act {
-                        border-radius: 2em;
-                        width: 100%;
-                        transition: transform var(--transition);
-
-                        &:hover {
-                            transform: scale(1.02);
-                        }
-                    }
-                }
-            }
+            // .divorce {
+            //     display: none;
+            // }
 
             &:hover, &.active {
                 color: var(--color-brand);
 
                 .icon .svg {
                     fill: var(--color-brand);
-                }
-                .divorce {
-                    opacity: 1;
-                    pointer-events: auto;
                 }
             }
         }
