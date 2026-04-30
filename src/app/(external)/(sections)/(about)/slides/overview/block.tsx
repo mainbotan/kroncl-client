@@ -7,7 +7,7 @@ import clsx from 'clsx';
 export function OverviewBlock({className}: PageBlockProps) {
     return (
         <div className={clsx(styles.container, className)}>
-            <img src='/images/promo/light-company-workspace-cut.png' className={styles.mockUp} />
+            <img src='/images/mock-ups/company-overview-cut.png' className={styles.mockUp} />
         </div>
     )
 }

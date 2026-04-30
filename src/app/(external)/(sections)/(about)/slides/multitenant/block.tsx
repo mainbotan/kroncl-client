@@ -7,7 +7,7 @@ export function MultitenantBlock({
 }: PageBlockProps) {
     return (
         <div className={clsx(styles.container, className)}>
-            <img src='/images/promo/light-companies.png' className={styles.mockUp} />
+            <img src='/images/mock-ups/multi-companies-cut.png' className={styles.mockUp} />
         </div>
     );
 }
