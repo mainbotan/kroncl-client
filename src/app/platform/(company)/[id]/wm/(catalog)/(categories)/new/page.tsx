@@ -17,6 +17,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM, DOCS_LINK_WM_CATALOG_CATEGORIES } from "@/app/docs/(v1)/internal.config";
 
 export default function NewCategoryPage() {
     // perms
@@ -127,6 +128,10 @@ export default function NewCategoryPage() {
             <PlatformHead
                 title='Новая категория'
                 description="Создание новой категории товаров или услуг."
+                docsEscort={{
+                    href: DOCS_LINK_WM_CATALOG_CATEGORIES,
+                    title: 'Подробнее о категориях каталога'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection 

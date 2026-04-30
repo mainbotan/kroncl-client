@@ -18,6 +18,7 @@ import { usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM_CATALOG_UNITS } from "@/app/docs/(v1)/internal.config";
 
 export default function NewUnitPage() {
     const ALLOW_PAGE = usePermission(PERMISSIONS.WM_CATALOG_UNITS_CREATE)
@@ -280,6 +281,10 @@ export default function NewUnitPage() {
             <PlatformHead
                 title='Новая товарная позиция'
                 description="Создание новой позиции в каталоге товаров и услуг."
+                docsEscort={{
+                    href: DOCS_LINK_WM_CATALOG_UNITS,
+                    title: 'Подробнее о товарных позициях'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection 

@@ -20,6 +20,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM_CATALOG_CATEGORIES } from "@/app/docs/(v1)/internal.config";
 
 export default function EditCategoryPage() {
     // perms
@@ -165,6 +166,10 @@ export default function EditCategoryPage() {
             <PlatformHead
                 title='Редактирование категории'
                 description="Изменение параметров категории товаров или услуг."
+                docsEscort={{
+                    href: DOCS_LINK_WM_CATALOG_CATEGORIES,
+                    title: 'Подробнее о категориях каталога'
+                }}
             />
             <PlatformFormBody>
                 <PlatformFormSection 

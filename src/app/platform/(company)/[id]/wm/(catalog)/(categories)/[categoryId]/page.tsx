@@ -22,6 +22,7 @@ import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { PlatformLoading } from "@/app/platform/components/lib/loading/loading";
 import { PlatformError } from "@/app/platform/components/lib/error/block";
 import { PlatformNotAllowed } from "@/app/platform/components/lib/not-allowed/block";
+import { DOCS_LINK_WM_CATALOG_CATEGORIES } from "@/app/docs/(v1)/internal.config";
 
 export default function CategoryPage() {
     const params = useParams();
@@ -179,6 +180,10 @@ export default function CategoryPage() {
                 title={category.name}
                 description={`Карточка категории. Создана ${formatDate(category.created_at)}. Статус: ${statusLabel.toLowerCase()}.`}
                 actions={actions}
+                docsEscort={{
+                    href: DOCS_LINK_WM_CATALOG_CATEGORIES,
+                    title: 'Подробнее о категориях каталога'
+                }}
             />
 
             <div className={styles.body}>
