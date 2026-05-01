@@ -16,11 +16,14 @@ export const linksList: FooterGroup[] = [
     {
         capture: 'Платформа',
         links: [
-            { capture: 'Управление финансами', href: DOCS_LINK_FM },
-            { capture: 'Клиентская база', href: DOCS_LINK_CRM },
-            { capture: 'Каталог & Склад', href: DOCS_LINK_DM },
-            { capture: 'Управление персоналом', href: DOCS_LINK_HRM },
-            { capture: 'Управление сделками', href: DOCS_LINK_DM }
+            { capture: 'Управление финансами', href: '/fm' },
+            { capture: 'Клиентская база', href: '/crm' },
+            { capture: 'Каталог & Склад', href: '/wm' },
+            { capture: 'Управление персоналом', href: '/hrm' },
+            { capture: 'Управление сделками', href: '/dm' },
+            { capture: 'Активность', href: '/activity' },
+            { capture: 'Хранилище', href: '/storage' },
+            { capture: 'Безопасность', href: '/security' }
         ]
     },
     {
@@ -47,7 +50,6 @@ export const linksList: FooterGroup[] = [
     {
         capture: 'Другое',
         links: [
-            { capture: 'Техническая поддержка', href: '/support' },
             { capture: 'Разработчикам', href: '/dev' },
             { capture: 'Тарифы', href: '/pricing' },
             { capture: 'Стать партнёром', href: '/become-partner' },

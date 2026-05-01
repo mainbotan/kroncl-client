@@ -188,10 +188,10 @@
         justify-content: end;
         padding: .75rem;
         min-height: 12rem;
-        background-color: var(--color-surface-glass-secondary);
+        background-color: var(--color-accent);
         border-bottom-left-radius: .4rem;
         border: 1px solid var(--color-stroke-secondary);
-        // color: #f8f8f8;
+        color: var(--color-accent-text-primary);
 
         .slogan {
             font-size: 1.9em;
