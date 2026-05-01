@@ -63,7 +63,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                 <div className={clsx(styles.notFound, styles.block)}>
                     <div className={styles.code}>404</div>
                     <div className={styles.title}>Страница не найдена</div>
-                    <div className={styles.description}>Страницы не существует на указанном адресе. Публичная компания с указанным идентификаторам могла быть удалена или перемещена.</div>
+                    <div className={styles.description}>Страницы не существует на указанном адресе. Публичная компания с указанным идентификатором могла быть удалена или перемещена.</div>
                 </div>
             </div>
         </div>

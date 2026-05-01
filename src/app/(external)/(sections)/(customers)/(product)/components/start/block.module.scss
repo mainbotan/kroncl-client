@@ -1,0 +1,90 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+
+    .content {
+        display: flex;
+        flex: 1;
+        flex-flow: column nowrap;
+        gap: 1rem;
+        z-index: 10;
+        align-items: center;
+    }
+    .info {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .5rem;
+        align-items: center;
+        
+        .title, .description {
+            text-align: center;
+            max-width: 30rem;
+        }
+        .title {
+            font-size: 1.8em;
+            font-weight: 600;
+            letter-spacing: .02em;
+            line-height: 1;
+
+            &.increased {
+                font-size: 2.8em;
+            }
+        }
+        .description {
+            font-size: .8em;
+            color: var(--color-text-ghost);
+            line-height: 1.3;
+        }
+    }
+    .actions {
+        font-size: .74em;
+        
+        .action {
+            border: none;
+            border-radius: 2em;
+            transition: transform var(--transition);
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+    .stats {
+        font-size: .63em;
+        color: var(--color-text-ghost);
+        display: flex;
+        flex-flow: row wrap;
+        max-width: 40rem;
+        justify-content: center;
+        gap: 1em;
+
+        .item .primary {
+            color: var(--color-text-primary);
+        }
+    }
+
+    .art {
+        z-index: 2;
+        position: absolute;
+        bottom: -10px;
+        left: -25%;
+        width: 150%;
+
+        line {
+            stroke-width: 1px !important;
+            stroke: var(--color-surface-glass-secondary) !important;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .art {
+            width: auto;
+            height: 110%;
+            left: -116%;
+            bottom: -5%;
+        }
+    }
+}
