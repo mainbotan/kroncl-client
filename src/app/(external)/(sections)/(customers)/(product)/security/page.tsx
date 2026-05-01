@@ -1,7 +1,7 @@
 // meta
 import { Metadata } from 'next';
 import { getMetaConfig } from '@/config/meta.config';
-export const metadata: Metadata = getMetaConfig('storage')
+export const metadata: Metadata = getMetaConfig('security')
 
 import { QuickLinksBlock } from '@/app/(external)/components/quick-links/quick-links';
 import styles from './../page.module.scss';
