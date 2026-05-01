@@ -34,6 +34,7 @@
             border-radius: 2em;
             pointer-events: auto;
             transition: transform var(--transition);
+            border-width: 0;
 
             &:hover {
                 transform: scale(1.02);

@@ -19,6 +19,15 @@ const metaConfigs: Record<string, MetaConfig> = {
     'hrm': {
         title: 'Kroncl | Управление сотрудниками',
     },
+    'storage': {
+        title: 'Kroncl | Хранилище компании',
+    },
+    'activity': {
+        title: 'Kroncl | Мониторинг действий',
+    },
+    'security': {
+        title: 'Kroncl | Безопасность',
+    },
     'support': {
         title: 'Kroncl | Поддержка',
     },

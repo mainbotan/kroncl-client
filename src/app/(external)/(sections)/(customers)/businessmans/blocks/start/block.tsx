@@ -13,7 +13,7 @@ export function StartBlock({
                 Место, где дело <span className={styles.accent}>процветает.</span>
             </div>
             <div className={styles.description}>
-                Вопреки ФНС и тяжёлым реалиям жизни.
+                Вопреки Ф_С и тяжёлым реалиям жизни.
             </div>
             <div className={styles.actions}>
                 <Button as='link' href={authLinks.registration} className={styles.action} variant='accent'>Начать сейчас</Button>

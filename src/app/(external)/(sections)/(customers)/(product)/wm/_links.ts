@@ -18,8 +18,8 @@ export const linksList: QuickLink[] = [
         capture: 'Движение товаров',
         href: DOCS_LINK_WM_MOVEMENT
     },
-    {
-        capture: 'Анализ',
-        href: DOCS_LINK_WM_ANALYSIS
-    },
+    // {
+    //     capture: 'Анализ',
+    //     href: DOCS_LINK_WM_ANALYSIS
+    // },
 ]
