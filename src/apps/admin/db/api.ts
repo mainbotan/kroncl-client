@@ -51,6 +51,14 @@ export class AdminDbApi {
         
         return api.get<GetSchemasResponse>(url);
     }
+
+    async migrateAllTenants(keyword: string): Promise<ApiResponse<null>> {
+        return api.post<null>(`${this.basePath}/schemas/up`, null, {
+            headers: {
+                'X-Admin-Keyword': keyword,
+            },
+        });
+    }
 }
 
 export const adminDbApi = new AdminDbApi();

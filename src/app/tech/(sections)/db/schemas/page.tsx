@@ -1,5 +1,3 @@
-// app/tech/db/schemas/page.tsx
-
 'use client';
 
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
@@ -15,22 +13,28 @@ import { useEffect, useState } from 'react';
 import styles from './page.module.scss';
 import { SchemaCard } from '../components/schema-card/card';
 import Plus from '@/assets/ui-kit/icons/plus';
-import { useAdminLevel } from '@/apps/admin/auth/hook';
-import { ADMIN_LEVEL_1 } from '@/apps/admin/auth/types';
+import { isAdminAllowed, useAdminLevel } from '@/apps/admin/auth/hook';
+import { ADMIN_LEVEL_1, ADMIN_MAX_LEVEL } from '@/apps/admin/auth/types';
+import { AdminKeywordModal } from '@/app/tech/components/keyword-modal/modal';
+import { useMessage } from '@/app/platform/components/lib/message/provider';
 
 export default function SchemasPage() {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { showMessage } = useMessage();
     const { handlePageChange } = usePagination({
         baseUrl: pathname,
         defaultLimit: 20
     });
 
     const { allowed: isAdmin, isLoading: adminLoading } = useAdminLevel(ADMIN_LEVEL_1);
+    const ALLOW_MIGRATE_ALL = useAdminLevel(ADMIN_MAX_LEVEL);
     const [data, setData] = useState<GetSchemasResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isMigrateModalOpen, setIsMigrateModalOpen] = useState(false);
+    const [isMigrating, setIsMigrating] = useState(false);
 
     const handleSearch = (searchValue: string) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -50,6 +54,36 @@ export default function SchemasPage() {
         params.set('only_tenants', String(onlyTenants));
         params.set('page', '1');
         router.push(`${pathname}?${params.toString()}`);
+    };
+
+    const handleMigrateAll = async (keyword: string) => {
+        setIsMigrating(true);
+        try {
+            const response = await adminDbApi.migrateAllTenants(keyword);
+            if (response.status) {
+                showMessage({
+                    label: 'Миграция всех тенантов выполнена успешно',
+                    variant: 'success'
+                });
+                // Обновляем страницу
+                router.refresh();
+                // Перезагружаем список схем
+                await loadSchemas();
+            } else {
+                showMessage({
+                    label: response.message || 'Ошибка при миграции',
+                    variant: 'error'
+                });
+            }
+        } catch (err: any) {
+            showMessage({
+                label: err.message || 'Ошибка при миграции',
+                variant: 'error'
+            });
+        } finally {
+            setIsMigrating(false);
+            setIsMigrateModalOpen(false);
+        }
     };
 
     useEffect(() => {
@@ -113,6 +147,13 @@ export default function SchemasPage() {
                     defaultValue: searchParams.get('search') || '',
                     onSearch: handleSearch
                 }}
+                actions={isAdminAllowed(ALLOW_MIGRATE_ALL) ? [
+                    {
+                        children: 'Поднять все',
+                        variant: 'light',
+                        onClick: () => setIsMigrateModalOpen(true)
+                    }
+                ]: undefined}
                 showSearch
             />
             {schemas.length === 0 ? (
@@ -143,6 +184,16 @@ export default function SchemasPage() {
                     )}
                 </>
             )}
+
+            <AdminKeywordModal
+                isOpen={isMigrateModalOpen}
+                onClose={() => setIsMigrateModalOpen(false)}
+                onConfirm={handleMigrateAll}
+                title="Миграция всех тенантов"
+                description="Это действие применит все миграции ко всем схемам организаций. Операция может занять некоторое время и повлиять на работу системы."
+                actionName="Мигрировать"
+                isLoading={isMigrating}
+            />
         </>
     );
 }
