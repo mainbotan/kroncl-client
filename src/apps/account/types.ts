@@ -7,6 +7,8 @@ export interface Account {
     status: string;
     description: string;
     type: string;
+    is_admin?: boolean;
+    admin_level?: number;
     created_at: string;
     updated_at: string;
 }

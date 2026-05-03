@@ -249,11 +249,9 @@ export function Header() {
                                 <div className={styles.description}>
                                     Получен доступ к аккаунту. Продолжить работу?
                                 </div>
-                                <Link href='/platform'>
-                                <Button fullWidth className={styles.button} variant='accent'>
+                                <Button as='link' href='/sso/redirect' fullWidth className={styles.button} variant='accent'>
                                     Продолжить
                                 </Button>
-                                </Link>
                             </motion.div>
                             )}
                             </AnimatePresence>

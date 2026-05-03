@@ -47,7 +47,7 @@ export default function RegisterPage() {
   // Редирект если уже авторизован
   useEffect(() => {
     if (status === 'authenticated') {
-      router.push(redirectTo);
+      router.push('/sso/redirect?to=' + encodeURIComponent(redirectTo));
     }
   }, [status, router, redirectTo]);
   
@@ -170,7 +170,7 @@ export default function RegisterPage() {
       if (success) {
         setSuccessMessage('Аккаунт успешно подтвержден!');
         setTimeout(() => {
-          router.push(redirectTo);
+          router.push('/sso/redirect?to=' + encodeURIComponent(redirectTo));
         }, 2000);
       } else {
         setError('Неверный код подтверждения');

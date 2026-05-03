@@ -32,7 +32,7 @@ export default function LoginPage() {
     // Редирект если авторизован
     useEffect(() => {
         if (status === 'authenticated') {
-            router.push(redirectTo);
+            router.push('/sso/redirect?to=' + encodeURIComponent(redirectTo));
         }
     }, [status, router, redirectTo]);
 
@@ -78,9 +78,7 @@ export default function LoginPage() {
             if (!success) {
                 setError('Неверный email или пароль');
             } else {
-                // После успешного входа произойдет редирект через useEffect
-                // Но можно добавить явный редирект здесь
-                router.push(redirectTo);
+                router.push('/sso/redirect?to=' + encodeURIComponent(redirectTo));
             }
         } catch (error: any) {
             let errorMessage = 'Произошла ошибка при входе';

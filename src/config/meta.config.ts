@@ -63,6 +63,9 @@ const metaConfigs: Record<string, MetaConfig> = {
     },
     'mailing' : {
         title: 'Kroncl | Рассылка',
+    },
+    'tech': {
+        title: 'Kroncl | Техническая поддержка'
     }
 };
 
