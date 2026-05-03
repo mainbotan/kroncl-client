@@ -1,5 +1,3 @@
-// app/tech/db/schemas/[schemaName]/page.tsx
-
 'use client';
 
 import { PlatformHead } from '@/app/platform/components/lib/head/head';
