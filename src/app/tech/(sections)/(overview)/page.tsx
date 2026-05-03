@@ -31,11 +31,11 @@ export default function Page() {
             description='Метрики'
         /> */}
         <div className={styles.grid}>
-            <Counter value='100' legend='МБ. Общий размер инстанса базы' className={styles.col} />
+            {/* <Counter value='100' legend='МБ. Общий размер инстанса базы' className={styles.col} />
             <Counter variant='critical' value={40} legend='Активных хранилищ (схем)' className={styles.col} />
             <Counter value={50} legend='Активных компаний' className={styles.col} />
             <Counter value={100} legend='Аккаунтов' className={styles.col} />
-            <Counter variant='good' value='+20' legend='Компаний за последние 24 часа' className={styles.col} />
+            <Counter variant='good' value='+20' legend='Компаний за последние 24 часа' className={styles.col} /> */}
         </div>
         </>
     )
