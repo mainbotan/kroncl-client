@@ -1,6 +1,7 @@
 import { api } from '@/apps/shared/bridge/api';
-import { SystemStats, SchemaStats, TableInfo, MetricsHistoryItem } from './types';
+import { SystemStats, SchemaStats, TableInfo, MetricsHistoryItem, GetSchemasResponse } from './types';
 import { ApiResponse } from '@/apps/shared/bridge/types';
+import { PaginationParams } from '@/apps/shared/pagination/types';
 
 export class AdminDbApi {
     private basePath = '/admin/db';
@@ -32,6 +33,23 @@ export class AdminDbApi {
 
     async getSchemaTables(schemaName: string): Promise<ApiResponse<TableInfo[]>> {
         return api.get<TableInfo[]>(`${this.basePath}/${schemaName}/tables`);
+    }
+
+    async getSchemas(params?: {
+        search?: string;
+        only_tenants?: boolean;
+    } & PaginationParams): Promise<ApiResponse<GetSchemasResponse>> {
+        const queryParams = new URLSearchParams();
+        if (params?.search) queryParams.append('search', params.search);
+        if (params?.only_tenants === true) queryParams.append('only_tenants', 'true');
+        if (params?.page) queryParams.append('page', String(params.page));
+        if (params?.limit) queryParams.append('limit', String(params.limit));
+        
+        const url = queryParams.toString() 
+            ? `${this.basePath}/schemas?${queryParams.toString()}`
+            : `${this.basePath}/schemas`;
+        
+        return api.get<GetSchemasResponse>(url);
     }
 }
 

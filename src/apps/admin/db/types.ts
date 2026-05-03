@@ -1,3 +1,5 @@
+import { PaginationMeta } from "@/apps/shared/pagination/types";
+
 export interface SystemStats {
     total_database_size_mb: number;
     total_schemas_count: number;
@@ -43,4 +45,19 @@ export interface MetricsHistoryItem {
     tup_deleted: number;
     blks_read: number;
     blks_hit: number;
+}
+
+export interface SchemaListItem {
+    schema_name: string;
+    schema_size_mb: number;
+    tables_count: number;
+    indexes_count: number;
+    is_company: boolean;
+    migration_version: number;
+    migration_dirty: boolean;
+}
+
+export interface GetSchemasResponse {
+    schemas: SchemaListItem[];
+    pagination: PaginationMeta;
 }
