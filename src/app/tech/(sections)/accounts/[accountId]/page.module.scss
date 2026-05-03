@@ -1,0 +1,36 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1px;
+    border: 1px dashed red;
+    font-size: .85em;
+    border: 1px dashed var(--color-stroke-secondary);
+    background-color: var(--color-stroke-secondary);
+    border-radius: .4em;
+    overflow: hidden;
+
+    .row {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: .3rem;
+        background-color: var(--color-leader);
+        padding: .9em;
+        @include cursor(pointer);
+        transition: background-color var(--transition);
+
+        .field {
+            display: flex;
+            flex: 1;
+            color: var(--color-text-ghost);
+        }
+        .value {
+            color: var(--color-text-primary);
+        }
+
+        &:hover {
+            background-color: var(--color-surface-light);
+        }
+    }
+}

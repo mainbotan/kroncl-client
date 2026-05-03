@@ -9,19 +9,19 @@ export const sectionsList: TechSectionsGroup[] = [
     {
         capture: 'Главное',
         sections: [
-            {
-                title: 'Состояние',
-                href: '/tech',
-                exact: true,
-            },
+            // {
+            //     title: 'Состояние',
+            //     href: '/tech',
+            //     exact: true,
+            // },
             {
                 title: 'База данных',
                 href: '/tech/db',
             },
-            {
-                title: 'Алерты',
-                href: '/tech/alerts'
-            },
+            // {
+            //     title: 'Алерты',
+            //     href: '/tech/alerts'
+            // },
             {
                 title: 'Аккаунты',
                 href: '/tech/accounts'
@@ -30,14 +30,14 @@ export const sectionsList: TechSectionsGroup[] = [
                 title: 'Организации',
                 href: '/tech/companies'
             },
-            {
-                title: 'Нагрузка',
-                href: '/tech/load'
-            },
-            {
-                title: 'Сервер',
-                href: '/tech/server'
-            }
+            // {
+            //     title: 'Нагрузка',
+            //     href: '/tech/load'
+            // },
+            // {
+            //     title: 'Сервер',
+            //     href: '/tech/server'
+            // }
         ]
     },
     {
