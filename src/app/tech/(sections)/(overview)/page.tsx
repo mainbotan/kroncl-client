@@ -7,20 +7,24 @@ export interface CounterProps {
     value: string | number;
     legend: string;
     variant?: 'good' | 'normal' | 'warning' | 'critical';
+    format?: (value: string | number) => string;
 }
 
 export function Counter({
     className,
     value,
     legend,
-    variant = 'normal'
+    variant = 'normal',
+    format
 }: CounterProps) {
+    const displayValue = format ? format(value) : value;
+    
     return (
         <div className={clsx(styles.counter, className, styles[variant])}>
-            <div className={styles.value}>{value}</div>
+            <div className={styles.value}>{displayValue}</div>
             <div className={styles.legend}>{legend}</div>
         </div>
-    )
+    );
 }
 
 export default function Page() {

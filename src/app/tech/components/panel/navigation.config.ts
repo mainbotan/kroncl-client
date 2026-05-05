@@ -9,35 +9,23 @@ export const sectionsList: TechSectionsGroup[] = [
     {
         capture: 'Главное',
         sections: [
-            // {
-            //     title: 'Состояние',
-            //     href: '/tech',
-            //     exact: true,
-            // },
             {
                 title: 'База данных',
                 href: '/tech/db',
             },
-            // {
-            //     title: 'Алерты',
-            //     href: '/tech/alerts'
-            // },
             {
                 title: 'Аккаунты',
                 href: '/tech/accounts'
             },
             {
                 title: 'Организации',
-                href: '/tech/companies'
+                href: '/tech/companies',
             },
-            // {
-            //     title: 'Нагрузка',
-            //     href: '/tech/load'
-            // },
-            // {
-            //     title: 'Сервер',
-            //     href: '/tech/server'
-            // }
+            {
+                title: 'Клиентура',
+                href: '/tech/clientele',
+                label: 'Метрики'
+            },
         ]
     },
     {
