@@ -27,8 +27,9 @@ export const sectionsList: TechSectionsGroup[] = [
                 href: '/tech/accounts'
             },
             {
-                title: 'Организации',
-                href: '/tech/companies'
+                title: 'Клиентура',
+                href: '/tech/clientele',
+                label: 'Метрики'
             },
             // {
             //     title: 'Нагрузка',
