@@ -1,0 +1,15 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 1px;
+    background-color: var(--color-stroke-secondary);
+
+    .col {
+        display: flex;
+        flex: 1;
+        background-color: var(--color-leader) !important;
+        border-radius: 0;
+    }
+}

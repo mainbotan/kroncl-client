@@ -28,11 +28,11 @@ export class AdminDbApi {
     }
 
     async getSchemaStats(schemaName: string): Promise<ApiResponse<SchemaStats>> {
-        return api.get<SchemaStats>(`${this.basePath}/${schemaName}/sys`);
+        return api.get<SchemaStats>(`${this.basePath}/schemas/${schemaName}/sys`);
     }
 
     async getSchemaTables(schemaName: string): Promise<ApiResponse<TableInfo[]>> {
-        return api.get<TableInfo[]>(`${this.basePath}/${schemaName}/tables`);
+        return api.get<TableInfo[]>(`${this.basePath}/schemas/${schemaName}/tables`);
     }
 
     async getSchemas(params?: {
@@ -50,6 +50,14 @@ export class AdminDbApi {
             : `${this.basePath}/schemas`;
         
         return api.get<GetSchemasResponse>(url);
+    }
+
+    async migrateAllTenants(keyword: string): Promise<ApiResponse<null>> {
+        return api.post<null>(`${this.basePath}/schemas/up`, null, {
+            headers: {
+                'X-Admin-Keyword': keyword,
+            },
+        });
     }
 }
 
