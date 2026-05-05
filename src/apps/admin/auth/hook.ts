@@ -1,6 +1,7 @@
 'use client';
 
 import { useAdmin } from './context/AdminContext';
+import { useMemo } from 'react';
 
 interface AdminLevelChecker {
     allowed: boolean;
@@ -11,15 +12,17 @@ interface AdminLevelChecker {
 export function useAdminLevel(requiredLevel: number): AdminLevelChecker {
     const { adminLevel, isAdmin, loading } = useAdmin();
 
-    if (loading) {
-        return { allowed: false, isLoading: true, level: 0 };
-    }
+    return useMemo(() => {
+        if (loading) {
+            return { allowed: false, isLoading: true, level: 0 };
+        }
 
-    return {
-        allowed: isAdmin && adminLevel >= requiredLevel,
-        isLoading: false,
-        level: adminLevel,
-    };
+        return {
+            allowed: isAdmin && adminLevel >= requiredLevel,
+            isLoading: false,
+            level: adminLevel,
+        };
+    }, [adminLevel, isAdmin, loading, requiredLevel]);
 }
 
 export function isAdminAllowed(checker: AdminLevelChecker): boolean {

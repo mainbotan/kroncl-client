@@ -3,34 +3,56 @@
 .container {
     display: flex;
     flex-flow: column nowrap;
-    gap: 1px;
-    border: 1px dashed red;
-    font-size: .85em;
-    border: 1px dashed var(--color-stroke-secondary);
-    background-color: var(--color-stroke-secondary);
-    border-radius: .4em;
-    overflow: hidden;
+    gap: .5rem;
 
-    .row {
+    .remoteAdmin {
         display: flex;
         flex-flow: row nowrap;
-        gap: .3rem;
-        background-color: var(--color-leader);
-        padding: .9em;
-        @include cursor(pointer);
-        transition: background-color var(--transition);
+        gap: .6rem;
+        border: 1px dashed var(--color-stroke-secondary);
+        padding: .8em;
+        font-size: .8em;
+        border-radius: .5em;
+        align-items: center;
 
-        .field {
+        .info {
             display: flex;
             flex: 1;
-            color: var(--color-text-ghost);
+            flex-flow: column nowrap;
+            gap: .2em;
+            
+            .title {
+                font-size: .9em;
+                font-weight: 600;
+                letter-spacing: .02em;
+                line-height: 1.14;
+            }
+            .description {
+                font-size: .85em;
+                line-height: 1.3;
+                color: var(--color-text-ghost);
+            }
         }
-        .value {
-            color: var(--color-text-primary);
-        }
+        .chooseLevel {
+            display: flex;
+            flex-flow: row nowrap;
+            gap: .3em;
+            flex: 1;
 
-        &:hover {
-            background-color: var(--color-surface-light);
+            .col {
+                display: flex;
+                flex: 1;
+                min-width: 3em;
+                min-height: 2.4em;
+                background-color: var(--color-surface-light);
+                align-items: center;
+                justify-content: center;
+                @include cursor(pointer);
+
+                &:hover, &.active {
+                    background-color: var(--color-accent);
+                }
+            }
         }
     }
 }
