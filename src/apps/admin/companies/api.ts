@@ -2,6 +2,7 @@ import { api } from '@/apps/shared/bridge/api';
 import { ApiResponse } from '@/apps/shared/bridge/types';
 import { AdminCompany, GetCompaniesResponse, GetCompanyAccountsResponse } from './types';
 import { PaginationParams } from '@/apps/shared/pagination/types';
+import { CompanyPricingPlan } from '@/apps/company/modules/pricing/types';
 
 export class AdminCompaniesApi {
     private basePath = '/admin/companies';
@@ -25,6 +26,9 @@ export class AdminCompaniesApi {
         return api.get<AdminCompany>(`${this.basePath}/${companyId}`);
     }
 
+    async getCompanyPricingPlan(companyId: string): Promise<ApiResponse<CompanyPricingPlan>> {
+        return api.get<CompanyPricingPlan>(`${this.basePath}/${companyId}/pricing`);
+    }
     
     async getCompanyAccounts(
         companyId: string, 

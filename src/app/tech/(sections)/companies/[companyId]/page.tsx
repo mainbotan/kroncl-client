@@ -17,6 +17,7 @@ import { PlatformPagination } from "@/app/platform/components/lib/pagination/pag
 import { PlatformEmptyCanvas } from "@/app/platform/components/lib/empty-canvas/canvas";
 import { usePagination } from "@/apps/shared/pagination/hooks/usePagination";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { CompanyPricingPlan } from "@/apps/company/modules/pricing/types";
 
 export default function CompanyPage() {
     const params = useParams();
@@ -32,6 +33,7 @@ export default function CompanyPage() {
 
     const allowPage = useAdminLevel(ADMIN_LEVEL_3);
     const [company, setCompany] = useState<AdminCompany | null>(null);
+    const [pricing, setPricing] = useState<CompanyPricingPlan | null>(null);
     const [members, setMembers] = useState<CompanyAccount[]>([]);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -47,9 +49,10 @@ export default function CompanyPage() {
                 const page = parseInt(searchParams.get('page') || '1');
                 const limit = parseInt(searchParams.get('limit') || '20');
 
-                const [companyResponse, membersResponse] = await Promise.all([
+                const [companyResponse, membersResponse, pricingResponse] = await Promise.all([
                     adminCompaniesApi.getCompanyById(companyId),
-                    adminCompaniesApi.getCompanyAccounts(companyId, { page, limit })
+                    adminCompaniesApi.getCompanyAccounts(companyId, { page, limit }),
+                    adminCompaniesApi.getCompanyPricingPlan(companyId)
                 ]);
 
                 if (companyResponse.status && companyResponse.data) {
@@ -62,6 +65,10 @@ export default function CompanyPage() {
                 if (membersResponse.status && membersResponse.data) {
                     setMembers(membersResponse.data.accounts);
                     setTotal(membersResponse.data.pagination.total);
+                }
+
+                if (pricingResponse.status && pricingResponse.data) {
+                    setPricing(pricingResponse.data);
                 }
             } catch (err) {
                 setError(err instanceof Error ? err.message : "Ошибка загрузки");
@@ -86,7 +93,7 @@ export default function CompanyPage() {
     const limit = parseInt(searchParams.get('limit') || '20');
     const pages = Math.ceil(total / limit);
 
-    const fields = [
+    const companyFields = [
         { label: 'ID', value: company.id },
         { label: 'Slug', value: company.slug },
         { label: 'Название', value: company.name },
@@ -102,6 +109,24 @@ export default function CompanyPage() {
         { label: 'Создана', value: new Date(company.created_at).toLocaleString() },
         { label: 'Обновлена', value: new Date(company.updated_at).toLocaleString() },
     ];
+
+    const pricingFields = pricing ? [
+        { label: 'Тарифный план', value: pricing.current_plan.name },
+        { label: 'Код тарифа', value: pricing.current_plan.code },
+        { label: 'Уровень', value: pricing.current_plan.lvl },
+        { label: 'Цена в месяц', value: `${pricing.current_plan.price_per_month} ₽` },
+        { label: 'Цена в год', value: `${pricing.current_plan.price_per_year} ₽` },
+        { label: 'Лимит БД (MB)', value: pricing.current_plan.limit_db_mb },
+        { label: 'Лимит объектов (MB)', value: pricing.current_plan.limit_objects_mb },
+        { label: 'Лимит объектов (шт)', value: pricing.current_plan.limit_objects_count },
+        { label: 'Триальный период', value: pricing.is_trial ? 'Да' : 'Нет' },
+        { label: 'Дней до окончания', value: pricing.days_left },
+        { label: 'Истекает', value: new Date(pricing.expires_at).toLocaleString() },
+        ...(pricing.next_plan ? [
+            { label: 'Следующий план', value: pricing.next_plan.name },
+            { label: 'Код следующего плана', value: pricing.next_plan.code },
+        ] : [])
+    ] : [];
 
     return (
         <>
@@ -124,6 +149,7 @@ export default function CompanyPage() {
                         }
                     ]}
                 />
+                
                 <div className={styles.members}>
                     <h3 className={styles.membersTitle}>Участники компании</h3>
                     {members.length === 0 ? (
@@ -156,10 +182,19 @@ export default function CompanyPage() {
                         </>
                     )}
                 </div>
+                
                 <FieldsBlock
-                    className={styles.fields}
-                    fields={fields}
-                />
+                        className={styles.fields}
+                        fields={companyFields}
+                    />
+                
+                {pricingFields.length > 0 && (
+                    <FieldsBlock
+                        className={styles.fields}
+                        fields={pricingFields}
+                    />
+                )}
+                
             </div>
         </>
     );
