@@ -1,0 +1,15 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+
+    // tickets grid
+    .grid {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .4rem;
+        font-size: .85em;
+    }
+}

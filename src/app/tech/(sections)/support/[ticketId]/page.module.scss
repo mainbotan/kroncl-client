@@ -1,0 +1,192 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0rem;
+    position: relative;
+    height: 100%;
+    flex: 1;
+    
+    .dialog {
+        display: block;
+        height: calc(100vh - 5.4rem);
+        overflow-y: scroll;
+        border: 1px solid var(--color-stroke-secondary);
+        border-radius: .4em;
+        padding: 1rem;
+        font-size: .75em;
+        padding-bottom: 5.5rem;
+        text-align: center;
+
+        .grid {
+            display: inline-flex;
+            flex-flow: column nowrap;
+            gap: .8rem;
+            max-width: 32rem;
+        }
+
+        .message {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: .4em;
+            align-items: start;
+            width: 100%;
+
+            .text {
+                display: block;
+                line-height: 1.3;
+                background-color: var(--color-surface-glass-secondary);
+                padding: 1em;
+                border-radius: .8em;
+                max-width: 80%;
+                text-align: left;
+            }
+            .meta {
+                display: block;
+                padding: .3em .5em;
+                text-align: left;
+                color: var(--color-text-ghost);
+
+                .accent {
+                    color: var(--color-text-hint);
+                }
+            }
+
+            &.answer {
+                align-items: end;
+            }
+        }
+    }
+
+    .dialogActions {
+        position: absolute;
+        z-index: 20;
+        left: 1em;
+        bottom: 0;
+        display: flex;
+        flex-flow: column nowrap;
+        gap: .5em;
+
+        .action {
+            width: 2.5em;
+            height: 2.5em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-icon-primary);
+            background-color: var(--color-surface-glass);
+            border: 1px solid var(--color-stroke-secondary);
+            @include cursor(pointer);
+            transition: border-color var(--transition),
+                        background-color var(--transition);
+
+            svg {
+                width: 40%;
+                height: 40%;
+            }
+
+            &.rotated {
+                transform: rotate(90deg);
+            }
+            &:hover {
+                border-color: var(--color-stroke-primary);
+                background-color: var(--color-surface-glass-secondary);
+            }
+        }
+    }
+
+    .textable {
+        position: absolute;
+        z-index: 10;
+        bottom: 0;
+        left: 0;
+        width: calc(60%);
+        left: 20%;
+        font-size: .7em;
+
+        .textarea {
+            resize: none;
+        }
+
+        .send {
+            position: absolute;
+            z-index: 15;
+            right: -4em;
+            bottom: .1em;
+            width: 3em;
+            height: 3em;
+            font-size: .9em;
+            background-color: var(--color-contrast);
+            border: none;
+            outline: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-leader);
+            @include cursor(pointer);
+            @include shimmer();
+            transition: transform var(--transition);
+
+            .svg {
+                width: 50%;
+                height: 50%;
+            }
+
+            &:hover {
+                transform: scale(1.02);
+            }
+        }
+    }
+
+    .textablePlug {
+        position: absolute;
+        z-index: 10;
+        bottom: 0;
+        left: 0;
+        width: calc(60%);
+        left: 20%;
+        font-size: .7em;
+        display: flex;
+        flex-flow: row nowrap;
+        background-color: var(--color-leader);
+        padding: 1.2em;
+        border-radius: .4em;
+        gap: 1em;
+        border: 1px solid var(--color-stroke-primary);
+
+        .info {
+            display: flex;
+            flex: 1;
+            flex-flow: column nowrap;
+            gap: .4em;
+            font-size: 1.1em;
+
+            .capture, .description {
+                text-align: center;
+            }
+
+            .capture {
+                line-height: 1.15;
+            }
+            .description {
+                color: var(--color-text-ghost);
+                font-size: .8em;
+                line-height: 1.3;
+            }
+        }
+    }
+
+    &::after {
+        content: "";
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        position: absolute;
+        height: 3rem;
+        z-index: 5;
+        background: linear-gradient(180deg, transparent, var(--color-leader));
+    }
+}
