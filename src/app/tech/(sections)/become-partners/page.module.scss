@@ -1,0 +1,9 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.grid {
+    font-size: .85em;
+    margin-top: .4rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: .25rem;
+}

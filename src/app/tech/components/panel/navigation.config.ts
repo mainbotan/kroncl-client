@@ -33,7 +33,6 @@ export const sectionsList: TechSectionsGroup[] = [
         sections: [
             {
                 title: 'Поддержка',
-                label: '23',
                 href: '/tech/support'
             },
             {
