@@ -1,4 +1,3 @@
-// apps/company/modules/support/events.ts
 type Listener = () => void;
 
 const listeners: Listener[] = [];

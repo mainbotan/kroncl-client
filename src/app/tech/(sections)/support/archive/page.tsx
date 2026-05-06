@@ -6,16 +6,16 @@ import { PlatformEmptyCanvas } from '@/app/platform/components/lib/empty-canvas/
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { usePagination } from '@/apps/shared/pagination/hooks/usePagination';
-import { adminCompaniesApi } from '@/apps/admin/companies/api';
-import { AdminCompany, GetCompaniesResponse } from '@/apps/admin/companies/types';
+import { adminSupportApi } from '@/apps/admin/support/api';
+import { AdminTicket, GetTicketsResponse } from '@/apps/admin/support/types';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import styles from './page.module.scss';
-import { CompanyCard } from './components/company-card/card';
+import styles from '../layout.module.scss';
+import { TicketCard } from '../components/ticket-card/card';
 import { isAdminAllowed, useAdminLevel } from '@/apps/admin/auth/hook';
-import { ADMIN_LEVEL_3 } from '@/apps/admin/auth/types';
+import { ADMIN_LEVEL_4 } from '@/apps/admin/auth/types';
 
-export default function CompaniesPage() {
+export default function SupportTicketsPage() {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -24,51 +24,37 @@ export default function CompaniesPage() {
         defaultLimit: 20
     });
 
-    const { allowed: isAdmin, isLoading: adminLoading } = useAdminLevel(ADMIN_LEVEL_3);
-    const [data, setData] = useState<GetCompaniesResponse | null>(null);
+    const { allowed: isAdmin, isLoading: adminLoading } = useAdminLevel(ADMIN_LEVEL_4);
+    const [data, setData] = useState<GetTicketsResponse | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const handleSearch = (searchValue: string) => {
-        const params = new URLSearchParams(searchParams.toString());
-        
-        if (searchValue.trim()) {
-            params.set('search', searchValue);
-            params.set('page', '1');
-        } else {
-            params.delete('search');
-        }
-        
-        router.push(`${pathname}?${params.toString()}`);
-    };
-
     useEffect(() => {
         if (!isAdmin) return;
-        loadCompanies();
+        loadTickets();
     }, [searchParams, isAdmin]);
 
-    const loadCompanies = async () => {
+    const loadTickets = async () => {
         setLoading(true);
         setError(null);
         try {
             const page = parseInt(searchParams.get('page') || '1');
             const limit = parseInt(searchParams.get('limit') || '20');
-            const search = searchParams.get('search') || undefined;
 
-            const response = await adminCompaniesApi.getAllCompanies({
+            const response = await adminSupportApi.getTickets({
+                status: 'closed',
                 page,
                 limit,
-                search,
             });
             
             if (response.status && response.data) {
                 setData(response.data);
             } else {
-                setError('Не удалось загрузить список компаний');
+                setError('Не удалось загрузить тикеты');
             }
         } catch (err) {
             setError(err instanceof Error ? err.message : "Ошибка загрузки");
-            console.error('Error loading companies:', err);
+            console.error('Error loading tickets:', err);
         } finally {
             setLoading(false);
         }
@@ -80,40 +66,29 @@ export default function CompaniesPage() {
 
     if (!isAdmin) return <PlatformError error="Доступ запрещён" />;
 
-    const companies = data?.companies || [];
+    const tickets = data?.tickets || [];
     const pagination = data?.pagination;
-    const search = searchParams.get('search') || undefined;
-
-    const queryParams: Record<string, string> = {};
-    const limitParam = searchParams.get('limit');
-    if (limitParam) queryParams.limit = limitParam;
-    if (search) queryParams.search = search;
 
     return (
         <>
             <PlatformHead
-                title='Организации'
-                description='Организации [тенанты], созданные пользователями.'
-                searchProps={{
-                    placeholder: 'Поиск по названию или slug',
-                    defaultValue: searchParams.get('search') || '',
-                    onSearch: handleSearch
-                }}
-                showSearch
+                title='Архив тикетов'
+                description='Обработанные и закрытые тикеты.'
+                showSearch={false}
             />
-            {companies.length === 0 ? (
+            {tickets.length === 0 ? (
                 <PlatformEmptyCanvas 
-                    title='Организации не найдены'
-                    description={searchParams.get('search') ? 'Попробуйте изменить поисковый запрос' : 'В системе нет созданных организаций'}
+                    title='Нет активных тикетов'
+                    description='Все тикеты обработаны'
                 />
             ) : (
                 <>
                     <div className={styles.grid}>
-                        {companies.map((company: AdminCompany) => (
-                            <CompanyCard 
-                                key={company.id} 
-                                company={company} 
-                                className={styles.item}
+                        {tickets.map((ticket: AdminTicket) => (
+                            <TicketCard 
+                                key={ticket.id} 
+                                ticket={ticket} 
+                                className={styles.item} 
                             />
                         ))}
                     </div>
@@ -122,7 +97,6 @@ export default function CompaniesPage() {
                             <PlatformPagination
                                 meta={pagination}
                                 baseUrl={pathname}
-                                queryParams={queryParams}
                                 onPageChange={(page) => handlePageChange(page)}
                             />
                         </div>
