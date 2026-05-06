@@ -14,5 +14,6 @@
         line-height: 1.4;
         font-size: .6em;
         color: var(--color-text-ghost);
+        @include lines-ellipsis(12);
     }
 }

@@ -33,12 +33,11 @@ export const sectionsList: TechSectionsGroup[] = [
         sections: [
             {
                 title: 'Поддержка',
-                label: '23',
                 href: '/tech/support'
             },
             {
-                title: 'Заявки на партнёрство',
-                href: '/tech/become-partners',
+                title: 'Партнёры',
+                href: '/tech/partners',
             }
         ]
     },
