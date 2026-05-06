@@ -1,6 +1,6 @@
 {
   "name": "kroncl-web-client",
-  "version": "1.4.187",
+  "version": "1.4.188",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000",
