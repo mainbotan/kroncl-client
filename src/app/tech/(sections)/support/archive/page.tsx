@@ -10,8 +10,8 @@ import { adminSupportApi } from '@/apps/admin/support/api';
 import { AdminTicket, GetTicketsResponse } from '@/apps/admin/support/types';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import styles from './layout.module.scss';
-import { TicketCard } from './components/ticket-card/card';
+import styles from '../layout.module.scss';
+import { TicketCard } from '../components/ticket-card/card';
 import { isAdminAllowed, useAdminLevel } from '@/apps/admin/auth/hook';
 import { ADMIN_LEVEL_4 } from '@/apps/admin/auth/types';
 
@@ -42,7 +42,7 @@ export default function SupportTicketsPage() {
             const limit = parseInt(searchParams.get('limit') || '20');
 
             const response = await adminSupportApi.getTickets({
-                status: 'pending',
+                status: 'closed',
                 page,
                 limit,
             });
@@ -72,17 +72,9 @@ export default function SupportTicketsPage() {
     return (
         <>
             <PlatformHead
-                title='Тикеты компаний'
-                description='Созданные компаниями тикеты в техническую поддержку. Отображаются только ожидающие обработки.'
+                title='Архив тикетов'
+                description='Обработанные и закрытые тикеты.'
                 showSearch={false}
-                actions={[
-                    {
-                        children: 'Архив тикетов',
-                        variant: 'light',
-                        as: 'link',
-                        href: '/tech/support/archive'
-                    }
-                ]}
             />
             {tickets.length === 0 ? (
                 <PlatformEmptyCanvas 

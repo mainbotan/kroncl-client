@@ -1,0 +1,1 @@
+export const shortenId = (id: string|undefined) => id ? id.slice(0, 8) : id;

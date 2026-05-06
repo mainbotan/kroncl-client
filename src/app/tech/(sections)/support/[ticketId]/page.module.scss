@@ -23,7 +23,7 @@
             display: inline-flex;
             flex-flow: column nowrap;
             gap: .8rem;
-            max-width: 32rem;
+            width: 30.5rem;
         }
 
         .message {
@@ -50,6 +50,40 @@
 
                 .accent {
                     color: var(--color-text-hint);
+                }
+            }
+            .actions {
+                display: inline-flex;
+                flex-flow: row nowrap;
+                gap: .4em;
+                font-size: .8em;
+                padding: 0em .5em;
+                color: var(--color-text-ghost);
+
+                .action {
+                    transition: color var(--transition);
+                    @include cursor(pointer);
+
+                    &:hover {
+                        color: var(--color-text-hint);
+                    }
+                }
+            }
+            
+            .editContainer {
+                display: flex;
+                flex-flow: column nowrap;
+                gap: .7em;
+
+                .textarea {
+                    width: 18rem;
+                    border-radius: .6em;
+                }
+                .editActions {
+                    font-size: 1.05em;
+                    display: flex;
+                    flex-flow: row nowrap;
+                    gap: .4em;
                 }
             }
 

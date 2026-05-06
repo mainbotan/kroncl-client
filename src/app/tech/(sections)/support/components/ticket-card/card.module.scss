@@ -47,6 +47,9 @@
             .accent {
                 color: var(--color-accent);
             }
+            &.primary {
+                color: var(--color-accent-text-primary);
+            }
         }
         .meta {
             font-size: .8em;
