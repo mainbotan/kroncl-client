@@ -36,8 +36,8 @@ export const sectionsList: TechSectionsGroup[] = [
                 href: '/tech/support'
             },
             {
-                title: 'Заявки на партнёрство',
-                href: '/tech/become-partners',
+                title: 'Партнёры',
+                href: '/tech/partners',
             }
         ]
     },
