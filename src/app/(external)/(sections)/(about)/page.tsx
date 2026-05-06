@@ -23,6 +23,10 @@ import Wallet from '@/assets/ui-kit/icons/wallet';
 import History from '@/assets/ui-kit/icons/history';
 import Clients from '@/assets/ui-kit/icons/clients';
 import { ChartsBlock } from './slides/charts/block';
+import { SecurityBlock } from './slides/switchable/sections/security/block';
+import { DemoBlock } from '../(customers)/(product)/components/demo/block';
+import Code from '@/assets/ui-kit/icons/code';
+import { ReviewsBlock } from './slides/reviews/block';
 
 export default function Page() {
     return (
@@ -47,6 +51,7 @@ export default function Page() {
                     <OverviewBlock className={styles.block} />
                 </div>
                 <SwitchableBlock />
+                <ReviewsBlock className={styles.block} />
 
                 <div className={styles.intervalFlex}>
                     <span />
@@ -114,36 +119,22 @@ export default function Page() {
                     <span />
                     <span />
                 </div>
+                
+                <DemoBlock
+                    className={styles.block}
+                    icon={<Code />}
+                    title='Файлы & Данные модулей'
+                    description='Контролируйте каждый мегабайт пространства организации,
+                    просматривайте распределение по модулям и оптимизируйте занимаемое пространство.'
+                    img='/images/mock-ups/company-storage-cut.png'
+                />
 
-                {/* <div className={styles.ecosystemGrid}>
-                    <HeadBlock className={clsx(styles.block, styles.head)} 
-                        title='Больше чем бизнес'
-                        description='Для тех, кто живёт делом.'
-                        variant='default'
-                        location='center'
-                        actions={[
-                            {as: 'link', children: 'Начать сейчас', href: authLinks.registration, variant: 'contrast'}
-                        ]}
-                    />
-                    <div className={styles.statisticsGrid}>
-                        <StatisticsBlock 
-                            value='до 10000'
-                            legend='запросов/день к 1 организации'
-                            className={styles.block} 
-                            />
-                        <StatisticsBlock 
-                            value='∞'
-                            legend='приглашений сотрудников'
-                            className={styles.block} 
-                            />
-                        <StatisticsBlock 
-                            value='5'
-                            legend='модулей учёта & аналитики'
-                            className={styles.block} 
-                            />
-                    </div>
-                    <EcosystemBlock className={styles.block} />
-                </div> */}
+                <div className={styles.intervalFlex}>
+                    <span />
+                    <span />
+                    <span />
+                    <span />
+                </div>
 
                 <TariffsBlock className={clsx(styles.block, styles.tariffsBlock)} />
                 <TrialPeriodBlock className={styles.block} />
