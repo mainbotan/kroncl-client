@@ -27,7 +27,7 @@ export const linksList: FooterGroup[] = [
         ]
     },
     {
-        capture: 'Предпринимателям',
+        capture: 'Руководства',
         links: [
             { capture: 'Быстрый старт', href: DOCS_LINK_QUICK_START },
             { capture: 'Организации', href: DOCS_LINK_COMPANIES },
