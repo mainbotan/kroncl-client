@@ -12,6 +12,11 @@ export const sectionsList: TechSectionsGroup[] = [
         requiredLevel: 1,
         sections: [
             {
+                title: 'Сервер',
+                href: '/tech/server',
+                requiredLevel: 1
+            },
+            {
                 title: 'База данных',
                 href: '/tech/db',
                 requiredLevel: 1
