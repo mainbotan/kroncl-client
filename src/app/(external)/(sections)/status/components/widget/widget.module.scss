@@ -1,0 +1,56 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    height: 3em;
+    padding: 0 1.4em;
+    border-radius: .5em;
+    background-color: var(--color-leader);
+    border: 1px solid var(--color-stroke-primary);
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    transition: background-color var(--transition);
+
+    .indicator {
+        width: .5em;
+        min-width: .5em;
+        height: .5em;
+        border-radius: 50%;
+    }
+
+    .text {
+        @include text-ellipsis();
+        text-align: center;
+    }
+
+    &.none {
+       .indicator {
+            background-color: var(--color-surface-light);
+       }
+    }
+    &.normal {
+       .indicator {
+            background-color: var(--color-blue);
+       }
+    }
+    &.minor {
+       .indicator {
+            background-color: var(--color-yellow);
+       }
+    }
+    &.major {
+       .indicator {
+            background-color: var(--color-magenta);
+       }
+    }
+    &.critical {
+       .indicator {
+            background-color: var(--color-red);
+       }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-elevated);
+    }
+}

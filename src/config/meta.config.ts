@@ -65,7 +65,10 @@ const metaConfigs: Record<string, MetaConfig> = {
         title: 'Kroncl | Рассылка',
     },
     'tech': {
-        title: 'Kroncl | Техническая поддержка'
+        title: 'Kroncl | Администраторам & Разработчикам'
+    },
+    'status': {
+        title: 'Kroncl | Статус'
     }
 };
 
