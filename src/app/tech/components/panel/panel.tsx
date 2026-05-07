@@ -13,6 +13,7 @@ import { sectionsList } from './navigation.config';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { APP_VERSION } from '@/config/version.config';
+import { useAdmin } from '@/apps/admin/auth/context/AdminContext';
 
 export interface TechPanelSectionProps extends NavigationSection {
     className?: string;
@@ -20,6 +21,7 @@ export interface TechPanelSectionProps extends NavigationSection {
     icon?: React.ReactNode;
     label?: string | number;
     isActive?: boolean;
+    requiredLevel: number;
 }
 
 function TechPanelSection({
@@ -50,22 +52,31 @@ export function TechPanel({
     className
 }: TechPanelProps) {
     const pathname = usePathname();
+    const { adminLevel } = useAdmin();
+
 
     return (
         <div className={clsx(styles.container, className)}>
-            <div className={styles.head}>
+            <Link href='/tech' className={styles.head}>
                 <LogoIco className={styles.icon} color='var(--color-text-secondary)' />
                 <div className={styles.info}>
                     <div className={styles.title}>tech.</div>
                     <div className={styles.description}>для разработчиков</div>
                 </div>
-            </div>
+            </Link>
             <div className={styles.sections}>
                 <div className={styles.grid}>
-                    {sectionsList.map((group, index) => (
+                    {sectionsList.map((group, index) => {
+                    if (adminLevel < group.requiredLevel) {
+                        return
+                    }
+                    return (
                     <div key={index} className={styles.section}>
                         {group.capture && (<div className={styles.capture}>{group.capture}</div>)}
                         {group.sections.map((section, index) => {
+                            if (adminLevel < section.requiredLevel) {
+                                return
+                            }
                             const isActive = isSectionActive(pathname, {
                                 href: section.href,
                                 exact: section.exact
@@ -79,7 +90,7 @@ export function TechPanel({
                             )
                         })}
                     </div>
-                    ))}
+                    )})}
 
                     <div className={styles.bottom}>
                         Актуальная сборка клиента платформы <span className={styles.accent}>{APP_VERSION}</span>

@@ -82,6 +82,9 @@
                 min-width: 18rem;
                 max-width: 18rem;
             }
+            &.status {
+                justify-content: end;
+            }
         }
     }
 
@@ -100,6 +103,16 @@
             width: 30%;
             max-width: calc(50% - .2rem);
             min-width: calc(50% - .2rem);
+
+            &.status {
+                align-items: start;
+                min-width: 100%;
+                max-width: 100%;
+                
+                .widget {
+                    display: inline-flex !important;
+                }
+            }
         }
     }
 }

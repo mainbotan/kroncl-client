@@ -12,12 +12,16 @@ import React from 'react';
 export interface StartBlockProps extends PageBlockProps {
     title: string;
     description: React.ReactNode;
+    showActions?: boolean;
+    showStats?: boolean;
 }
 
 export function StartBlock({
     className,
     title,
-    description
+    description,
+    showActions = true,
+    showStats = true
 }: StartBlockProps) {
     const isIncreaseTitle = title.length < 7;
 
@@ -28,7 +32,7 @@ export function StartBlock({
                     <div className={clsx(styles.title, isIncreaseTitle && styles.increased)}>{title}</div>
                     <div className={styles.description}>{description}</div>
                 </div>
-                <div className={styles.actions}>
+                {showActions && (<div className={styles.actions}>
                     <Button 
                         className={styles.action} 
                         variant='contrast'
@@ -36,8 +40,8 @@ export function StartBlock({
                         href={authLinks.registration}
                         children='Начать работу'
                     />
-                </div>
-                <div className={styles.stats}>
+                </div>)}
+                {showStats && (<div className={styles.stats}>
                     <span className={styles.item}>
                         <span className={styles.primary}>∞</span> организаций
                     </span>
@@ -47,7 +51,7 @@ export function StartBlock({
                     <span className={styles.item}>
                         <span className={styles.primary}>∞</span> сотрудников
                     </span>
-                </div>
+                </div>)}
             </div>
             <svg className={styles.art} viewBox="0 0 708 231" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line x1="84.286" y1="230.5" x2="353.286" y2="229.5" stroke="white"/>
