@@ -4,6 +4,7 @@ import clsx from "clsx";
 import styles from './block.module.scss';
 import { DailyStatus, Incident } from '@/apps/status/types';
 import { ModalTooltip } from '@/app/components/tooltip/tooltip';
+import { formatDate, formatTime } from "@/assets/utils/date";
 
 export interface GridBlockProps {
     className?: string;
@@ -79,7 +80,8 @@ export function GridBlock({
                         </div>
                         {displayedDay.incidents?.map((incident: Incident) => (
                             <div key={incident.id} className={clsx(styles.item, statusColors[incident.severity === 'major' ? 'major_outage' : 'degraded'])}>
-                                {incident.id}
+                                <div className={styles.id}>{incident.id}</div>
+                                <div className={styles.time}>{formatTime(incident.start_time, true)}</div>
                             </div>
                         ))}
                     </div>

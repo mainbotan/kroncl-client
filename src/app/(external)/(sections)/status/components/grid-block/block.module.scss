@@ -68,6 +68,19 @@
             .item {
                 position: relative;
                 line-height: 1.3;
+                display: flex;
+                flex-flow: row nowrap;
+                gap: 1em;
+
+                .id {
+                    display: inline-flex;
+                    white-space: nowrap;
+                }
+                .time {
+                    @include text-ellipsis();
+                    text-align: right;
+                    color: var(--color-text-ghost);
+                }
 
                 &::before {
                     content: "";
