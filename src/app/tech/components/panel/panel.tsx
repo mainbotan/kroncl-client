@@ -14,6 +14,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { APP_VERSION } from '@/config/version.config';
 import { useAdmin } from '@/apps/admin/auth/context/AdminContext';
+import { ThemeSwitcher } from '@/app/(external)/components/footer/switcher/switcher';
 
 export interface TechPanelSectionProps extends NavigationSection {
     className?: string;
@@ -94,6 +95,9 @@ export function TechPanel({
 
                     <div className={styles.bottom}>
                         Актуальная сборка клиента платформы <span className={styles.accent}>{APP_VERSION}</span>
+                    </div>
+                    <div className={styles.actions}>
+                        <ThemeSwitcher className={styles.switcher} />
                     </div>
                 </div>
             </div>

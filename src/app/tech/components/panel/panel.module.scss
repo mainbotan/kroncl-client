@@ -122,13 +122,23 @@
             }
 
             .bottom {
-                padding: 1rem;
+                padding: .5rem 1rem;
                 font-size: .7em;
                 color: var(--color-text-ghost);
                 line-height: 1.3;
 
                 .accent {
                     color: var(--color-text-hint);
+                }
+            }
+            .actions {
+                padding: .5rem 1rem;
+                display: flex;
+                flex-flow: row nowrap;
+                gap: 1rem;
+
+                .switcher {
+                    font-size: 1.55em;
                 }
             }
         }

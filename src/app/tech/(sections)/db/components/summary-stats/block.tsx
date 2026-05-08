@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import styles from './block.module.scss';
-import { Counter } from '../../../(overview)/page';
+import { Counter } from '../../../overview/counter';
 import { adminDbApi } from '@/apps/admin/db/api';
 import { SystemStats } from '@/apps/admin/db/types';
 

@@ -13,7 +13,8 @@ export const sectionsList: TechSectionsGroup[] = [
         sections: [
             {
                 title: 'Сервер',
-                href: '/tech/server',
+                href: '/tech',
+                exact: true,
                 requiredLevel: 1
             },
             {
