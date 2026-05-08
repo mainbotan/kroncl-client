@@ -48,7 +48,7 @@
     }
 
     .block {
-        font-size: .75em;
+        font-size: .7em;
         padding: .5em 0;
         border-top: 1px solid var(--color-stroke-secondary);
         display: flex;
@@ -73,12 +73,16 @@
                     content: "";
                     position: absolute;
                     z-index: 10;
-                    left: -1em;
+                    left: -1.4em;
                     top: calc(50% - .25em);
-                    width: .5em;
+                    width: .8em;
                     height: .5em;
                     background-color: var(--color-surface-light);
-                    border-radius: 50%;
+                    border-radius: 1em;
+
+                    @media (max-width: 720px) {
+                        display: none;
+                    }
                 }
                 
                 &.normal::before {
