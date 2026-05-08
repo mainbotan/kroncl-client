@@ -42,10 +42,11 @@ export function GridBlock({
     };
 
     const getTooltipText = (day: DailyStatus): string => {
-        if (!day.incidents || day.incidents.length === 0) {
-            return statusLabels[day.status];
-        }
-        return day.incidents.map(i => i.title).join('\n');
+        return statusLabels[day.status];
+        // if (!day.incidents || day.incidents.length === 0) {
+        //     return statusLabels[day.status];
+        // }
+        // return day.incidents.map(i => i.title).join('\n');
     };
 
     const displayedDay = selectedDay || (days.length > 0 ? days[days.length - 1] : null);
