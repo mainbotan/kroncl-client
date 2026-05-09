@@ -39,10 +39,6 @@
             flex: 1;
             background-color: var(--color-leader);
         }
-
-        // span:nth-child(odd) {
-        //     background-color: var(--color-surface-glass);
-        // }
     }
 
     @media (max-width: 720px) {
@@ -53,8 +49,4 @@
             font-size: .55em;
         }
     }
-}
-
-.startHead {
-    background: conic-gradient(from 45deg, var(--color-surface-light), var(--color-leader));
 }

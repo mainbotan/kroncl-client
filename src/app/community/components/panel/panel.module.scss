@@ -1,0 +1,22 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: block;
+    overflow-y: scroll;
+    transition: left var(--transition);
+    pointer-events: none;
+
+    @media (max-width: 720px) {
+        position: absolute;
+        z-index: 100;
+        left: -12rem;
+        top: 0;
+        background-color: var(--color-leader);
+        pointer-events: auto;
+
+        &.opened {
+            left: 0;
+            width: 100%;
+        }
+    }
+}
