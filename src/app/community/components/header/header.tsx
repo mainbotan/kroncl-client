@@ -8,6 +8,7 @@ import Menu from '@/assets/ui-kit/icons/menu';
 import Close from '@/assets/ui-kit/icons/close';
 import { ThemeSwitcher } from '@/app/(external)/components/footer/switcher/switcher';
 import { useDevSidebar } from '../panel/context/context';
+import { linksConfig } from '@/config/links.config';
 
 export interface CommunityHeaderProps {
     className?: string;
@@ -22,6 +23,7 @@ export function CommunityHeader({
         <header className={styles.header}>
             <div className={styles.logo}>
                 <Link href='/'><LogoFull color='var(--color-text-primary)' className={styles.icon} /></Link>
+                <Link href={linksConfig.developerCommunity} className={styles.tag}>Разработчикам</Link>
             </div>
             <div className={styles.actions}>
                 <ThemeSwitcher className={styles.switcher} />
