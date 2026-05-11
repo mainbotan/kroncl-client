@@ -57,7 +57,7 @@ export const navigationConfig: NavigationItem[] = [
     },
     {
         name: 'Разработчикам',
-        href: 'dev',
+        href: '/dev',
         out: false,
     }
 ];

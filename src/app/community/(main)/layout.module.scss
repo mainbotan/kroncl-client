@@ -1,0 +1,36 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
+    height: 100vh;
+    
+    .focus {
+        display: flex;
+        flex-flow: row nowrap;
+        flex: 1;
+        position: relative;
+    }
+    .panel {
+        width: 12rem;
+        background-color: var(--color-surface-glass);
+        border-right: 1px solid var(--color-stroke-secondary);
+        height: calc(100vh - var(--header-height));
+    }
+    .content {
+        display: block;
+        overflow-y: scroll;
+        flex: 1;
+        height: calc(100vh - var(--header-height));
+    }
+
+    @media (max-width: 720px) {
+        height: auto;
+        
+        .content {
+            overflow-y: auto;
+            height: fit-content;
+        }
+    }
+}
