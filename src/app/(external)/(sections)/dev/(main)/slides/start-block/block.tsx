@@ -17,8 +17,8 @@ export function StartBlock({
             <div className={styles.area}>
                 <div className={styles.title}>Разработчикам</div>
                 <div className={styles.actions}>
-                    <Button as='link' icon={<Compass />} href={linksConfig.developerCommunity} variant='contrast' className={styles.action}>Исследовать</Button>
-                    <Button as='link' href={linksConfig.developerGithub} variant='glass' className={styles.action}>Github</Button>
+                    {/* <Button as='link' icon={<Compass />} href={linksConfig.developerCommunity} variant='contrast' className={styles.action}>Исследовать</Button> */}
+                    <Button as='link' href={linksConfig.developerGithub} variant='contrast' className={styles.action}>Github</Button>
                 </div>
                 <div className={styles.subTitle}>
                     <span className={styles.blue}>открытый код</span>
