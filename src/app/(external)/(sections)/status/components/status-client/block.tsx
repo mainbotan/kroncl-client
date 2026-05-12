@@ -23,10 +23,8 @@ export function StatusClient() {
                     setData(response.data);
                     
                     const allDays = response.data.components.all;
-                    const lastWithIncidents = [...allDays].reverse().find(d => d.incidents && d.incidents.length > 0);
-                    if (lastWithIncidents) {
-                        setSelectedAllDay(lastWithIncidents);
-                    } else if (allDays.length > 0) {
+                    // всегда последний день, а не последний с инцидентами
+                    if (allDays.length > 0) {
                         setSelectedAllDay(allDays[allDays.length - 1]);
                     }
                     

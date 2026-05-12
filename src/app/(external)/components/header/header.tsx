@@ -269,8 +269,9 @@ export function Header() {
 
             {/* Mobile menu */}
             {isMenuOpen && (
-                <div className={styles.menu}>
-                    <div className={styles.sections}>
+            <div className={styles.menu}>
+                <div className={styles.sections}>
+                    <div className={styles.grid}>
                         {navigationConfig.map((item, itemIndex) => {
                             if (item.out) {
                                 return (
@@ -287,18 +288,25 @@ export function Header() {
                                     </a>
                                 );
                             }
+                            
                             if (item.subItems) {
                                 return (
-                                    <div 
-                                        key={itemIndex}
-                                        className={clsx(clsx(styles.section))}
-                                    >
-                                        <div className={styles.wrap}>
-                                            <span className={styles.name}>{item.name}</span>
-                                        </div>
-                                        <DivorceBlock className={styles.divorce} items={item.subItems} />
+                                    <div key={itemIndex} className={styles.sectionGroup}>
+                                        <div className={styles.capture}>{item.name}</div>
+                                        
+                                        {/* Подпункты */}
+                                        {item.subItems.map((subItem, subIndex) => (
+                                            <Link 
+                                                key={`${itemIndex}-${subIndex}`}
+                                                href={subItem.href}
+                                                className={clsx(styles.section, isSectionActive(pathname, subItem) && styles.active)}
+                                                onClick={closeMenu}
+                                            >
+                                                <span className={styles.name}>{subItem.name}</span>
+                                            </Link>
+                                        ))}
                                     </div>
-                                )
+                                );
                             }
 
                             return (
@@ -313,20 +321,21 @@ export function Header() {
                             );
                         })}
                     </div>
-                    <div className={styles.actions}>
-                        <Button 
-                            className={styles.button} 
-                            variant='accent'
-                            as="a"
-                            href={authLinks.login}
-                            // target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={closeMenu}
-                        >
-                            Войти
-                        </Button>
-                    </div>
                 </div>
+                <div className={styles.actions}>
+                    <Button 
+                        className={styles.button} 
+                        variant='contrast'
+                        as="a"
+                        href={authLinks.login}
+                        // target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={closeMenu}
+                    >
+                        Войти
+                    </Button>
+                </div>
+            </div>
             )}
         </>
     );

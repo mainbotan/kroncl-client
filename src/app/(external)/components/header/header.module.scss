@@ -320,18 +320,37 @@
     animation: animate-menu .2s forwards;
 
     .sections {
-        display: flex;
+        display: block;
         height: 100%;
+        overflow-y: scroll;
+        @include no-scrollbar();
+    }
+    .grid {
+        display: flex;
         flex-flow: column nowrap;
         gap: 1em;
-        padding-top: 1em;
+        margin: 1.2rem 0;
+        margin-bottom: 7rem;
+        justify-content: center;
+
+        .sectionGroup {
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 1em;
+            margin-bottom: 1em;
+
+            .capture {
+                color: var(--color-text-description);
+            }
+        }
 
         .section {
             display: flex;
             flex-flow: row nowrap;
-            min-height: 3em;
+            min-height: 1.65em;
             align-items: center;
             transition: color var(--transition);
+            color: var(--color-text-ghost);
             @include cursor(pointer);
             gap: .5em;
             position: relative;
@@ -345,6 +364,7 @@
                 width: 100%;
                 font-size: 1.2em;
                 font-weight: 600;
+                letter-spacing: .02em;
             }
             .icon .svg {
                 width: 1em;
@@ -362,10 +382,14 @@
             // }
 
             &:hover, &.active {
-                color: var(--color-brand);
+                color: var(--color-text-primary);
+
+                .name {
+                    text-shadow: 0 0 1px var(--color-text-primary);
+                }
 
                 .icon .svg {
-                    fill: var(--color-brand);
+                    fill: var(--color-text-primary);
                 }
             }
         }
@@ -375,15 +399,35 @@
         height: fit-content;
         flex-flow: column nowrap;
         gap: .5em;
+        position: absolute;
+        z-index: 1000000000;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 1.5em;
 
         .button {
             height: 3.4em;
             border-radius: 2em;
             transition: transform var(--transition);
+            border: none;
+            z-index: 10001;
 
             &:hover {
                 transform: scale(1.02);
             }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 7rem;
+            width: 100%;
+            z-index: 10000;
+            pointer-events: none;
+            background: linear-gradient(180deg, transparent, var(--color-leader));
         }
     }
 
