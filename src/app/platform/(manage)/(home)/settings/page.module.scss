@@ -26,13 +26,23 @@
 .themes {
     display: flex;
     flex-flow: row wrap;
-    gap: 1em;
+    gap: .6rem;
     justify-content: start;
+    margin-top: .2rem;
 
     .item {
+        width: calc(100%/3 - .6rem);
+        aspect-ratio: 16/11;
+        
         &.active, &:hover {
             border-color: var(--color-blue);
             border-width: 2px;
+        }
+        
+        @media (max-width: 720px) {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/12;
         }
     }
 }
