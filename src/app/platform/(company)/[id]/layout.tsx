@@ -21,6 +21,8 @@ import { PlatformDynamicContentWrapper } from "../../components/lib/wrapper/dyna
 import styles from './../../layout.module.scss';
 import { Header } from "../../components/header/header";
 import { PlatformError } from "../../components/lib/error/block";
+import { ScreenProvider } from "../../components/screen-control/provider/provider";
+import { ScreenControlWarning } from "../../components/screen-control/warning";
 
 export interface CompanyLayoutProps extends CompanyParams {
   children: React.ReactNode;
@@ -53,31 +55,34 @@ export default async function CompanyLayout({
 
   return (
     <>
-      <SideContentProvider>
-        <CompanyProvider company={company}>
-          <div className={styles.canvas}>
-              <Header subTitle={company.name || ''} />
-              <div className={styles.container}>
-              
-              <PlatformInjectedPanel />
+      <ScreenProvider>
+          <ScreenControlWarning />
+          <SideContentProvider>
+            <CompanyProvider company={company}>
+              <div className={styles.canvas}>
+                  <Header subTitle={company.name || ''} />
+                  <div className={styles.container}>
+                  
+                  <PlatformInjectedPanel />
 
-              <PlatformContent>
-                <PlatformDynamicContentWrapper>
-                  <AuthGuard>
-                      <ModalPageProvider> {/** not used yet */}
-                          {children}
-                        <PlatformModalPage />
-                      </ModalPageProvider>
-                  </AuthGuard>
-                </PlatformDynamicContentWrapper>
-              </PlatformContent>
+                  <PlatformContent>
+                    <PlatformDynamicContentWrapper>
+                      <AuthGuard>
+                          <ModalPageProvider>
+                              {children}
+                            <PlatformModalPage />
+                          </ModalPageProvider>
+                      </AuthGuard>
+                    </PlatformDynamicContentWrapper>
+                  </PlatformContent>
 
-              <PlatformSideContent />
-            </div>
-          </div>
-        </CompanyProvider>
+                  <PlatformSideContent />
+                </div>
+              </div>
+            </CompanyProvider>
 
-      </SideContentProvider>
+          </SideContentProvider>
+      </ScreenProvider>
     </>
   );
 }

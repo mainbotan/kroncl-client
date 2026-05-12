@@ -12,6 +12,8 @@ import Collection from "@/assets/ui-kit/icons/collection";
 import { sectionsList } from "./sections.config";
 import { actionsList } from "./actions.config";
 import { useCompanies } from "@/apps/account/companies/hooks/useCompanies";
+import { ScreenProvider } from "../../components/screen-control/provider/provider";
+import { ScreenControlWarning } from "../../components/screen-control/warning";
 
 export default function Layout({
   children
@@ -22,18 +24,21 @@ export default function Layout({
   
   return (
     <>
-      <PlatformPanel 
-        actions={actionsList()}
-        sections={sectionsList()} 
-        title={title}
-      />
-      <PlatformContent>
-        <PlatformContentWrapper>
-          <AuthGuard>
-            {children}
-          </AuthGuard>
-        </PlatformContentWrapper>
-      </PlatformContent>
+      <ScreenProvider>
+          <ScreenControlWarning />
+          <PlatformPanel 
+            actions={actionsList()}
+            sections={sectionsList()} 
+            title={title}
+          />
+          <PlatformContent>
+            <PlatformContentWrapper>
+              <AuthGuard>
+                {children}
+              </AuthGuard>
+            </PlatformContentWrapper>
+          </PlatformContent>
+      </ScreenProvider>
     </>
   );
 }
