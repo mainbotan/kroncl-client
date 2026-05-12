@@ -31,12 +31,12 @@
             display: inline-flex;
             flex-flow: row wrap;
             gap: 1em;
-            font-size: .73em;
+            font-size: .7em;
 
             .action {
                 padding: 0 1.56em;
                 height: 3.1em;
-                font-weight: 600;
+                // font-weight: 600;
                 border-width: 0px;
                 letter-spacing: .02em;
                 transition: transform var(--transition);
@@ -48,7 +48,7 @@
             }
 
             @media (max-width: 720px) {
-                gap: .5em;
+                gap: .7em;
                 flex-direction: column;
 
                 .action {
@@ -56,7 +56,7 @@
                     display: flex;
                     height: 3.3em;
                     border-width: 0;
-                    border-radius: .8em;
+                    border-radius: 2em;
                 }
             }
         }
@@ -79,8 +79,10 @@
     }
 
     @media (max-width: 720px) {
-        .content .slogan {
-            font-size: 1.45em;
+        .content {
+            .slogan {
+                font-size: 1.45em;
+            }
         }
         .art svg {
             width: fit-content;
