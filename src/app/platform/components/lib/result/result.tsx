@@ -58,7 +58,7 @@ export function PlatformResult({
       className={clsx(styles.container, className)}
       {...fadeInUp}
     >
-      {showIcon && (
+      {/* {showIcon && (
         <motion.div 
           className={clsx(styles.icon, styles[status])}
           {...fadeInScale}
@@ -66,7 +66,7 @@ export function PlatformResult({
           <IconComponent className={styles.svg} />
         </motion.div>
       )}
-      
+       */}
       <motion.div 
         className={styles.capture}
         {...fadeInUp}
