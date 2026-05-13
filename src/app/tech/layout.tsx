@@ -8,6 +8,8 @@ import { AdminGuard } from '@/apps/admin/auth/guard/AdminGuard';
 import { AdminProvider } from '@/apps/admin/auth/context/AdminContext';
 import { AuthProvider } from '@/apps/account/auth/context/AuthContext';
 import { ADMIN_MAX_LEVEL, ADMIN_MIN_LEVEL } from '@/apps/admin/auth/types';
+import { ScreenProvider } from '../platform/components/screen-control/provider/provider';
+import { ScreenControlWarning } from '../platform/components/screen-control/warning';
 
 export default function TechLayout({
   children,
@@ -18,12 +20,15 @@ export default function TechLayout({
         <AuthProvider>
             <AdminProvider>
                 <AdminGuard requiredLevel={ADMIN_MIN_LEVEL} redirectTo="/sso/sign_in">
-                    <div className={styles.container}>
-                        <TechPanel className={styles.panel} />
-                        <div className={styles.content}>
-                            {children}
+                    <ScreenProvider>
+                        <ScreenControlWarning />
+                        <div className={styles.container}>
+                            <TechPanel className={styles.panel} />
+                            <div className={styles.content}>
+                                {children}
+                            </div>
                         </div>
-                    </div>
+                    </ScreenProvider>
                 </AdminGuard>
             </AdminProvider>
         </AuthProvider>
