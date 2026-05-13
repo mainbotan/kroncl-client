@@ -59,11 +59,14 @@ import { MDXImageBlock } from '@/assets/mdx/image-block';
 
 # 6. Привязка к должности
 
-Привязка сотрудника к должности доступна в секции должности на странице карты сотрудника. 
+Привязка сотрудника к должности доступна в секции должности на странице карты сотрудника. В соответствии с <Link href='/docs/companies/accesses' className={styles.link}>иерархией наследования разрешений</Link>
+сотрудник наследует все разрешения, присвоенные конкретной должности.
+
+Важно: сотрудник может одновременно состоять на <span className={styles.underline}>нескольких должностях</span>.
 
 <Link className={styles.link} href='/docs/companies/modules/hrm/positions'>Подробнее о должностях.</Link>
 
-<MDXImageBlock src='' label='Привязка к должности.' />
+<MDXImageBlock src='/images/docs/company-employee-select-position.png' label='Привязка к должности.' />
 
 # 7. Деактивация сотрудника
 
