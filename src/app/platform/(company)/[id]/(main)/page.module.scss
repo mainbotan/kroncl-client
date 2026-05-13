@@ -22,7 +22,7 @@
 .widgets {
     display: flex;
     flex-flow: row wrap;
-    gap: 1em;
+    gap: .55rem;
     // padding: .7em;
     padding-top: 0;
 
@@ -35,13 +35,14 @@
         color: var(--color-text-primary);
         border: 1px solid var(--color-stroke-secondary);
         border-radius: .45em;
-        min-width: 14.5em;
+        min-width: calc(100%/3 - 2rem);
         min-height: 8em;
         @include cursor(pointer);
         transition: background-color var(--transition);
 
         &.large {
-            min-width: 20em;
+            min-width: 15rem;
+            min-width: calc(100%/3*1.2 - 2rem);
         }
 
         &:hover {

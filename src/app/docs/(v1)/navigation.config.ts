@@ -37,6 +37,10 @@ export const navigationSections: DocsNavSectionProps[] = [
         href: '/docs/companies',
         childrens: [
             {
+                label: 'Управление',
+                href: '/docs/companies/manage'
+            },
+            {
                 label: 'Доступы',
                 href: '/docs/companies/accesses',
                 childrens: [
@@ -58,10 +62,10 @@ export const navigationSections: DocsNavSectionProps[] = [
                 label: 'Тарификация',
                 href: '/docs/companies/pricing'
             },
-            // {
-            //     label: 'Резервные копии',
-            //     href: '/docs/companies/backups'
-            // }
+            {
+                label: 'Сводка',
+                href: '/docs/companies/summary'
+            },
         ]
     },
     {

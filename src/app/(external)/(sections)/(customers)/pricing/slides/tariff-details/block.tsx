@@ -11,7 +11,7 @@ import { getPermissionMeta } from '@/apps/permissions/meta.config';
 import { PermissionCode } from '@/apps/permissions/codes.config';
 import Spinner from '@/assets/ui-kit/spinner/spinner';
 
-const TARIFF_LEVELS = {
+export const TARIFF_LEVELS = {
     financier: 3,
     titan: 2,
     stoic: 1,
