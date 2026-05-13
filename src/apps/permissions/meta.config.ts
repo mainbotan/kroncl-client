@@ -61,7 +61,7 @@ export const PERMISSIONS_META: Record<PermissionCode, PermissionMeta> = {
     [PERMISSIONS.STORAGE_SOURCES]: {
         code: PERMISSIONS.STORAGE_SOURCES,
         title: 'Просмотр источников',
-        description: 'Доступ к информации о файловых источниках хранилища',
+        description: 'Доступ к информации об использовании хранилища организации',
         module: 'storage',
         category: 'files',
     },
