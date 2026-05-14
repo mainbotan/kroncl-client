@@ -24,6 +24,7 @@ type FormData = {
   visibility: 'private' | 'public';
   region: 'ru-RU' | 'kz-KZ';
   planCode: string;
+  promoCode: string;
 };
 
 type SlugStatus = 'idle' | 'checking' | 'available' | 'not_available' | 'error';
@@ -73,7 +74,8 @@ export default function Page() {
     slug: '',
     visibility: 'private',
     region: 'ru-RU',
-    planCode: ''
+    planCode: '',
+    promoCode: ''
   });
 
   const [slugStatus, setSlugStatus] = useState<SlugStatus>('idle');
@@ -189,6 +191,13 @@ export default function Page() {
       planCode
     }));
   }, []);
+  
+  const handlePromoCodeChange = useCallback((value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      promoCode: value
+    }));
+  }, []);
 
   const checkStorageStatus = useCallback(async (companyId: string) => {
     try {
@@ -281,7 +290,8 @@ export default function Page() {
         avatar_url: '',
         is_public: formData.visibility === 'public',
         plan_code: formData.planCode,
-        region: formData.region
+        region: formData.region,
+        promocode: formData.promoCode
       });
 
       if (response.status) {
@@ -444,6 +454,17 @@ export default function Page() {
             onChange={handleRegionSelect}
             disabled={isFormDisabled}
           />
+        </PlatformFormSection>
+
+        <PlatformFormSection
+          title='Промокод (опционально)'
+          description='Используйте промокоды партнёров для получения расширенных тестовых периодов.'
+        >
+          <PlatformFormInput 
+              value={formData.promoCode}
+              onChange={handlePromoCodeChange}
+              maxLength={32}
+              placeholder='xxx-xxx' />
         </PlatformFormSection>
 
         <PlatformFormSection

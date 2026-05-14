@@ -13,6 +13,7 @@ export interface CreateCompanyRequest {
   is_public: boolean;
   plan_code: string;
   region?: string;
+  promocode?: string;
 }
 
 export interface Storage {
