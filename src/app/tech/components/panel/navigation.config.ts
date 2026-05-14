@@ -53,6 +53,11 @@ export const sectionsList: TechSectionsGroup[] = [
                 title: 'Партнёры',
                 href: '/tech/partners',
                 requiredLevel: 4
+            },
+            {
+                title: 'Промокоды',
+                href: '/tech/promocodes',
+                requiredLevel: 4
             }
         ]
     },
