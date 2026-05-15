@@ -1,0 +1,17 @@
+import Link from 'next/link';
+import styles from '@/assets/styles/mdx.module.scss';
+import { MDXImageBlock } from '@/assets/mdx/image-block';
+
+# 1. Остатки
+
+<span className={styles.underline}>Складские остатки</span> позволяют определить наличие конкретных товаров на основании поставок и отгрузок. Для просмотра остатков по товарным позициям перейдите на вкладку <span className={styles.underline}>«Остатки»</span> раздела <span className={styles.underline}>«Каталог & Склад»</span>.
+
+Каждому товару, участвующему в документах отгрузок или поставок, соответствует карта баланса, показывающая, сколько единиц товара находится на складе в данный момент. Наличие может быть нескольких типов:
+
+- <span className={styles.accent}>не в наличии</span>
+- <span className={styles.accent}>отрицательное</span> (отгрузки используют товар без предшествующих поставок)
+- <span className={styles.accent}>положительное</span> (единицы товара есть на складе)
+
+<MDXImageBlock src='/images/docs/company-wm-stocks-balance.png' label='Просмотр остатков.' />
+
+Каждая карта товара также содержит уникальный идентификатор товарной позиции, при клике на который откроется её страница.

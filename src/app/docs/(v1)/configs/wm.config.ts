@@ -1,5 +1,5 @@
 import { DocsNavSectionProps } from "../../components/panel/components/nav-section/section";
-import { DOCS_LINK_WM_CATALOG, DOCS_LINK_WM_CATALOG_CATEGORIES, DOCS_LINK_WM_CATALOG_UNITS, DOCS_LINK_WM_MOVEMENT } from "../internal.config";
+import { DOCS_LINK_WM_CATALOG, DOCS_LINK_WM_CATALOG_CATEGORIES, DOCS_LINK_WM_CATALOG_UNITS, DOCS_LINK_WM_MOVEMENT, DOCS_LINK_WM_MOVEMENT_BALANCE } from "../internal.config";
 
 export const wmSections: DocsNavSectionProps[] = [
     {
@@ -20,6 +20,10 @@ export const wmSections: DocsNavSectionProps[] = [
         label: 'Движение товаров',
         href: DOCS_LINK_WM_MOVEMENT
     },
+    {
+        label: 'Остатки',
+        href: DOCS_LINK_WM_MOVEMENT_BALANCE
+    }
     // {
     //     label: 'Анализ',
     //     href: '/',

@@ -225,7 +225,7 @@ export default function EditPromocodePage() {
 
                 <PlatformFormSection
                     title="Дней триального периода"
-                    description="На сколько дней будет расширен тестовый период."
+                    description="Дней в тестовом периоде при использовании промокода."
                 >
                     <PlatformFormInput
                         type="number"

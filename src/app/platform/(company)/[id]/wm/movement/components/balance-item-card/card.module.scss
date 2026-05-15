@@ -1,0 +1,104 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1em;
+    border: 1px solid var(--color-stroke-secondary);
+    overflow: hidden;
+    background-color: var(--color-surface-glass-secondary);
+    @include cursor(pointer);
+    transition: background-color var(--transition), border var(--transition);
+
+    .base {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: 1em;
+        align-items: center;
+        font-size: .84em;
+        padding: .4em 1em;
+        height: 2.6em;
+    }
+
+    .indicator {
+        display: inline-flex;
+        min-width: .5em;
+        width: .5em;
+        height: .5em;
+        border-radius: 50%;
+        background-color: var(--color-surface-light);
+        @include cursor(pointer);
+
+        &.positive {
+            background-color: var(--color-green);
+        }
+        &.negative {
+            background-color: var(--color-red);
+        }
+    }
+
+    .info {
+        display: flex;
+        flex-flow: row nowrap;
+        gap: .8em;
+        flex: 1;
+        align-items: center;
+        
+
+        .section.secondary {
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+            @include text-ellipsis();
+            width: fit-content;
+        }
+
+        .section.type {
+            min-width: 4em;
+        }
+
+        .section.name {
+            display: flex;
+            width: 100%;
+            flex: 1;
+            @include text-ellipsis();
+        }
+        
+        .section.price {
+            display: inline-flex;
+            flex-flow: row nowrap;
+            gap: .7em;
+            align-items: center;
+            
+            .svg {
+                width: .55em;
+                height: .55em;
+                fill: var(--color-icon-primary);
+            }
+            
+            .purchase {
+                color: var(--color-text-ghost);
+                @include cursor(pointer);
+            }
+            .sale {
+                color: var(--color-accent);
+                @include cursor(pointer);
+            }
+        }
+
+        .section.stocks {
+            @include cursor(pointer);
+        }
+
+        .section.id {
+            color: var(--color-accent);
+            @include cursor(pointer);
+            min-width: 6em;
+            text-align: right;
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-surface-elevated);
+        border-color: var(--color-stroke-primary);
+    }
+}
