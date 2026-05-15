@@ -17,7 +17,7 @@ import { PERMISSIONS } from '@/apps/permissions/codes.config';
 import { PlatformLoading } from '@/app/platform/components/lib/loading/loading';
 import { PlatformError } from '@/app/platform/components/lib/error/block';
 import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/block';
-import { DOCS_LINK_WM_MOVEMENT } from '@/app/docs/(v1)/internal.config';
+import { DOCS_LINK_WM_MOVEMENT, DOCS_LINK_WM_MOVEMENT_BALANCE } from '@/app/docs/(v1)/internal.config';
 import { BalanceItemCard } from '../components/balance-item-card/card';
 
 export default function MovementsBalancePage() {
@@ -122,8 +122,8 @@ export default function MovementsBalancePage() {
                 }}
                 showSearch
                 docsEscort={{
-                    href: DOCS_LINK_WM_MOVEMENT,
-                    title: 'Подробнее о поставках & отгрузках'
+                    href: DOCS_LINK_WM_MOVEMENT_BALANCE,
+                    title: 'Подробнее об остатках'
                 }}
             />
             

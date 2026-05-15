@@ -47,6 +47,7 @@ export const DOCS_LINK_WM_CATALOG_UNITS = DOCS_LINK_WM_CATALOG + '/products';
 export const DOCS_LINK_WM_CATALOG_CATEGORIES = DOCS_LINK_WM_CATALOG + '/categories';
 export const DOCS_LINK_WM_MOVEMENT = DOCS_LINK_WM + '/movement-products';
 export const DOCS_LINK_WM_ANALYSIS = DOCS_LINK_WM + '/analysis';
+export const DOCS_LINK_WM_MOVEMENT_BALANCE = DOCS_LINK_WM_MOVEMENT + '/balance';
 
 // DM
 export const DOCS_LINK_DM_STATUSES = DOCS_LINK_DM + '/statuses';
