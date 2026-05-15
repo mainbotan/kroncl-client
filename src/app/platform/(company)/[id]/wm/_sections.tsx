@@ -17,6 +17,12 @@ export const sectionsList = (companyId: string): PlatformHeadSection[] => {
             label: 'Движение товаров',
             href: `/platform/${companyId}/wm/movement`,
             strongParams: true,
+            exact: true,
+        },
+        {
+            label: 'Остатки',
+            href: `/platform/${companyId}/wm/movement/balance`,
+            strongParams: true,
         }
     ]);
 }

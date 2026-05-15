@@ -21,6 +21,7 @@ import {
     PositionWithUnit,
     StockBatchesResponse,
     StockPositionsResponse,
+    StockBalanceItem,
 } from "./types";
 
 export const wmModule = (companyApi: CompanyApi) => ({
@@ -171,5 +172,18 @@ export const wmModule = (companyApi: CompanyApi) => ({
     
     async getStockPosition(id: string) {
         return companyApi.get<PositionWithUnit>(`/modules/wm/stocks/positions/${id}`);
+    },
+
+    // --------
+    // STOCKS - BALANCE
+    // --------
+    
+    async getStockBalance(unitId?: string) {
+        const queryParams: Record<string, string | undefined> = {};
+        if (unitId) queryParams.unit_id = unitId;
+        
+        return companyApi.get<StockBalanceItem[]>("/modules/wm/stocks/balance", {
+            params: queryParams
+        });
     },
 });

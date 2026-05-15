@@ -83,6 +83,7 @@ export const PERMISSIONS = {
     WM_STOCKS_BATCHES: 'wm.stocks.batches',
     WM_STOCKS_BATCHES_CREATE: 'wm.stocks.batches.create',
     WM_STOCKS_POSITIONS: 'wm.stocks.positions',
+    WM_STOCKS_BALANCE: 'wm.stocks.balance',
 
     // DM
     DM: 'dm',

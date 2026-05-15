@@ -217,3 +217,16 @@ export interface StockPositionsResponse {
     positions: PositionWithUnit[];
     pagination: PaginationMeta;
 }
+
+// --------
+// STOCK BALANCE
+// --------
+
+export interface StockBalanceItem {
+    unit_id: string;
+    unit_name: string;
+    quantity: number;
+    reserved: number;
+    available: number;
+    unit: CatalogUnit;
+}

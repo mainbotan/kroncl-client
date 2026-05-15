@@ -476,6 +476,13 @@ export const PERMISSIONS_META: Record<PermissionCode, PermissionMeta> = {
         module: 'wm',
         category: 'stocks',
     },
+    [PERMISSIONS.WM_STOCKS_BALANCE]: {
+        code: PERMISSIONS.WM_STOCKS_BALANCE,
+        title: 'Просмотр остатков',
+        description: 'Доступ к остаткам на складе',
+        module: 'wm',
+        category: 'stocks',
+    },
 
     // DM
     [PERMISSIONS.DM]: {
