@@ -21,8 +21,8 @@ export function StartBlock({className}: PageBlockProps) {
                     Мы всей душой ненавидим 1с и Битрикс24 и показываем как <span className={styles.brand}>малый</span> и <span className={styles.brand}>средний</span> бизнес может вести учёт и планирование в России.
                 </div>
                 <div className={styles.actions}>
-                    <Button as='link' href={authLinks.registration} className={styles.action} variant='accent'>Начать бесплатно</Button>
-                    <Button as='link' href={authLinks.login} className={styles.action} variant='contrast' icon={<Entry />}>Уже есть аккаунт?</Button>
+                    <Button as='link' href={authLinks.registration} className={styles.action} variant='accent'>Начать сейчас</Button>
+                    <Button as='link' href={authLinks.login} className={styles.action} variant='contrast'>Уже есть аккаунт?</Button>
                 </div>
             </div>
             <span className={styles.shadow} />
