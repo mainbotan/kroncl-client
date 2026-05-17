@@ -22,6 +22,7 @@ export interface CompanyInvitation {
   company_id: string;
   email: string;
   status: string;
+  role_code: string;
   created_at: string;
   updated_at: string;
 }
@@ -44,6 +45,7 @@ export interface DropAccountResponse {
 
 export interface InviteAccountRequest {
   email: string;
+  role_code?: string;
 }
 
 export interface InviteAccountResponse {

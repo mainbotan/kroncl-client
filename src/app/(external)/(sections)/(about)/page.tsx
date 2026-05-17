@@ -15,7 +15,7 @@ import { linksList } from './_links';
 import { ReadyToStartBlock } from '../(customers)/businessmans/blocks/ready-to-start/block';
 import { OverviewBlock } from './slides/overview/block';
 import { DOCS_LINK_COMPANIES, DOCS_LINK_FM } from '@/app/docs/(v1)/internal.config';
-import { Pin } from './pins/2026/pin';
+import { Pin } from './pins/test-mode/pin';
 import { TrialPeriodBlock } from '../(customers)/pricing/slides/trial/block';
 import { MiniBlock } from './slides/mini/block';
 import Kanban from '@/assets/ui-kit/icons/kanban';

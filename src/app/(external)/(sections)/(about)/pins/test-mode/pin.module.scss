@@ -1,0 +1,36 @@
+@use '@/assets/styles/_mixins.scss' as *;
+
+.container {
+    @include slide();
+    @include cursor(pointer);
+    z-index: 10;
+    color: var(--color-accent-text-primary);
+    background: linear-gradient(90deg, var(--color-surface-glass), var(--color-surface-light));
+    background: linear-gradient(90deg, #ff1265, #ffcf31);
+
+    .grid {
+        display: flex;
+        @include focus();
+        height: 1.6rem;
+        flex-flow: row nowrap;
+        font-size: .37em;
+        align-items: center;
+        gap: .8em;
+        overflow: hidden;
+
+        .text {
+            text-align: center;
+            @include text-ellipsis();
+            overflow: hidden;
+
+            .underline {
+                position: relative;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    @media (max-width: 720px) {
+        font-size: 1em;
+    }
+}

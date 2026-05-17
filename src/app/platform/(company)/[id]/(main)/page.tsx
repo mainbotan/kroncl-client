@@ -18,10 +18,13 @@ import { isAllowed, usePermission } from "@/apps/permissions/hooks";
 import { PERMISSIONS } from "@/apps/permissions/codes.config";
 import { DMSummaryWidget } from "../dm/widgets/dm-summary-widget/widget";
 import { DMDynamicsWidget } from "../dm/widgets/dm-dynamics-widget/widget";
+import { useAuth } from "@/apps/account/auth/context/AuthContext";
 
 export default function Page() {
     const params = useParams();
     const companyId = params.id as string;
+
+    const { user } = useAuth();
     
     const ALLOW_FM_ANALYSIS = usePermission(PERMISSIONS.FM_ANALYSIS)
     const ALLOW_CRM_ANALYSIS = usePermission(PERMISSIONS.CRM_ANALYSIS)
@@ -40,7 +43,7 @@ export default function Page() {
             childrenPosition="top"
         >
             <div className={styles.head}>
-                <div className={styles.welcome}>Добрый вечер, mainbotan</div>
+                <div className={styles.welcome}>Добрый вечер, {user?.name}</div>
                 <div className={styles.name}>{companyObject.company.name}</div>
             </div>
         </PlatformHead>
