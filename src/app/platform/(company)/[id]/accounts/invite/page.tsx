@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useMessage } from '@/app/platform/components/lib/message/provider';
-import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormStatus } from "@/app/platform/components/lib/form";
+import { PlatformFormBody, PlatformFormInput, PlatformFormSection, PlatformFormStatus, PlatformFormVariants } from "@/app/platform/components/lib/form";
 import { PlatformHead } from "@/app/platform/components/lib/head/head";
 import { useAccounts } from "@/apps/company/modules";
 import Button from "@/assets/ui-kit/button/button";
@@ -16,13 +16,13 @@ import { PlatformNotAllowed } from '@/app/platform/components/lib/not-allowed/bl
 import { DOCS_LINK_COMPANIES_ACCESSES } from '@/app/docs/(v1)/internal.config';
 
 export default function Page() {
-    // perms
     const ALLOW_PAGE = usePermission(PERMISSIONS.ACCOUNTS_INVITATIONS_CREATE)
     
     const accountsModule = useAccounts();
     const { showMessage } = useMessage();
     const [email, setEmail] = useState('');
     const [emailStatus, setEmailStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
+    const [roleCode, setRoleCode] = useState('guest');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
@@ -47,13 +47,19 @@ export default function Page() {
 
         setIsLoading(true);
         try {
-            await accountsModule.inviteAccount({ email });
+            const request: { email: string; role_code?: string } = { email };
+            if (roleCode !== 'guest') {
+                request.role_code = roleCode;
+            }
+            
+            await accountsModule.inviteAccount(request);
             showMessage({
                 label: 'Приглашение успешно отправлено',
                 variant: 'success'
             });
             setEmail('');
             setEmailStatus('idle');
+            setRoleCode('guest');
             setTimeout(() => {
                 router.back();
             }, 1000);
@@ -68,7 +74,6 @@ export default function Page() {
             setIsLoading(false);
         }
     };
-
 
     if (ALLOW_PAGE.isLoading) return (
         <PlatformLoading />
@@ -116,6 +121,32 @@ export default function Page() {
                             icon={statusInfo.icon}
                         />
                     )}
+                </PlatformFormSection>
+                <PlatformFormSection 
+                    title="Первичная роль"
+                    description={
+                        <>
+                        Доступ, который получит сотрудник после входа в организацию. 
+                        <br />
+                        Можно переопределить с помощью должностей и разрешений аккаунта.
+                        </>
+                    }>
+                    <PlatformFormVariants
+                        value={roleCode}
+                        onChange={setRoleCode}
+                        options={[
+                            {
+                                value: 'guest',
+                                label: 'Гость',
+                                description: 'Только просмотр данных организации и её модулей.'
+                            },
+                            {
+                                value: 'owner',
+                                label: 'Владелец / Администратор',
+                                description: 'Полный доступ ко всем модулям: просмотр, создание, редактирование объектов.'
+                            }
+                        ]}
+                    />
                 </PlatformFormSection>
                 <section>
                     <Button
